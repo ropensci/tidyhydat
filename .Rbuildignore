@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^README-.*\.png$
+
+^CONTRIBUTING.md$
+CODE_OF_CONDUCT.md
