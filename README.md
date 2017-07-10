@@ -1,46 +1,34 @@
-<div id="devex-badge">
-*Add a project state badge. See https://raw.githubusercontent.com/BCDevExchange/docs/master/discussion/projectstates.md*
-</div>
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+tidyhydat
+=========
 
----
+Here is a list of what tidyhydat does: - Perform a number of common queries on the HYDAT database and returns a tibble - Maintains column names as the database itself - Can select one, two... x stations - Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it.
 
-# Description of analysis/indicator code
+Example
+-------
 
-With links to envreportbc packages being used and indicator page if available
+This is a basic example of `tidyhydat` usage
 
-### Usage
+``` r
+library(tidyhydat)
 
-Describe data being used (links), and how to run. Eg:
-
-There are four core scripts that are required for the analysis, they need to be run in order:
-
-- 01_clean.R
-- 02_analysis.R
-- 03_visualize.R
-- 04_output.R
-
-### Project Status
-
-### Getting Help or Reporting an Issue
-
-To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/<repo-name>/issues/).
-
-### How to Contribute
-
-If you would like to contribute, please see our [CONTRIBUTING](CONTRIBUTING.md) guidelines.
-
-### License
-
-    Copyright 2016 Province of British Columbia
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at 
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
+#> Applying predicate on the first 100 rows
+#> Warning: 532 failed to parse.
+#> Warning: 426 failed to parse.
+#> # A tibble: 52,300 x 3
+#> # Groups:   STATION_NUMBER [2]
+#>    STATION_NUMBER  FLOW       Date
+#>             <chr> <dbl>     <date>
+#>  1        08LA001   144 1914-01-01
+#>  2        08LA001   150 1914-02-01
+#>  3        08LA001   166 1914-03-01
+#>  4        08LA001   160 1914-04-01
+#>  5        08LA001   173 1914-05-01
+#>  6        08LA001   411 1914-06-01
+#>  7        08LA001   589 1914-07-01
+#>  8        08LA001   374 1914-08-01
+#>  9        08LA001   199 1914-09-01
+#> 10        08LA001   289 1914-10-01
+#> # ... with 52,290 more rows
+```

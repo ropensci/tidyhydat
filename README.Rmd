@@ -16,12 +16,20 @@ knitr::opts_chunk$set(
 
 # tidyhydat
 
-The goal of tidyhydat is to ...
+Here is a list of what tidyhydat does:
+- Perform a number of common queries on the HYDAT database and returns a tibble
+- Maintains column names as the database itself
+- Can select one, two... x stations
+- Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it. 
+
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example of `tidyhydat` usage
 
 ```{r example}
-## basic example code
+library(tidyhydat)
+
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
+
 ```
