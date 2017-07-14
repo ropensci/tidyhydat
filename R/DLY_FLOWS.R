@@ -1,10 +1,10 @@
 #' @title Get a tidy tibble of daily flows
 #' @export
 #' 
-#' @description Provides wrapper to turn the DLY_FLOWS table into a tidy data frame
+#' @description Provides wrapper to turn the DLY_FLOWS table into a tidy tibble
 #' 
 #' @param hydat_path Directory to the hydat database
-#' @param STATION_NUMBER_SEL Water Survey of Canada station number
+#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.
 #' 
 #' @return A tibble of daily flows
 #' 
@@ -15,17 +15,25 @@
 
 
 
-DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER_SEL = STATION_NUMBER) {
+DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
+  stns = STATION_NUMBER
+  STATION_NUMBER = NULL
   
   dbname <- hydat_path
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), dbname)
   
+  if(stns[1] == "ALL"){
+    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
+      filter(PROV_TERR_STATE_LOC == "BC") %>%
+      pull(STATION_NUMBER)
+  }
+  
   ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-  if (length(STATION_NUMBER_SEL) == 1) {
-    dly_flows = tbl(hydat_con, "DLY_FLOWS") %>%
-      dplyr::filter(STATION_NUMBER == STATION_NUMBER_SEL) %>%
+  if (length(stns) == 1 & stns[1] != "ALL") {
+    dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS") %>%
+      dplyr::filter(STATION_NUMBER == stns) %>%
       dplyr::group_by(STATION_NUMBER) %>%
       dplyr::select_if(is.numeric) %>% ## select only numeric data
       dplyr::select(-(FULL_MONTH:MAX)) %>% ## Only columns we need
@@ -39,8 +47,8 @@ DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER_SEL = STAT
     
     return(dly_flows)
   } else {
-    dly_flows = tbl(hydat_con, "DLY_FLOWS") %>%
-      dplyr::filter(STATION_NUMBER %in% STATION_NUMBER_SEL) %>%
+    dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS") %>%
+      dplyr::filter(STATION_NUMBER %in% stns) %>%
       dplyr::group_by(STATION_NUMBER) %>%
       dplyr::select_if(is.numeric) %>% ## select only numeric data
       dplyr::select(-(FULL_MONTH:MAX)) %>% ## Only columns we need

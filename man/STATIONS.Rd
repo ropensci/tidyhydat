@@ -4,13 +4,12 @@
 \alias{STATIONS}
 \title{Station Hydat wrapper}
 \usage{
-STATIONS(hydat_path = "H:/Hydat.sqlite3",
-  STATION_NUMBER_SEL = STATION_NUMBER)
+STATIONS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database}
 
-\item{STATION_NUMBER_SEL}{Water Survey of Canada station number}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.}
 }
 \description{
 Provides wrapper to turn the STATIONS table into a tidy data frame

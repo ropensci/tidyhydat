@@ -4,16 +4,18 @@
 \alias{DLY_FLOWS}
 \title{Get a tidy tibble of daily flows}
 \usage{
-DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
-  STATION_NUMBER_SEL = STATION_NUMBER)
+DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database}
 
-\item{STATION_NUMBER_SEL}{Water Survey of Canada station number}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.}
+}
+\value{
+A tibble of daily flows
 }
 \description{
-Provides wrapper to turn the DLY_FLOWS table into a tidy data frame
+Provides wrapper to turn the DLY_FLOWS table into a tidy tibble
 }
 \examples{
 DLY_FLOWS(STATION_NUMBER = "08LA001")
