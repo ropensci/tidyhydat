@@ -1,3 +1,5 @@
+<a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a>
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 tidyhydat
 =========
@@ -137,4 +139,4 @@ ggplot(qci_realtime, aes(x = date_time, y = FLOW)) +
   geom_line(aes(colour = STATION_NUMBER))
 ```
 
-![](README-unnamed-chunk-9-1.png)
+![](README-unnamed-chunk-10-1.png)

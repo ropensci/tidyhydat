@@ -14,5 +14,11 @@ Imports:
     DBI,
     tibble,
     RSQLite
+Suggests:
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat,
+    sf
 LazyData: true
 RoxygenNote: 6.0.1

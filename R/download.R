@@ -1,3 +1,16 @@
+# Copyright 2017 Province of British Columbia
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+
 #' @title Download a tibble of realtime network
 #' 
 #' @description A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
@@ -44,7 +57,16 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
                   "FLOW", "FLOW_GRADE", "FLOW_SYMBOL", "FLOW_CODE")
   
   # download hourly file
-  h <- try(readr::read_csv(infile[1], skip = 1, col_names = colHeaders, col_types = readr::cols()))
+  h <- try(readr::read_csv(infile[1], skip = 1, col_names = colHeaders, col_types = cols(STATION_NUMBER = readr::col_character(),
+                                                                                         date_time = readr::col_datetime(),
+                                                                                         LEVEL = readr::col_double(),
+                                                                                         LEVEL_GRADE = readr::col_character(),
+                                                                                         LEVEL_CODE = readr::col_integer(),
+                                                                                         FLOW = readr::col_double(),
+                                                                                         FLOW_GRADE = readr::col_character(),
+                                                                                         FLOW_SYMBOL = readr::col_character(),
+                                                                                         FLOW_CODE = readr::col_integer())
+                           ))
   
   if(class(h)[1]=="try-error") {
     stop(sprintf("Station [%s] cannot be found within Province/Territory [%s]...url not located %s",
@@ -53,13 +75,22 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
   }
   
   # download daily file
-  d <- try(readr::read_csv(infile[2], skip = 1, col_names = colHeaders, col_types = readr::cols()))
+  d <- try(readr::read_csv(infile[2], skip = 1, col_names = colHeaders, col_types = cols(STATION_NUMBER = readr::col_character(),
+                                                                                         date_time = readr::col_datetime(),
+                                                                                         LEVEL = readr::col_double(),
+                                                                                         LEVEL_GRADE = readr::col_character(),
+                                                                                         LEVEL_CODE = readr::col_integer(),
+                                                                                         FLOW = readr::col_double(),
+                                                                                         FLOW_GRADE = readr::col_character(),
+                                                                                         FLOW_SYMBOL = readr::col_character(),
+                                                                                         FLOW_CODE = readr::col_integer())
+                           ))
 
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- which(d$date_time < min(h$date_time))
   output <- rbind(d[p,], h)
   
-  output_c <- rbind(output, output_c)
+  output_c <- dplyr::bind_rows(output, output_c)
 
   }
   return(output_c)

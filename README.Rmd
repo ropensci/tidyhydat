@@ -4,6 +4,12 @@ output:
     variant: markdown_github
 ---
 
+```{r echo=FALSE, results='asis'}
+## Insert 'inspiration', 'exploration', or 'delivery'
+envreportutils::devex_badge('exploration')
+```
+
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
