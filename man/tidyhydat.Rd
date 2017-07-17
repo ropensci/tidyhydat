@@ -6,8 +6,8 @@
 \alias{tidyhydat-package}
 \title{Make HYDAT data tidy}
 \description{
-This package provides several wrappers to extract data from the HYDAT database and turn that into tidy data. 
-Each function reflects a table in the HYDAT database.
+This package provides several quick and easy functions to extract data from the HYDAT database and turn that into tidy data. 
+Most functions reflects a table in the HYDAT database. Realtime data acquisition is also provided.
 
 \code{tidyhydat} package
 }

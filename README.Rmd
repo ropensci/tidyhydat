@@ -24,9 +24,10 @@ knitr::opts_chunk$set(
 
 Here is a list of what tidyhydat does:
 - Perform a number of common queries on the HYDAT database and returns a tibble
-- Maintains column names as the database itself
+- Maintains the same column names as the database itself
 - Can select one, two... x stations
 - Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it. 
+- An additional auxiliary feature outside the HYDAT database is the downloading of realtime data. This functionality is provided by `download_realtime()` and `download_network()`. 
 
 ## Installation
 To install the tidyhydat package, you need to install the devtools package then the tidyhydat package
@@ -34,9 +35,10 @@ To install the tidyhydat package, you need to install the devtools package then 
 install.packages("devtools")
 devtools::install_github("bcgov/tidyhydat")
 ```
-Then to load the package you need to use the library command:
+Then to load the package you need to use the library command. When you install tidyhydat, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, you must still load it explicitly.
 ```{r, eval = TRUE, echo=TRUE}
 library(tidyhydat)
+library(dplyr)
 ```
 
 
@@ -51,8 +53,28 @@ DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
 ## Basin realtime data acquisition usage
 Using `download_realtime()` we can easily select specific stations by supplying a station of interest:
 ```{r}
-download_realtime(STATION_NUMBER = "08LG006")
+download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
+
+## Downloading by jurisdiction
+We can use the `download_network()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
+```{r}
+PEI_stns <- download_network(PROV_TERR_STATE_LOC = "PE")$STATION_NUMBER
+PEI_stns
+```
+
+This produces a vector that can supplied to `download_realtime()` which then downloads all available realtime information for Prince Edward Island. An important consideration is that you need to supply station numbers *and* the province. 
+```{r}
+download_realtime(STATION_NUMBER = PEI_stns, PROV_TERR_STATE_LOC = "PE")
+```
+
+### On the distinction between STATIONS() and download_network()
+`STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from the HYDAT sqlite3 database. In addition to realtime stations, `STATIONS()` outputs discontinued and non-realtime stations:
+```{r stations}
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+```
+
+This is contrast to `download_network()` which downloads all realtime stations. Though this is not always the case, it is best to use `download_network()` when dealing with realtime data and `STATIONS()` when interacting with HYDAT.  
 
 ## Example with spatial data
 The `download_realtime()` functions allows us to directly query the Environment Canada and Climate Change datamart selecting by station. If we wanted to look at all the realtime stations in a particular hydrologic zone, we could easily do this using the `dplyr`,`sf` and `bcmaps` packages. To install those packages use these commands: 
@@ -66,10 +88,8 @@ And then load these packages. tidyhydat is already loaded above.
 library(bcmaps)
 library(sf)
 library(dplyr)
-
-
 ```
-Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations (called by `download_network`) are in which hydrologic zones. If we are interested in all stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
+Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations in the realtime network (called by `download_network`) are in which hydrologic zones. If we are interested in all realtime stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
 ```{r, eval = TRUE, echo=TRUE}
 ## Convert to sf format
 hydrozones_sf <- st_as_sf(bcmaps::hydrozones) %>%
@@ -90,7 +110,7 @@ qci_stations
 
 Now that vector (`qci_stations`) is useful to select which stations we are interested in. 
 ```{r}
-qci_realtime <- download_realtime(STATION_NUMBER = qci_stations)
+qci_realtime <- download_realtime(STATION_NUMBER = qci_stations, PROV_TERR_STATE_LOC = "BC")
 ```
 
 Then using `ggplot2` we could plot these results to have look at the data
@@ -101,3 +121,34 @@ ggplot(qci_realtime, aes(x = date_time, y = FLOW)) +
   geom_line(aes(colour = STATION_NUMBER))
 
 ```
+
+## Project Status
+
+This package is under continual development.
+
+## Getting Help or Reporting an Issue
+
+To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/tidyhydat/issues/).
+
+## How to Contribute
+
+If you would like to contribute to the package, please see our 
+[CONTRIBUTING](CONTRIBUTING.md) guidelines.
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+## License
+
+    Copyright 2015 Province of British Columbia
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at 
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

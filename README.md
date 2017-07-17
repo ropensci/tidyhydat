@@ -4,7 +4,7 @@
 tidyhydat
 =========
 
-Here is a list of what tidyhydat does: - Perform a number of common queries on the HYDAT database and returns a tibble - Maintains column names as the database itself - Can select one, two... x stations - Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it.
+Here is a list of what tidyhydat does: - Perform a number of common queries on the HYDAT database and returns a tibble - Maintains the same column names as the database itself - Can select one, two... x stations - Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it. - An additional auxiliary feature outside the HYDAT database is the downloading of realtime data. This functionality is provided by `download_realtime()` and `download_network()`.
 
 Installation
 ------------
@@ -16,10 +16,19 @@ install.packages("devtools")
 devtools::install_github("bcgov/tidyhydat")
 ```
 
-Then to load the package you need to use the library command:
+Then to load the package you need to use the library command. When you install tidyhydat, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, you must still load it explicitly.
 
 ``` r
 library(tidyhydat)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 ```
 
 Example
@@ -32,6 +41,7 @@ DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
 #> Applying predicate on the first 100 rows
 #> Warning: 532 failed to parse.
 #> Warning: 426 failed to parse.
+#> Warning: call dbDisconnect() when finished working with a connection
 #> # A tibble: 52,300 x 3
 #> # Groups:   STATION_NUMBER [2]
 #>    STATION_NUMBER  FLOW       Date
@@ -55,24 +65,84 @@ Basin realtime data acquisition usage
 Using `download_realtime()` we can easily select specific stations by supplying a station of interest:
 
 ``` r
-download_realtime(STATION_NUMBER = "08LG006")
-#> Warning: call dbDisconnect() when finished working with a connection
-#> # A tibble: 8,718 x 10
+download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
+#> # A tibble: 8,730 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        08LG006 2017-06-14 08:00:00 2.277        <NA>         <NA>
-#>  2        08LG006 2017-06-14 08:05:00 2.277        <NA>         <NA>
-#>  3        08LG006 2017-06-14 08:10:00 2.277        <NA>         <NA>
-#>  4        08LG006 2017-06-14 08:15:00 2.277        <NA>         <NA>
-#>  5        08LG006 2017-06-14 08:20:00 2.277        <NA>         <NA>
-#>  6        08LG006 2017-06-14 08:25:00 2.277        <NA>         <NA>
-#>  7        08LG006 2017-06-14 08:30:00 2.277        <NA>         <NA>
-#>  8        08LG006 2017-06-14 08:35:00 2.278        <NA>         <NA>
-#>  9        08LG006 2017-06-14 08:40:00 2.278        <NA>         <NA>
-#> 10        08LG006 2017-06-14 08:45:00 2.278        <NA>         <NA>
-#> # ... with 8,708 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        08LG006 2017-06-17 08:00:00 2.311        <NA>         <NA>
+#>  2        08LG006 2017-06-17 08:05:00 2.312        <NA>         <NA>
+#>  3        08LG006 2017-06-17 08:10:00 2.312        <NA>         <NA>
+#>  4        08LG006 2017-06-17 08:15:00 2.313        <NA>         <NA>
+#>  5        08LG006 2017-06-17 08:20:00 2.313        <NA>         <NA>
+#>  6        08LG006 2017-06-17 08:25:00 2.313        <NA>         <NA>
+#>  7        08LG006 2017-06-17 08:30:00 2.313        <NA>         <NA>
+#>  8        08LG006 2017-06-17 08:35:00 2.313        <NA>         <NA>
+#>  9        08LG006 2017-06-17 08:40:00 2.313        <NA>         <NA>
+#> 10        08LG006 2017-06-17 08:45:00 2.313        <NA>         <NA>
+#> # ... with 8,720 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
+
+Downloading by jurisdiction
+---------------------------
+
+We can use the `download_network()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
+
+``` r
+PEI_stns <- download_network(PROV_TERR_STATE_LOC = "PE")$STATION_NUMBER
+PEI_stns
+#> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CC011"
+#> [8] "01CD005"
+```
+
+This produces a vector that can supplied to `download_realtime()` which then downloads all available realtime information for Prince Edward Island. An important consideration is that you need to supply station numbers *and* the province.
+
+``` r
+download_realtime(STATION_NUMBER = PEI_stns, PROV_TERR_STATE_LOC = "PE")
+#> # A tibble: 31,029 x 10
+#>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
+#>             <chr>              <dttm> <dbl>       <chr>        <chr>
+#>  1        01CD005 2017-06-17 04:00:00 0.602        <NA>         <NA>
+#>  2        01CD005 2017-06-17 04:15:00 0.603        <NA>         <NA>
+#>  3        01CD005 2017-06-17 04:30:00 0.603        <NA>         <NA>
+#>  4        01CD005 2017-06-17 04:45:00 0.603        <NA>         <NA>
+#>  5        01CD005 2017-06-17 05:00:00 0.603        <NA>         <NA>
+#>  6        01CD005 2017-06-17 05:15:00 0.603        <NA>         <NA>
+#>  7        01CD005 2017-06-17 05:30:00 0.602        <NA>         <NA>
+#>  8        01CD005 2017-06-17 05:45:00 0.602        <NA>         <NA>
+#>  9        01CD005 2017-06-17 06:00:00 0.603        <NA>         <NA>
+#> 10        01CD005 2017-06-17 06:15:00 0.603        <NA>         <NA>
+#> # ... with 31,019 more rows, and 5 more variables: LEVEL_CODE <int>,
+#> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
+```
+
+### On the distinction between STATIONS() and download\_network()
+
+`STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from the HYDAT sqlite3 database. In addition to realtime stations, `STATIONS()` outputs discontinued and non-realtime stations:
+
+``` r
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#> # A tibble: 41 x 15
+#>    STATION_NUMBER                      STATION_NAME PROV_TERR_STATE_LOC
+#>             <chr>                             <chr>               <chr>
+#>  1        01CA001      CARRUTHERS BROOK NEAR HOWLAN                  PE
+#>  2        01CA002      TROUT RIVER NEAR TYNE VALLEY                  PE
+#>  3        01CA003 CARRUTHERS BROOK NEAR ST. ANTHONY                  PE
+#>  4        01CA004        SMELT CREEK NEAR ELLERSLIE                  PE
+#>  5        01CA005  MIMINEGASH RIVER AT ST. LAWRENCE                  PE
+#>  6        01CB001         DUNK RIVER AT ROGERS MILL                  PE
+#>  7        01CB002           DUNK RIVER AT WALL ROAD                  PE
+#>  8        01CB003          PLAT RIVER AT SHERBROOKE                  PE
+#>  9        01CB004   WILMOT RIVER NEAR WILMOT VALLEY                  PE
+#> 10        01CB005        NORTH BROOK NEAR WALL ROAD                  PE
+#> # ... with 31 more rows, and 12 more variables: REGIONAL_OFFICE_ID <chr>,
+#> #   HYD_STATUS <chr>, SED_STATUS <chr>, LATITUDE <dbl>, LONGITUDE <dbl>,
+#> #   DRAINAGE_AREA_GROSS <dbl>, DRAINAGE_AREA_EFFECT <dbl>, RHBN <int>,
+#> #   REAL_TIME <int>, CONTRIBUTOR_ID <int>, OPERATOR_ID <int>,
+#> #   DATUM_ID <int>
+```
+
+This is contrast to `download_network()` which downloads all realtime stations. Though this is not always the case, it is best to use `download_network()` when dealing with realtime data and `STATIONS()` when interacting with HYDAT.
 
 Example with spatial data
 -------------------------
@@ -93,17 +163,9 @@ library(bcmaps)
 library(sf)
 #> Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 ```
 
-Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations (called by `download_network`) are in which hydrologic zones. If we are interested in all stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
+Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations in the realtime network (called by `download_network`) are in which hydrologic zones. If we are interested in all realtime stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
 
 ``` r
 ## Convert to sf format
@@ -127,7 +189,7 @@ qci_stations
 Now that vector (`qci_stations`) is useful to select which stations we are interested in.
 
 ``` r
-qci_realtime <- download_realtime(STATION_NUMBER = qci_stations)
+qci_realtime <- download_realtime(STATION_NUMBER = qci_stations, PROV_TERR_STATE_LOC = "BC")
 ```
 
 Then using `ggplot2` we could plot these results to have look at the data
@@ -139,4 +201,38 @@ ggplot(qci_realtime, aes(x = date_time, y = FLOW)) +
   geom_line(aes(colour = STATION_NUMBER))
 ```
 
-![](README-unnamed-chunk-10-1.png)
+![](README-unnamed-chunk-12-1.png)
+
+Project Status
+--------------
+
+This package is under continual development.
+
+Getting Help or Reporting an Issue
+----------------------------------
+
+To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/tidyhydat/issues/).
+
+How to Contribute
+-----------------
+
+If you would like to contribute to the package, please see our [CONTRIBUTING](CONTRIBUTING.md) guidelines.
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+License
+-------
+
+    Copyright 2015 Province of British Columbia
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at 
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

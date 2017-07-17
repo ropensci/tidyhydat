@@ -14,8 +14,8 @@
 
 #' @title Make HYDAT data tidy
 #' 
-#' @description This package provides several wrappers to extract data from the HYDAT database and turn that into tidy data. 
-#' Each function reflects a table in the HYDAT database.
+#' @description This package provides several quick and easy functions to extract data from the HYDAT database and turn that into tidy data. 
+#' Most functions reflects a table in the HYDAT database. Realtime data acquisition is also provided.
 #' 
 #' \code{tidyhydat} package
 #' 
@@ -45,5 +45,17 @@
 NULL
 
 
-## quiets concerns of R CMD check re: the .'s that appear in pipelines
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+#' REmoves notes from R CMD check for NSE
+#'
+.onLoad <- function(libname = find.package("tidyhydat"), pkgname = "tidyhydat"){
+  # CRAN Note avoidance
+  if(getRversion() >= "2.15.1")
+    utils::globalVariables(
+      # Vars used in Non-Standard Evaluations, declare here to avoid CRAN warnings
+      c("PROV_TERR_STATE_LOC", "FULL_MONTH", "MAX", "DAY", "FLOW", "MONTH",
+        "YEAR", "Date","stns", "FLOW",
+        "." # piping requires '.' at times
+      )
+    )
+  invisible()
+}
