@@ -17,7 +17,8 @@ A tibble of water flow and level values
 }
 \description{
 A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
-be used. Currently, if a station does not exist or is not found, no data is returned.
+be used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
+should be specified.
 }
 \note{
 This function is heavily adapted from the RealTimeData function from the HYDAT package. 
@@ -34,4 +35,10 @@ download_realtime(STATION_NUMBER="08MF005")
 
 download_realtime(STATION_NUMBER=c("08MF005", "08NL071"))
 
+# To download from a station in Alberta:
+download_realtime(STATION_NUMBER = "05AA004", PROV_TERR_STATE_LOC = "AB")
+
+}
+\seealso{
+\code{download_network()}.
 }

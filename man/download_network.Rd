@@ -17,4 +17,5 @@ Returns all stations in the Realtime Water Survey of Canada hydrometric network 
 unique(download_network(PROV_TERR_STATE_LOC = "ALL")$PROV_TERR_STATE_LOC)
 
 download_network(PROV_TERR_STATE_LOC = "BC")
+## Not respecting only BC
 }

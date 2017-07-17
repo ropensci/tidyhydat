@@ -14,7 +14,8 @@
 #' @title Download a tibble of realtime network
 #' 
 #' @description A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
-#' be used. Currently, if a station does not exist or is not found, no data is returned.
+#' be used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
+#' should be specified. 
 #' 
 #' @param STATION_NUMBER Water Survey of Canada station number. Multiple stations can inputted. See examples
 #' @param PROV_TERR_STATE_LOC Jurisdiction where the station is located. Functionality is currently limited. Defaults to BC. 
@@ -23,6 +24,9 @@
 #' @return A tibble of water flow and level values
 #' 
 #' @export
+#' 
+#' @seealso 
+#' \code{download_network()}.
 #' 
 #' @note This function is heavily adapted from the RealTimeData function from the HYDAT package. 
 #' That package can be viewed here: \url{https://github.com/CentreForHydrology/HYDAT}.
@@ -38,7 +42,13 @@
 #' 
 #' download_realtime(STATION_NUMBER=c("08MF005", "08NL071"))
 #' 
+#' # To download from a station in Alberta:
+#' download_realtime(STATION_NUMBER = "05AA004", PROV_TERR_STATE_LOC = "AB")
+#' 
 download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
+  
+  if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC)) 
+    stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
   
   output_c <- c()
   for (i in 1:length(STATION_NUMBER) ){
@@ -57,7 +67,7 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
                   "FLOW", "FLOW_GRADE", "FLOW_SYMBOL", "FLOW_CODE")
   
   # download hourly file
-  h <- try(readr::read_csv(infile[1], skip = 1, col_names = colHeaders, col_types = cols(STATION_NUMBER = readr::col_character(),
+  h <- try(readr::read_csv(infile[1], skip = 1, col_names = colHeaders, col_types = readr::cols(STATION_NUMBER = readr::col_character(),
                                                                                          date_time = readr::col_datetime(),
                                                                                          LEVEL = readr::col_double(),
                                                                                          LEVEL_GRADE = readr::col_character(),
@@ -71,11 +81,11 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
   if(class(h)[1]=="try-error") {
     stop(sprintf("Station [%s] cannot be found within Province/Territory [%s]...url not located %s",
                  STATION_NUMBER_SEL, PROV_TERR_STATE_LOC, infile[1]))
-    close(h)
+    #close(h)
   }
   
   # download daily file
-  d <- try(readr::read_csv(infile[2], skip = 1, col_names = colHeaders, col_types = cols(STATION_NUMBER = readr::col_character(),
+  d <- try(readr::read_csv(infile[2], skip = 1, col_names = colHeaders, col_types = readr::cols(STATION_NUMBER = readr::col_character(),
                                                                                          date_time = readr::col_datetime(),
                                                                                          LEVEL = readr::col_double(),
                                                                                          LEVEL_GRADE = readr::col_character(),
@@ -91,6 +101,7 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
   output <- rbind(d[p,], h)
   
   output_c <- dplyr::bind_rows(output, output_c)
+  #closeAllConnections()
 
   }
   return(output_c)
@@ -110,19 +121,36 @@ download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC="BC") {
 #' unique(download_network(PROV_TERR_STATE_LOC = "ALL")$PROV_TERR_STATE_LOC)
 #' 
 #' download_network(PROV_TERR_STATE_LOC = "BC")
+#' ## Not respecting only BC
 
 download_network <- function(PROV_TERR_STATE_LOC){
+  prov = PROV_TERR_STATE_LOC
   ## Need to implement a search by station
   #try((if(hasArg(PROV_TERR_STATE_LOC_SEL) == FALSE) stop("Stopppppte")))
   
   net_tibble <- readr::read_csv("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv", skip = 1,
                                 col_names = c("STATION_NUMBER", "STATION_NAME", "LATITUDE", "LONGITUDE", 
-                                              "PROV_TERR_STATE_LOC", "TIMEZONE"), col_types = cols())
+                                              "PROV_TERR_STATE_LOC", "TIMEZONE"), col_types = readr::cols())
   
-  if((PROV_TERR_STATE_LOC == "ALL")[1]){
+  if((prov == "ALL")[1]){
     return(net_tibble)
   } 
   
-  net_tibble = filter(net_tibble, PROV_TERR_STATE_LOC %in% PROV_TERR_STATE_LOC)
+  net_tibble = dplyr::filter(net_tibble, PROV_TERR_STATE_LOC %in% prov)
   return(net_tibble)
 }
+
+
+#download_hydat <- function() {
+#  url <- 'http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/'
+#
+#  date_string <- substr(gsub("^.*\\Hydat_sqlite3_","",
+#                             RCurl::getURL(url)), 1,8)
+#  
+#  to_get_hydat <-paste0(url, "Hydat_sqlite3_", date_string,".zip")
+#  
+#  message(paste0("Proceed to this link to download a zip file of hydat", to_get_hydat))
+#  
+#
+#  
+#}
