@@ -4,12 +4,16 @@
 \alias{DLY_FLOWS}
 \title{Get a tidy tibble of daily flows}
 \usage{
-DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER)
+DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER,
+  PROV_TERR_STATE_LOC)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
+to specify \code{PROV_TERR_STATE_LOC}.}
+
+\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
 }
 \value{
 A tibble of daily flows
@@ -18,7 +22,34 @@ A tibble of daily flows
 Provides wrapper to turn the DLY_FLOWS table into a tidy tibble
 }
 \examples{
-DLY_FLOWS(STATION_NUMBER = "08LA001")
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
 
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+
+}
+\seealso{
+Possible arguments for \code{PROV_TERR_STATE_LOC}
+\itemize{
+\item "QC" 
+\item "ME" 
+\item "NB" 
+\item "PE" 
+\item "NS" 
+\item "MN" 
+\item "ON" 
+\item "MI" 
+\item "NL" 
+\item "MB" 
+\item "AB" 
+\item "MT" 
+\item "SK" 
+\item "ND" 
+\item "NU" 
+\item "NT" 
+\item "BC" 
+\item "YT" 
+\item "AK" 
+\item "WA" 
+\item "ID"
+}
 }

@@ -11,51 +11,87 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Get a tidy tibble of daily flows
+#' @title Get a tidy tibble of annual statistics
 #' @export
 #' 
 #' @description Provides wrapper to turn the ANNUAL_STATISTICS table into a tidy data frame
 #' 
 #' @param hydat_path Directory to the hydat database
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.
+#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
+#' to specify \code{PROV_TERR_STATE_LOC}. 
+#' @param PROV_TERR_STATE_LOC Can be any province. See also for argument options.
 #' 
 #' @return A tibble of ANNUAL_STATISTICS
 #' 
 #' @examples 
-#' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001")
+#' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",PROV_TERR_STATE_LOC = "BC")
 #'
-#' ANNUAL_STATISTICS(STATION_NUMBER = c("08LA001","08LG006"))
+#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' @seealso 
+#' Possible arguments for \code{PROV_TERR_STATE_LOC}
+#' \itemize{
+#' \item "QC" 
+#' \item "ME" 
+#' \item "NB" 
+#' \item "PE" 
+#' \item "NS" 
+#' \item "MN" 
+#' \item "ON" 
+#' \item "MI" 
+#' \item "NL" 
+#' \item "MB" 
+#' \item "AB" 
+#' \item "MT" 
+#' \item "SK" 
+#' \item "ND" 
+#' \item "NU" 
+#' \item "NT" 
+#' \item "BC" 
+#' \item "YT" 
+#' \item "AK" 
+#' \item "WA" 
+#' \item "ID"
+#' }
 
 
-
-ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
-  stn = STATION_NUMBER
-  STATION_NUMBER = NULL
+ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC) {
+  
+  if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
+    stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
+  
+  prov = PROV_TERR_STATE_LOC
+  stns = STATION_NUMBER
+  
   
   dbname <- hydat_path
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), dbname)
   
-  if(stn[1] == "ALL"){
-    stn = dplyr::tbl(hydat_con, "STATIONS") %>%
-      filter(PROV_TERR_STATE_LOC == "BC") %>%
+  if(stns[1] == "ALL"){
+    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
+      filter(PROV_TERR_STATE_LOC == prov) %>%
       pull(STATION_NUMBER)
   }
   ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-  if (length(stn) == 1 & stns[1] != "ALL") {
+  if (length(stns) == 1 & stns[1] != "ALL") {
     annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS") %>%
-      dplyr::filter(STATION_NUMBER == stn) %>%
+      dplyr::filter(STATION_NUMBER == stns) %>%
       dplyr::collect() 
+    
+    DBI::dbDisconnect(hydat_con)
+    
     return(annual_statistics)
   } else {
     annual_statistics = tbl(hydat_con, "ANNUAL_STATISTICS") %>%
-      dplyr::filter(STATION_NUMBER %in% stn) %>%
+      dplyr::filter(STATION_NUMBER %in% stns) %>%
       dplyr::collect() 
+    
+    DBI::dbDisconnect(hydat_con)
     
     return(annual_statistics)
   }
   
-  DBI::dbDisconnect(hydat_con)
+
 }
 

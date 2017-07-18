@@ -18,20 +18,53 @@
 #' @description Provides wrapper to turn the DLY_FLOWS table into a tidy tibble
 #' 
 #' @param hydat_path Directory to the hydat database
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.
+#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
+#' to specify \code{PROV_TERR_STATE_LOC}. 
+#' @param PROV_TERR_STATE_LOC Can be any province. See also for argument options.
 #' 
 #' @return A tibble of daily flows
 #' 
 #' @examples 
-#' DLY_FLOWS(STATION_NUMBER = "08LA001")
+#' DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
 #'
-#' DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
+#' DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' 
+#' @seealso 
+#' Possible arguments for \code{PROV_TERR_STATE_LOC}
+#' \itemize{
+#' \item "QC" 
+#' \item "ME" 
+#' \item "NB" 
+#' \item "PE" 
+#' \item "NS" 
+#' \item "MN" 
+#' \item "ON" 
+#' \item "MI" 
+#' \item "NL" 
+#' \item "MB" 
+#' \item "AB" 
+#' \item "MT" 
+#' \item "SK" 
+#' \item "ND" 
+#' \item "NU" 
+#' \item "NT" 
+#' \item "BC" 
+#' \item "YT" 
+#' \item "AK" 
+#' \item "WA" 
+#' \item "ID"
+#' }
 
 
 
-DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
+DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC) {
+  
+  if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
+    stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
+  
+  prov = PROV_TERR_STATE_LOC
   stns = STATION_NUMBER
-  STATION_NUMBER = NULL
+  #STATION_NUMBER = NULL
   
   dbname <- hydat_path
   
@@ -40,7 +73,7 @@ DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
   
   if(stns[1] == "ALL"){
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      filter(PROV_TERR_STATE_LOC == "BC") %>%
+      filter(PROV_TERR_STATE_LOC == prov) %>%
       pull(STATION_NUMBER)
   }
   
@@ -59,6 +92,8 @@ DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
       dplyr::filter(!is.na(Date)) %>%
       tibble::as_tibble()
     
+    DBI::dbDisconnect(hydat_con)
+    
     return(dly_flows)
   } else {
     dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS") %>%
@@ -74,9 +109,10 @@ DLY_FLOWS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER) {
       dplyr::filter(!is.na(Date)) %>%
       tibble::as_tibble()
     
+    DBI::dbDisconnect(hydat_con)
     return(dly_flows)
   }
   
-  DBI::dbDisconnect()
+  
 }
 

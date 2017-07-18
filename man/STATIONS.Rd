@@ -11,14 +11,47 @@ STATIONS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC)
 
 \item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
 to specify \code{PROV_TERR_STATE_LOC}.}
+
+\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
+}
+\value{
+A tibble of stations and associated metadata
 }
 \description{
-Provides wrapper to turn the STATIONS table into a tidy data frame
+Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
+\code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
+where those stations come from.
 }
 \examples{
+#' ## Two stations
+STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), PROV_TERR_STATE_LOC = "BC")
+## ALL stations from PEI
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 
-## One station
-STATIONS(STATION_NUMBER = "08CG001")
-## Two stations
-STATIONS(STATION_NUMBER = c("08CG001", "08CE001"))
+}
+\seealso{
+Possible arguments for \code{PROV_TERR_STATE_LOC}
+\itemize{
+\item "QC" 
+\item "ME" 
+\item "NB" 
+\item "PE" 
+\item "NS" 
+\item "MN" 
+\item "ON" 
+\item "MI" 
+\item "NL" 
+\item "MB" 
+\item "AB" 
+\item "MT" 
+\item "SK" 
+\item "ND" 
+\item "NU" 
+\item "NT" 
+\item "BC" 
+\item "YT" 
+\item "AK" 
+\item "WA" 
+\item "ID"
+}
 }

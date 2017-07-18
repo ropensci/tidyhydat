@@ -2,14 +2,18 @@
 % Please edit documentation in R/ANNUAL_STATISTICS.R
 \name{ANNUAL_STATISTICS}
 \alias{ANNUAL_STATISTICS}
-\title{Get a tidy tibble of daily flows}
+\title{Get a tidy tibble of annual statistics}
 \usage{
-ANNUAL_STATISTICS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER)
+ANNUAL_STATISTICS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER,
+  PROV_TERR_STATE_LOC)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument if all stations in BC are requested.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
+to specify \code{PROV_TERR_STATE_LOC}.}
+
+\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
 }
 \value{
 A tibble of ANNUAL_STATISTICS
@@ -18,7 +22,33 @@ A tibble of ANNUAL_STATISTICS
 Provides wrapper to turn the ANNUAL_STATISTICS table into a tidy data frame
 }
 \examples{
-ANNUAL_STATISTICS(STATION_NUMBER = "08LA001")
+ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",PROV_TERR_STATE_LOC = "BC")
 
-ANNUAL_STATISTICS(STATION_NUMBER = c("08LA001","08LG006"))
+ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+}
+\seealso{
+Possible arguments for \code{PROV_TERR_STATE_LOC}
+\itemize{
+\item "QC" 
+\item "ME" 
+\item "NB" 
+\item "PE" 
+\item "NS" 
+\item "MN" 
+\item "ON" 
+\item "MI" 
+\item "NL" 
+\item "MB" 
+\item "AB" 
+\item "MT" 
+\item "SK" 
+\item "ND" 
+\item "NU" 
+\item "NT" 
+\item "BC" 
+\item "YT" 
+\item "AK" 
+\item "WA" 
+\item "ID"
+}
 }
