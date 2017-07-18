@@ -2,15 +2,15 @@
 % Please edit documentation in R/download.R
 \name{download_realtime}
 \alias{download_realtime}
-\title{Download a tibble of realtime network}
+\title{Download a tibble of realtime network discharge data}
 \usage{
-download_realtime(STATION_NUMBER, PROV_TERR_STATE_LOC = "BC")
+download_realtime(STATION_NUMBER, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. Multiple stations can inputted. See examples}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
+to specify \code{PROV_TERR_STATE_LOC}.}
 
-\item{PROV_TERR_STATE_LOC}{Jurisdiction where the station is located. Functionality is currently limited. Defaults to BC. 
-Other jurisdictions can be used but the STATION_NUMBER argument must be located in that jurisdiction.}
+\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
 }
 \value{
 A tibble of water flow and level values
@@ -31,12 +31,10 @@ Differences between HYDAT::RealTimeData and download_realtime include
 }
 }
 \examples{
-download_realtime(STATION_NUMBER="08MF005")
+download_realtime(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
 
-download_realtime(STATION_NUMBER=c("08MF005", "08NL071"))
-
-# To download from a station in Alberta:
-download_realtime(STATION_NUMBER = "05AA004", PROV_TERR_STATE_LOC = "AB")
+# To download all stations in Prince George:
+download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 
 }
 \seealso{
