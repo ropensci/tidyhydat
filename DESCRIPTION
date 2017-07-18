@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Make HYDAT data tidy
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"))
 Description: This package provides several quick and easy functions to extract data from the HYDAT database and turn that into tidy data. Most functions reflects a table in the HYDAT database. Realtime data acquisition is also provided.
 Depends: R (>= 3.4.0)
