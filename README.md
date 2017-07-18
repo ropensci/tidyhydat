@@ -31,18 +31,46 @@ library(dplyr)
 #>     intersect, setdiff, setequal, union
 ```
 
+HYDAT download
+--------------
+
+To use most of the `tidyhydat` package you will need the most recent version of the HYDAT database. The sqlite3 version can be downloaded here:
+
+-   <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>
+
+You will need to download that file, unzip it and put it somewhere on local storage. The path to the sqlite3 must be specified within each function that uses HYDAT.
+
 Example
 -------
 
-This is a basic example of `tidyhydat` usage
+This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. STATIONS). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments:
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
 #> Applying predicate on the first 100 rows
-#> Warning: 532 failed to parse.
-#> Warning: 426 failed to parse.
-#> Warning: call dbDisconnect() when finished working with a connection
-#> # A tibble: 52,300 x 3
+#> # A tibble: 28,794 x 3
+#> # Groups:   STATION_NUMBER [1]
+#>    STATION_NUMBER  FLOW       Date
+#>             <chr> <dbl>     <date>
+#>  1        08LA001   144 1914-01-01
+#>  2        08LA001   150 1914-02-01
+#>  3        08LA001   166 1914-03-01
+#>  4        08LA001   160 1914-04-01
+#>  5        08LA001   173 1914-05-01
+#>  6        08LA001   411 1914-06-01
+#>  7        08LA001   589 1914-07-01
+#>  8        08LA001   374 1914-08-01
+#>  9        08LA001   199 1914-09-01
+#> 10        08LA001   289 1914-10-01
+#> # ... with 28,784 more rows
+```
+
+If you would like to query the database for two or more stations you would supply this command:
+
+``` r
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC")
+#> Applying predicate on the first 100 rows
+#> # A tibble: 42,522 x 3
 #> # Groups:   STATION_NUMBER [2]
 #>    STATION_NUMBER  FLOW       Date
 #>             <chr> <dbl>     <date>
@@ -56,30 +84,52 @@ DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG006"))
 #>  8        08LA001   374 1914-08-01
 #>  9        08LA001   199 1914-09-01
 #> 10        08LA001   289 1914-10-01
-#> # ... with 52,290 more rows
+#> # ... with 42,512 more rows
+```
+
+If instead you would like to download ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
+
+``` r
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#> Applying predicate on the first 100 rows
+#> # A tibble: 185,763 x 3
+#> # Groups:   STATION_NUMBER [40]
+#>    STATION_NUMBER  FLOW       Date
+#>             <chr> <dbl>     <date>
+#>  1        01CA001    NA 1919-08-01
+#>  2        01CA001 0.042 1919-09-01
+#>  3        01CA001 0.085 1919-10-01
+#>  4        01CA001 0.255 1919-11-01
+#>  5        01CA001 1.130 1919-12-01
+#>  6        01CA001 0.085 1920-01-01
+#>  7        01CA001 0.057 1920-02-01
+#>  8        01CA001 0.085 1920-03-01
+#>  9        01CA001 4.160 1920-04-01
+#> 10        01CA001 2.890 1920-05-01
+#> # ... with 185,753 more rows
 ```
 
 Basin realtime data acquisition usage
 -------------------------------------
 
-Using `download_realtime()` we can easily select specific stations by supplying a station of interest:
+To download realtime data we can use approximately the same conventions discussed above. All non-HYDAT functions are in lower case. Using `download_realtime()` we can easily select specific stations by supplying a station of interest. Note that again, we need to supply both the station and the province that we are interested in:
 
 ``` r
 download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
-#> # A tibble: 8,730 x 10
+#> # A tibble: 8,670 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        08LG006 2017-06-17 08:00:00 2.311        <NA>         <NA>
-#>  2        08LG006 2017-06-17 08:05:00 2.312        <NA>         <NA>
-#>  3        08LG006 2017-06-17 08:10:00 2.312        <NA>         <NA>
-#>  4        08LG006 2017-06-17 08:15:00 2.313        <NA>         <NA>
-#>  5        08LG006 2017-06-17 08:20:00 2.313        <NA>         <NA>
-#>  6        08LG006 2017-06-17 08:25:00 2.313        <NA>         <NA>
-#>  7        08LG006 2017-06-17 08:30:00 2.313        <NA>         <NA>
-#>  8        08LG006 2017-06-17 08:35:00 2.313        <NA>         <NA>
-#>  9        08LG006 2017-06-17 08:40:00 2.313        <NA>         <NA>
-#> 10        08LG006 2017-06-17 08:45:00 2.313        <NA>         <NA>
-#> # ... with 8,720 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        08LG006 2017-06-18 08:00:00 2.192        <NA>         <NA>
+#>  2        08LG006 2017-06-18 08:05:00 2.192        <NA>         <NA>
+#>  3        08LG006 2017-06-18 08:10:00 2.192        <NA>         <NA>
+#>  4        08LG006 2017-06-18 08:15:00 2.192        <NA>         <NA>
+#>  5        08LG006 2017-06-18 08:20:00 2.191        <NA>         <NA>
+#>  6        08LG006 2017-06-18 08:25:00 2.191        <NA>         <NA>
+#>  7        08LG006 2017-06-18 08:30:00 2.191        <NA>         <NA>
+#>  8        08LG006 2017-06-18 08:35:00 2.191        <NA>         <NA>
+#>  9        08LG006 2017-06-18 08:40:00 2.191        <NA>         <NA>
+#> 10        08LG006 2017-06-18 08:45:00 2.191        <NA>         <NA>
+#> # ... with 8,660 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -89,30 +139,21 @@ Downloading by jurisdiction
 We can use the `download_network()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 
 ``` r
-PEI_stns <- download_network(PROV_TERR_STATE_LOC = "PE")$STATION_NUMBER
-PEI_stns
-#> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CC011"
-#> [8] "01CD005"
-```
-
-This produces a vector that can supplied to `download_realtime()` which then downloads all available realtime information for Prince Edward Island. An important consideration is that you need to supply station numbers *and* the province.
-
-``` r
-download_realtime(STATION_NUMBER = PEI_stns, PROV_TERR_STATE_LOC = "PE")
-#> # A tibble: 31,029 x 10
+download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#> # A tibble: 31,019 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        01CD005 2017-06-17 04:00:00 0.602        <NA>         <NA>
-#>  2        01CD005 2017-06-17 04:15:00 0.603        <NA>         <NA>
-#>  3        01CD005 2017-06-17 04:30:00 0.603        <NA>         <NA>
-#>  4        01CD005 2017-06-17 04:45:00 0.603        <NA>         <NA>
-#>  5        01CD005 2017-06-17 05:00:00 0.603        <NA>         <NA>
-#>  6        01CD005 2017-06-17 05:15:00 0.603        <NA>         <NA>
-#>  7        01CD005 2017-06-17 05:30:00 0.602        <NA>         <NA>
-#>  8        01CD005 2017-06-17 05:45:00 0.602        <NA>         <NA>
-#>  9        01CD005 2017-06-17 06:00:00 0.603        <NA>         <NA>
-#> 10        01CD005 2017-06-17 06:15:00 0.603        <NA>         <NA>
-#> # ... with 31,019 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        01CD005 2017-06-18 04:00:00 0.616        <NA>         <NA>
+#>  2        01CD005 2017-06-18 04:15:00 0.617        <NA>         <NA>
+#>  3        01CD005 2017-06-18 04:30:00 0.617        <NA>         <NA>
+#>  4        01CD005 2017-06-18 04:45:00 0.618        <NA>         <NA>
+#>  5        01CD005 2017-06-18 05:00:00 0.618        <NA>         <NA>
+#>  6        01CD005 2017-06-18 05:15:00 0.619        <NA>         <NA>
+#>  7        01CD005 2017-06-18 05:30:00 0.619        <NA>         <NA>
+#>  8        01CD005 2017-06-18 05:45:00 0.619        <NA>         <NA>
+#>  9        01CD005 2017-06-18 06:00:00 0.619        <NA>         <NA>
+#> 10        01CD005 2017-06-18 06:15:00 0.620        <NA>         <NA>
+#> # ... with 31,009 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -151,10 +192,10 @@ The `download_realtime()` functions allows us to directly query the Environment 
 
 ``` r
 devtools::install_github("bcgov/bcmaps")
-install.packages(c("sf","dplyr")
+install.packages("sf")
 ```
 
-And then load these packages. tidyhydat is already loaded above.
+And then load these packages. `tidyhydat` and `dplyr` is already loaded above.
 
 ``` r
 library(bcmaps)
@@ -162,7 +203,6 @@ library(bcmaps)
 #> Warning: package 'sp' was built under R version 3.4.1
 library(sf)
 #> Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3
-library(dplyr)
 ```
 
 Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations in the realtime network (called by `download_network`) are in which hydrologic zones. If we are interested in all realtime stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
@@ -201,7 +241,7 @@ ggplot(qci_realtime, aes(x = date_time, y = FLOW)) +
   geom_line(aes(colour = STATION_NUMBER))
 ```
 
-![](README-unnamed-chunk-12-1.png)
+![](README-unnamed-chunk-13-1.png)
 
 Project Status
 --------------
