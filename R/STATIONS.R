@@ -62,6 +62,8 @@ STATIONS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_
   if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
     stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
   
+  
+  
   ## TODO: Have a conditional that restricts and throw a warning when PROV_TERR_STATE_LOC isn't allowed
   
     prov = PROV_TERR_STATE_LOC
@@ -73,6 +75,13 @@ STATIONS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_
     ## Read on database
 
     hydat_con <- DBI::dbConnect(RSQLite::SQLite(), dbname)
+    
+    ## Out all stations in the network
+    if(stns == "ALL" &&  prov == "ALL"){
+      df = dplyr::tbl(hydat_con, "STATIONS") %>%
+        dplyr::collect()
+      return(df)
+    }
     
     if(stns[1] == "ALL"){
       stns = dplyr::tbl(hydat_con, "STATIONS") %>%
