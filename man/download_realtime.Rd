@@ -7,10 +7,9 @@
 download_realtime(STATION_NUMBER, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
-to specify \code{PROV_TERR_STATE_LOC}.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
-\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
 }
 \value{
 A tibble of water flow and level values
@@ -21,19 +20,19 @@ be used. Currently, if a station does not exist or is not found, no data is retu
 should be specified.
 }
 \note{
-This function is heavily adapted from the RealTimeData function from the HYDAT package. 
+This function is inspired from the RealTimeData function from the HYDAT package. 
 That package can be viewed here: \url{https://github.com/CentreForHydrology/HYDAT}.
 Differences between HYDAT::RealTimeData and download_realtime include
 \itemize{
 \item Column name outputted by download_realtime are identical to corresponding measures in HYDAT
 \item Uses readr::read_csv and outputs a tibble
-\item download_network is approximately 50 times faster than HYDAT::RealTimeNetwork
+\item download_network is approximately 50% times faster than HYDAT::RealTimeNetwork
 }
 }
 \examples{
 download_realtime(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
 
-# To download all stations in Prince George:
+# To download all stations in Prince Edward Island:
 download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 
 }
