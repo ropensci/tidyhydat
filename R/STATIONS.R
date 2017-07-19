@@ -80,6 +80,7 @@ STATIONS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_
     if(stns == "ALL" &&  prov == "ALL"){
       df = dplyr::tbl(hydat_con, "STATIONS") %>%
         dplyr::collect()
+      DBI::dbDisconnect(hydat_con)
       return(df)
     }
     
