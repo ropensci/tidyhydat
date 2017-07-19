@@ -2,17 +2,16 @@
 % Please edit documentation in R/STATIONS.R
 \name{STATIONS}
 \alias{STATIONS}
-\title{Station Hydat wrapper}
+\title{Extract station information from the HYDAT database}
 \usage{
-STATIONS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC)
+STATIONS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database}
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
-to specify \code{PROV_TERR_STATE_LOC}.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
-\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
 }
 \value{
 A tibble of stations and associated metadata
@@ -23,10 +22,11 @@ Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \co
 where those stations come from.
 }
 \examples{
-#' ## Two stations
-STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), PROV_TERR_STATE_LOC = "BC")
+## Two stations
+STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), 
+   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ## ALL stations from PEI
-STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 
 }
 \seealso{

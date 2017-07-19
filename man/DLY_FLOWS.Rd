@@ -2,29 +2,29 @@
 % Please edit documentation in R/DLY_FLOWS.R
 \name{DLY_FLOWS}
 \alias{DLY_FLOWS}
-\title{Get a tidy tibble of daily flows}
+\title{Extract daily flows information from the HYDAT database}
 \usage{
-DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER,
-  PROV_TERR_STATE_LOC)
+DLY_FLOWS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database}
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
-to specify \code{PROV_TERR_STATE_LOC}.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
-\item{PROV_TERR_STATE_LOC}{Can be any province. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
 }
 \value{
 A tibble of daily flows
 }
 \description{
-Provides wrapper to turn the DLY_FLOWS table into a tidy tibble
+Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
+\code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
+where those stations come from.
 }
 \examples{
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 
-DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 
 }
 \seealso{

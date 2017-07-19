@@ -12,10 +12,9 @@
 
 
 
-#' @title Make HYDAT data tidy
+#' @title Extract tidy river data
 #' 
-#' @description This package provides several quick and easy functions to extract data from the HYDAT database and turn that into tidy data. 
-#' Most functions reflects a table in the HYDAT database. Realtime data acquisition is also provided.
+#' @description tidyhydat orovides functions to extract river data from Water Survey of Canada sources and make it tidy.
 #' 
 #' \code{tidyhydat} package
 #' 
@@ -40,7 +39,7 @@
 #'  
 #'  To download the latest version of hydat please follow this link: 
 #'  \itemize{
-#'   \item \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/Hydat_sqlite3_20170418.zip}
+#'   \item \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'   }
 #'   
 NULL

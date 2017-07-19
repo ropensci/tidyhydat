@@ -11,22 +11,23 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Get a tidy tibble of annual statistics
-#' @export
+#' @title Extract daily flows information from the HYDAT database
 #' 
-#' @description Provides wrapper to turn the ANNUAL_STATISTICS table into a tidy data frame
+#' @description Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
+#' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
+#' where those stations come from. 
 #' 
-#' @param hydat_path Directory to the hydat database
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
-#' to specify \code{PROV_TERR_STATE_LOC}. 
-#' @param PROV_TERR_STATE_LOC Can be any province. See also for argument options.
+#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
+#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument.  
+#' @param PROV_TERR_STATE_LOC Province, state or territory. See also for argument options.
 #' 
 #' @return A tibble of ANNUAL_STATISTICS
 #' 
 #' @examples 
-#' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",PROV_TERR_STATE_LOC = "BC")
+#' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
+#'    PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #'
-#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
 #' \itemize{
@@ -52,7 +53,7 @@
 #' \item "WA" 
 #' \item "ID"
 #' }
-
+#' @export
 
 ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC) {
   

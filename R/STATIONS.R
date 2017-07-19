@@ -12,25 +12,24 @@
 
 
 
-#' @title Station Hydat wrapper
-#' @export
+#' @title Extract station information from the HYDAT database 
 #' 
 #' @description Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
 #' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
 #' where those stations come from. 
 #' 
-#' @param hydat_path Directory to the hydat database
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument at which point you need 
-#' to specify \code{PROV_TERR_STATE_LOC}. 
-#' @param PROV_TERR_STATE_LOC Can be any province. See also for argument options.
+#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory 
+#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument. 
+#' @param PROV_TERR_STATE_LOC Province, state or territory. See also for argument options.
 #' 
 #' @return A tibble of stations and associated metadata
 #' 
 #' @examples 
-#' #' ## Two stations
-#' STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), PROV_TERR_STATE_LOC = "BC")
+#' ## Two stations
+#' STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), 
+#'    PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #' ## ALL stations from PEI
-#' STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #' 
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
@@ -57,24 +56,24 @@
 #' \item "WA" 
 #' \item "ID"
 #' }
+#' 
+#' @export
 
-STATIONS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC) {
+STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
   if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
     stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
   
+  if(missing(hydat_path))
+    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
-  
+
   ## TODO: Have a conditional that restricts and throw a warning when PROV_TERR_STATE_LOC isn't allowed
   
     prov = PROV_TERR_STATE_LOC
     stns = STATION_NUMBER
-    #STATION_NUMBER = NULL
     
-    dbname <- hydat_path
-    
-    ## Read on database
-
-    hydat_con <- DBI::dbConnect(RSQLite::SQLite(), dbname)
+    ## Read in database
+    hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
     
     ## Out all stations in the network
     if(stns == "ALL" &&  prov == "ALL"){
