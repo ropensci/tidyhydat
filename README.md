@@ -46,7 +46,7 @@ Example
 This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. STATIONS). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments:
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #> Applying predicate on the first 100 rows
 #> # A tibble: 28,794 x 3
 #> # Groups:   STATION_NUMBER [1]
@@ -68,7 +68,7 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
 If you would like to query the database for two or more stations you would supply this command:
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC")
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #> Applying predicate on the first 100 rows
 #> # A tibble: 42,522 x 3
 #> # Groups:   STATION_NUMBER [2]
@@ -87,10 +87,10 @@ DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC")
 #> # ... with 42,512 more rows
 ```
 
-If instead you would like to download ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
+If instead you would like to extract ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #> Applying predicate on the first 100 rows
 #> # A tibble: 185,763 x 3
 #> # Groups:   STATION_NUMBER [40]
@@ -112,24 +112,24 @@ DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 Basin realtime data acquisition usage
 -------------------------------------
 
-To download realtime data we can use approximately the same conventions discussed above. All non-HYDAT functions are in lower case. Using `download_realtime()` we can easily select specific stations by supplying a station of interest. Note that again, we need to supply both the station and the province that we are interested in:
+To download realtime data we can use approximately the same conventions discussed above. All non-HYDAT functions are in lower case. Using `download_realtime()` we can easily select specific stations by supplying a station of interest. Note that again, we need to supply both the station and the province that we are interested in but do not need to supply the HYDAT location because we accessing this data online:
 
 ``` r
 download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
-#> # A tibble: 8,670 x 10
+#> # A tibble: 8,730 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        08LG006 2017-06-18 08:00:00 2.192        <NA>         <NA>
-#>  2        08LG006 2017-06-18 08:05:00 2.192        <NA>         <NA>
-#>  3        08LG006 2017-06-18 08:10:00 2.192        <NA>         <NA>
-#>  4        08LG006 2017-06-18 08:15:00 2.192        <NA>         <NA>
-#>  5        08LG006 2017-06-18 08:20:00 2.191        <NA>         <NA>
-#>  6        08LG006 2017-06-18 08:25:00 2.191        <NA>         <NA>
-#>  7        08LG006 2017-06-18 08:30:00 2.191        <NA>         <NA>
-#>  8        08LG006 2017-06-18 08:35:00 2.191        <NA>         <NA>
-#>  9        08LG006 2017-06-18 08:40:00 2.191        <NA>         <NA>
-#> 10        08LG006 2017-06-18 08:45:00 2.191        <NA>         <NA>
-#> # ... with 8,660 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        08LG006 2017-06-19 08:00:00 2.153        <NA>         <NA>
+#>  2        08LG006 2017-06-19 08:05:00 2.153        <NA>         <NA>
+#>  3        08LG006 2017-06-19 08:10:00 2.153        <NA>         <NA>
+#>  4        08LG006 2017-06-19 08:15:00 2.154        <NA>         <NA>
+#>  5        08LG006 2017-06-19 08:20:00 2.154        <NA>         <NA>
+#>  6        08LG006 2017-06-19 08:25:00 2.154        <NA>         <NA>
+#>  7        08LG006 2017-06-19 08:30:00 2.154        <NA>         <NA>
+#>  8        08LG006 2017-06-19 08:35:00 2.154        <NA>         <NA>
+#>  9        08LG006 2017-06-19 08:40:00 2.154        <NA>         <NA>
+#> 10        08LG006 2017-06-19 08:45:00 2.154        <NA>         <NA>
+#> # ... with 8,720 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -140,20 +140,20 @@ We can use the `download_network()` functionality to get a vector of stations by
 
 ``` r
 download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
-#> # A tibble: 31,019 x 10
+#> # A tibble: 31,652 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        01CD005 2017-06-18 04:00:00 0.616        <NA>         <NA>
-#>  2        01CD005 2017-06-18 04:15:00 0.617        <NA>         <NA>
-#>  3        01CD005 2017-06-18 04:30:00 0.617        <NA>         <NA>
-#>  4        01CD005 2017-06-18 04:45:00 0.618        <NA>         <NA>
-#>  5        01CD005 2017-06-18 05:00:00 0.618        <NA>         <NA>
-#>  6        01CD005 2017-06-18 05:15:00 0.619        <NA>         <NA>
-#>  7        01CD005 2017-06-18 05:30:00 0.619        <NA>         <NA>
-#>  8        01CD005 2017-06-18 05:45:00 0.619        <NA>         <NA>
-#>  9        01CD005 2017-06-18 06:00:00 0.619        <NA>         <NA>
-#> 10        01CD005 2017-06-18 06:15:00 0.620        <NA>         <NA>
-#> # ... with 31,009 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        01CD005 2017-06-19 04:00:00 0.607        <NA>         <NA>
+#>  2        01CD005 2017-06-19 04:15:00 0.607        <NA>         <NA>
+#>  3        01CD005 2017-06-19 04:30:00 0.608        <NA>         <NA>
+#>  4        01CD005 2017-06-19 04:45:00 0.608        <NA>         <NA>
+#>  5        01CD005 2017-06-19 05:00:00 0.608        <NA>         <NA>
+#>  6        01CD005 2017-06-19 05:15:00 0.608        <NA>         <NA>
+#>  7        01CD005 2017-06-19 05:30:00 0.608        <NA>         <NA>
+#>  8        01CD005 2017-06-19 05:45:00 0.605        <NA>         <NA>
+#>  9        01CD005 2017-06-19 06:00:00 0.604        <NA>         <NA>
+#> 10        01CD005 2017-06-19 06:15:00 0.605        <NA>         <NA>
+#> # ... with 31,642 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -162,7 +162,7 @@ download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 `STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from the HYDAT sqlite3 database. In addition to realtime stations, `STATIONS()` outputs discontinued and non-realtime stations:
 
 ``` r
-STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #> # A tibble: 41 x 15
 #>    STATION_NUMBER                      STATION_NAME PROV_TERR_STATE_LOC
 #>             <chr>                             <chr>               <chr>

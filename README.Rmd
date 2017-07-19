@@ -53,21 +53,21 @@ You will need to download that file, unzip it and put it somewhere on local stor
 This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. STATIONS). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments: 
 
 ```{r example, warning=FALSE}
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC")
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ```
 
 If you would like to query the database for two or more stations you would supply this command:
 ```{r warning=FALSE}
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC")
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ```
 
-If instead you would like to download ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
+If instead you would like to extract ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
 ```{r warning=FALSE}
-DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 ```
 
 ## Basin realtime data acquisition usage
-To download realtime data we can use approximately the same conventions discussed above. All non-HYDAT functions are in lower case. Using `download_realtime()` we can easily select specific stations by supplying a station of interest. Note that again, we need to supply both the station and the province that we are interested in:
+To download realtime data we can use approximately the same conventions discussed above. All non-HYDAT functions are in lower case. Using `download_realtime()` we can easily select specific stations by supplying a station of interest. Note that again, we need to supply both the station and the province that we are interested in but do not need to supply the HYDAT location because we accessing this data online:
 ```{r}
 download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
@@ -83,7 +83,7 @@ download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 ### On the distinction between STATIONS() and download_network()
 `STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from the HYDAT sqlite3 database. In addition to realtime stations, `STATIONS()` outputs discontinued and non-realtime stations:
 ```{r stations}
-STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 ```
 
 This is contrast to `download_network()` which downloads all realtime stations. Though this is not always the case, it is best to use `download_network()` when dealing with realtime data and `STATIONS()` when interacting with HYDAT.  
