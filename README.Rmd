@@ -23,19 +23,21 @@ knitr::opts_chunk$set(
 # tidyhydat
 
 Here is a list of what tidyhydat does:
+
 - Perform a number of common queries on the HYDAT database and returns a tibble
 - Maintains the same column names as the database itself
 - Can select one, two... x stations
+- Can provide a date range
 - Keep functions are low-level as possible. For example, for daily flows, the function should query the database then format the dates and that is it. 
-- An additional auxiliary feature outside the HYDAT database is the downloading of realtime data. This functionality is provided by `download_realtime()` and `download_network()`. 
+- An additional auxiliary feature outside the HYDAT database is the downloading of realtime data. This functionality is provided by `download_realtime()`, `download_network()` and `download_ws`. 
 
 ## Installation
-To install the tidyhydat package, you need to install the devtools package then the tidyhydat package
+To install the `tidyhydat` package, you need to install the `devtools` package then the `tidyhydat` package
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("devtools")
 devtools::install_github("bcgov/tidyhydat")
 ```
-Then to load the package you need to use the library command. When you install tidyhydat, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, you must still load it explicitly.
+Then to load the package you need to use the `library` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 ```{r, eval = TRUE, echo=TRUE}
 library(tidyhydat)
 library(dplyr)
@@ -46,24 +48,47 @@ To use most of the `tidyhydat` package you will need the most recent version of 
 
 - http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
 
-You will need to download that file, unzip it and put it somewhere on local storage. The path to the sqlite3 must be specified within each function that uses HYDAT.  
+You will need to download that file, unzip it and put it somewhere on local storage. The path to the sqlite3 must be specified within each function that uses HYDAT. If the path is very long it may be useful to store it as an object with a smaller name like this:
+```{r eval = FALSE}
+hydat_loc = "A very long path that points to the HYDAT sqlite3 database"
+```
+
+These are the functions that are currently implemented to query HYDAT:
+
+- `STATIONS`
+- `DLY_FLOWS`
+- `DLY_LEVELS`
+- `ANNUAL_STATISTICS`
+
+This is a list of function to be implemented:
+
+- `ANNUAL_INSTANT_PEAKS`
+- `SED_DLY_LOADS`
+- `SED_DLY_SUSCON`
+- `SED_SAMPLES_PSD`
 
 ## Example
 
-This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. STATIONS). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments: 
+This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path the database. Yours will be different. 
 
 ```{r example, warning=FALSE}
 DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ```
 
-If you would like to query the database for two or more stations you would supply this command:
+If you would like to query the database for two or more stations you would combine the `STATION_NUMBER` into a vector using `c()`:
 ```{r warning=FALSE}
 DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ```
 
-If instead you would like to extract ALL stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
+If instead you would like to extract all stations from a jurisdictions, you can use the "ALL" argument for `STATION_NUMBER`:
 ```{r warning=FALSE}
 DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+```
+
+In all the previous examples, no start or end date was specified. In those cases all dates in HYDAT were returned. If, however, we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
+```{r warning=FALSE}
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3",
+          start_date = "1981-01-01", end_date = "1981-12-31")
 ```
 
 ## Basin realtime data acquisition usage
@@ -78,7 +103,29 @@ We can use the `download_network()` functionality to get a vector of stations by
 download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 ```
 
+## Web service realtime data 
+We can also download realtime data using the ECCC web service via the `download_ws()` function. To retrieve data in this manner, we must do a two stage process whereby we get a token from the webservice then use that token to access the web service. Credentials to get the token are also required and can only be requested from ECCC:
 
+```{r, eval=FALSE}
+## Get token
+token_out <- get_ws_token(username = username, password = password)
+
+## Input STATION_NUMBER, parameters and date range
+ws_test <- download_ws_realtime(STATION_NUMBER = "08LG006",
+                                parameters = c(46,5), ## see data("param_id") for a list of codes
+                                start_date = "2017-06-25",
+                                end_date = "2017-07-24",
+                                token = token_out)
+```
+
+## Compare download_ws and download_realtime
+`tidyhydat` provides two methods to download realtime data. `download_realtime()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/csv/BC/). `download_ws()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_ws()` has several difference to `download_realtime()`. These include:
+
+- *Speed*: The `download_ws()` is much faster for larger queries (i.e. many stations). For single station queries `download_realtime()` if more appropriate.
+- *Length of record*: `download_ws()` records goes back further though only two months of data can accessed at one time. 
+- *Type of parameters*: `download_realtime()` are retricted to river flow (either LEVEL and FLOW) data. In contrast `download_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
+- *Date/Time filtering*: `download_ws()` provides argument to select a date range. Selecting a data range with `download_realtime()` is not possible until after all files have been downloaded. 
+- *Accessibility*: `download_realtime()` downloads data that openly accessible. `download_ws()` downloads data using a username and password which must be provided by ECCC. 
 
 ### On the distinction between STATIONS() and download_network()
 `STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from the HYDAT sqlite3 database. In addition to realtime stations, `STATIONS()` outputs discontinued and non-realtime stations:
