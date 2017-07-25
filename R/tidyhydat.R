@@ -14,7 +14,7 @@
 
 #' @title Extract tidy river data
 #' 
-#' @description tidyhydat orovides functions to extract river data from Water Survey of Canada sources and make it tidy.
+#' @description tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
 #' 
 #' \code{tidyhydat} package
 #' 
@@ -25,11 +25,14 @@
 #' @importFrom DBI dbDisconnect
 #' @importFrom RSQLite SQLite
 #' @importFrom tidyr gather
-#' @importFrom lubridate ymd
-#' @importFrom tibble as_tibble
 #' @importFrom tibble tibble
+#' @importFrom lubridate ymd
+#' @importFrom lubridate year
+#' @importFrom lubridate month
+#' @importFrom lubridate day
 #' @import readr
 #' @import dplyr
+#' @import httr
 #' 
 #' @references For more information on tidy data please see
 #' \itemize{
@@ -53,7 +56,7 @@ NULL
     utils::globalVariables(
       # Vars used in Non-Standard Evaluations, declare here to avoid CRAN warnings
       c("PROV_TERR_STATE_LOC", "FULL_MONTH", "MAX", "DAY", "FLOW", "MONTH",
-        "YEAR", "Date","stns", "FLOW",
+        "YEAR", "Date","stns", "FLOW", "LEVEL","PRECISION_CODE",
         "." # piping requires '.' at times
       )
     )

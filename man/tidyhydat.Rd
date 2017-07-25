@@ -6,7 +6,7 @@
 \alias{tidyhydat-package}
 \title{Extract tidy river data}
 \description{
-tidyhydat orovides functions to extract river data from Water Survey of Canada sources and make it tidy.
+tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
 
 \code{tidyhydat} package
 }

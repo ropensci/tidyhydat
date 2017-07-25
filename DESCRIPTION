@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract tidy river data
-Version: 0.0.4
+Version: 0.1.0
 Authors@R: person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"))
 Description: tidyhydat orovides functions to extract river data from Water Survey of Canada sources and make it tidy.
 Depends: R (>= 3.4.0)
@@ -12,8 +12,9 @@ Imports:
     lubridate,
     tidyr,
     DBI,
+    RSQLite,
     tibble,
-    RSQLite
+    httr
 Suggests:
     ggplot2,
     knitr,
