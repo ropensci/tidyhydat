@@ -4,7 +4,8 @@
 \alias{DLY_FLOWS}
 \title{Extract daily flows information from the HYDAT database}
 \usage{
-DLY_FLOWS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC)
+DLY_FLOWS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_date = "ALL",
+  end_date = "ALL")
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.}
@@ -12,6 +13,10 @@ DLY_FLOWS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC)
 \item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
+
+\item{start_date}{Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
+
+\item{end_date}{Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 }
 \value{
 A tibble of daily flows
@@ -22,9 +27,16 @@ Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame. \c
 where those stations come from.
 }
 \examples{
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC",
+          hydat_path = "H:/Hydat.sqlite3")
+DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
+          hydat_path = "H:/Hydat.sqlite3",
+          start_date = "1996-01-01", end_date = "2000-01-01")
 
 DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+
+DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
+          start_date = "1996-01-01", end_date = "2000-01-01")
 
 }
 \seealso{

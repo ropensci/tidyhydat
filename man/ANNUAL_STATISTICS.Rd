@@ -5,14 +5,18 @@
 \title{Extract daily flows information from the HYDAT database}
 \usage{
 ANNUAL_STATISTICS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER,
-  PROV_TERR_STATE_LOC)
+  PROV_TERR_STATE_LOC, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.}
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
 \item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
+
+\item{start_year}{First year of the returned record}
+
+\item{end_year}{Last year of the returned record}
 }
 \value{
 A tibble of ANNUAL_STATISTICS
@@ -24,9 +28,15 @@ where those stations come from.
 }
 \examples{
 ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
-   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+                  PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 
-ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
+                  hydat_path = "H:/Hydat.sqlite3")
+
+ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
+                  hydat_path = "H:/Hydat.sqlite3",
+                  start_year = 1972,
+                  end_year = 1975)
 }
 \seealso{
 Possible arguments for \code{PROV_TERR_STATE_LOC}

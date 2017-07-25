@@ -17,17 +17,23 @@
 #' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
 #' where those stations come from. 
 #' 
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument.  
-#' @param PROV_TERR_STATE_LOC Province, state or territory. See also for argument options.
+#' @inheritParams STATIONS
+#' @param start_year First year of the returned record
+#' @param end_year Last year of the returned record
 #' 
 #' @return A tibble of ANNUAL_STATISTICS
 #' 
 #' @examples 
 #' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
-#'    PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+#'                   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #'
-#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
+#'                   hydat_path = "H:/Hydat.sqlite3")
+#' 
+#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
+#'                   hydat_path = "H:/Hydat.sqlite3",
+#'                   start_year = 1972,
+#'                   end_year = 1975)
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
 #' \itemize{
@@ -55,37 +61,56 @@
 #' }
 #' @export
 
-ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC) {
+ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC, 
+                              start_year = "ALL", end_year = "ALL") {
   
+  ## Argument checks
   if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
     stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
+  
+  #if(missing(start_year) | missing(end_year))
+  #  stop("Both the start date and the end date must be specified")
+  
+  if(start_year == "ALL" & end_year == "ALL"){
+    message("No start and end dates specified. All dates available will be returned.")
+  } 
   
   prov = PROV_TERR_STATE_LOC
   stns = STATION_NUMBER
   
-  
-  dbname <- hydat_path
-  
   ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), dbname)
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   if(stns[1] == "ALL"){
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
       filter(PROV_TERR_STATE_LOC == prov) %>%
       pull(STATION_NUMBER)
   }
+  
   ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
   if (length(stns) == 1 & stns[1] != "ALL") {
-    annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS") %>%
-      dplyr::filter(STATION_NUMBER == stns) %>%
+    annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")
+    
+    ## If a yearis supplied...
+    if(start_year != "ALL" | end_year != "ALL"){
+      annual_statistics = dplyr::filter(annual_statistics, YEAR >= start_year & YEAR <= end_year)
+    }
+    
+    annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER == stns) %>%
       dplyr::collect() 
     
     DBI::dbDisconnect(hydat_con)
     
     return(annual_statistics)
   } else {
-    annual_statistics = tbl(hydat_con, "ANNUAL_STATISTICS") %>%
-      dplyr::filter(STATION_NUMBER %in% stns) %>%
+    annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")
+    
+    ## If a yearis supplied...
+    if(start_year != "ALL" | end_year != "ALL"){
+      annual_statistics = dplyr::filter(annual_statistics, YEAR >= start_year & YEAR <= end_year)
+    }
+    
+    annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER %in% stns) %>%
       dplyr::collect() 
     
     DBI::dbDisconnect(hydat_con)
