@@ -19,3 +19,10 @@
 #'
 #' 
 "param_id" 
+
+#' @title A tibble of BC stations and their names
+#'
+#' @description A shorthand to avoid having always call \code{STATIONS}
+#' 
+#' @source HYDAT
+"bcstations"
