@@ -109,67 +109,40 @@ DLY_FLOWS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_dat
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Get list of stations when stns is ALL
-  if(stns[1] == "ALL"){
+  if (stns[1] == "ALL") {
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(PROV_TERR_STATE_LOC == prov) %>%
       dplyr::pull(STATION_NUMBER)
   }
   
-  ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-  if (length(stns) == 1 & stns[1] != "ALL") {
-    dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS") 
-    dly_flows = dplyr::filter(dly_flows, STATION_NUMBER == stns) 
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_flows = dplyr::filter(dly_flows, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    dly_flows = dplyr::group_by(dly_flows, STATION_NUMBER) 
-    dly_flows = dplyr::select_if(dly_flows, is.numeric)  ## select only numeric data
-    dly_flows = dplyr::select(dly_flows, -(FULL_MONTH:MAX)) %>% ## Only columns we need
-      dplyr::collect() ## the end of the road for sqlite in this pipe
-    dly_flows = tidyr::gather(dly_flows, DAY, FLOW, -(STATION_NUMBER:MONTH)) 
-    dly_flows = dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW","", DAY)))  ##Extract day number
-    dly_flows = dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_flows = dplyr::filter(dly_flows, Date >= start_date & Date <= end_date)
-    }
-    dly_flows = dplyr::select(dly_flows, STATION_NUMBER, FLOW, Date) 
-    dly_flows = dplyr::filter(dly_flows, !is.na(Date)) 
-
-    DBI::dbDisconnect(hydat_con)
-    
-    return(dly_flows)
-  } else {
-    dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS") 
-    dly_flows = dplyr::filter(dly_flows, STATION_NUMBER %in% stns) 
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_flows = dplyr::filter(dly_flows, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    dly_flows = dplyr::group_by(dly_flows, STATION_NUMBER) 
-    dly_flows = dplyr::select_if(dly_flows, is.numeric)  ## select only numeric data
-    dly_flows = dplyr::select(dly_flows, -(FULL_MONTH:MAX)) %>% ## Only columns we need
-      dplyr::collect() ## the end of the road for sqlite in this pipe
-    dly_flows = tidyr::gather(dly_flows, DAY, FLOW, -(STATION_NUMBER:MONTH)) 
-    dly_flows = dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW","", DAY)))  ##Extract day number
-    dly_flows = dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_flows = dplyr::filter(dly_flows, Date >= start_date & Date <= end_date)
-    }
-    dly_flows = dplyr::select(dly_flows, STATION_NUMBER, FLOW, Date) 
-    dly_flows = dplyr::filter(dly_flows, !is.na(Date)) 
-    
-    DBI::dbDisconnect(hydat_con)
-    return(dly_flows)
+  
+  dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS")
+  dly_flows = dplyr::filter(dly_flows, STATION_NUMBER %in% stns)
+  
+  ## If a date is supplied...
+  if (start_date != "ALL" | end_date != "ALL") {
+    dly_flows = dplyr::filter(dly_flows, YEAR >= start_year &
+                                YEAR <= end_year)
   }
+  
+  dly_flows = dplyr::group_by(dly_flows, STATION_NUMBER)
+  dly_flows = dplyr::select_if(dly_flows, is.numeric)  ## select only numeric data
+  dly_flows = dplyr::select(dly_flows,-(FULL_MONTH:MAX)) %>% ## Only columns we need
+    dplyr::collect() ## the end of the road for sqlite in this pipe
+  dly_flows = tidyr::gather(dly_flows, DAY, FLOW,-(STATION_NUMBER:MONTH))
+  dly_flows = dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW", "", DAY)))  ##Extract day number
+  dly_flows = dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
+  
+  ## If a date is supplied...
+  if (start_date != "ALL" | end_date != "ALL") {
+    dly_flows = dplyr::filter(dly_flows, Date >= start_date &
+                                Date <= end_date)
+  }
+  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, FLOW, Date)
+  dly_flows = dplyr::filter(dly_flows,!is.na(Date))
+  
+  DBI::dbDisconnect(hydat_con)
+  return(dly_flows)
   
   
 }

@@ -87,36 +87,20 @@ ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, P
       pull(STATION_NUMBER)
   }
   
-  ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-  if (length(stns) == 1 & stns[1] != "ALL") {
-    annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")
-    
-    ## If a yearis supplied...
-    if(start_year != "ALL" | end_year != "ALL"){
-      annual_statistics = dplyr::filter(annual_statistics, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER == stns) %>%
-      dplyr::collect() 
-    
-    DBI::dbDisconnect(hydat_con)
-    
-    return(annual_statistics)
-  } else {
-    annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")
-    
-    ## If a yearis supplied...
-    if(start_year != "ALL" | end_year != "ALL"){
-      annual_statistics = dplyr::filter(annual_statistics, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER %in% stns) %>%
-      dplyr::collect() 
-    
-    DBI::dbDisconnect(hydat_con)
-    
-    return(annual_statistics)
+ 
+  annual_statistics = dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")
+  
+  ## If a yearis supplied...
+  if(start_year != "ALL" | end_year != "ALL"){
+    annual_statistics = dplyr::filter(annual_statistics, YEAR >= start_year & YEAR <= end_year)
   }
+  
+  annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER %in% stns) %>%
+    dplyr::collect() 
+  
+  DBI::dbDisconnect(hydat_con)
+  
+  return(annual_statistics)
   
 
 }

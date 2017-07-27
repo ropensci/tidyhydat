@@ -89,23 +89,13 @@ STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
         pull(STATION_NUMBER)
     }
     
-    ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-    if (length(stns) == 1 & stns[1] != "ALL") {
-      df <- dplyr::tbl(hydat_con, "STATIONS") %>%
-        filter(PROV_TERR_STATE_LOC == prov) %>%
-        dplyr::filter(STATION_NUMBER == stns) %>%
-        dplyr::collect()
-      DBI::dbDisconnect(hydat_con)
-      
-      return(df)
-    } else{
-      df <- dplyr::tbl(hydat_con, "STATIONS") %>%
-        dplyr::filter(STATION_NUMBER %in% stns) %>%
-        dplyr::collect() 
-      DBI::dbDisconnect(hydat_con)
-      
-      return(df)
-    }
+    df <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::filter(STATION_NUMBER %in% stns) %>%
+      dplyr::collect() 
+    DBI::dbDisconnect(hydat_con)
+    
+    return(df)
+
     
     
     

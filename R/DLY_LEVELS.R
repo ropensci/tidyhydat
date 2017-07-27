@@ -109,67 +109,41 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_da
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Get list of stations when stns is ALL
-  if(stns[1] == "ALL"){
+  if (stns[1] == "ALL") {
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(PROV_TERR_STATE_LOC == prov) %>%
       dplyr::pull(STATION_NUMBER)
   }
   
-  ## Because of a bug in dbplyr: https://github.com/tidyverse/dplyr/issues/2898
-  if (length(stns) == 1 & stns[1] != "ALL") {
-    dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS") 
-    dly_levels = dplyr::filter(dly_levels, STATION_NUMBER == stns) 
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_levels = dplyr::filter(dly_levels, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    dly_levels = dplyr::group_by(dly_levels, STATION_NUMBER) 
-    dly_levels = dplyr::select_if(dly_levels, is.numeric)  ## select only numeric data
-    dly_levels = dplyr::select(dly_levels, -(PRECISION_CODE:MAX)) %>% ## Only columns we need
-      dplyr::collect() ## the end of the road for sqlite in this pipe
-    dly_levels = tidyr::gather(dly_levels, DAY, LEVEL, -(STATION_NUMBER:MONTH)) 
-    dly_levels = dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL","", DAY)))  ##Extract day number
-    dly_levels = dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_levels = dplyr::filter(dly_levels, Date >= start_date & Date <= end_date)
-    }
-    dly_levels = dplyr::select(dly_levels, STATION_NUMBER, LEVEL, Date) 
-    dly_levels = dplyr::filter(dly_levels, !is.na(Date)) 
-    
-    DBI::dbDisconnect(hydat_con)
-    
-    return(dly_levels)
-  } else {
-    dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS") 
-    dly_levels = dplyr::filter(dly_levels, STATION_NUMBER %in% stns) 
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_levels = dplyr::filter(dly_levels, YEAR >= start_year & YEAR <= end_year)
-    }
-    
-    dly_levels = dplyr::group_by(dly_levels, STATION_NUMBER) 
-    dly_levels = dplyr::select_if(dly_levels, is.numeric)  ## select only numeric data
-    dly_levels = dplyr::select(dly_levels, -(PRECISION_CODE:MAX)) %>% ## Only columns we need
-      dplyr::collect() ## the end of the road for sqlite in this pipe
-    dly_levels = tidyr::gather(dly_levels, DAY, LEVEL, -(STATION_NUMBER:MONTH)) 
-    dly_levels = dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL","", DAY)))  ##Extract day number
-    dly_levels = dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
-    
-    ## If a date is supplied...
-    if(start_date != "ALL" | end_date != "ALL"){
-      dly_levels = dplyr::filter(dly_levels, Date >= start_date & Date <= end_date)
-    }
-    dly_levels = dplyr::select(dly_levels, STATION_NUMBER, LEVEL, Date) 
-    dly_levels = dplyr::filter(dly_levels, !is.na(Date)) 
-    
-    DBI::dbDisconnect(hydat_con)
-    return(dly_levels)
+  
+  dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS")
+  dly_levels = dplyr::filter(dly_levels, STATION_NUMBER %in% stns)
+  
+  ## If a date is supplied...
+  if (start_date != "ALL" | end_date != "ALL") {
+    dly_levels = dplyr::filter(dly_levels, YEAR >= start_year &
+                                 YEAR <= end_year)
   }
+  
+  dly_levels = dplyr::group_by(dly_levels, STATION_NUMBER)
+  dly_levels = dplyr::select_if(dly_levels, is.numeric)  ## select only numeric data
+  dly_levels = dplyr::select(dly_levels,-(PRECISION_CODE:MAX)) %>% ## Only columns we need
+    dplyr::collect() ## the end of the road for sqlite in this pipe
+  dly_levels = tidyr::gather(dly_levels, DAY, LEVEL,-(STATION_NUMBER:MONTH))
+  dly_levels = dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL", "", DAY)))  ##Extract day number
+  dly_levels = dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
+  
+  ## If a date is supplied...
+  if (start_date != "ALL" | end_date != "ALL") {
+    dly_levels = dplyr::filter(dly_levels, Date >= start_date &
+                                 Date <= end_date)
+  }
+  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, LEVEL, Date)
+  dly_levels = dplyr::filter(dly_levels,!is.na(Date))
+  
+  DBI::dbDisconnect(hydat_con)
+  return(dly_levels)
+  
   
   
 }
