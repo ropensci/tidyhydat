@@ -6,9 +6,9 @@ output:
 
 ```{r echo=FALSE, results='asis'}
 ## Insert 'inspiration', 'exploration', or 'delivery'
-envreportutils::devex_badge('exploration')
+bcgovr::devex_badge('exploration')
 ```
-
+[![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 

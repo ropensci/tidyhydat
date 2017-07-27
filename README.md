@@ -1,5 +1,7 @@
 <a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a>
 
+[![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 tidyhydat
 =========
@@ -28,6 +30,7 @@ Then to load the package you need to use the `library` function. When you instal
 ``` r
 library(tidyhydat)
 library(dplyr)
+#> Warning: package 'dplyr' was built under R version 3.4.1
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -167,20 +170,20 @@ To download realtime data we can use approximately the same conventions discusse
 
 ``` r
 download_realtime(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
-#> # A tibble: 8,706 x 10
+#> # A tibble: 8,646 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        08LG006 2017-06-25 08:00:00 1.955        <NA>         <NA>
-#>  2        08LG006 2017-06-25 08:05:00 1.955        <NA>         <NA>
-#>  3        08LG006 2017-06-25 08:10:00 1.956        <NA>         <NA>
-#>  4        08LG006 2017-06-25 08:15:00 1.957        <NA>         <NA>
-#>  5        08LG006 2017-06-25 08:20:00 1.957        <NA>         <NA>
-#>  6        08LG006 2017-06-25 08:25:00 1.958        <NA>         <NA>
-#>  7        08LG006 2017-06-25 08:30:00 1.959        <NA>         <NA>
-#>  8        08LG006 2017-06-25 08:35:00 1.959        <NA>         <NA>
-#>  9        08LG006 2017-06-25 08:40:00 1.960        <NA>         <NA>
-#> 10        08LG006 2017-06-25 08:45:00 1.961        <NA>         <NA>
-#> # ... with 8,696 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        08LG006 2017-06-27 08:00:00 1.994        <NA>         <NA>
+#>  2        08LG006 2017-06-27 08:05:00 1.995        <NA>         <NA>
+#>  3        08LG006 2017-06-27 08:10:00 1.995        <NA>         <NA>
+#>  4        08LG006 2017-06-27 08:15:00 1.995        <NA>         <NA>
+#>  5        08LG006 2017-06-27 08:20:00 1.996        <NA>         <NA>
+#>  6        08LG006 2017-06-27 08:25:00 1.996        <NA>         <NA>
+#>  7        08LG006 2017-06-27 08:30:00 1.996        <NA>         <NA>
+#>  8        08LG006 2017-06-27 08:35:00 1.996        <NA>         <NA>
+#>  9        08LG006 2017-06-27 08:40:00 1.997        <NA>         <NA>
+#> 10        08LG006 2017-06-27 08:45:00 1.997        <NA>         <NA>
+#> # ... with 8,636 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -191,20 +194,20 @@ We can use the `download_network()` functionality to get a vector of stations by
 
 ``` r
 download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
-#> # A tibble: 34,004 x 10
+#> # A tibble: 34,669 x 10
 #>    STATION_NUMBER           date_time LEVEL LEVEL_GRADE LEVEL_SYMBOL
 #>             <chr>              <dttm> <dbl>       <chr>        <chr>
-#>  1        01CD005 2017-06-25 04:00:00 0.606        <NA>         <NA>
-#>  2        01CD005 2017-06-25 04:15:00 0.606        <NA>         <NA>
-#>  3        01CD005 2017-06-25 04:30:00 0.609        <NA>         <NA>
-#>  4        01CD005 2017-06-25 04:45:00 0.609        <NA>         <NA>
-#>  5        01CD005 2017-06-25 05:00:00 0.610        <NA>         <NA>
-#>  6        01CD005 2017-06-25 05:15:00 0.610        <NA>         <NA>
-#>  7        01CD005 2017-06-25 05:30:00 0.609        <NA>         <NA>
-#>  8        01CD005 2017-06-25 05:45:00 0.609        <NA>         <NA>
-#>  9        01CD005 2017-06-25 06:00:00 0.609        <NA>         <NA>
-#> 10        01CD005 2017-06-25 06:15:00 0.608        <NA>         <NA>
-#> # ... with 33,994 more rows, and 5 more variables: LEVEL_CODE <int>,
+#>  1        01CD005 2017-06-27 04:00:00 0.582        <NA>         <NA>
+#>  2        01CD005 2017-06-27 04:15:00 0.583        <NA>         <NA>
+#>  3        01CD005 2017-06-27 04:30:00 0.583        <NA>         <NA>
+#>  4        01CD005 2017-06-27 04:45:00 0.583        <NA>         <NA>
+#>  5        01CD005 2017-06-27 05:00:00 0.582        <NA>         <NA>
+#>  6        01CD005 2017-06-27 05:15:00 0.581        <NA>         <NA>
+#>  7        01CD005 2017-06-27 05:30:00 0.580        <NA>         <NA>
+#>  8        01CD005 2017-06-27 05:45:00 0.580        <NA>         <NA>
+#>  9        01CD005 2017-06-27 06:00:00 0.581        <NA>         <NA>
+#> 10        01CD005 2017-06-27 06:15:00 0.583        <NA>         <NA>
+#> # ... with 34,659 more rows, and 5 more variables: LEVEL_CODE <int>,
 #> #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
 ```
 
@@ -281,7 +284,8 @@ library(bcmaps)
 #> Loading required package: sp
 #> Warning: package 'sp' was built under R version 3.4.1
 library(sf)
-#> Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3
+#> Warning: package 'sf' was built under R version 3.4.1
+#> Linking to GEOS 3.6.1, GDAL 2.2.0, proj.4 4.9.3
 ```
 
 Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations in the realtime network (called by `download_network`) are in which hydrologic zones. If we are interested in all realtime stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
