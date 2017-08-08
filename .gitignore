@@ -1,5 +1,4 @@
 .Rproj.user
 .Rhistory
 .RData
-out/
-internal.R
+Thumbs.db

@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Download a tibble of realtime network discharge data
+#' @title Download a tibble of realtime network discharge data from the datamart
 #' 
 #' @description A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
 #' be used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
@@ -35,13 +35,13 @@
 #' }
 #' 
 #' @examples
-#' download_realtime(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
+#' download_realtime2(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
 #' 
 #' # To download all stations in Prince Edward Island:
-#' download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' download_realtime2(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 #' 
 #' @export
-download_realtime <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
+download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   
   if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC)) 
     stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
@@ -183,10 +183,16 @@ download_network <- function(PROV_TERR_STATE_LOC){
 #' @description Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes. 
 #' You can only have 5 tokens out at once. 
 #' 
+#' @details The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console. 
+#' Rather these credentials should be stored in your \code{.Renviron} file. The .Renviron file can edited using \code{file.edit("~/.Renviron")}. 
+#' In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables 
+#' and then call those environmental variables in your R session. See \code{?download_ws} for examples.
 #' 
 #' @return The token as a string that should be supplied the \code{download_ws_realtime} function.
 #' 
 #' @export
+#' 
+
 
 get_ws_token <- function(username, password){
   login <- list(
@@ -209,18 +215,28 @@ get_ws_token <- function(username, password){
   
 }
 
-#' @title Download data from the ECCC web service
+#' @title Download realtime data from the ECCC web service
 #' @description Function to actually retrieve data from ECCC webservice. Before using this function, 
 #' a token from \code{get_ws_token()} is needed.
 #' @param STATION_NUMBER Water Survey of Canada station number.
-#' @param parameters parameter ID
-#' @param start_date Need to be in YYYY-MM-DD
-#' @param end_date Need to be in YYYY-MM-DD
+#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters. 
+#' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date 
+#' @param end_date Need to be in YYYY-MM-DD. Defaults to current date
 #' @param token generate by \code{get_ws_token()}
+#' 
+#' @examples
+#' \donttest{
+#' token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+#' 
+#' ws_08 <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+#'                          parameters = c(47, 5),
+#'                           token = token_out)
+#' }
 #' @export
 
 
-download_ws <- function(STATION_NUMBER, parameters, start_date, end_date, token){
+download_realtime <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,18), 
+                              start_date = Sys.Date()-30, end_date = Sys.Date(), token){
   if(length(STATION_NUMBER) >= 300){
     stop("Only 300 stations are supported for one request. If more stations are required, 
          a separate request should be issued to include the excess stations. This second request will 

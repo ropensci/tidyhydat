@@ -2,40 +2,32 @@
 % Please edit documentation in R/download.R
 \name{download_realtime}
 \alias{download_realtime}
-\title{Download a tibble of realtime network discharge data}
+\title{Download realtime data from the ECCC web service}
 \usage{
-download_realtime(STATION_NUMBER, PROV_TERR_STATE_LOC)
+download_realtime(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
+  18), start_date = Sys.Date() - 30, end_date = Sys.Date(), token)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
+\item{STATION_NUMBER}{Water Survey of Canada station number.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
-}
-\value{
-A tibble of water flow and level values
+\item{parameters}{parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.}
+
+\item{start_date}{Need to be in YYYY-MM-DD. Defaults to 30 days before current date}
+
+\item{end_date}{Need to be in YYYY-MM-DD. Defaults to current date}
+
+\item{token}{generate by \code{get_ws_token()}}
 }
 \description{
-A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
-be used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
-should be specified.
-}
-\note{
-This function is inspired from the RealTimeData function from the HYDAT package. 
-That package can be viewed here: \url{https://github.com/CentreForHydrology/HYDAT}.
-Differences between HYDAT::RealTimeData and download_realtime include
-\itemize{
-\item Column name outputted by download_realtime are identical to corresponding measures in HYDAT
-\item Uses readr::read_csv and outputs a tibble
-\item download_network is approximately 50% times faster than HYDAT::RealTimeNetwork
-}
+Function to actually retrieve data from ECCC webservice. Before using this function, 
+a token from \code{get_ws_token()} is needed.
 }
 \examples{
-download_realtime(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
+\donttest{
+token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
-# To download all stations in Prince Edward Island:
-download_realtime(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
-
+ws_08 <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+                         parameters = c(47, 5),
+                          token = token_out)
 }
-\seealso{
-\code{download_network()}.
 }
