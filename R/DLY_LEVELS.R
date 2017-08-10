@@ -16,15 +16,12 @@
 #' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
 #' where those stations come from. 
 #' 
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument. 
-#' @param PROV_TERR_STATE_LOC Province, state or territory. See also for argument options.
-#' @param start_date Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
-#' @param end_date Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
+#' @inheritParams DLY_FLOWS
 #' 
 #' @return A tibble of daily levels
 #' 
 #' @examples 
+#' \donttest{
 #' DLY_LEVELS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", 
 #'            hydat_path = "H:/Hydat.sqlite3")
 #' DLY_LEVELS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
@@ -35,6 +32,7 @@
 #' 
 #' DLY_LEVELS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
 #'           start_date = "1996-01-01", end_date = "2000-01-01")
+#'           }
 #' 
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
@@ -99,6 +97,10 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_da
     if(is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d")) ){
       stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
     }
+    
+    if(start_date >= end_date){
+      stop("start_date is after end_date. Try swapping values.")
+    }
   }
   
   
@@ -119,31 +121,35 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_da
   dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS")
   dly_levels = dplyr::filter(dly_levels, STATION_NUMBER %in% stns)
   
-  ## If a date is supplied...
+  ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
     dly_levels = dplyr::filter(dly_levels, YEAR >= start_year &
-                                 YEAR <= end_year)
+                                YEAR <= end_year)
   }
   
-  dly_levels = dplyr::group_by(dly_levels, STATION_NUMBER)
-  dly_levels = dplyr::select_if(dly_levels, is.numeric)  ## select only numeric data
-  dly_levels = dplyr::select(dly_levels,-(PRECISION_CODE:MAX)) %>% ## Only columns we need
-    dplyr::collect() ## the end of the road for sqlite in this pipe
-  dly_levels = tidyr::gather(dly_levels, DAY, LEVEL,-(STATION_NUMBER:MONTH))
-  dly_levels = dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL", "", DAY)))  ##Extract day number
-  dly_levels = dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
+  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LEVEL"))
+  dly_levels = dplyr::collect(dly_levels)
+  dly_levels = tidyr::gather(dly_levels, variable, temp,-(STATION_NUMBER:NO_DAYS))
+  dly_levels = dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", variable)))
+  dly_levels = dplyr::mutate(dly_levels, variable = gsub("[0-9]+", "", variable) )
+  dly_levels = tidyr::spread(dly_levels, variable, temp)
+  dly_levels = dplyr::mutate(dly_levels, LEVEL = as.numeric(LEVEL))
+  ## No days that exceed actual number of days in the month
+  dly_levels = dplyr::filter(dly_levels, DAY <= NO_DAYS)
   
-  ## If a date is supplied...
+  ##convert into R date. 
+  dly_levels = dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  
+  
+  ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
     dly_levels = dplyr::filter(dly_levels, Date >= start_date &
-                                 Date <= end_date)
+                                Date <= end_date)
   }
-  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, LEVEL, Date)
-  dly_levels = dplyr::filter(dly_levels,!is.na(Date))
+  dly_levels = dplyr::left_join(dly_levels, DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
+  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, Date, LEVEL, LEVEL_SYMBOL, SYMBOL_EN)
   
   DBI::dbDisconnect(hydat_con)
   return(dly_levels)
-  
   
   
 }

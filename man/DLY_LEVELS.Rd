@@ -8,15 +8,15 @@ DLY_LEVELS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC,
   start_date = "ALL", end_date = "ALL")
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.}
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
 \item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
 
-\item{start_date}{Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
+\item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
-\item{end_date}{Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
+\item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 }
 \value{
 A tibble of daily levels
@@ -27,6 +27,7 @@ Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame. \
 where those stations come from.
 }
 \examples{
+\donttest{
 DLY_LEVELS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", 
            hydat_path = "H:/Hydat.sqlite3")
 DLY_LEVELS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
@@ -37,6 +38,7 @@ DLY_LEVELS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/
 
 DLY_LEVELS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
           start_date = "1996-01-01", end_date = "2000-01-01")
+          }
 
 }
 \seealso{
