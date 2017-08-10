@@ -26,3 +26,10 @@
 #' 
 #' @source HYDAT
 "bcstations"
+
+#' @title DATA_SYMBOLS – DATA SYMBOLS look-up table 
+#' 
+#' @description A look table for data symbols
+#' 
+#' @source HYDAT
+"DATA_SYMBOLS"
