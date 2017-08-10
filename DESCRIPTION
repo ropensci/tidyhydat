@@ -1,8 +1,9 @@
 Package: tidyhydat
-Title: Extract tidy river data
-Version: 0.1.0
-Authors@R: person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"))
-Description: tidyhydat orovides functions to extract river data from Water Survey of Canada sources and make it tidy.
+Title: Extract tidy hydrometric data
+Version: 0.1.1
+Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
+           ), person("Dave", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"))
+Description: tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
 Depends: R (>= 3.4.0)
 License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
@@ -16,10 +17,11 @@ Imports:
     tibble,
     httr
 Suggests:
-    ggplot2,
+    tidyverse,
+    dbplyr,
     knitr,
     rmarkdown,
-    testthat,
-    sf
+    testthat
 LazyData: true
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr

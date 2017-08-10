@@ -6,3 +6,8 @@
 ^CONTRIBUTING.md$
 ^CODE_OF_CONDUCT.md$
 ^\.travis\.yml$
+^\.bib$
+^Thumbs.db$
+^tidyhydat_with_spatial\.Rmd$
+^tidyhydat\.md$
+
