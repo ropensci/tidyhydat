@@ -13,18 +13,17 @@
 #' @title Extract daily flows information from the HYDAT database
 #' 
 #' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
-#' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
+#' \code{PROV_TERR_STATE_LOC} must both be supplied. When \code{STATION_NUMBER="ALL"} the \code{PROV_TERR_STATE_LOC} argument decides 
 #' where those stations come from. 
 #' 
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-#' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument. 
-#' @param PROV_TERR_STATE_LOC Province, state or territory. See also for argument options.
-#' @param start_date Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
-#' @param end_date Leave blank in all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
+#' @inheritParams STATIONS
+#' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
+#' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' 
 #' @return A tibble of daily flows
 #' 
 #' @examples 
+#' \donttest{
 #' DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC",
 #'           hydat_path = "H:/Hydat.sqlite3")
 #' DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
@@ -35,6 +34,7 @@
 #' 
 #' DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
 #'           start_date = "1996-01-01", end_date = "2000-01-01")
+#'           }
 #' 
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
@@ -99,6 +99,10 @@ DLY_FLOWS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_dat
     if(is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d")) ){
       stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
     }
+    
+    if(start_date > end_date){
+      stop("start_date is after end_date. Try swapping values.")
+    }
   }
   
   
@@ -119,27 +123,33 @@ DLY_FLOWS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_dat
   dly_flows = dplyr::tbl(hydat_con, "DLY_FLOWS")
   dly_flows = dplyr::filter(dly_flows, STATION_NUMBER %in% stns)
   
-  ## If a date is supplied...
+  ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
     dly_flows = dplyr::filter(dly_flows, YEAR >= start_year &
                                 YEAR <= end_year)
   }
   
-  dly_flows = dplyr::group_by(dly_flows, STATION_NUMBER)
-  dly_flows = dplyr::select_if(dly_flows, is.numeric)  ## select only numeric data
-  dly_flows = dplyr::select(dly_flows,-(FULL_MONTH:MAX)) %>% ## Only columns we need
-    dplyr::collect() ## the end of the road for sqlite in this pipe
-  dly_flows = tidyr::gather(dly_flows, DAY, FLOW,-(STATION_NUMBER:MONTH))
-  dly_flows = dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW", "", DAY)))  ##Extract day number
-  dly_flows = dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  ##convert into R date. Failure to parse from invalid #days/motnh
+  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("FLOW"))
+  dly_flows = dplyr::collect(dly_flows)
+  dly_flows = tidyr::gather(dly_flows, variable, temp,-(STATION_NUMBER:NO_DAYS))
+  dly_flows = dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable)))
+  dly_flows = dplyr::mutate(dly_flows, variable = gsub("[0-9]+", "", variable) )
+  dly_flows = tidyr::spread(dly_flows, variable, temp)
+  dly_flows = dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
+  ## No days that exceed actual number of days in the month
+  dly_flows = dplyr::filter(dly_flows, DAY <= NO_DAYS)
   
-  ## If a date is supplied...
+  ##convert into R date. 
+  dly_flows = dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))  
+  
+  ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
     dly_flows = dplyr::filter(dly_flows, Date >= start_date &
                                 Date <= end_date)
   }
-  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, FLOW, Date)
-  dly_flows = dplyr::filter(dly_flows,!is.na(Date))
+  dly_flows = dplyr::left_join(dly_flows, DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, Date, FLOW, FLOW_SYMBOL, SYMBOL_EN)
+  dly_flows = dplyr::arrange(dly_flows, Date)
   
   DBI::dbDisconnect(hydat_con)
   return(dly_flows)
