@@ -28,6 +28,12 @@ token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.gete
 
 ws_08 <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
                          parameters = c(47, 5),
-                          token = token_out)
+                         token = token_out)
+                          
+fivedays <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+                         parameters = c(47, 5),
+                         end_date = Sys.Date(), #today
+                         start_date = Sys.Date() - 5, #five days ago
+                         token = token_out)                         
 }
 }

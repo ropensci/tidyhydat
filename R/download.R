@@ -11,10 +11,11 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Download a tibble of realtime network discharge data from the datamart
+#' @title Download a tibble of realtime discharge data from the MSC datamart
 #' 
-#' @description A function to download realtime discharge data from the Water Survey of Canada datamart. Multiple stations will
-#' be used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
+#' @description Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize 
+#' downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution 
+#' daily averages are used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
 #' should be specified. 
 #' 
 #' @param STATION_NUMBER Water Survey of Canada station number. No default. Can also take the "ALL" argument. 
@@ -25,14 +26,6 @@
 #' @seealso 
 #' \code{download_network()}.
 #' 
-#' @note This function is inspired from the RealTimeData function from the HYDAT package. 
-#' That package can be viewed here: \url{https://github.com/CentreForHydrology/HYDAT}.
-#' Differences between HYDAT::RealTimeData and download_realtime include
-#' \itemize{
-#' \item Column name outputted by download_realtime are identical to corresponding measures in HYDAT
-#' \item Uses readr::read_csv and outputs a tibble
-#' \item download_network is approximately 50% times faster than HYDAT::RealTimeNetwork
-#' }
 #' 
 #' @examples
 #' download_realtime2(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
@@ -66,7 +59,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   infile <- sprintf("%s/%s_%s_%s_hydrometric.csv", url, PROV_TERR_STATE_LOC, STATION_NUMBER_SEL, type)
   
   # Define column names as the same as HYDAT
-  colHeaders <- c("STATION_NUMBER", "date_time", "LEVEL", "LEVEL_GRADE", "LEVEL_SYMBOL", "LEVEL_CODE",
+  colHeaders <- c("STATION_NUMBER", "Date", "LEVEL", "LEVEL_GRADE", "LEVEL_SYMBOL", "LEVEL_CODE",
                   "FLOW", "FLOW_GRADE", "FLOW_SYMBOL", "FLOW_CODE")
   
   
@@ -77,7 +70,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
         col_names = colHeaders,
         col_types = readr::cols(
           STATION_NUMBER = readr::col_character(),
-          date_time = readr::col_datetime(),
+          Date = readr::col_datetime(),
           LEVEL = readr::col_double(),
           LEVEL_GRADE = readr::col_character(),
           LEVEL_SYMBOL = readr::col_character(),
@@ -103,7 +96,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
         col_names = colHeaders,
         col_types = readr::cols(
           STATION_NUMBER = readr::col_character(),
-          date_time = readr::col_datetime(),
+          Date = readr::col_datetime(),
           LEVEL = readr::col_double(),
           LEVEL_GRADE = readr::col_character(),
           LEVEL_SYMBOL = readr::col_character(),
@@ -122,7 +115,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
 
 
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-  p <- which(d$date_time < min(h$date_time))
+  p <- which(d$Date < min(h$Date))
   output <- rbind(d[p,], h)
  
 
@@ -230,7 +223,13 @@ get_ws_token <- function(username, password){
 #' 
 #' ws_08 <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
-#'                           token = token_out)
+#'                          token = token_out)
+#'                           
+#' fivedays <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+#'                          parameters = c(47, 5),
+#'                          end_date = Sys.Date(), #today
+#'                          start_date = Sys.Date() - 5, #five days ago
+#'                          token = token_out)                         
 #' }
 #' @export
 
@@ -258,9 +257,6 @@ download_realtime <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,
   
   ## Is it a valid Station name? 
   
-  ## Username and password
-  
-  
   
   ##Build link for GET
   baseurl = "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
@@ -287,13 +283,20 @@ download_realtime <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,
   }
   
   ## Turn it into a tibble
-  csv_df <- httr::content(get_ws)
+  csv_df = httr::content(get_ws)
+  ## Rename columns to reflect tidyhydat naming
+  csv_df = dplyr::rename(csv_df, STATION_NUMBER = ID)
+  csv_df = dplyr::left_join(csv_df, 
+                            select(param_id, -Name_Fr),
+                            by = c("Parameter")
+                            )
+  csv_df = dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit, Grade, Symbol, Approval, Parameter, Code)
   
   ## What stations were missed?
-  differ = setdiff(unique(STATION_NUMBER), unique(csv_df$ID))
+  differ = setdiff(unique(STATION_NUMBER), unique(csv_df$STATION_NUMBER))
   if( length(differ) !=0 ){
     message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-    message("See ?download_ws_realtime for possible reasons why.")
+    message("See ?download_realtime for possible reasons why.")
   } else{
     message("All station successfully retrieved")
   }
