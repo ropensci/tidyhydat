@@ -30,7 +30,7 @@ STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hy
 
 }
 \seealso{
-Possible arguments for \code{PROV_TERR_STATE_LOC}
+\code{PROV_TERR_STATE_LOC} abbreviations
 \itemize{
 \item "QC" 
 \item "ME" 
