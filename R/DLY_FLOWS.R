@@ -152,6 +152,17 @@ DLY_FLOWS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_dat
   dly_flows = dplyr::arrange(dly_flows, Date)
   
   DBI::dbDisconnect(hydat_con)
+  
+  ## What stations were missed?
+  differ = setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
+  if( length(differ) !=0 ){
+    message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
+    message("Check station number typos or if it is a valid station in the network")
+  } else{
+    message("All station successfully retrieved")
+  }
+  
+  
   return(dly_flows)
   
   
