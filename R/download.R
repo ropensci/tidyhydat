@@ -117,6 +117,18 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- which(d$Date < min(h$Date))
   output <- rbind(d[p,], h)
+  
+  ## Now tidy the data
+  ## TODO: Find a better way to do this
+  output = dplyr::rename(output, `LEVEL_` = LEVEL, `FLOW_` = FLOW) 
+  output = tidyr::gather(output, temp, val, -STATION_NUMBER, -Date)
+  output = tidyr::separate(output, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  output = dplyr::mutate(output, key = ifelse(key=="","Value", key)) 
+  output = tidyr::spread(output,key, val) 
+  output = dplyr::rename(output,Code = CODE, Grade = GRADE, Symbol = SYMBOL)
+  output = dplyr::select(output, STATION_NUMBER, Date, Parameter, Value, Grade, Symbol, Code)
+  output = dplyr::arrange(output, Parameter, STATION_NUMBER, Date)
+  output$Value = as.numeric(output$Value)
  
 
   
@@ -129,14 +141,14 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   
   ## Now tidy the data
   ## TODO: Find a better way to do this
-  output_c = dplyr::rename(output_c, `LEVEL_` = LEVEL, `FLOW_` = FLOW) 
-  output_c = tidyr::gather(output_c, temp, val, -STATION_NUMBER, -Date)
-  output_c = tidyr::separate(output_c, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
-  output_c = dplyr::mutate(output_c, key = ifelse(key=="","Value", key)) 
-  output_c = tidyr::spread(output_c,key, val) 
-  output_c = dplyr::rename(output_c,Code = CODE, Grade = GRADE, Symbol = SYMBOL)
-  output_c = dplyr::select(output_c, STATION_NUMBER, Date, Parameter, Value, Grade, Symbol, Code)
-  output_c$Value = as.numeric(output_c$Value)
+  #output_c = dplyr::rename(output_c, `LEVEL_` = LEVEL, `FLOW_` = FLOW) 
+  #output_c = tidyr::gather(output_c, temp, val, -STATION_NUMBER, -Date)
+  #output_c = tidyr::separate(output_c, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  #output_c = dplyr::mutate(output_c, key = ifelse(key=="","Value", key)) 
+  #output_c = tidyr::spread(output_c,key, val) 
+  #output_c = dplyr::rename(output_c,Code = CODE, Grade = GRADE, Symbol = SYMBOL)
+  #output_c = dplyr::select(output_c, STATION_NUMBER, Date, Parameter, Value, Grade, Symbol, Code)
+  #output_c$Value = as.numeric(output_c$Value)
   return(output_c)
 }
 
