@@ -55,11 +55,12 @@ NULL
   if(getRversion() >= "2.15.1")
     utils::globalVariables(
       # Vars used in Non-Standard Evaluations, declare here to avoid CRAN warnings
+      ## This is getting ridiculous
       c("PROV_TERR_STATE_LOC", "FULL_MONTH", "MAX", "DAY", "FLOW", "MONTH",
         "YEAR", "Date","stns", "FLOW", "LEVEL","PRECISION_CODE","NO_DAYS",
         "variable","temp","DATA_SYMBOLS","FLOW_SYMBOL","SYMBOL_EN","Value",
         "Unit","Grade","Symbol","Approval","Parameter","Code","param_id","Name_En",
-        "Name_Fr","LEVEL_SYMBOL","ID",
+        "Name_Fr","LEVEL_SYMBOL","ID","val","key","CODE","GRADE","SYMBOL",
         "." # piping requires '.' at times
       )
     )

@@ -20,6 +20,14 @@
 #' 
 "param_id" 
 
+## To add to list
+#bcstations <- download_network(PROV_TERR_STATE_LOC = "BC") %>%
+#  anti_join(STATIONS(hydat_path = "H:/Hydat.sqlite3", 
+#                     PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "ALL"), 
+#            by = c("STATION_NUMBER", "STATION_NAME")) %>%
+#  select(STATION_NUMBER, STATION_NAME) %>%
+#  bind_rows(bcstations)
+
 #' @title A tibble of BC stations and their names
 #'
 #' @description A shorthand to avoid having always call \code{STATIONS}

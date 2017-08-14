@@ -26,7 +26,6 @@ Then to load the package you need to using the `library` function. When you inst
 ``` r
 library(tidyhydat)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 3.4.1
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -72,6 +71,7 @@ This is a basic example of `tidyhydat` usage. All functions that interact with H
 ``` r
 DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #> No start and end dates specified. All dates available will be returned.
+#> All station successfully retrieved
 #> # A tibble: 28,794 x 5
 #>    STATION_NUMBER       Date  FLOW FLOW_SYMBOL SYMBOL_EN
 #>             <chr>     <date> <dbl>       <chr>     <chr>

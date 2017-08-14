@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat"
 author: "Sam Albers"
-date: "2017-08-10"
+date: "2017-08-14"
 output:
   html_document:
     keep_md: true
@@ -237,21 +237,20 @@ download_realtime2(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
 
 ```
-## # A tibble: 8,694 x 10
-##    STATION_NUMBER                Date LEVEL LEVEL_GRADE LEVEL_SYMBOL
-##             <chr>              <dttm> <dbl>       <chr>        <chr>
-##  1        08LG006 2017-07-11 08:00:00 1.591        <NA>         <NA>
-##  2        08LG006 2017-07-11 08:05:00 1.591        <NA>         <NA>
-##  3        08LG006 2017-07-11 08:10:00 1.590        <NA>         <NA>
-##  4        08LG006 2017-07-11 08:15:00 1.590        <NA>         <NA>
-##  5        08LG006 2017-07-11 08:20:00 1.590        <NA>         <NA>
-##  6        08LG006 2017-07-11 08:25:00 1.590        <NA>         <NA>
-##  7        08LG006 2017-07-11 08:30:00 1.590        <NA>         <NA>
-##  8        08LG006 2017-07-11 08:35:00 1.590        <NA>         <NA>
-##  9        08LG006 2017-07-11 08:40:00 1.590        <NA>         <NA>
-## 10        08LG006 2017-07-11 08:45:00 1.589        <NA>         <NA>
-## # ... with 8,684 more rows, and 5 more variables: LEVEL_CODE <int>,
-## #   FLOW <dbl>, FLOW_GRADE <chr>, FLOW_SYMBOL <chr>, FLOW_CODE <int>
+## # A tibble: 17,364 x 7
+##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
+##  *          <chr>              <dttm>     <chr> <chr> <chr>  <chr> <chr>
+##  1        08LG006 2017-07-15 08:00:00      FLOW    12  <NA>   <NA>     1
+##  2        08LG006 2017-07-15 08:00:00     LEVEL 1.501  <NA>   <NA>     1
+##  3        08LG006 2017-07-15 08:05:00      FLOW    12  <NA>   <NA>     1
+##  4        08LG006 2017-07-15 08:05:00     LEVEL 1.501  <NA>   <NA>     1
+##  5        08LG006 2017-07-15 08:10:00      FLOW    12  <NA>   <NA>     1
+##  6        08LG006 2017-07-15 08:10:00     LEVEL 1.501  <NA>   <NA>     1
+##  7        08LG006 2017-07-15 08:15:00      FLOW    12  <NA>   <NA>     1
+##  8        08LG006 2017-07-15 08:15:00     LEVEL 1.501  <NA>   <NA>     1
+##  9        08LG006 2017-07-15 08:20:00      FLOW    12  <NA>   <NA>     1
+## 10        08LG006 2017-07-15 08:20:00     LEVEL 1.501  <NA>   <NA>     1
+## # ... with 17,354 more rows
 ```
 
 

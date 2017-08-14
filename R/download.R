@@ -121,7 +121,17 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
 
   
   output_c <- dplyr::bind_rows(output, output_c)
-  #closeAllConnections()
+  
+  ## Now tidy the data
+  ## TODO: Find a better way to do this
+  output_c = dplyr::rename(output_c, `LEVEL_` = LEVEL, `FLOW_` = FLOW) 
+  output_c = tidyr::gather(output_c, temp, val, -STATION_NUMBER, -Date)
+  output_c = tidyr::separate(output_c, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  output_c = dplyr::mutate(output_c, key = ifelse(key=="","Value", key)) 
+  output_c = tidyr::spread(output_c,key, val) 
+  output_c = dplyr::rename(output_c,Code = CODE, Grade = GRADE, Symbol = SYMBOL)
+  output_c = dplyr::select(output_c, STATION_NUMBER, Date, Parameter, Value, Grade, Symbol, Code)
+
 
   }
   return(output_c)
