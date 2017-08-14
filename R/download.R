@@ -122,6 +122,11 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   
   output_c <- dplyr::bind_rows(output, output_c)
   
+
+
+
+  }
+  
   ## Now tidy the data
   ## TODO: Find a better way to do this
   output_c = dplyr::rename(output_c, `LEVEL_` = LEVEL, `FLOW_` = FLOW) 
@@ -131,9 +136,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   output_c = tidyr::spread(output_c,key, val) 
   output_c = dplyr::rename(output_c,Code = CODE, Grade = GRADE, Symbol = SYMBOL)
   output_c = dplyr::select(output_c, STATION_NUMBER, Date, Parameter, Value, Grade, Symbol, Code)
-
-
-  }
+  output_c$Value = as.numeric(output_c$Value)
   return(output_c)
 }
 
