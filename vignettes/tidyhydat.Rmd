@@ -117,6 +117,11 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "
           start_date = "1981-01-01", end_date = "1981-12-31")
 ```
 
+You can also make use of auxiliary function in `tidyhdyat` called `search_name` to look for matches when you know part of a name of a station. For example:
+```{r, echo=TRUE}
+search_name("liard")
+```
+
 This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
 
 ## Real-time functions

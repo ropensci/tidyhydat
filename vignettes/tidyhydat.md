@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat"
 author: "Sam Albers"
-date: "2017-08-14"
+date: "2017-08-17"
 output:
   html_document:
     keep_md: true
@@ -148,6 +148,21 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "
           start_date = "1981-01-01", end_date = "1981-12-31")
 ```
 
+You can also make use of auxiliary function in `tidyhdyat` called `search_name` to look for matches when you know part of a name of a station. For example:
+
+```r
+search_name("liard")
+```
+
+```
+## # A tibble: 3 x 2
+##   STATION_NUMBER                    STATION_NAME
+##            <chr>                           <chr>
+## 1        10BE001   LIARD RIVER AT LOWER CROSSING
+## 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
+## 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER
+```
+
 This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
 
 ## Real-time functions
@@ -237,20 +252,20 @@ download_realtime2(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
 
 ```
-## # A tibble: 17,364 x 7
+## # A tibble: 17,292 x 7
 ##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
-##  *          <chr>              <dttm>     <chr> <chr> <chr>  <chr> <chr>
-##  1        08LG006 2017-07-15 08:00:00      FLOW    12  <NA>   <NA>     1
-##  2        08LG006 2017-07-15 08:00:00     LEVEL 1.501  <NA>   <NA>     1
-##  3        08LG006 2017-07-15 08:05:00      FLOW    12  <NA>   <NA>     1
-##  4        08LG006 2017-07-15 08:05:00     LEVEL 1.501  <NA>   <NA>     1
-##  5        08LG006 2017-07-15 08:10:00      FLOW    12  <NA>   <NA>     1
-##  6        08LG006 2017-07-15 08:10:00     LEVEL 1.501  <NA>   <NA>     1
-##  7        08LG006 2017-07-15 08:15:00      FLOW    12  <NA>   <NA>     1
-##  8        08LG006 2017-07-15 08:15:00     LEVEL 1.501  <NA>   <NA>     1
-##  9        08LG006 2017-07-15 08:20:00      FLOW    12  <NA>   <NA>     1
-## 10        08LG006 2017-07-15 08:20:00     LEVEL 1.501  <NA>   <NA>     1
-## # ... with 17,354 more rows
+##             <chr>              <dttm>     <chr> <dbl> <chr>  <chr> <chr>
+##  1        08LG006 2017-07-18 08:00:00      FLOW  10.5  <NA>   <NA>     1
+##  2        08LG006 2017-07-18 08:05:00      FLOW  10.5  <NA>   <NA>     1
+##  3        08LG006 2017-07-18 08:10:00      FLOW  10.5  <NA>   <NA>     1
+##  4        08LG006 2017-07-18 08:15:00      FLOW  10.5  <NA>   <NA>     1
+##  5        08LG006 2017-07-18 08:20:00      FLOW  10.5  <NA>   <NA>     1
+##  6        08LG006 2017-07-18 08:25:00      FLOW  10.5  <NA>   <NA>     1
+##  7        08LG006 2017-07-18 08:30:00      FLOW  10.4  <NA>   <NA>     1
+##  8        08LG006 2017-07-18 08:35:00      FLOW  10.4  <NA>   <NA>     1
+##  9        08LG006 2017-07-18 08:40:00      FLOW  10.4  <NA>   <NA>     1
+## 10        08LG006 2017-07-18 08:45:00      FLOW  10.4  <NA>   <NA>     1
+## # ... with 17,282 more rows
 ```
 
 

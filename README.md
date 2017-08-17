@@ -88,6 +88,18 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "
 #> # ... with 28,784 more rows
 ```
 
+You can also make use of auxiliary function in `tidyhdyat` called `search_name` to look for matches when you know part of a name of a station. For example:
+
+``` r
+search_name("liard")
+#> # A tibble: 3 x 2
+#>   STATION_NUMBER                    STATION_NAME
+#>            <chr>                           <chr>
+#> 1        10BE001   LIARD RIVER AT LOWER CROSSING
+#> 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
+#> 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER
+```
+
 Project Status
 --------------
 
