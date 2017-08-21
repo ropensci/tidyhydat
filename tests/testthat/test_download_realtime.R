@@ -3,7 +3,7 @@ context("Testing download_realtime functions")
 test_that("download_realtime2 returns the correct data header", {
   token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
   
-  ws_test <- download_realtime(STATION_NUMBER = "08MF005",
+  ws_test <- download_realtime_ws(STATION_NUMBER = "08MF005",
                                parameters = c(46), ## Water level and temperature
                                start_date = Sys.Date(),
                                end_date = Sys.Date(),
@@ -17,6 +17,6 @@ test_that("download_realtime2 returns the correct data header", {
 
 test_that("download_realtime2 returns the correct data header", {
   
-  expect_identical(colnames(download_realtime2(STATION_NUMBER = "08MF005", PROV_TERR_STATE_LOC = "BC")), 
+  expect_identical(colnames(download_realtime_dd(STATION_NUMBER = "08MF005", PROV_TERR_STATE_LOC = "BC")), 
                    c("STATION_NUMBER", "Date", "Parameter","Value","Grade", "Symbol","Code"))
 })

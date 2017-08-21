@@ -24,17 +24,17 @@
 #' @return A tibble of water flow and level values
 #' 
 #' @seealso 
-#' \code{download_network()}.
+#' \code{realtime_network_meta()}.
 #' 
 #' 
 #' @examples
-#' download_realtime2(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
+#' download_realtime_dd(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
 #' 
 #' # To download all stations in Prince Edward Island:
-#' download_realtime2(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+#' download_realtime_dd(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
 #' 
 #' @export
-download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
+download_realtime_dd <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   
   if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC)) 
     stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
@@ -44,7 +44,7 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
   prov = PROV_TERR_STATE_LOC
   
   if(STATION_NUMBER[1] == "ALL"){
-    STATION_NUMBER = download_network(PROV_TERR_STATE_LOC = prov)$STATION_NUMBER
+    STATION_NUMBER = realtime_network_meta(PROV_TERR_STATE_LOC = prov)$STATION_NUMBER
   }
   
   output_c <- c()
@@ -163,12 +163,12 @@ download_realtime2 <- function(STATION_NUMBER, PROV_TERR_STATE_LOC) {
 #' 
 #' @examples
 #' ## Available inputs for PROV_TERR_STATE_LOC argument:
-#' unique(download_network(PROV_TERR_STATE_LOC = "ALL")$PROV_TERR_STATE_LOC)
+#' unique(realtime_network_meta(PROV_TERR_STATE_LOC = "ALL")$PROV_TERR_STATE_LOC)
 #' 
-#' download_network(PROV_TERR_STATE_LOC = "BC")
-#' ## Not respecting only BC
+#' realtime_network_meta(PROV_TERR_STATE_LOC = "BC")
 
-download_network <- function(PROV_TERR_STATE_LOC){
+
+realtime_network_meta <- function(PROV_TERR_STATE_LOC){
   prov = PROV_TERR_STATE_LOC
   ## Need to implement a search by station
   #try((if(hasArg(PROV_TERR_STATE_LOC_SEL) == FALSE) stop("Stopppppte")))
@@ -246,11 +246,11 @@ get_ws_token <- function(username, password){
 #' \donttest{
 #' token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 #' 
-#' ws_08 <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+#' ws_08 <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          token = token_out)
 #'                           
-#' fivedays <- download_realtime(STATION_NUMBER = c("08NL071","08NM174"),
+#' fivedays <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          end_date = Sys.Date(), #today
 #'                          start_date = Sys.Date() - 5, #five days ago
@@ -259,7 +259,7 @@ get_ws_token <- function(username, password){
 #' @export
 
 
-download_realtime <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,18), 
+download_realtime_ws <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,18), 
                               start_date = Sys.Date()-30, end_date = Sys.Date(), token){
   if(length(STATION_NUMBER) >= 300){
     stop("Only 300 stations are supported for one request. If more stations are required, 
@@ -321,7 +321,7 @@ download_realtime <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,41,
   differ = setdiff(unique(STATION_NUMBER), unique(csv_df$STATION_NUMBER))
   if( length(differ) !=0 ){
     message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-    message("See ?download_realtime for possible reasons why.")
+    message("See ?download_realtime_ws for possible reasons why.")
   } else{
     message("All station successfully retrieved")
   }
