@@ -11,6 +11,8 @@ Here is a list of what tidyhydat does:
 -   Perform a number of common queries on the HYDAT database and returns tidy data
 -   Keep functions are low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data.
 
+A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.md)
+
 Installation
 ------------
 
@@ -65,8 +67,6 @@ This is a list of function to be implemented:
 
 Usage
 -----
-
-A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.md)
 
 This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path the database. Yours will be different.
 
