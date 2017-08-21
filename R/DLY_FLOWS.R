@@ -148,9 +148,12 @@ DLY_FLOWS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_dat
                                 Date <= end_date)
   }
   dly_flows = dplyr::left_join(dly_flows, DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, Date, FLOW, FLOW_SYMBOL, SYMBOL_EN)
+  dly_flows = dplyr::mutate(dly_flows, Parameter = "FLOW")
+  dly_flows = dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, FLOW, SYMBOL_EN)
   dly_flows = dplyr::arrange(dly_flows, Date)
   
+  colnames(dly_flows) = c("STATION_NUMBER", "Date","Parameter","Value","Symbol")
+
   DBI::dbDisconnect(hydat_con)
   
   ## What stations were missed?

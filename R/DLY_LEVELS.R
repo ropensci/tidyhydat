@@ -146,7 +146,11 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_da
                                 Date <= end_date)
   }
   dly_levels = dplyr::left_join(dly_levels, DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
-  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, Date, LEVEL, LEVEL_SYMBOL, SYMBOL_EN)
+  dly_levels = dplyr::mutate(dly_levels, Parameter = "FLOW")
+  dly_levels = dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, SYMBOL_EN)
+  dly_levels = dplyr::arrange(dly_levels, Date)
+  
+  colnames(dly_levels) = c("STATION_NUMBER", "Date","Parameter","Value","Symbol")
   
   DBI::dbDisconnect(hydat_con)
   
