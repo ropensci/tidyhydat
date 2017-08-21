@@ -1,4 +1,4 @@
-# tidyhydat
+# tidyhydat 0.2.0
 * standardize hydat outputs to consistent tibble structure
 * Adding search_name function
 * final names for download functions

@@ -2,17 +2,17 @@
 title: "tidyhydat"
 author: "Sam Albers"
 date: "`r Sys.Date()`"
-output:
-  md_document:
-    variant: markdown_github
 #output:
-#  html_document:
-#    keep_md: true
+#  md_document:
+#    variant: markdown_github
+output:
+  html_vignette:
+    keep_md: true
 bibliography: bibliography.bib
-#vignette: >
-#  %\VignetteIndexEntry{tidyhydat}
-#  %\VignetteEngine{knitr::rmarkdown}
-#  %\VignetteEncoding{UTF-8}
+vignette: >
+  %\VignetteIndexEntry{tidyhydat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 > "Tidy datasets are all alike but every messy dataset is messy in its own way - "
