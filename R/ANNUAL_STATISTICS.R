@@ -24,6 +24,7 @@
 #' @return A tibble of ANNUAL_STATISTICS
 #' 
 #' @examples 
+#' \donttest{
 #' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
 #'                   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 #'
@@ -34,6 +35,7 @@
 #'                   hydat_path = "H:/Hydat.sqlite3",
 #'                   start_year = 1972,
 #'                   end_year = 1975)
+#'                   }
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
 #' \itemize{
