@@ -1,3 +1,9 @@
+# tidyhydat
+* standardize hydat outputs to consistent tibble structure
+* Adding search_name function
+* final names for download functions
+* functions output an information message about stations retrieved
+
 # tidyhydat 0.1.1
 *Renamed real-time function as download_realtime and download_realtime2
 *Added more units tests
