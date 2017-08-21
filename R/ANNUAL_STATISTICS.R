@@ -35,7 +35,8 @@
 #'                   hydat_path = "H:/Hydat.sqlite3",
 #'                   start_year = 1972,
 #'                   end_year = 1975)
-#'                   }
+#'}
+#'                   
 #' @seealso 
 #' Possible arguments for \code{PROV_TERR_STATE_LOC}
 #' \itemize{
