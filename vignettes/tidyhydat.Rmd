@@ -3,30 +3,32 @@ title: "tidyhydat"
 author: "Sam Albers"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    keep_md: true
+  md_document:
+    variant: markdown_github
+#output:
+#  html_document:
+#    keep_md: true
 bibliography: bibliography.bib
-vignette: >
-  %\VignetteIndexEntry{tidyhydat}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+#vignette: >
+#  %\VignetteIndexEntry{tidyhydat}
+#  %\VignetteEngine{knitr::rmarkdown}
+#  %\VignetteEncoding{UTF-8}
 ---
 
 > "Tidy datasets are all alike but every messy dataset is messy in its own way - "
 @wickham2014tidy
 
 ```{r options, include=FALSE}
-# Copyright 2017 Province of British Columbia
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-# http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and limitations under the License.
+#render_keep_md = function(vignette_name){
+#  rmarkdown::render(paste0("./vignettes/",vignette_name, ".Rmd"), clean=FALSE)
+#  files_to_remove = paste0("./vignettes/",vignette_name,c(".html",".md",".utf8.md"))
+#  lapply(files_to_remove, file.remove)
+#  
+#  file.rename(from = paste0("./vignettes/",vignette_name, ".knit.md"), to = paste0("./vignettes/",vignette_name, ".md"))
+#}
+#
+#
+#render_keep_md("tidyhydat")
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, messages = FALSE, fig.width = 8, fig.height = 12)
 ```
@@ -127,24 +129,24 @@ This generally outlines the usage of the HYDAT functions within `tidyhydat`.
 ## Real-time functions
 In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. `tidyhydat` provides three functions to access these data sources. Remember these are **unapproved** data and should treated as such:
 
-- `download_network()`
-- `download_realtime()`
+- `realtime_network_meta()`
+- `download_realtime_ws()`
 - `download_reatime2()`
 
-Not every stations is currently part of the real-time network. Therefore `download_network()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `download_network()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
+Not every stations is currently part of the real-time network. Therefore `realtime_network_meta()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_network_meta()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 ```{r, eval=FALSE}
-download_network(PROV_TERR_STATE_LOC = "PE")
+realtime_network_meta(PROV_TERR_STATE_LOC = "PE")
 ```
 
-`STATIONS()` and `download_network()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from HYDAT. In addition to real-time stations, `STATIONS()` outputs discontinued and non-real-time stations:
+`STATIONS()` and `realtime_network_meta()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from HYDAT. In addition to real-time stations, `STATIONS()` outputs discontinued and non-real-time stations:
 ```{r stations, eval=FALSE}
 STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 ```
 
-This is contrast to `download_network()` which downloads all real-time stations. Though this is not always the case, it is best to use `download_network()` when dealing with real-time data and `STATIONS()` when interacting with HYDAT. It is also appropriate to filter the output of `STATIONS()` by the `REAL_TIME` column.   
+This is contrast to `realtime_network_meta()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_network_meta()` when dealing with real-time data and `STATIONS()` when interacting with HYDAT. It is also appropriate to filter the output of `STATIONS()` by the `REAL_TIME` column.   
 
-## Water Office web service - `download_realtime()` 
-The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The `download_realtime()` function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the `parameters` argument as an integer code. The corresponding parameters can be examined using the internal `param_id` dataset:
+## Water Office web service - `download_realtime_ws()` 
+The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The `download_realtime_ws()` function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the `parameters` argument as an integer code. The corresponding parameters can be examined using the internal `param_id` dataset:
 ```{r, echo=TRUE, eval=TRUE}
 data("param_id")
 param_id
@@ -156,13 +158,13 @@ The `parameters` argument will take any value in the `param_id$Parameter` column
 token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
 ## Input STATION_NUMBER, parameters and date range
-ws_test <- download_realtime(STATION_NUMBER = "08LG006",
+ws_test <- download_realtime_ws(STATION_NUMBER = "08LG006",
                                 parameters = c(46,5), ## Water level and temperature
                                 start_date = "2017-06-25",
                                 end_date = "2017-07-24",
                                 token = token_out)
 ``` 
-Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `download_realtime()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
+Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `download_realtime_ws()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
 
 ### Managing your credentials in R
 Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren't shared widely. Please read [this article](http://httr.r-lib.org/articles/secrets.html) to familiarize yourself with credential management. [This section](http://httr.r-lib.org/articles/secrets.html#environment-variables) is summarized here specific to `tidyhydat`. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important value are stored the `.Renviron` file. Run the following in a console:
@@ -181,21 +183,21 @@ WS_PWD = "here is the password that ECCC gave you"
 
 Now these values can be accessed within an R session without giving away your secrets (Using `Sys.getenv()`). Just remember to call them directly and don't assign them to a variable. 
 
-## MSC datamart - `download_realtime2()`
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime2()` we can easily select specific stations by supplying a station of interest. Note that in contrast to `download_realtime()` but similar to `DLY_FLOWS()`, we need to supply both the station and the province that we are interested in:
+## MSC datamart - `download_realtime_dd()`
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest. Note that in contrast to `download_realtime_ws()` but similar to `DLY_FLOWS()`, we need to supply both the station and the province that we are interested in:
 ```{r}
-download_realtime2(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
+download_realtime_dd(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
 
 
-## Compare `download_realtime` and `download_realtime2`
-`tidyhydat` provides two methods to download real-time data. `download_realtime()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_realtime2()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `download_realtime()` has several difference to `download_realtime2()`. These include:
+## Compare `download_realtime_ws` and `download_realtime_dd`
+`tidyhydat` provides two methods to download real-time data. `download_realtime_ws()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `download_realtime_ws()` has several difference to `download_realtime_dd()`. These include:
 
-- *Speed*: `download_realtime()` is much faster for larger queries (i.e. many stations). For single station queries `download_realtime2()` if more appropriate.
-- *Length of record*: `download_realtime()` records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.   
-- *Type of parameters*: `download_realtime2()` is restricted to river flow (either LEVEL and FLOW) data. In contrast `download_realtime()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
-- *Date/Time filtering*: `download_realtime()` provides argument to select a date range. Selecting a data range with `download_realtime2()` is not possible until after all files have been downloaded. 
-- *Accessibility*: `download_realtime2()` downloads data that openly accessible. `download_realtime()` downloads data using a username and password which must be provided by ECCC. 
+- *Speed*: `download_realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries `download_realtime_dd()` if more appropriate.
+- *Length of record*: `download_realtime_ws()` records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.   
+- *Type of parameters*: `download_realtime_dd()` is restricted to river flow (either LEVEL and FLOW) data. In contrast `download_realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
+- *Date/Time filtering*: `download_realtime_ws()` provides argument to select a date range. Selecting a data range with `download_realtime_dd()` is not possible until after all files have been downloaded. 
+- *Accessibility*: `download_realtime_dd()` downloads data that openly accessible. `download_realtime_ws()` downloads data using a username and password which must be provided by ECCC. 
 
 # License
 

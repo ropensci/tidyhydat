@@ -73,18 +73,18 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
 #> # A tibble: 28,794 x 5
-#>    STATION_NUMBER       Date  FLOW FLOW_SYMBOL SYMBOL_EN
-#>             <chr>     <date> <dbl>       <chr>     <chr>
-#>  1        08LA001 1914-01-01   144        <NA>      <NA>
-#>  2        08LA001 1914-01-02   144        <NA>      <NA>
-#>  3        08LA001 1914-01-03   144        <NA>      <NA>
-#>  4        08LA001 1914-01-04   140        <NA>      <NA>
-#>  5        08LA001 1914-01-05   140        <NA>      <NA>
-#>  6        08LA001 1914-01-06   136        <NA>      <NA>
-#>  7        08LA001 1914-01-07   136        <NA>      <NA>
-#>  8        08LA001 1914-01-08   140        <NA>      <NA>
-#>  9        08LA001 1914-01-09   140        <NA>      <NA>
-#> 10        08LA001 1914-01-10   140        <NA>      <NA>
+#>    STATION_NUMBER       Date Parameter Value Symbol
+#>             <chr>     <date>     <chr> <dbl>  <chr>
+#>  1        08LA001 1914-01-01      FLOW   144   <NA>
+#>  2        08LA001 1914-01-02      FLOW   144   <NA>
+#>  3        08LA001 1914-01-03      FLOW   144   <NA>
+#>  4        08LA001 1914-01-04      FLOW   140   <NA>
+#>  5        08LA001 1914-01-05      FLOW   140   <NA>
+#>  6        08LA001 1914-01-06      FLOW   136   <NA>
+#>  7        08LA001 1914-01-07      FLOW   136   <NA>
+#>  8        08LA001 1914-01-08      FLOW   140   <NA>
+#>  9        08LA001 1914-01-09      FLOW   140   <NA>
+#> 10        08LA001 1914-01-10      FLOW   140   <NA>
 #> # ... with 28,784 more rows
 ```
 
