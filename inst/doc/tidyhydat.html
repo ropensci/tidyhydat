@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Sam Albers" />
+
+<meta name="date" content="2017-08-21" />
+
+<title>tidyhydat</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">tidyhydat</h1>
+<h4 class="author"><em>Sam Albers</em></h4>
+<h4 class="date"><em>2017-08-21</em></h4>
+
+
+
+<blockquote>
+<p>“Tidy datasets are all alike but every messy dataset is messy in its own way -” <span class="citation">Wickham (2014)</span></p>
+</blockquote>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data product of a national integrated hydrometric network. Historical data are stored in the <a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/">HYDAT database</a>. Real-time data are provided by ECCC through two sources. The first real-time data option is a login only web service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the available of hydrometric data is more like 2.5 hours. The second is the <a href="http://dd.weather.gc.ca/hydrometric/">datamart</a> which is an open source organized as a directory tree structure by province. The objective of this document is the outline the usage of <code>tidyhydat</code>, an R package that makes ECCC hydrometric data <em>tidy</em>. The primary goal of <code>tidyhydat</code> is to provide a common API and data structure for ECCC data sources using a clean, easy to use interface that use tidy data principles developed by <span class="citation">Wickham (2014)</span> within the R project <span class="citation">(R Core Team 2017)</span>.</p>
+<div id="why-use-r" class="section level2">
+<h2>Why use R?</h2>
+<p>There are many statistical computing projects that offer great functionality for users. For <code>tidyhydat</code> we have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. There are several commonly cited reasons to use R:</p>
+<ul>
+<li>R is and always will be free to use and modify</li>
+<li>R is flexible and can be easily adapted to a wide range of problems</li>
+<li>R is well established and well used.</li>
+<li>R has a friendly community which is an important infrastructure element of any open source project.</li>
+</ul>
+</div>
+<div id="what-is-tidy-data" class="section level2">
+<h2>What is tidy data?</h2>
+<p>Embedded within <code>tidyhydat</code> is the principle of <em>tidy data</em>. <span class="citation">Wickham (2014)</span> defines tidy data by three principles:</p>
+<ul>
+<li>Each variable variable forms a column</li>
+<li>Each observation forms a row</li>
+<li>Each type of observational unit forms a table</li>
+</ul>
+<p>It is illustrative here to provide an example of the types of data <em>tidying</em> processes that <code>tidyhydat</code> does for you automatically. A basic SQL query to the <code>DLY_FLOWS</code> table in the HYDAT database returns data that looks like this:</p>
+<pre><code>## # Source:   lazy query [?? x 73]
+## # Database: sqlite 3.19.3 [H:\Hydat.sqlite3]
+##    STATION_NUMBER  YEAR MONTH FULL_MONTH NO_DAYS MONTHLY_MEAN
+##             &lt;chr&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;   &lt;int&gt;        &lt;dbl&gt;
+##  1        08MF005  1912     3          1      31          485
+##  2        08MF005  1912     4          1      30         1150
+##  3        08MF005  1912     5          1      31         4990
+##  4        08MF005  1912     6          1      30         6130
+##  5        08MF005  1912     7          1      31         4780
+##  6        08MF005  1912     8          1      31         3960
+##  7        08MF005  1912     9          1      30         2160
+##  8        08MF005  1912    10          1      31         1530
+##  9        08MF005  1912    11          1      30         1060
+## 10        08MF005  1912    12          1      31          761
+## # ... with more rows, and 67 more variables: MONTHLY_TOTAL &lt;dbl&gt;,
+## #   FIRST_DAY_MIN &lt;int&gt;, MIN &lt;dbl&gt;, FIRST_DAY_MAX &lt;int&gt;, MAX &lt;dbl&gt;,
+## #   FLOW1 &lt;dbl&gt;, FLOW_SYMBOL1 &lt;chr&gt;, FLOW2 &lt;dbl&gt;, FLOW_SYMBOL2 &lt;chr&gt;,
+## #   FLOW3 &lt;dbl&gt;, FLOW_SYMBOL3 &lt;chr&gt;, FLOW4 &lt;dbl&gt;, FLOW_SYMBOL4 &lt;chr&gt;,
+## #   FLOW5 &lt;dbl&gt;, FLOW_SYMBOL5 &lt;chr&gt;, FLOW6 &lt;dbl&gt;, FLOW_SYMBOL6 &lt;chr&gt;,
+## #   FLOW7 &lt;dbl&gt;, FLOW_SYMBOL7 &lt;chr&gt;, FLOW8 &lt;dbl&gt;, FLOW_SYMBOL8 &lt;chr&gt;,
+## #   FLOW9 &lt;dbl&gt;, FLOW_SYMBOL9 &lt;chr&gt;, FLOW10 &lt;dbl&gt;, FLOW_SYMBOL10 &lt;chr&gt;,
+## #   FLOW11 &lt;dbl&gt;, FLOW_SYMBOL11 &lt;chr&gt;, FLOW12 &lt;dbl&gt;, FLOW_SYMBOL12 &lt;chr&gt;,
+## #   FLOW13 &lt;dbl&gt;, FLOW_SYMBOL13 &lt;chr&gt;, FLOW14 &lt;dbl&gt;, FLOW_SYMBOL14 &lt;chr&gt;,
+## #   FLOW15 &lt;dbl&gt;, FLOW_SYMBOL15 &lt;chr&gt;, FLOW16 &lt;dbl&gt;, FLOW_SYMBOL16 &lt;chr&gt;,
+## #   FLOW17 &lt;dbl&gt;, FLOW_SYMBOL17 &lt;chr&gt;, FLOW18 &lt;dbl&gt;, FLOW_SYMBOL18 &lt;chr&gt;,
+## #   FLOW19 &lt;dbl&gt;, FLOW_SYMBOL19 &lt;chr&gt;, FLOW20 &lt;dbl&gt;, FLOW_SYMBOL20 &lt;chr&gt;,
+## #   FLOW21 &lt;dbl&gt;, FLOW_SYMBOL21 &lt;chr&gt;, FLOW22 &lt;dbl&gt;, FLOW_SYMBOL22 &lt;chr&gt;,
+## #   FLOW23 &lt;dbl&gt;, FLOW_SYMBOL23 &lt;chr&gt;, FLOW24 &lt;dbl&gt;, FLOW_SYMBOL24 &lt;chr&gt;,
+## #   FLOW25 &lt;dbl&gt;, FLOW_SYMBOL25 &lt;chr&gt;, FLOW26 &lt;dbl&gt;, FLOW_SYMBOL26 &lt;chr&gt;,
+## #   FLOW27 &lt;dbl&gt;, FLOW_SYMBOL27 &lt;chr&gt;, FLOW28 &lt;dbl&gt;, FLOW_SYMBOL28 &lt;chr&gt;,
+## #   FLOW29 &lt;dbl&gt;, FLOW_SYMBOL29 &lt;chr&gt;, FLOW30 &lt;dbl&gt;, FLOW_SYMBOL30 &lt;chr&gt;,
+## #   FLOW31 &lt;dbl&gt;, FLOW_SYMBOL31 &lt;chr&gt;</code></pre>
+<p>This data structure clearly violates the principles of tidy data - this is messy data. For example, column header (e.g. <code>FLOW1</code>) contains the day number - a value. HYDAT is structured like this for very reasonable historical reasons. It does, however, significantly limit the analyst’s ability to efficiently extract hydrometric data. For example, given the current data structure, it is not possible to only extract from the 15th of one month to the 15th of the next. Rather a query would need to be made on all data from the relevant months and then further processing would need to occur.</p>
+<p><code>tidyhydat</code> makes this process simpler. If we want the same data as the example above, we can use the <code>DLY_FLOWS()</code> function in <code>tidyhydat</code> to query the same data in HYDAT but return a much tidier data structure. It is now very simple to extract data between say March 15, 1992 and April 15, 1992. We just need to supply these arguments to <code>DLY_FLOWS()</code> after loading the package itself:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyhydat)
+<span class="kw">DLY_FLOWS</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>,
+          <span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08MF005&quot;</span>,
+          <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>,
+          <span class="dt">start_date =</span> <span class="st">&quot;1992-03-15&quot;</span>,
+          <span class="dt">end_date =</span> <span class="st">&quot;1992-04-15&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 32 x 5
+##    STATION_NUMBER       Date Parameter Value Symbol
+##             &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt;  &lt;chr&gt;
+##  1        08MF005 1992-03-15      FLOW  1630   &lt;NA&gt;
+##  2        08MF005 1992-03-16      FLOW  1730   &lt;NA&gt;
+##  3        08MF005 1992-03-17      FLOW  1900   &lt;NA&gt;
+##  4        08MF005 1992-03-18      FLOW  2040   &lt;NA&gt;
+##  5        08MF005 1992-03-19      FLOW  2140   &lt;NA&gt;
+##  6        08MF005 1992-03-20      FLOW  2180   &lt;NA&gt;
+##  7        08MF005 1992-03-21      FLOW  2170   &lt;NA&gt;
+##  8        08MF005 1992-03-22      FLOW  2150   &lt;NA&gt;
+##  9        08MF005 1992-03-23      FLOW  2130   &lt;NA&gt;
+## 10        08MF005 1992-03-24      FLOW  2120   &lt;NA&gt;
+## # ... with 22 more rows</code></pre>
+<p>As you can see, this is much tidier data and is much easier to work with. In addition to these tidy principles, specific to <code>tidyhydat</code> we can also define that <em>for a common data structure, variables should be referred to by a common name</em>. For example, hydrometric stations are given a unique 7 digit identifier that contains important watershed information. This identifier is variously referred to as <code>STATION_NUMBER</code> or <code>ID</code> depending on the ECCC data source. To tidy this hydrometric data, we have renamed where necessary each instance of the unique identifier as <code>STATION_NUMBER</code>.</p>
+</div>
+</div>
+<div id="tidyhydat-package" class="section level1">
+<h1><code>tidyhydat</code> package</h1>
+<p>There have also been recent calls to use R more broadly in the field of hydrology <span class="citation">(Moore and Hutchinson 2017)</span>. The <code>tidyhydat</code> package is an effort to push this call forward by being the standard package by which hydrologists and other users interact with WSC data in R. Functions in <code>tidyhydat</code> can be split into two categories: functions that directly access HYDAT and functions that access real-time data ultimately destined for HYDAT. We’ve already seen some usage of <code>tidyhydat</code> when we illustrated the principles of tidy data above. In this section, we will outline a few key options that will hopefully make <code>tidyhydat</code> useful.</p>
+<div id="hydat-functions" class="section level2">
+<h2>HYDAT functions</h2>
+<p>All functions that interact with HYDAT are capitalized (e.g. <code>STATIONS</code>). To use any of these functions you will need a locally stored copy of the HYDAT database which can be downloaded here:</p>
+<ul>
+<li><a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/" class="uri">http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/</a></li>
+</ul>
+<p>These are the HYDAT functions that are currently implemented:</p>
+<ul>
+<li><code>STATIONS</code></li>
+<li><code>DLY_FLOWS</code></li>
+<li><code>DLY_LEVELS</code></li>
+<li><code>ANNUAL_STATISTICS</code></li>
+</ul>
+<p>These functions follow a common argument structure which can be illustrated with the <code>DLY_FLOWS()</code> function. For these functions, you must supply both the <code>STATION_NUMBER</code> and the <code>PROV_TERR_STATE_LOC</code> arguments. The <code>hydat_path</code> argument is supplied here as a local path to the database. Yours will be different:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>If you would like to query the database for two or more stations you would combine the <code>STATION_NUMBER</code> into a vector using <code>c()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="kw">c</span>(<span class="st">&quot;08LA001&quot;</span>,<span class="st">&quot;08NL071&quot;</span>), <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>If instead you would like to extract flows for all stations from a jurisdiction, you can use the “ALL” argument for <code>STATION_NUMBER</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;ALL&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>We saw above that if we were only interested in a subset of dates we could use the <code>start_date</code> and <code>end_date</code> arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number “08LA001” for 1981, you would specify all days in 1981 :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>,
+          <span class="dt">start_date =</span> <span class="st">&quot;1981-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;1981-12-31&quot;</span>)</code></pre></div>
+<p>You can also make use of auxiliary function in <code>tidyhdyat</code> called <code>search_name</code> to look for matches when you know part of a name of a station. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search_name</span>(<span class="st">&quot;liard&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 3 x 2
+##   STATION_NUMBER                    STATION_NAME
+##            &lt;chr&gt;                           &lt;chr&gt;
+## 1        10BE001   LIARD RIVER AT LOWER CROSSING
+## 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
+## 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER</code></pre>
+<p>This generally outlines the usage of the HYDAT functions within <code>tidyhydat</code>.</p>
+</div>
+<div id="real-time-functions" class="section level2">
+<h2>Real-time functions</h2>
+<p>In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. <code>tidyhydat</code> provides three functions to access these data sources. Remember these are <strong>unapproved</strong> data and should treated as such:</p>
+<ul>
+<li><code>realtime_network_meta()</code></li>
+<li><code>download_realtime_ws()</code></li>
+<li><code>download_reatime2()</code></li>
+</ul>
+<p>Not every stations is currently part of the real-time network. Therefore <code>realtime_network_meta()</code> points to a (hopefully) updated ECCC data file of active real-time stations. We can use the <code>realtime_network_meta()</code> functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">realtime_network_meta</span>(<span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>)</code></pre></div>
+<p><code>STATIONS()</code> and <code>realtime_network_meta()</code> perform similar tasks albeit on different data sources. <code>STATIONS()</code> extracts directly from HYDAT. In addition to real-time stations, <code>STATIONS()</code> outputs discontinued and non-real-time stations:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">STATIONS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;ALL&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>This is contrast to <code>realtime_network_meta()</code> which downloads all real-time stations. Though this is not always the case, it is best to use <code>realtime_network_meta()</code> when dealing with real-time data and <code>STATIONS()</code> when interacting with HYDAT. It is also appropriate to filter the output of <code>STATIONS()</code> by the <code>REAL_TIME</code> column.</p>
+</div>
+<div id="water-office-web-service---download_realtime_ws" class="section level2">
+<h2>Water Office web service - <code>download_realtime_ws()</code></h2>
+<p>The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The <code>download_realtime_ws()</code> function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the <code>parameters</code> argument as an integer code. The corresponding parameters can be examined using the internal <code>param_id</code> dataset:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;param_id&quot;</span>)
+param_id</code></pre></div>
+<pre><code>## # A tibble: 8 x 7
+##   Parameter  Code                     Name_En
+##       &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;
+## 1        46    HG     Water level provisional
+## 2        16   HG2       Secondary water level
+## 3        52   HG3        Tertiary water level
+## 4        47    QR       Discharge Provisional
+## 5         8   QRS           Discharge, sensor
+## 6         5    TW           Water temperature
+## 7        41   TW2 Secondary water temperature
+## 8        18    PC   Accumulated precipitation
+## # ... with 4 more variables: Name_Fr &lt;chr&gt;, Unit &lt;chr&gt;,
+## #   Description_En &lt;chr&gt;, Description_Fr &lt;chr&gt;</code></pre>
+<p>The <code>parameters</code> argument will take any value in the <code>param_id$Parameter</code> column. The web service requires credentials to access which can only be requested from ECCC. To retrieve data in this manner, <code>tidyhydat</code> employs a two stage process whereby we get a token from the web service using our credentials then use that token to access the web service. Therefore the second new argument is <code>token</code> the value of which is provided by <code>get_ws_token()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get token
+token_out &lt;-<span class="st"> </span><span class="kw">get_ws_token</span>(<span class="dt">username =</span> <span class="kw">Sys.getenv</span>(<span class="st">&quot;WS_USRNM&quot;</span>), <span class="dt">password =</span> <span class="kw">Sys.getenv</span>(<span class="st">&quot;WS_PWD&quot;</span>))
+
+## Input STATION_NUMBER, parameters and date range
+ws_test &lt;-<span class="st"> </span><span class="kw">download_realtime_ws</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LG006&quot;</span>,
+                                <span class="dt">parameters =</span> <span class="kw">c</span>(<span class="dv">46</span>,<span class="dv">5</span>), ## Water level and temperature
+                                <span class="dt">start_date =</span> <span class="st">&quot;2017-06-25&quot;</span>,
+                                <span class="dt">end_date =</span> <span class="st">&quot;2017-07-24&quot;</span>,
+                                <span class="dt">token =</span> token_out)</code></pre></div>
+<p>Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. <code>download_realtime_ws()</code> will only return data that is available. A message is returned if a particular station was not available. <code>parameters</code>, <code>start_date</code> and <code>end_date</code> fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like <code>rbind()</code>.</p>
+<div id="managing-your-credentials-in-r" class="section level3">
+<h3>Managing your credentials in R</h3>
+<p>Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren’t shared widely. Please read <a href="http://httr.r-lib.org/articles/secrets.html">this article</a> to familiarize yourself with credential management. <a href="http://httr.r-lib.org/articles/secrets.html#environment-variables">This section</a> is summarized here specific to <code>tidyhydat</code>. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important value are stored the <code>.Renviron</code> file. Run the following in a console:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.edit</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</code></pre></div>
+<p>This opens your <code>.Renviron</code> file which is most likely blank. This is where you enter the credentials given to you by ECCC. The code that you paste into the <code>.Renviron</code> file might look like something like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Credentials for ECCC web service
+WS_USRNM =<span class="st"> &quot;here is the username that ECCC gave you&quot;</span>
+WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</span></code></pre></div>
+<p>Now these values can be accessed within an R session without giving away your secrets (Using <code>Sys.getenv()</code>). Just remember to call them directly and don’t assign them to a variable.</p>
+</div>
+</div>
+<div id="msc-datamart---download_realtime_dd" class="section level2">
+<h2>MSC datamart - <code>download_realtime_dd()</code></h2>
+<p>To download real-time data using the datamart we can use approximately the same conventions discussed above. Using <code>download_realtime_dd()</code> we can easily select specific stations by supplying a station of interest. Note that in contrast to <code>download_realtime_ws()</code> but similar to <code>DLY_FLOWS()</code>, we need to supply both the station and the province that we are interested in:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LG006&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 17,460 x 7
+##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
+##             &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;
+##  1        08LG006 2017-07-22 08:00:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
+##  2        08LG006 2017-07-22 08:05:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  3        08LG006 2017-07-22 08:10:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  4        08LG006 2017-07-22 08:15:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  5        08LG006 2017-07-22 08:20:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  6        08LG006 2017-07-22 08:25:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  7        08LG006 2017-07-22 08:30:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
+##  8        08LG006 2017-07-22 08:35:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+##  9        08LG006 2017-07-22 08:40:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
+## 10        08LG006 2017-07-22 08:45:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
+## # ... with 17,450 more rows</code></pre>
+</div>
+<div id="compare-download_realtime_ws-and-download_realtime_dd" class="section level2">
+<h2>Compare <code>download_realtime_ws</code> and <code>download_realtime_dd</code></h2>
+<p><code>tidyhydat</code> provides two methods to download real-time data. <code>download_realtime_ws()</code>, coupled with <code>get_ws_token()</code>, is an API client for a web service hosted by ECCC. <code>download_realtime_dd()</code> provides a function to import openly accessible .csv files from <a href="http://dd.weather.gc.ca/hydrometric/">here</a>. <code>download_realtime_ws()</code> has several difference to <code>download_realtime_dd()</code>. These include:</p>
+<ul>
+<li><em>Speed</em>: <code>download_realtime_ws()</code> is much faster for larger queries (i.e. many stations). For single station queries <code>download_realtime_dd()</code> if more appropriate.</li>
+<li><em>Length of record</em>: <code>download_realtime_ws()</code> records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.<br />
+</li>
+<li><em>Type of parameters</em>: <code>download_realtime_dd()</code> is restricted to river flow (either LEVEL and FLOW) data. In contrast <code>download_realtime_ws()</code> can download several different parameters depending on what is available for that station. See <code>data(&quot;param_id&quot;)</code> for a list and explanation of the parameters.</li>
+<li><em>Date/Time filtering</em>: <code>download_realtime_ws()</code> provides argument to select a date range. Selecting a data range with <code>download_realtime_dd()</code> is not possible until after all files have been downloaded.</li>
+<li><em>Accessibility</em>: <code>download_realtime_dd()</code> downloads data that openly accessible. <code>download_realtime_ws()</code> downloads data using a username and password which must be provided by ECCC.</li>
+</ul>
+</div>
+</div>
+<div id="license" class="section level1">
+<h1>License</h1>
+<pre><code>Copyright 2017 Province of British Columbia
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at 
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</code></pre>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-moore2017watershed">
+<p>Moore, RD Dan, and David Hutchinson. 2017. “Why Watershed Analysts Should Use R for Data Processing and Analysis.” <em>Confluence: Journal of Watershed Science and Management</em> 1 (1).</p>
+</div>
+<div id="ref-RCore">
+<p>R Core Team. 2017. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-wickham2014tidy">
+<p>Wickham, Hadley. 2014. “Tidy Data.” <em>Journal of Statistical Software</em> 59 (10). Foundation for Open Access Statistics: 1–23.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
