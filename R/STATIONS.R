@@ -80,7 +80,30 @@ STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
     ## Out all stations in the network
     if(stns == "ALL" &&  prov == "ALL"){
       df = dplyr::tbl(hydat_con, "STATIONS") %>%
-        dplyr::collect()
+        dplyr::collect() %>%
+        dplyr::mutate(
+          HYD_STATUS = dplyr::case_when(
+            HYD_STATUS == "D" ~ "DISCONTINUED",
+            HYD_STATUS == "A" ~ "ACTIVE",
+            TRUE ~ "NA"
+          ),
+          SED_STATUS = dplyr::case_when(
+            SED_STATUS == "D" ~ "DISCONTINUED",
+            SED_STATUS == "A" ~ "ACTIVE",
+            TRUE ~ "NA"
+          ),
+          RHBN = dplyr::case_when(
+            RHBN == "1" ~ "Yes",
+            RHBN == "0" ~ "No",
+            TRUE ~ "NA"
+          ),
+          REAL_TIME = dplyr::case_when(
+            REAL_TIME == "1" ~ "Yes",
+            REAL_TIME == "0" ~ "No",
+            TRUE ~ "NA"
+          )
+        )
+      
       DBI::dbDisconnect(hydat_con)
       return(df)
     }
@@ -91,9 +114,31 @@ STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
         pull(STATION_NUMBER)
     }
     
-    df <- dplyr::tbl(hydat_con, "STATIONS") %>%
+    df = dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(STATION_NUMBER %in% stns) %>%
-      dplyr::collect() 
+      dplyr::collect() %>%
+      dplyr::mutate(
+        HYD_STATUS = dplyr::case_when(
+          HYD_STATUS == "D" ~ "DISCONTINUED",
+          HYD_STATUS == "A" ~ "ACTIVE",
+          TRUE ~ "NA"
+        ),
+        SED_STATUS = dplyr::case_when(
+          SED_STATUS == "D" ~ "DISCONTINUED",
+          SED_STATUS == "A" ~ "ACTIVE",
+          TRUE ~ "NA"
+        ),
+        RHBN = dplyr::case_when(
+          RHBN == "1" ~ "Yes",
+          RHBN == "0" ~ "No",
+          TRUE ~ "NA"
+        ),
+        REAL_TIME = dplyr::case_when(
+          REAL_TIME == "1" ~ "Yes",
+          REAL_TIME == "0" ~ "No",
+          TRUE ~ "NA"
+        )
+      )
     DBI::dbDisconnect(hydat_con)
     
     ## What stations were missed?

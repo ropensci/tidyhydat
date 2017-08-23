@@ -41,3 +41,10 @@
 #' 
 #' @source HYDAT
 "DATA_SYMBOLS"
+
+#' @title DATA_TYPES – DATA TYPES look-up table 
+#' 
+#' @description A look table for data types
+#' 
+#' @source HYDAT
+"DATA_TYPES"

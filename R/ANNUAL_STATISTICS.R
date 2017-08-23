@@ -101,6 +101,41 @@ ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, P
   annual_statistics =  dplyr::filter(annual_statistics, STATION_NUMBER %in% stns) %>%
     dplyr::collect() 
   
+  ## TODO: Figure out how to do this in fewer steps
+  ## Mean tibble
+  as_mean = select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MEAN)
+  as_mean = gather(as_mean, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR)
+  
+  ## Min tibble
+  as_min = select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MIN_MONTH, MIN_DAY, MIN, MIN_SYMBOL)
+  as_min = gather(as_min, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR, -MIN_MONTH,- MIN_DAY, -MIN_SYMBOL)
+  colnames(as_min) <- gsub("MIN_","", names(as_min))
+  
+  ## Max tibble
+  as_max = select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MAX_MONTH, MAX_DAY, MAX, MAX_SYMBOL)
+  as_max = gather(as_max, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR, -MAX_MONTH,- MAX_DAY, -MAX_SYMBOL)
+  colnames(as_max) <- gsub("MAX_","", names(as_max))
+  
+  ## bind into 1 dataframe and by year and join in the symbol
+  annual_statistics = as_mean %>%
+    dplyr::bind_rows(as_min) %>%
+    dplyr::bind_rows(as_max) %>%
+    dplyr::arrange(YEAR) %>%
+    dplyr::left_join(DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
+  
+  ## Format date of occurence
+  annual_statistics = dplyr::mutate(annual_statistics, Date = lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-")))
+  
+  ## Format 
+  annual_statistics = dplyr::left_join(annual_statistics, DATA_TYPES, by = c("DATA_TYPE"))
+  
+  ## Clean up the variables
+  annual_statistics = select(annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value, Date, SYMBOL_EN)
+  
+  ##Rename to tidyhydat format
+  colnames(annual_statistics) = c("STATION_NUMBER", "Parameter", "Year","SUM_STAT","Value","Date","Symbol")
+
+  
   DBI::dbDisconnect(hydat_con)
   
   ## What stations were missed?

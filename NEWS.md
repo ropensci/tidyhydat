@@ -1,3 +1,9 @@
+# tidyhydat 0.2.1
+* added STN_REGULATION
+* tidied ANNUAL_STATISTICS
+* added a series of lookup tables (DATUM_LIST, AGENCY_LIST, REGIONAL_OFFICE_LIST)
+* cleared up output of STATIONS
+
 # tidyhydat 0.2.0
 * standardize hydat outputs to consistent tibble structure
 * Adding search_name function
