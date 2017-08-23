@@ -57,6 +57,7 @@ These are the functions that are currently implemented to query HYDAT:
 -   `DLY_FLOWS`
 -   `DLY_LEVELS`
 -   `ANNUAL_STATISTICS`
+-   `STN_REGULATIONS`
 
 This is a list of function to be implemented:
 

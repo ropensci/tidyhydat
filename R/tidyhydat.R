@@ -61,6 +61,8 @@ NULL
         "variable","temp","DATA_SYMBOLS","FLOW_SYMBOL","SYMBOL_EN","Value",
         "Unit","Grade","Symbol","Approval","Parameter","Code","param_id","Name_En",
         "Name_Fr","LEVEL_SYMBOL","ID","val","key","CODE","GRADE","SYMBOL",
+        "DATA_TYPE","DATA_TYPES","DATA_TYPE_EN","MAX_DAY","MAX_MONTH","MAX_SYMBOL","MEAN",
+        "MIN","MIN_DAY","MIN_MONTH","MIN_SYMBOL","SUM_STAT",
         "." # piping requires '.' at times
       )
     )
