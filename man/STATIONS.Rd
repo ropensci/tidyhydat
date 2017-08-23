@@ -22,11 +22,13 @@ Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \co
 where those stations come from.
 }
 \examples{
+\donttest{
 ## Two stations
 STATIONS(STATION_NUMBER = c("08CG001", "08CE001"), 
    PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 ## ALL stations from PEI
 STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+}
 
 }
 \seealso{
