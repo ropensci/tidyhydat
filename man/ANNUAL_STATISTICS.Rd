@@ -27,6 +27,7 @@ Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data f
 where those stations come from.
 }
 \examples{
+\donttest{
 ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
                   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
 
@@ -37,6 +38,8 @@ ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE",
                   hydat_path = "H:/Hydat.sqlite3",
                   start_year = 1972,
                   end_year = 1975)
+}
+                  
 }
 \seealso{
 Possible arguments for \code{PROV_TERR_STATE_LOC}
