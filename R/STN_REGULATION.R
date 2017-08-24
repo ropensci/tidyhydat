@@ -41,36 +41,30 @@ STN_REGULATION <- function(hydat_path, STATION_NUMBER = "ALL") {
     stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
   
-  stns = STATION_NUMBER
-  
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-
+  ## Create stns vector to supply
+  stns = STATION_NUMBER
+  
   if(stns[1] == "ALL"){
-    df = dplyr::tbl(hydat_con, "STN_REGULATION") %>%
+    stns = dplyr::tbl(hydat_con, "STN_REGULATION") %>%
       dplyr::collect() %>%
-      dplyr::mutate(
-        REGULATED = dplyr::case_when(
-          REGULATED == 0 ~ "Natural",
-          REGULATED == 1 ~ "Regulated"
-        )
-        )
-    DBI::dbDisconnect(hydat_con)
-    return(df)
-  } else{
-    df <- dplyr::tbl(hydat_con, "STN_REGULATION") %>%
-      dplyr::filter(STATION_NUMBER %in% stns) %>%
-      dplyr::collect() %>%
-      dplyr::mutate(
-        REGULATED = dplyr::case_when(
-          REGULATED == 0 ~ "Natural",
-          REGULATED == 1 ~ "Regulated"
-        )
-      )
-    DBI::dbDisconnect(hydat_con)
-    
-    return(df)
+      dplyr::pull(STATION_NUMBER)
   }
+  
+  df <- dplyr::tbl(hydat_con, "STN_REGULATION") %>%
+    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(
+      REGULATED = dplyr::case_when(
+        REGULATED == 0 ~ "Natural",
+        REGULATED == 1 ~ "Regulated"
+      )
+    )
+  DBI::dbDisconnect(hydat_con)
+  
+  return(df)
+
   
 }

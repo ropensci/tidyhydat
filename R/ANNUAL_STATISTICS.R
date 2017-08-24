@@ -133,7 +133,7 @@ ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, P
   annual_statistics = select(annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value, Date, SYMBOL_EN)
   
   ##Rename to tidyhydat format
-  colnames(annual_statistics) = c("STATION_NUMBER", "Parameter", "Year","SUM_STAT","Value","Date","Symbol")
+  colnames(annual_statistics) = c("STATION_NUMBER", "Parameter", "Year","Sum_stat","Value","Date","Symbol")
 
   
   DBI::dbDisconnect(hydat_con)

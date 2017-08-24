@@ -71,52 +71,34 @@ STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
 
   ## TODO: Have a conditional that restricts and throw a warning when PROV_TERR_STATE_LOC isn't allowed
   
-    prov = PROV_TERR_STATE_LOC
-    stns = STATION_NUMBER
+
     
     ## Read in database
     hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
     
-    ## Out all stations in the network
+    ## Create stns vector to supply
+    
+    prov = PROV_TERR_STATE_LOC
+    stns = STATION_NUMBER
+    
     if(stns == "ALL" &&  prov == "ALL"){
-      df = dplyr::tbl(hydat_con, "STATIONS") %>%
+      stns = dplyr::tbl(hydat_con, "STATIONS") %>%
         dplyr::collect() %>%
-        dplyr::mutate(
-          HYD_STATUS = dplyr::case_when(
-            HYD_STATUS == "D" ~ "DISCONTINUED",
-            HYD_STATUS == "A" ~ "ACTIVE",
-            TRUE ~ "NA"
-          ),
-          SED_STATUS = dplyr::case_when(
-            SED_STATUS == "D" ~ "DISCONTINUED",
-            SED_STATUS == "A" ~ "ACTIVE",
-            TRUE ~ "NA"
-          ),
-          RHBN = dplyr::case_when(
-            RHBN == "1" ~ "Yes",
-            RHBN == "0" ~ "No",
-            TRUE ~ "NA"
-          ),
-          REAL_TIME = dplyr::case_when(
-            REAL_TIME == "1" ~ "Yes",
-            REAL_TIME == "0" ~ "No",
-            TRUE ~ "NA"
-          )
-        )
+        dplyr::pull(STATION_NUMBER)
       
-      DBI::dbDisconnect(hydat_con)
-      return(df)
     }
     
     if(stns[1] == "ALL"){
       stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-        filter(PROV_TERR_STATE_LOC == prov) %>%
-        pull(STATION_NUMBER)
+        dplyr::filter(PROV_TERR_STATE_LOC == prov) %>%
+        dplyr::pull(STATION_NUMBER)
     }
     
+    ## Create the dataframe to return
     df = dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(STATION_NUMBER %in% stns) %>%
       dplyr::collect() %>%
+      dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
       dplyr::mutate(
         HYD_STATUS = dplyr::case_when(
           HYD_STATUS == "D" ~ "DISCONTINUED",
@@ -151,8 +133,6 @@ STATIONS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC) {
     }
     
     return(df)
-
-    
-    
+  
     
   }
