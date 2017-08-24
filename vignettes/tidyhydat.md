@@ -1,13 +1,13 @@
 ---
 title: "tidyhydat"
 author: "Sam Albers"
-date: "2017-08-21"
+date: "2017-08-24"
 #output:
 #  md_document:
 #    variant: markdown_github
 output:
   html_vignette:
-    keep_md: true
+     keep_md: true
 bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{tidyhydat}
@@ -124,6 +124,7 @@ These are the HYDAT functions that are currently implemented:
 - `DLY_FLOWS`
 - `DLY_LEVELS`
 - `ANNUAL_STATISTICS`
+- `STN_REGULATION`
 
 These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you must supply both the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path to the database. Yours will be different:
 
@@ -255,20 +256,20 @@ download_realtime_dd(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
 ```
 
 ```
-## # A tibble: 17,460 x 7
+## # A tibble: 17,388 x 7
 ##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
 ##             <chr>              <dttm>     <chr> <dbl> <chr>  <chr> <chr>
-##  1        08LG006 2017-07-22 08:00:00      FLOW  9.07  <NA>   <NA>     1
-##  2        08LG006 2017-07-22 08:05:00      FLOW  9.11  <NA>   <NA>     1
-##  3        08LG006 2017-07-22 08:10:00      FLOW  9.11  <NA>   <NA>     1
-##  4        08LG006 2017-07-22 08:15:00      FLOW  9.11  <NA>   <NA>     1
-##  5        08LG006 2017-07-22 08:20:00      FLOW  9.11  <NA>   <NA>     1
-##  6        08LG006 2017-07-22 08:25:00      FLOW  9.11  <NA>   <NA>     1
-##  7        08LG006 2017-07-22 08:30:00      FLOW  9.07  <NA>   <NA>     1
-##  8        08LG006 2017-07-22 08:35:00      FLOW  9.11  <NA>   <NA>     1
-##  9        08LG006 2017-07-22 08:40:00      FLOW  9.07  <NA>   <NA>     1
-## 10        08LG006 2017-07-22 08:45:00      FLOW  9.11  <NA>   <NA>     1
-## # ... with 17,450 more rows
+##  1        08LG006 2017-07-25 08:00:00      FLOW  9.19  <NA>   <NA>     1
+##  2        08LG006 2017-07-25 08:05:00      FLOW  9.19  <NA>   <NA>     1
+##  3        08LG006 2017-07-25 08:10:00      FLOW  9.19  <NA>   <NA>     1
+##  4        08LG006 2017-07-25 08:15:00      FLOW  9.19  <NA>   <NA>     1
+##  5        08LG006 2017-07-25 08:20:00      FLOW  9.24  <NA>   <NA>     1
+##  6        08LG006 2017-07-25 08:25:00      FLOW  9.19  <NA>   <NA>     1
+##  7        08LG006 2017-07-25 08:30:00      FLOW  9.15  <NA>   <NA>     1
+##  8        08LG006 2017-07-25 08:35:00      FLOW  9.15  <NA>   <NA>     1
+##  9        08LG006 2017-07-25 08:40:00      FLOW  9.15  <NA>   <NA>     1
+## 10        08LG006 2017-07-25 08:45:00      FLOW  9.15  <NA>   <NA>     1
+## # ... with 17,378 more rows
 ```
 
 

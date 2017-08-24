@@ -12,7 +12,7 @@
 
 <meta name="author" content="Sam Albers" />
 
-<meta name="date" content="2017-08-21" />
+<meta name="date" content="2017-08-24" />
 
 <title>tidyhydat</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">tidyhydat</h1>
 <h4 class="author"><em>Sam Albers</em></h4>
-<h4 class="date"><em>2017-08-21</em></h4>
+<h4 class="date"><em>2017-08-24</em></h4>
 
 
 
@@ -171,6 +171,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>DLY_FLOWS</code></li>
 <li><code>DLY_LEVELS</code></li>
 <li><code>ANNUAL_STATISTICS</code></li>
+<li><code>STN_REGULATION</code></li>
 </ul>
 <p>These functions follow a common argument structure which can be illustrated with the <code>DLY_FLOWS()</code> function. For these functions, you must supply both the <code>STATION_NUMBER</code> and the <code>PROV_TERR_STATE_LOC</code> arguments. The <code>hydat_path</code> argument is supplied here as a local path to the database. Yours will be different:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
@@ -249,20 +250,20 @@ WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</s
 <h2>MSC datamart - <code>download_realtime_dd()</code></h2>
 <p>To download real-time data using the datamart we can use approximately the same conventions discussed above. Using <code>download_realtime_dd()</code> we can easily select specific stations by supplying a station of interest. Note that in contrast to <code>download_realtime_ws()</code> but similar to <code>DLY_FLOWS()</code>, we need to supply both the station and the province that we are interested in:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LG006&quot;</span>, <span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;BC&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 17,460 x 7
+<pre><code>## # A tibble: 17,388 x 7
 ##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
 ##             &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;
-##  1        08LG006 2017-07-22 08:00:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
-##  2        08LG006 2017-07-22 08:05:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  3        08LG006 2017-07-22 08:10:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  4        08LG006 2017-07-22 08:15:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  5        08LG006 2017-07-22 08:20:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  6        08LG006 2017-07-22 08:25:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  7        08LG006 2017-07-22 08:30:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
-##  8        08LG006 2017-07-22 08:35:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-##  9        08LG006 2017-07-22 08:40:00      FLOW  9.07  &lt;NA&gt;   &lt;NA&gt;     1
-## 10        08LG006 2017-07-22 08:45:00      FLOW  9.11  &lt;NA&gt;   &lt;NA&gt;     1
-## # ... with 17,450 more rows</code></pre>
+##  1        08LG006 2017-07-25 08:00:00      FLOW  9.19  &lt;NA&gt;   &lt;NA&gt;     1
+##  2        08LG006 2017-07-25 08:05:00      FLOW  9.19  &lt;NA&gt;   &lt;NA&gt;     1
+##  3        08LG006 2017-07-25 08:10:00      FLOW  9.19  &lt;NA&gt;   &lt;NA&gt;     1
+##  4        08LG006 2017-07-25 08:15:00      FLOW  9.19  &lt;NA&gt;   &lt;NA&gt;     1
+##  5        08LG006 2017-07-25 08:20:00      FLOW  9.24  &lt;NA&gt;   &lt;NA&gt;     1
+##  6        08LG006 2017-07-25 08:25:00      FLOW  9.19  &lt;NA&gt;   &lt;NA&gt;     1
+##  7        08LG006 2017-07-25 08:30:00      FLOW  9.15  &lt;NA&gt;   &lt;NA&gt;     1
+##  8        08LG006 2017-07-25 08:35:00      FLOW  9.15  &lt;NA&gt;   &lt;NA&gt;     1
+##  9        08LG006 2017-07-25 08:40:00      FLOW  9.15  &lt;NA&gt;   &lt;NA&gt;     1
+## 10        08LG006 2017-07-25 08:45:00      FLOW  9.15  &lt;NA&gt;   &lt;NA&gt;     1
+## # ... with 17,378 more rows</code></pre>
 </div>
 <div id="compare-download_realtime_ws-and-download_realtime_dd" class="section level2">
 <h2>Compare <code>download_realtime_ws</code> and <code>download_realtime_dd</code></h2>

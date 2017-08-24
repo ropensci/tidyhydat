@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 #    variant: markdown_github
 output:
   html_vignette:
-    keep_md: true
+     keep_md: true
 bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{tidyhydat}
@@ -96,6 +96,7 @@ These are the HYDAT functions that are currently implemented:
 - `DLY_FLOWS`
 - `DLY_LEVELS`
 - `ANNUAL_STATISTICS`
+- `STN_REGULATION`
 
 These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you must supply both the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path to the database. Yours will be different:
 

@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 #    variant: markdown_github
 output:
   html_vignette:
-    keep_md: true
+     keep_md: true
 bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{tidyhydat}
