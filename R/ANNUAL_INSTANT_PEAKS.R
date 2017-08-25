@@ -11,30 +11,31 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-
-#' @title Extract station regulation from the HYDAT database 
+#' @title Annual maximum/minimum instantaneous flows and water levels
 #' 
-#' @description Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
+#' @description Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
 #' 
 #' @inheritParams STATIONS
+#' @param start_year First year of the returned record
+#' @param end_year Last year of the returned record
 #' 
-#' @return A tibble of stations, years of regulation and the regulation status
+#' @return A tibble of ANNUAL_INSTANT_PEAKS
 #' 
 #' @examples 
 #' \donttest{
 #' ## Multiple stations province not specified 
-#' STN_REGULATION(STATION_NUMBER = c("08NM083","08NE102"), hydat_path = "H:/Hydat.sqlite3")
+#' ANNUAL_INSTANT_PEAKS(STATION_NUMBER = c("08NM083","08NE102"), hydat_path = "H:/Hydat.sqlite3")
 #' 
 #' ## Multiple province, station number not specified
-#' STN_REGULATION(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
-#' }
-#' 
-
+#' ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
+#'}
+#'
 #' @export
-
-STN_REGULATION <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-
+#' 
+ANNUAL_INSTANT_PEAKS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, 
+                              start_year = "ALL", end_year = "ALL") {
+  
   if(missing(hydat_path))
     stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
@@ -79,18 +80,37 @@ STN_REGULATION <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
       dplyr::pull(STATION_NUMBER)
   }
   
-  df <- dplyr::tbl(hydat_con, "STN_REGULATION") %>%
+  aip = dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
-    dplyr::collect() %>%
-    dplyr::mutate(
-      REGULATED = dplyr::case_when(
-        REGULATED == 0 ~ "Natural",
-        REGULATED == 1 ~ "Regulated"
-      )
-    )
+    dplyr::collect()
+  
+  ## Add in english data type
+  aip = dplyr::left_join(aip, DATA_TYPES, by = c("DATA_TYPE"))
+  
+  ## Add in Symbol
+  aip = dplyr::left_join(aip, DATA_SYMBOLS, by = c("SYMBOL"= "SYMBOL_ID"))
+  
+  ## If a yearis supplied...
+  if(start_year != "ALL" | end_year != "ALL"){
+    aip = dplyr::filter(aip, YEAR >= start_year & YEAR <= end_year)
+  }
+  
+  ## Parse PEAK_CODE manually - there are only 2
+  aip = dplyr::mutate(aip, PEAK_CODE = ifelse(PEAK_CODE == "H", "MAX","MIN"))
+  
+  ## Parse PRECISION_CODE manually - there are only 2
+  aip = dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)","in m (to cm)"))
+  
+  ## TODO: Convert to dttm
+  #aip = dplyr::mutate(aip, Datetime = lubridate::ymd_hm(paste0(YEAR,"-",MONTH,"-",DAY," ",HOUR,":",MINUTE)))
+  
+  ## Clean up and select only columns we need
+  aip = dplyr::select(aip, STATION_NUMBER, DATA_TYPE_EN, YEAR, PEAK_CODE, PRECISION_CODE, MONTH, DAY, HOUR, MINUTE, TIME_ZONE, PEAK, SYMBOL_EN) %>%
+    dplyr::rename(Parameter = DATA_TYPE_EN, Symbol = SYMBOL_EN, Value = PEAK) 
+  
   DBI::dbDisconnect(hydat_con)
   
-  return(df)
-
+  return(aip)
   
 }
+  

@@ -4,28 +4,32 @@
 \alias{STN_REGULATION}
 \title{Extract station regulation from the HYDAT database}
 \usage{
-STN_REGULATION(hydat_path, STATION_NUMBER = "ALL")
+STN_REGULATION(hydat_path, STATION_NUMBER = NULL,
+  PROV_TERR_STATE_LOC = NULL)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+is returned.}
+
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
 }
 \value{
 A tibble of stations, years of regulation and the regulation status
 }
 \description{
 Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
-\code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
-where those stations come from.
+\code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
 }
 \examples{
 \donttest{
-## Two stations
-STN_REGULATION(STATION_NUMBER = c("08CG001", "08CE001"), hydat_path = "H:/Hydat.sqlite3")
+## Multiple stations province not specified 
+STN_REGULATION(STATION_NUMBER = c("08NM083","08NE102"), hydat_path = "H:/Hydat.sqlite3")
 
-## ALL stations from PEI
-STN_REGULATION(STATION_NUMBER = "ALL", hydat_path = "H:/Hydat.sqlite3")
+## Multiple province, station number not specified
+STN_REGULATION(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
 }
 
 }
