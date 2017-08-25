@@ -4,15 +4,17 @@
 \alias{ANNUAL_STATISTICS}
 \title{Extract daily flows information from the HYDAT database}
 \usage{
-ANNUAL_STATISTICS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER,
-  PROV_TERR_STATE_LOC, start_year = "ALL", end_year = "ALL")
+ANNUAL_STATISTICS(hydat_path, STATION_NUMBER = NULL,
+  PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
 
 \item{start_year}{First year of the returned record}
 
@@ -28,42 +30,11 @@ where those stations come from.
 }
 \examples{
 \donttest{
-ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
-                  PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+## Multiple stations province not specified 
+ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
 
-ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
-                  hydat_path = "H:/Hydat.sqlite3")
-
-ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
-                  hydat_path = "H:/Hydat.sqlite3",
-                  start_year = 1972,
-                  end_year = 1975)
+## Multiple province, station number not specified
+ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 }
                   
-}
-\seealso{
-Possible arguments for \code{PROV_TERR_STATE_LOC}
-\itemize{
-\item "QC" 
-\item "ME" 
-\item "NB" 
-\item "PE" 
-\item "NS" 
-\item "MN" 
-\item "ON" 
-\item "MI" 
-\item "NL" 
-\item "MB" 
-\item "AB" 
-\item "MT" 
-\item "SK" 
-\item "ND" 
-\item "NU" 
-\item "NT" 
-\item "BC" 
-\item "YT" 
-\item "AK" 
-\item "WA" 
-\item "ID"
-}
 }

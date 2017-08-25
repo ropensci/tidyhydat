@@ -4,66 +4,37 @@
 \alias{DLY_FLOWS}
 \title{Extract daily flows information from the HYDAT database}
 \usage{
-DLY_FLOWS(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_date = "ALL",
-  end_date = "ALL")
+DLY_FLOWS(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL,
+  start_date = "ALL", end_date = "ALL")
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
 
 \item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
 \item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 }
 \value{
-A tibble of daily flows
+A tibble of daily levels
 }
 \description{
-Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
-\code{PROV_TERR_STATE_LOC} must both be supplied. When \code{STATION_NUMBER="ALL"} the \code{PROV_TERR_STATE_LOC} argument decides 
-where those stations come from.
+Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and 
+\code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
+That is a large vector for \code{DLY_FLOWS}.
 }
 \examples{
 \donttest{
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC",
-          hydat_path = "H:/Hydat.sqlite3")
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
-          hydat_path = "H:/Hydat.sqlite3",
-          start_date = "1996-01-01", end_date = "2000-01-01")
+DLY_FLOWS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
+start_date = "1996-01-01", end_date = "2000-01-01")
 
-DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 
-DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
-          start_date = "1996-01-01", end_date = "2000-01-01")
           }
 
-}
-\seealso{
-Possible arguments for \code{PROV_TERR_STATE_LOC}
-\itemize{
-\item "QC" 
-\item "ME" 
-\item "NB" 
-\item "PE" 
-\item "NS" 
-\item "MN" 
-\item "ON" 
-\item "MI" 
-\item "NL" 
-\item "MB" 
-\item "AB" 
-\item "MT" 
-\item "SK" 
-\item "ND" 
-\item "NU" 
-\item "NT" 
-\item "BC" 
-\item "YT" 
-\item "AK" 
-\item "WA" 
-\item "ID"
-}
 }

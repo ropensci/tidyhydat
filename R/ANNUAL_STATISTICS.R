@@ -25,68 +25,60 @@
 #' 
 #' @examples 
 #' \donttest{
-#' ANNUAL_STATISTICS(STATION_NUMBER = "08LA001",
-#'                   PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
-#'
-#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
-#'                   hydat_path = "H:/Hydat.sqlite3")
+#' ## Multiple stations province not specified 
+#' ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
 #' 
-#' ANNUAL_STATISTICS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", 
-#'                   hydat_path = "H:/Hydat.sqlite3",
-#'                   start_year = 1972,
-#'                   end_year = 1975)
+#' ## Multiple province, station number not specified
+#' ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 #'}
 #'                   
-#' @seealso 
-#' Possible arguments for \code{PROV_TERR_STATE_LOC}
-#' \itemize{
-#' \item "QC" 
-#' \item "ME" 
-#' \item "NB" 
-#' \item "PE" 
-#' \item "NS" 
-#' \item "MN" 
-#' \item "ON" 
-#' \item "MI" 
-#' \item "NL" 
-#' \item "MB" 
-#' \item "AB" 
-#' \item "MT" 
-#' \item "SK" 
-#' \item "ND" 
-#' \item "NU" 
-#' \item "NT" 
-#' \item "BC" 
-#' \item "YT" 
-#' \item "AK" 
-#' \item "WA" 
-#' \item "ID"
-#' }
 #' @export
 
-ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, PROV_TERR_STATE_LOC, 
+ANNUAL_STATISTICS <- function(hydat_path, STATION_NUMBER =NULL, PROV_TERR_STATE_LOC=NULL, 
                               start_year = "ALL", end_year = "ALL") {
   
-  ## Argument checks
-  if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
-    stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
+  if(missing(hydat_path))
+    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
-  #if(missing(start_year) | missing(end_year))
-  #  stop("Both the start date and the end date must be specified")
+  ## Read in database
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  if(start_year == "ALL" & end_year == "ALL"){
-    message("No start and end dates specified. All dates available will be returned.")
-  } 
+  ## Only possible values for PROV_TERR_STATE_LOC
+  stn_option = dplyr::tbl(hydat_con, "STATIONS") %>%
+    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
+    dplyr::pull(PROV_TERR_STATE_LOC)
   
-  prov = PROV_TERR_STATE_LOC
+  ## If not STATION_NUMBER arg is supplied then this controls how to handle the PROV arg
+  if((is.null(STATION_NUMBER) & !is.null(PROV_TERR_STATE_LOC))){
+    STATION_NUMBER = "ALL" ## All stations
+    prov = PROV_TERR_STATE_LOC ## Prov info
+    
+    if(any(!prov %in% stn_option) == TRUE){
+      stop("Invalid PROV_TERR_STATE_LOC value")
+      DBI::dbDisconnect(hydat_con)
+    }
+  }
+  
+  ## If PROV arg is supplied then simply use the STATION_NUMBER independent of PROV
+  if(is.null(PROV_TERR_STATE_LOC)){
+    STATION_NUMBER = STATION_NUMBER
+  }
+  
+  
+  ## Steps to create the station vector
   stns = STATION_NUMBER
   
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  ## Get all stations
+  if(is.null(stns) == TRUE && is.null(PROV_TERR_STATE_LOC) == TRUE){
+    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::collect() %>%
+      dplyr::pull(STATION_NUMBER)
+  }
+  
   
   if(stns[1] == "ALL"){
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      filter(PROV_TERR_STATE_LOC == prov) %>%
+      filter(PROV_TERR_STATE_LOC %in% prov) %>%
       pull(STATION_NUMBER)
   }
   
@@ -123,8 +115,8 @@ ANNUAL_STATISTICS <- function(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER, P
     dplyr::arrange(YEAR) %>%
     dplyr::left_join(DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
   
-  ## Format date of occurence
-  annual_statistics = dplyr::mutate(annual_statistics, Date = lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-")))
+  ## Format date of occurence; SuppressWarnings are justified because NA's are valid for MEAN Sum_stat
+  annual_statistics = dplyr::mutate(annual_statistics, Date = suppressWarnings(lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-"))))
   
   ## Format 
   annual_statistics = dplyr::left_join(annual_statistics, DATA_TYPES, by = c("DATA_TYPE"))
