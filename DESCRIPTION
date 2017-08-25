@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract tidy hydrometric data
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
            ), person("Dave", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"))
 Description: tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.

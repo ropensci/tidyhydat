@@ -29,21 +29,20 @@ tbl(hydat_con, "DLY_FLOWS") %>%
 library(tidyhydat)
 DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
           STATION_NUMBER = "08MF005",
-          PROV_TERR_STATE_LOC = "BC",
           start_date = "1992-03-15",
           end_date = "1992-04-15")
 
 ## ----example, warning=FALSE, message=FALSE, eval=FALSE-------------------
-#  DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+#  DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3")
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
-#  DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+#  DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), hydat_path = "H:/Hydat.sqlite3")
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
-#  DLY_FLOWS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#  DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
-#  DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3",
+#  DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3",
 #            start_date = "1981-01-01", end_date = "1981-12-31")
 
 ## ---- echo=TRUE----------------------------------------------------------
@@ -53,7 +52,7 @@ search_name("liard")
 #  realtime_network_meta(PROV_TERR_STATE_LOC = "PE")
 
 ## ----stations, eval=FALSE------------------------------------------------
-#  STATIONS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#  STATIONS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 
 ## ---- echo=TRUE, eval=TRUE-----------------------------------------------
 data("param_id")

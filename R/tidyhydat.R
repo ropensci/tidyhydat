@@ -62,7 +62,8 @@ NULL
         "Unit","Grade","Symbol","Approval","Parameter","Code","param_id","Name_En",
         "Name_Fr","LEVEL_SYMBOL","ID","val","key","CODE","GRADE","SYMBOL",
         "DATA_TYPE","DATA_TYPES","DATA_TYPE_EN","MAX_DAY","MAX_MONTH","MAX_SYMBOL","MEAN",
-        "MIN","MIN_DAY","MIN_MONTH","MIN_SYMBOL","SUM_STAT",
+        "MIN","MIN_DAY","MIN_MONTH","MIN_SYMBOL","SUM_STAT","HOUR", "MINUTE", "PEAK", 
+        "PEAK_CODE", "REGIONAL_OFFICE_ID","TIME_ZONE","SUSCON",
         "." # piping requires '.' at times
       )
     )
