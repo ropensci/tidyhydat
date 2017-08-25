@@ -6,6 +6,8 @@
 tidyhydat
 =========
 
+The project is very much under active development.
+
 Here is a list of what tidyhydat does:
 
 -   Perform a number of common queries on the HYDAT database and returns tidy data
@@ -58,10 +60,10 @@ These are the functions that are currently implemented to query HYDAT:
 -   `DLY_LEVELS`
 -   `ANNUAL_STATISTICS`
 -   `STN_REGULATIONS`
+-   `ANNUAL_INSTANT_PEAKS`
 
 This is a list of function to be implemented:
 
--   `ANNUAL_INSTANT_PEAKS`
 -   `SED_DLY_LOADS`
 -   `SED_DLY_SUSCON`
 -   `SED_SAMPLES_PSD`
@@ -69,10 +71,10 @@ This is a list of function to be implemented:
 Usage
 -----
 
-This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you must supply the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path the database. Yours will be different.
+This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is supplied here as a local path the database. Yours will be different.
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "H:/Hydat.sqlite3")
+DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER = "08LA001")
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
 #> # A tibble: 28,794 x 5
@@ -89,6 +91,29 @@ DLY_FLOWS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", hydat_path = "
 #>  9        08LA001 1914-01-09      FLOW   140   <NA>
 #> 10        08LA001 1914-01-10      FLOW   140   <NA>
 #> # ... with 28,784 more rows
+```
+
+If you would instead prefer all stations from a province, you can use the `PROV_TERR_STATE_LOC` argument and omit the `STATION_NUMBER` argument:
+
+``` r
+DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", PROV_TERR_STATE_LOC = "PE")
+#> No start and end dates specified. All dates available will be returned.
+#> The following station(s) were not retrieved: 01CB011
+#> Check station number typos or if it is a valid station in the network
+#> # A tibble: 186,858 x 5
+#>    STATION_NUMBER       Date Parameter Value Symbol
+#>             <chr>     <date>     <chr> <dbl>  <chr>
+#>  1        01CC001 1919-07-01      FLOW    NA   <NA>
+#>  2        01CE001 1919-07-01      FLOW    NA   <NA>
+#>  3        01CE002 1919-07-01      FLOW    NA   <NA>
+#>  4        01CC001 1919-07-02      FLOW    NA   <NA>
+#>  5        01CE001 1919-07-02      FLOW    NA   <NA>
+#>  6        01CE002 1919-07-02      FLOW    NA   <NA>
+#>  7        01CC001 1919-07-03      FLOW    NA   <NA>
+#>  8        01CE001 1919-07-03      FLOW    NA   <NA>
+#>  9        01CE002 1919-07-03      FLOW    NA   <NA>
+#> 10        01CC001 1919-07-04      FLOW    NA   <NA>
+#> # ... with 186,848 more rows
 ```
 
 You can also make use of auxiliary function in `tidyhdyat` called `search_name` to look for matches when you know part of a name of a station. For example:

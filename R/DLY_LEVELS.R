@@ -12,9 +12,9 @@
 
 #' @title Extract daily levels information from the HYDAT database
 #' 
-#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
-#' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides 
-#' where those stations come from. 
+#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and 
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
+#' That is a large vector for \code{DLY_LEVELS}.
 #' 
 #' @inheritParams DLY_FLOWS
 #' 
@@ -22,60 +22,18 @@
 #' 
 #' @examples 
 #' \donttest{
-#' DLY_LEVELS(STATION_NUMBER = "08LA001", PROV_TERR_STATE_LOC = "BC", 
-#'            hydat_path = "H:/Hydat.sqlite3")
-#' DLY_LEVELS(STATION_NUMBER = c("08LA001","08LG048"), PROV_TERR_STATE_LOC = "BC", 
-#'           hydat_path = "H:/Hydat.sqlite3",
-#'           start_date = "1996-01-01", end_date = "2000-01-01")
+#' DLY_LEVELS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
+#' start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' DLY_LEVELS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' DLY_LEVELS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #' 
-#' DLY_LEVELS(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3",
-#'           start_date = "1996-01-01", end_date = "2000-01-01")
 #'           }
-#' 
-#' @seealso 
-#' Possible arguments for \code{PROV_TERR_STATE_LOC}
-#' \itemize{
-#' \item "QC" 
-#' \item "ME" 
-#' \item "NB" 
-#' \item "PE" 
-#' \item "NS" 
-#' \item "MN" 
-#' \item "ON" 
-#' \item "MI" 
-#' \item "NL" 
-#' \item "MB" 
-#' \item "AB" 
-#' \item "MT" 
-#' \item "SK" 
-#' \item "ND" 
-#' \item "NU" 
-#' \item "NT" 
-#' \item "BC" 
-#' \item "YT" 
-#' \item "AK" 
-#' \item "WA" 
-#' \item "ID"
-#' }
 #' 
 #' @export
 
 
 
-DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_date ="ALL", end_date = "ALL") {
-  
-  
-  ## Argument checks
-  if(missing(STATION_NUMBER) | missing(PROV_TERR_STATE_LOC))
-    stop("STATION_NUMBER or PROV_TERR_STATE_LOC argument is missing. These arguments must match jurisdictions.")
-  
-  #if(missing(start_date) | missing(end_date))
-  #  stop("Both the start date and the end date must be specified")
-  
-  if(missing(hydat_path))
-    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
+DLY_LEVELS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   
   if(start_date == "ALL" & end_date == "ALL"){
     message("No start and end dates specified. All dates available will be returned.")
@@ -98,25 +56,54 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER, PROV_TERR_STATE_LOC, start_da
       stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
     }
     
-    if(start_date >= end_date){
+    if(start_date > end_date){
       stop("start_date is after end_date. Try swapping values.")
     }
   }
   
+  if(missing(hydat_path))
+    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
-  prov = PROV_TERR_STATE_LOC
-  stns = STATION_NUMBER
-  
-  ## Read on database
+  ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  ## Get list of stations when stns is ALL
-  if (stns[1] == "ALL") {
+  ## Only possible values for PROV_TERR_STATE_LOC
+  stn_option = dplyr::tbl(hydat_con, "STATIONS") %>%
+    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
+    dplyr::pull(PROV_TERR_STATE_LOC)
+  
+  ## If not STATION_NUMBER arg is supplied then this controls how to handle the PROV arg
+  if((is.null(STATION_NUMBER) & !is.null(PROV_TERR_STATE_LOC))){
+    STATION_NUMBER = "ALL" ## All stations
+    prov = PROV_TERR_STATE_LOC ## Prov info
+    
+    if(any(!prov %in% stn_option) == TRUE){
+      stop("Invalid PROV_TERR_STATE_LOC value")
+      DBI::dbDisconnect(hydat_con)
+    }
+  }
+  
+  ## If PROV arg is supplied then simply use the STATION_NUMBER independent of PROV
+  if(is.null(PROV_TERR_STATE_LOC)){
+    STATION_NUMBER = STATION_NUMBER
+  }
+  
+  
+  ## Steps to create the station vector
+  stns = STATION_NUMBER
+  
+  ## Get all stations
+  if(is.null(stns) == TRUE && is.null(PROV_TERR_STATE_LOC) == TRUE){
     stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(PROV_TERR_STATE_LOC == prov) %>%
+      dplyr::collect() %>%
       dplyr::pull(STATION_NUMBER)
   }
   
+  if(stns[1] == "ALL"){
+    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
+      dplyr::pull(STATION_NUMBER)
+  }
   
   dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS")
   dly_levels = dplyr::filter(dly_levels, STATION_NUMBER %in% stns)
