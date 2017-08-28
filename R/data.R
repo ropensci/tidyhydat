@@ -41,7 +41,7 @@
 #' @description A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
 #' 
 #' @source HYDAT
-"stations"
+"allstations"
 
 
 #' @title DATA_SYMBOLS – DATA SYMBOLS look-up table 
