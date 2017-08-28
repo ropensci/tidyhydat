@@ -32,6 +32,9 @@ DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
           start_date = "1992-03-15",
           end_date = "1992-04-15")
 
+## ------------------------------------------------------------------------
+VERSION(hydat_path = "H:/Hydat.sqlite3")
+
 ## ----example, warning=FALSE, message=FALSE, eval=FALSE-------------------
 #  DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3")
 
@@ -47,6 +50,12 @@ DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
 
 ## ---- echo=TRUE----------------------------------------------------------
 search_name("liard")
+
+## ---- eval= FALSE, echo = TRUE-------------------------------------------
+#  file.edit("~/.Renviron")
+
+## ---- eval=FALSE, echo=TRUE----------------------------------------------
+#  hydat = "YOUR HYDAT PATH"
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  realtime_network_meta(PROV_TERR_STATE_LOC = "PE")

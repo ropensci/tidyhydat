@@ -1,3 +1,15 @@
+#tidyhydat 0.2.3
+* Remove significant redundancy in station selecting mechanism
+* Added package startup message when HYDAT is out of date  
+* Add internal allstations data
+* Added all the tables as functions or data from HYDAT
+* Made missing station ouput truncated at 10 missign stations
+
+# tidyhdyat 0.2.2
+* Adding several new tables
+* removed need for both prov and stn args
+* reduced some repetition in code
+
 # tidyhydat 0.2.1
 * added STN_REGULATION
 * tidied ANNUAL_STATISTICS

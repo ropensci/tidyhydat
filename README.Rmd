@@ -21,9 +21,6 @@ knitr::opts_chunk$set(
 ```
 
 # tidyhydat
-
-The project is very much under active development.
-
 Here is a list of what tidyhydat does:
 
 - Perform a number of common queries on the HYDAT database and returns tidy data
@@ -40,7 +37,7 @@ devtools::install_github("bcgov/tidyhydat")
 
 Then to load the package you need to using the `library` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
-```{r, eval = TRUE, echo=TRUE}
+```{r, eval = TRUE, echo=TRUE, message=FALSE}
 library(tidyhydat)
 library(dplyr)
 ```
@@ -55,24 +52,19 @@ You will need to download that file, unzip it and put it somewhere on local stor
 hydat_loc = "A very long path that points to the HYDAT sqlite3 database"
 ```
 
-These are the functions that are currently implemented to query HYDAT:
-
-- `STATIONS`
-- `DLY_FLOWS`
-- `DLY_LEVELS`
-- `ANNUAL_STATISTICS`
-- `STN_REGULATIONS`
-- `ANNUAL_INSTANT_PEAKS`
-
-This is a list of function to be implemented:
-
-- `SED_DLY_LOADS`
-- `SED_DLY_SUSCON`
-- `SED_SAMPLES_PSD`
+It will quickly get tiring manually entering `hydat_path`. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In RStudio you can open up `.Renviron` like this:
+```{r, eval= FALSE, echo = TRUE}
+file.edit("~/.Renviron")
+```
+This opens your `.Renviron` file which is most likely blank. Add this line:
+```{r, eval=FALSE, echo=TRUE}
+hydat = "YOUR HYDAT PATH"
+```
+It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for. 
 
 ## Usage
 
-This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is supplied here as a local path the database. Yours will be different. 
+This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is supplied here as a local path the database. Yours will be different or missing altogether if you set the variable in your `.Renviron` file which is highly recommend. 
 
 ```{r example1, warning=FALSE}
 DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3", STATION_NUMBER = "08LA001")
