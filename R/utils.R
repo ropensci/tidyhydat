@@ -26,13 +26,23 @@ search_name = function(search_term){
 #' @title AGENCY_LIST function
 #' 
 #' @description AGENCY_LIST – AGENCY look-up Table
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory 
+#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
+#' The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+#' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
 #' 
 #' @return A tibble of agencies
 #' 
 #' @export
 #' 
-AGENCY_LIST = function(hydat_path){
+AGENCY_LIST = function(hydat_path=NULL){
+  
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -50,15 +60,25 @@ AGENCY_LIST = function(hydat_path){
 #' @title REGIONAL_OFFICE_LIST function
 #' 
 #' @description REGIONAL_OFFICE_LIST – OFFICE look-up Table
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory  
+#' @inheritParams AGENCY_LIST
 #' @return A tibble of offices
 #' 
 #' @export
 #' 
-REGIONAL_OFFICE_LIST = function(hydat_path){
+REGIONAL_OFFICE_LIST = function(hydat_path=NULL){
+  
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  
   
   regional_office_list = dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
     collect()
@@ -72,13 +92,19 @@ REGIONAL_OFFICE_LIST = function(hydat_path){
 #' @title DATUM_LIST function
 #' 
 #' @description DATUM_LIST – DATUM look-up Table
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory 
+#' @inheritParams AGENCY_LIST
 #' 
 #' @return A tibble of DATUMS
 #' 
 #' @export
 #' 
-DATUM_LIST = function(hydat_path){
+DATUM_LIST = function(hydat_path=NULL){
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -91,4 +117,36 @@ DATUM_LIST = function(hydat_path){
   return(datum_list)
   
 }
+
+
+#' @title Version number of HYDAT
+#' @description A function to get version number of hydat
+#' 
+#' @inheritParams AGENCY_LIST
+#' 
+#' @return version number
+#' 
+#' @export
+#' 
+VERSION = function(hydat_path=NULL){
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
+  
+  ## Read on database
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  version = dplyr::tbl(hydat_con, "VERSION") %>%
+    dplyr::collect() %>%
+    dplyr::mutate(Date = lubridate::ymd_hms(Date))
+  
+  DBI::dbDisconnect(hydat_con)
+  
+  return(version)
+}
+
+
 

@@ -89,14 +89,10 @@ All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). To use
 
 - http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
 
-These are the HYDAT functions that are currently implemented:
-
-- `STATIONS`
-- `DLY_FLOWS`
-- `DLY_LEVELS`
-- `ANNUAL_STATISTICS`
-- `STN_REGULATION`
-- `ANNUAL_INSTANT_PEAKS`
+You can check your version of HYDAT with the `VERSION()` function:
+```{r}
+VERSION(hydat_path = "H:/Hydat.sqlite3")
+```
 
 These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. The `hydat_path` argument is supplied here as a local path to the database. Yours will be different:
 
@@ -124,6 +120,17 @@ You can also make use of auxiliary function in `tidyhdyat` called `search_name` 
 ```{r, echo=TRUE}
 search_name("liard")
 ```
+
+## Setting the HYDAT path. 
+It will quickly get tiring manually entering `hydat_path`. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In RStudio you can open up `.Renviron` like this:
+```{r, eval= FALSE, echo = TRUE}
+file.edit("~/.Renviron")
+```
+This opens your `.Renviron` file which is most likely blank. Add this line:
+```{r, eval=FALSE, echo=TRUE}
+hydat = "YOUR HYDAT PATH"
+```
+It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for. 
 
 This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
 
@@ -168,13 +175,13 @@ ws_test <- download_realtime_ws(STATION_NUMBER = "08LG006",
 Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `download_realtime_ws()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
 
 ### Managing your credentials in R
-Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren't shared widely. Please read [this article](http://httr.r-lib.org/articles/secrets.html) to familiarize yourself with credential management. [This section](http://httr.r-lib.org/articles/secrets.html#environment-variables) is summarized here specific to `tidyhydat`. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important value are stored the `.Renviron` file. Run the following in a console:
+Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren't shared widely. Please read [this article](http://httr.r-lib.org/articles/secrets.html) to familiarize yourself with credential management. [This section](http://httr.r-lib.org/articles/secrets.html#environment-variables) is summarized here specific to `tidyhydat`. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important values are again stored in the `.Renviron` file. Run the following in a console:
 
 ```{r, eval = FALSE}
 file.edit("~/.Renviron")
 ```
 
-This opens your `.Renviron` file which is most likely blank. This is where you enter the credentials given to you by ECCC. The code that you paste into the `.Renviron` file might look like something like this:
+This opens your `.Renviron` file which may already contain your `hydat_path`. This is also where you enter the credentials given to you by ECCC. The code that you paste into the `.Renviron` file might look like something like this:
 
 ```{r, eval=FALSE}
 ## Credentials for ECCC web service

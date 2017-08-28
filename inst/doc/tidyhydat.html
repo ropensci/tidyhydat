@@ -12,7 +12,7 @@
 
 <meta name="author" content="Sam Albers" />
 
-<meta name="date" content="2017-08-25" />
+<meta name="date" content="2017-08-28" />
 
 <title>tidyhydat</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">tidyhydat</h1>
 <h4 class="author"><em>Sam Albers</em></h4>
-<h4 class="date"><em>2017-08-25</em></h4>
+<h4 class="date"><em>2017-08-28</em></h4>
 
 
 
@@ -164,15 +164,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/" class="uri">http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/</a></li>
 </ul>
-<p>These are the HYDAT functions that are currently implemented:</p>
-<ul>
-<li><code>STATIONS</code></li>
-<li><code>DLY_FLOWS</code></li>
-<li><code>DLY_LEVELS</code></li>
-<li><code>ANNUAL_STATISTICS</code></li>
-<li><code>STN_REGULATION</code></li>
-<li><code>ANNUAL_INSTANT_PEAKS</code></li>
-</ul>
+<p>You can check your version of HYDAT with the <code>VERSION()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">VERSION</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##   Version                Date
+##     &lt;chr&gt;              &lt;dttm&gt;
+## 1     1.0 2017-07-18 11:36:03</code></pre>
 <p>These functions follow a common argument structure which can be illustrated with the <code>DLY_FLOWS()</code> function. For these functions, you can supply either the <code>STATION_NUMBER</code> and the <code>PROV_TERR_STATE_LOC</code> arguments. The <code>hydat_path</code> argument is supplied here as a local path to the database. Yours will be different:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
 <p>If you would like to query the database for two or more stations you would combine the <code>STATION_NUMBER</code> into a vector using <code>c()</code>:</p>
@@ -190,6 +187,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 1        10BE001   LIARD RIVER AT LOWER CROSSING
 ## 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
 ## 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER</code></pre>
+</div>
+<div id="setting-the-hydat-path." class="section level2">
+<h2>Setting the HYDAT path.</h2>
+<p>It will quickly get tiring manually entering <code>hydat_path</code>. R provides a means setting a hydat path once in the <code>.Renviron</code> file which is then automatically called by each HYDAT function. In RStudio you can open up <code>.Renviron</code> like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.edit</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</code></pre></div>
+<p>This opens your <code>.Renviron</code> file which is most likely blank. Add this line:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hydat =<span class="st"> &quot;YOUR HYDAT PATH&quot;</span></code></pre></div>
+<p>It is important that you name the variable <code>hydat</code> as that is name of the variable that the functions are looking for.</p>
 <p>This generally outlines the usage of the HYDAT functions within <code>tidyhydat</code>.</p>
 </div>
 <div id="real-time-functions" class="section level2">
@@ -237,9 +242,9 @@ ws_test &lt;-<span class="st"> </span><span class="kw">download_realtime_ws</spa
 <p>Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. <code>download_realtime_ws()</code> will only return data that is available. A message is returned if a particular station was not available. <code>parameters</code>, <code>start_date</code> and <code>end_date</code> fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like <code>rbind()</code>.</p>
 <div id="managing-your-credentials-in-r" class="section level3">
 <h3>Managing your credentials in R</h3>
-<p>Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren’t shared widely. Please read <a href="http://httr.r-lib.org/articles/secrets.html">this article</a> to familiarize yourself with credential management. <a href="http://httr.r-lib.org/articles/secrets.html#environment-variables">This section</a> is summarized here specific to <code>tidyhydat</code>. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important value are stored the <code>.Renviron</code> file. Run the following in a console:</p>
+<p>Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren’t shared widely. Please read <a href="http://httr.r-lib.org/articles/secrets.html">this article</a> to familiarize yourself with credential management. <a href="http://httr.r-lib.org/articles/secrets.html#environment-variables">This section</a> is summarized here specific to <code>tidyhydat</code>. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important values are again stored in the <code>.Renviron</code> file. Run the following in a console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.edit</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</code></pre></div>
-<p>This opens your <code>.Renviron</code> file which is most likely blank. This is where you enter the credentials given to you by ECCC. The code that you paste into the <code>.Renviron</code> file might look like something like this:</p>
+<p>This opens your <code>.Renviron</code> file which may already contain your <code>hydat_path</code>. This is also where you enter the credentials given to you by ECCC. The code that you paste into the <code>.Renviron</code> file might look like something like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Credentials for ECCC web service
 WS_USRNM =<span class="st"> &quot;here is the username that ECCC gave you&quot;</span>
 WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</span></code></pre></div>
@@ -253,16 +258,16 @@ WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</s
 <pre><code>## # A tibble: 17,508 x 7
 ##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
 ##             &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;
-##  1        08LG006 2017-07-26 08:00:00      FLOW  8.78  &lt;NA&gt;   &lt;NA&gt;     1
-##  2        08LG006 2017-07-26 08:05:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  3        08LG006 2017-07-26 08:10:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  4        08LG006 2017-07-26 08:15:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  5        08LG006 2017-07-26 08:20:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  6        08LG006 2017-07-26 08:25:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  7        08LG006 2017-07-26 08:30:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-##  8        08LG006 2017-07-26 08:35:00      FLOW  8.70  &lt;NA&gt;   &lt;NA&gt;     1
-##  9        08LG006 2017-07-26 08:40:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
-## 10        08LG006 2017-07-26 08:45:00      FLOW  8.74  &lt;NA&gt;   &lt;NA&gt;     1
+##  1        08LG006 2017-07-29 08:00:00      FLOW  7.72  &lt;NA&gt;   &lt;NA&gt;     1
+##  2        08LG006 2017-07-29 08:05:00      FLOW  7.72  &lt;NA&gt;   &lt;NA&gt;     1
+##  3        08LG006 2017-07-29 08:10:00      FLOW  7.72  &lt;NA&gt;   &lt;NA&gt;     1
+##  4        08LG006 2017-07-29 08:15:00      FLOW  7.72  &lt;NA&gt;   &lt;NA&gt;     1
+##  5        08LG006 2017-07-29 08:20:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
+##  6        08LG006 2017-07-29 08:25:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
+##  7        08LG006 2017-07-29 08:30:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
+##  8        08LG006 2017-07-29 08:35:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
+##  9        08LG006 2017-07-29 08:40:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
+## 10        08LG006 2017-07-29 08:45:00      FLOW  7.68  &lt;NA&gt;   &lt;NA&gt;     1
 ## # ... with 17,498 more rows</code></pre>
 </div>
 <div id="compare-download_realtime_ws-and-download_realtime_dd" class="section level2">

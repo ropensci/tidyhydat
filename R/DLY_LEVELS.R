@@ -33,7 +33,7 @@
 
 
 
-DLY_LEVELS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   
   if(start_date == "ALL" & end_date == "ALL"){
     message("No start and end dates specified. All dates available will be returned.")
@@ -61,57 +61,28 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = 
     }
   }
   
-  if(missing(hydat_path))
-    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
+  
   
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  ## Only possible values for PROV_TERR_STATE_LOC
-  stn_option = dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
-    dplyr::pull(PROV_TERR_STATE_LOC)
+  ## Determine which stations we are querying 
+  stns = station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
-  ## If not STATION_NUMBER arg is supplied then this controls how to handle the PROV arg
-  if((is.null(STATION_NUMBER) & !is.null(PROV_TERR_STATE_LOC))){
-    STATION_NUMBER = "ALL" ## All stations
-    prov = PROV_TERR_STATE_LOC ## Prov info
-    
-    if(any(!prov %in% stn_option) == TRUE){
-      stop("Invalid PROV_TERR_STATE_LOC value")
-      DBI::dbDisconnect(hydat_con)
-    }
-  }
-  
-  ## If PROV arg is supplied then simply use the STATION_NUMBER independent of PROV
-  if(is.null(PROV_TERR_STATE_LOC)){
-    STATION_NUMBER = STATION_NUMBER
-  }
-  
-  
-  ## Steps to create the station vector
-  stns = STATION_NUMBER
-  
-  ## Get all stations
-  if(is.null(stns) == TRUE && is.null(PROV_TERR_STATE_LOC) == TRUE){
-    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::collect() %>%
-      dplyr::pull(STATION_NUMBER)
-  }
-  
-  if(stns[1] == "ALL"){
-    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
-      dplyr::pull(STATION_NUMBER)
-  }
-  
+  ## Data manipulations
   dly_levels = dplyr::tbl(hydat_con, "DLY_LEVELS")
   dly_levels = dplyr::filter(dly_levels, STATION_NUMBER %in% stns)
   
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
     dly_levels = dplyr::filter(dly_levels, YEAR >= start_year &
-                                YEAR <= end_year)
+                                 YEAR <= end_year)
   }
   
   dly_levels = dplyr::select(dly_levels, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LEVEL"))
@@ -144,8 +115,12 @@ DLY_LEVELS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = 
   ## What stations were missed?
   differ = setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
   if( length(differ) !=0 ){
-    message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-    message("Check station number typos or if it is a valid station in the network")
+    if( length(differ) <= 10) {
+      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
+      message("Check station number typos or if it is a valid station in the network") }
+    else {
+      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
+    }
   } else{
     message("All station successfully retrieved")
   }

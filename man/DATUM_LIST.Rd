@@ -4,10 +4,12 @@
 \alias{DATUM_LIST}
 \title{DATUM_LIST function}
 \usage{
-DATUM_LIST(hydat_path)
+DATUM_LIST(hydat_path = NULL)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
+The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 }
 \value{
 A tibble of DATUMS

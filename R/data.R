@@ -30,10 +30,19 @@
 
 #' @title A tibble of BC stations and their names
 #'
-#' @description A shorthand to avoid having always call \code{STATIONS}
+#' @description A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
 #' 
 #' @source HYDAT
 "bcstations"
+
+
+#' @title A tibble of all Canadian Stations stations and their names.
+#'
+#' @description A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+#' 
+#' @source HYDAT
+"allstations"
+
 
 #' @title DATA_SYMBOLS – DATA SYMBOLS look-up table 
 #' 
