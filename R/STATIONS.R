@@ -17,7 +17,9 @@
 #' @description Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
 #' 
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory 
+#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
+#' The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+#' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
 #' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
 #' is returned. 
 #' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
@@ -37,95 +39,65 @@
 #' 
 #' @export
 
-STATIONS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
+STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   
   #if(STATION_NUMBER == "ALL" | PROV_TERR_STATE_LOC == "ALL"){
   #  stop("Specifying ALL for STATION_NUMBER OR PROV_TERR_STATE_LOC is deprecrated. See examples for usage.")
   #}
   
-  if(missing(hydat_path))
-    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
+  
   
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  ## Only possible values for PROV_TERR_STATE_LOC
-  stn_option = dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
-    dplyr::pull(PROV_TERR_STATE_LOC)
-  
-  ## If not STATION_NUMBER arg is supplied then this controls how to handle the PROV arg
-  if((is.null(STATION_NUMBER) & !is.null(PROV_TERR_STATE_LOC))){
-    STATION_NUMBER = "ALL" ## All stations
-    prov = PROV_TERR_STATE_LOC ## Prov info
+  ## Determine which stations we are querying 
+  stns = station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
     
-    if(any(!prov %in% stn_option) == TRUE){
-      stop("Invalid PROV_TERR_STATE_LOC value")
-      DBI::dbDisconnect(hydat_con)
-    }
-  }
-  
-  ## If PROV arg is supplied then simply use the STATION_NUMBER independent of PROV
-  if(is.null(PROV_TERR_STATE_LOC)){
-    STATION_NUMBER = STATION_NUMBER
-  }
-
-
-    ## Steps to create the station vector
-    stns = STATION_NUMBER
-    
-    ## Get all stations
-    if(is.null(stns) == TRUE && is.null(PROV_TERR_STATE_LOC) == TRUE){
-      stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-        dplyr::collect() %>%
-        dplyr::pull(STATION_NUMBER)
-    }
-    
-    if(stns[1] == "ALL"){
-      stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-        dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
-        dplyr::pull(STATION_NUMBER)
-    }
-    
-    ## Create the dataframe to return
-    df = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(STATION_NUMBER %in% stns) %>%
-      dplyr::collect() %>%
-      dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
-      dplyr::mutate(
-        HYD_STATUS = dplyr::case_when(
-          HYD_STATUS == "D" ~ "DISCONTINUED",
-          HYD_STATUS == "A" ~ "ACTIVE",
-          TRUE ~ "NA"
-        ),
-        SED_STATUS = dplyr::case_when(
-          SED_STATUS == "D" ~ "DISCONTINUED",
-          SED_STATUS == "A" ~ "ACTIVE",
-          TRUE ~ "NA"
-        ),
-        RHBN = dplyr::case_when(
-          RHBN == "1" ~ "Yes",
-          RHBN == "0" ~ "No",
-          TRUE ~ "NA"
-        ),
-        REAL_TIME = dplyr::case_when(
-          REAL_TIME == "1" ~ "Yes",
-          REAL_TIME == "0" ~ "No",
-          TRUE ~ "NA"
-        )
+  ## Create the dataframe to return
+  df = dplyr::tbl(hydat_con, "STATIONS") %>%
+    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
+    dplyr::mutate(
+      HYD_STATUS = dplyr::case_when(
+        HYD_STATUS == "D" ~ "DISCONTINUED",
+        HYD_STATUS == "A" ~ "ACTIVE",
+        TRUE ~ "NA"
+      ),
+      SED_STATUS = dplyr::case_when(
+        SED_STATUS == "D" ~ "DISCONTINUED",
+        SED_STATUS == "A" ~ "ACTIVE",
+        TRUE ~ "NA"
+      ),
+      RHBN = dplyr::case_when(
+        RHBN == "1" ~ "Yes",
+        RHBN == "0" ~ "No",
+        TRUE ~ "NA"
+      ),
+      REAL_TIME = dplyr::case_when(
+        REAL_TIME == "1" ~ "Yes",
+        REAL_TIME == "0" ~ "No",
+        TRUE ~ "NA"
       )
-    DBI::dbDisconnect(hydat_con)
-    
-    ## What stations were missed?
-    differ = setdiff(unique(stns), unique(df$STATION_NUMBER))
-    if( length(differ) !=0 ){
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    } else{
-      message("All station successfully retrieved")
-    }
-    
-    return(df)
+    )
+  DBI::dbDisconnect(hydat_con)
+  
+  ## What stations were missed?
+  differ = setdiff(unique(stns), unique(df$STATION_NUMBER))
+  if( length(differ) !=0 ){
+    message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
+    message("Check station number typos or if it is a valid station in the network")
+  } else{
+    message("All station successfully retrieved")
+  }
+  
+  return(df)
   
     
   }

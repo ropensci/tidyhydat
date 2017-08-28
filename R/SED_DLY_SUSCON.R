@@ -35,7 +35,7 @@
 
 
 
-SED_DLY_SUSCON <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+SED_DLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   
   if(start_date == "ALL" & end_date == "ALL"){
     message("No start and end dates specified. All dates available will be returned.")
@@ -63,52 +63,21 @@ SED_DLY_SUSCON <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
     }
   }
   
+  if(is.null(hydat_path)){
+    hydat_path = Sys.getenv("hydat")
+    if(is.na(hydat_path)){
+      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+    }
+  }
   
-  if(missing(hydat_path))
-    stop("No Hydat.sqlite3 set. Download the hydat database from here: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/")
   
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  ## Only possible values for PROV_TERR_STATE_LOC
-  stn_option = dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
-    dplyr::pull(PROV_TERR_STATE_LOC)
+  ## Determine which stations we are querying 
+  stns = station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
-  ## If not STATION_NUMBER arg is supplied then this controls how to handle the PROV arg
-  if((is.null(STATION_NUMBER) & !is.null(PROV_TERR_STATE_LOC))){
-    STATION_NUMBER = "ALL" ## All stations
-    prov = PROV_TERR_STATE_LOC ## Prov info
-    
-    if(any(!prov %in% stn_option) == TRUE){
-      stop("Invalid PROV_TERR_STATE_LOC value")
-      DBI::dbDisconnect(hydat_con)
-    }
-  }
-  
-  ## If PROV arg is supplied then simply use the STATION_NUMBER independent of PROV
-  if(is.null(PROV_TERR_STATE_LOC)){
-    STATION_NUMBER = STATION_NUMBER
-  }
-  
-  
-  ## Steps to create the station vector
-  stns = STATION_NUMBER
-  
-  ## Get all stations
-  if(is.null(stns) == TRUE && is.null(PROV_TERR_STATE_LOC) == TRUE){
-    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::collect() %>%
-      dplyr::pull(STATION_NUMBER)
-  }
-  
-  if(stns[1] == "ALL"){
-    stns = dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
-      dplyr::pull(STATION_NUMBER)
-  }
-  
-  
+  ## Data manipulations
   sed_dly_suscon = dplyr::tbl(hydat_con, "SED_DLY_SUSCON")
   sed_dly_suscon = dplyr::filter(sed_dly_suscon, STATION_NUMBER %in% stns)
   

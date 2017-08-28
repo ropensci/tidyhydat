@@ -4,7 +4,7 @@
 \alias{STN_REGULATION}
 \title{Extract station regulation from the HYDAT database}
 \usage{
-STN_REGULATION(hydat_path, STATION_NUMBER = NULL,
+STN_REGULATION(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL)
 }
 \arguments{

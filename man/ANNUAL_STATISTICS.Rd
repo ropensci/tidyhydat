@@ -4,7 +4,7 @@
 \alias{ANNUAL_STATISTICS}
 \title{Extract daily flows information from the HYDAT database}
 \usage{
-ANNUAL_STATISTICS(hydat_path, STATION_NUMBER = NULL,
+ANNUAL_STATISTICS(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{

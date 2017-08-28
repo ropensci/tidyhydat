@@ -4,7 +4,7 @@
 \alias{SED_DLY_SUSCON}
 \title{Extract daily suspended sediment concentration information from the HYDAT database}
 \usage{
-SED_DLY_SUSCON(hydat_path, STATION_NUMBER = NULL,
+SED_DLY_SUSCON(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL")
 }
 \arguments{

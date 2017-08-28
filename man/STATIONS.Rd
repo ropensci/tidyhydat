@@ -4,7 +4,8 @@
 \alias{STATIONS}
 \title{Extract station information from the HYDAT database}
 \usage{
-STATIONS(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL)
+STATIONS(hydat_path = NULL, STATION_NUMBER = NULL,
+  PROV_TERR_STATE_LOC = NULL)
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory}
