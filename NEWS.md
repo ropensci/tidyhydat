@@ -1,5 +1,5 @@
 #tidyhydat 0.2.4
-* download_realtime_ws can now accept stations from multiple provinces or simply select multiple provinces
+* download_realtime_dd can now accept stations from multiple provinces or simply select multiple provinces
 * better error messages for get_ws_token and download_realtime_ws
 * All functions that previously accepted STATION_NUMBER == "ALL" now throw an error. 
 * Added function to download hydat
