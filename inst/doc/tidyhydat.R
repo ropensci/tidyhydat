@@ -32,6 +32,9 @@ DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
           start_date = "1992-03-15",
           end_date = "1992-04-15")
 
+## ---- eval=FALSE---------------------------------------------------------
+#  download_hydat(hydat_path = "H:/")
+
 ## ------------------------------------------------------------------------
 VERSION(hydat_path = "H:/Hydat.sqlite3")
 
@@ -87,5 +90,8 @@ param_id
 #  WS_PWD = "here is the password that ECCC gave you"
 
 ## ------------------------------------------------------------------------
-download_realtime_dd(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
+download_realtime_dd(STATION_NUMBER = "08LG006")
+
+## ------------------------------------------------------------------------
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
 

@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat"
 author: "Sam Albers"
-date: "2017-08-28"
+date: "2017-08-29"
 #output:
 #  md_document:
 #    variant: markdown_github
@@ -116,6 +116,12 @@ There have also been recent calls to use R more broadly in the field of hydrolog
 All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). To use any of these functions you will need a locally stored copy of the HYDAT database which can be downloaded here:
 
 - http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
+
+`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+
+```r
+download_hydat(hydat_path = "H:/")
+```
 
 You can check your version of HYDAT with the `VERSION()` function:
 
@@ -266,29 +272,52 @@ WS_PWD = "here is the password that ECCC gave you"
 Now these values can be accessed within an R session without giving away your secrets (Using `Sys.getenv()`). Just remember to call them directly and don't assign them to a variable. 
 
 ## MSC datamart - `download_realtime_dd()`
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest. Note that in contrast to `download_realtime_ws()` but similar to `DLY_FLOWS()`, we need to supply both the station and the province that we are interested in:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
 
 ```r
-download_realtime_dd(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
+download_realtime_dd(STATION_NUMBER = "08LG006")
 ```
 
 ```
-## # A tibble: 17,508 x 7
-##    STATION_NUMBER                Date Parameter Value Grade Symbol  Code
-##             <chr>              <dttm>     <chr> <dbl> <chr>  <chr> <chr>
-##  1        08LG006 2017-07-29 08:00:00      FLOW  7.72  <NA>   <NA>     1
-##  2        08LG006 2017-07-29 08:05:00      FLOW  7.72  <NA>   <NA>     1
-##  3        08LG006 2017-07-29 08:10:00      FLOW  7.72  <NA>   <NA>     1
-##  4        08LG006 2017-07-29 08:15:00      FLOW  7.72  <NA>   <NA>     1
-##  5        08LG006 2017-07-29 08:20:00      FLOW  7.68  <NA>   <NA>     1
-##  6        08LG006 2017-07-29 08:25:00      FLOW  7.68  <NA>   <NA>     1
-##  7        08LG006 2017-07-29 08:30:00      FLOW  7.68  <NA>   <NA>     1
-##  8        08LG006 2017-07-29 08:35:00      FLOW  7.68  <NA>   <NA>     1
-##  9        08LG006 2017-07-29 08:40:00      FLOW  7.68  <NA>   <NA>     1
-## 10        08LG006 2017-07-29 08:45:00      FLOW  7.68  <NA>   <NA>     1
-## # ... with 17,498 more rows
+## # A tibble: 17,508 x 8
+##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
+##             <chr>               <chr>              <dttm>     <chr> <dbl>
+##  1        08LG006                  BC 2017-07-30 08:00:00      FLOW  7.41
+##  2        08LG006                  BC 2017-07-30 08:05:00      FLOW  7.41
+##  3        08LG006                  BC 2017-07-30 08:10:00      FLOW  7.41
+##  4        08LG006                  BC 2017-07-30 08:15:00      FLOW  7.38
+##  5        08LG006                  BC 2017-07-30 08:20:00      FLOW  7.38
+##  6        08LG006                  BC 2017-07-30 08:25:00      FLOW  7.38
+##  7        08LG006                  BC 2017-07-30 08:30:00      FLOW  7.38
+##  8        08LG006                  BC 2017-07-30 08:35:00      FLOW  7.38
+##  9        08LG006                  BC 2017-07-30 08:40:00      FLOW  7.38
+## 10        08LG006                  BC 2017-07-30 08:45:00      FLOW  7.38
+## # ... with 17,498 more rows, and 3 more variables: Grade <chr>,
+## #   Symbol <chr>, Code <chr>
+```
+Another option is to provide simply the province as an argument and download all stations from that province:
+
+```r
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
 ```
 
+```
+## # A tibble: 77,824 x 8
+##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
+##             <chr>               <chr>              <dttm>     <chr> <dbl>
+##  1        01CD005                  PE 2017-07-30 04:00:00      FLOW    NA
+##  2        01CD005                  PE 2017-07-30 04:05:00      FLOW    NA
+##  3        01CD005                  PE 2017-07-30 04:10:00      FLOW    NA
+##  4        01CD005                  PE 2017-07-30 04:15:00      FLOW    NA
+##  5        01CD005                  PE 2017-07-30 04:20:00      FLOW    NA
+##  6        01CD005                  PE 2017-07-30 04:25:00      FLOW    NA
+##  7        01CD005                  PE 2017-07-30 04:30:00      FLOW    NA
+##  8        01CD005                  PE 2017-07-30 04:35:00      FLOW    NA
+##  9        01CD005                  PE 2017-07-30 04:40:00      FLOW    NA
+## 10        01CD005                  PE 2017-07-30 04:45:00      FLOW    NA
+## # ... with 77,814 more rows, and 3 more variables: Grade <chr>,
+## #   Symbol <chr>, Code <chr>
+```
 
 ## Compare `download_realtime_ws` and `download_realtime_dd`
 `tidyhydat` provides two methods to download real-time data. `download_realtime_ws()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `download_realtime_ws()` has several difference to `download_realtime_dd()`. These include:

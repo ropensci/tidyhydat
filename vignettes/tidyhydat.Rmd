@@ -89,6 +89,11 @@ All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). To use
 
 - http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
 
+`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+```{r, eval=FALSE}
+download_hydat(hydat_path = "H:/")
+```
+
 You can check your version of HYDAT with the `VERSION()` function:
 ```{r}
 VERSION(hydat_path = "H:/Hydat.sqlite3")
@@ -192,11 +197,14 @@ WS_PWD = "here is the password that ECCC gave you"
 Now these values can be accessed within an R session without giving away your secrets (Using `Sys.getenv()`). Just remember to call them directly and don't assign them to a variable. 
 
 ## MSC datamart - `download_realtime_dd()`
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest. Note that in contrast to `download_realtime_ws()` but similar to `DLY_FLOWS()`, we need to supply both the station and the province that we are interested in:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r}
-download_realtime_dd(STATION_NUMBER = "08LG006", PROV_TERR_STATE_LOC = "BC")
+download_realtime_dd(STATION_NUMBER = "08LG006")
 ```
-
+Another option is to provide simply the province as an argument and download all stations from that province:
+```{r}
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+```
 
 ## Compare `download_realtime_ws` and `download_realtime_dd`
 `tidyhydat` provides two methods to download real-time data. `download_realtime_ws()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `download_realtime_ws()` has several difference to `download_realtime_dd()`. These include:

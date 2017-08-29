@@ -47,6 +47,11 @@ To use most of the `tidyhydat` package you will need the most recent version of 
 
 - http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
 
+`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+```{r, eval=FALSE}
+download_hydat(hydat_path = "H:/")
+```
+
 You will need to download that file, unzip it and put it somewhere on local storage. The path to the sqlite3 must be specified within each function that uses HYDAT. If the path is very long it may be useful to store it as an object with a smaller name like this:
 ```{r eval = FALSE}
 hydat_loc = "A very long path that points to the HYDAT sqlite3 database"
@@ -64,6 +69,7 @@ It is important that you name the variable `hydat` as that is name of the variab
 
 ## Usage
 
+### HYDAT
 This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is supplied here as a local path the database. Yours will be different or missing altogether if you set the variable in your `.Renviron` file which is highly recommend. 
 
 ```{r example1, warning=FALSE}
@@ -80,6 +86,18 @@ You can also make use of auxiliary function in `tidyhdyat` called `search_name` 
 ```{r, echo=TRUE}
 search_name("liard")
 ```
+
+### Real-time
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+```{r}
+download_realtime_dd(STATION_NUMBER = "08LG006")
+```
+Another option is to provide simply the province as an argument and download all stations from that province:
+```{r}
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+```
+Additionally `download_realtime_ws()` provides another means of acquiring real time data.
+
 
 ## Project Status
 
