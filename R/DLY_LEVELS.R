@@ -35,6 +35,10 @@
 
 DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   
+  if(!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL"){
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?DLY_LEVELS for examples.")
+  }
+  
   if(start_date == "ALL" & end_date == "ALL"){
     message("No start and end dates specified. All dates available will be returned.")
   } else {

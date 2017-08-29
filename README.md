@@ -37,6 +37,12 @@ To use most of the `tidyhydat` package you will need the most recent version of 
 
 -   <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>
 
+`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+
+``` r
+download_hydat(hydat_path = "H:/")
+```
+
 You will need to download that file, unzip it and put it somewhere on local storage. The path to the sqlite3 must be specified within each function that uses HYDAT. If the path is very long it may be useful to store it as an object with a smaller name like this:
 
 ``` r
@@ -59,6 +65,8 @@ It is important that you name the variable `hydat` as that is name of the variab
 
 Usage
 -----
+
+### HYDAT
 
 This is a basic example of `tidyhydat` usage. All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is supplied here as a local path the database. Yours will be different or missing altogether if you set the variable in your `.Renviron` file which is highly recommend.
 
@@ -116,6 +124,52 @@ search_name("liard")
 #> 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
 #> 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER
 ```
+
+### Real-time
+
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+
+``` r
+download_realtime_dd(STATION_NUMBER = "08LG006")
+#> # A tibble: 17,508 x 8
+#>    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
+#>             <chr>               <chr>              <dttm>     <chr> <dbl>
+#>  1        08LG006                  BC 2017-07-30 08:00:00      FLOW  7.41
+#>  2        08LG006                  BC 2017-07-30 08:05:00      FLOW  7.41
+#>  3        08LG006                  BC 2017-07-30 08:10:00      FLOW  7.41
+#>  4        08LG006                  BC 2017-07-30 08:15:00      FLOW  7.38
+#>  5        08LG006                  BC 2017-07-30 08:20:00      FLOW  7.38
+#>  6        08LG006                  BC 2017-07-30 08:25:00      FLOW  7.38
+#>  7        08LG006                  BC 2017-07-30 08:30:00      FLOW  7.38
+#>  8        08LG006                  BC 2017-07-30 08:35:00      FLOW  7.38
+#>  9        08LG006                  BC 2017-07-30 08:40:00      FLOW  7.38
+#> 10        08LG006                  BC 2017-07-30 08:45:00      FLOW  7.38
+#> # ... with 17,498 more rows, and 3 more variables: Grade <chr>,
+#> #   Symbol <chr>, Code <chr>
+```
+
+Another option is to provide simply the province as an argument and download all stations from that province:
+
+``` r
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+#> # A tibble: 77,824 x 8
+#>    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
+#>             <chr>               <chr>              <dttm>     <chr> <dbl>
+#>  1        01CD005                  PE 2017-07-30 04:00:00      FLOW    NA
+#>  2        01CD005                  PE 2017-07-30 04:05:00      FLOW    NA
+#>  3        01CD005                  PE 2017-07-30 04:10:00      FLOW    NA
+#>  4        01CD005                  PE 2017-07-30 04:15:00      FLOW    NA
+#>  5        01CD005                  PE 2017-07-30 04:20:00      FLOW    NA
+#>  6        01CD005                  PE 2017-07-30 04:25:00      FLOW    NA
+#>  7        01CD005                  PE 2017-07-30 04:30:00      FLOW    NA
+#>  8        01CD005                  PE 2017-07-30 04:35:00      FLOW    NA
+#>  9        01CD005                  PE 2017-07-30 04:40:00      FLOW    NA
+#> 10        01CD005                  PE 2017-07-30 04:45:00      FLOW    NA
+#> # ... with 77,814 more rows, and 3 more variables: Grade <chr>,
+#> #   Symbol <chr>, Code <chr>
+```
+
+Additionally `download_realtime_ws()` provides another means of acquiring real time data.
 
 Project Status
 --------------

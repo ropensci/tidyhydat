@@ -4,12 +4,14 @@
 \alias{download_realtime_dd}
 \title{Download a tibble of realtime discharge data from the MSC datamart}
 \usage{
-download_realtime_dd(STATION_NUMBER, PROV_TERR_STATE_LOC)
+download_realtime_dd(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. No default. Can also take the "ALL" argument.}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. See also for argument options.}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+is returned. See \code{unique(realtime_network_meta()$PROV_TERR_STATE_LOC)}}
 }
 \value{
 A tibble of water flow and level values
@@ -17,14 +19,14 @@ A tibble of water flow and level values
 \description{
 Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize 
 downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution 
-daily averages are used. Currently, if a station does not exist or is not found, no data is returned. Both the province and the station number 
-should be specified.
+daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
 }
 \examples{
-download_realtime_dd(STATION_NUMBER="08MF005", PROV_TERR_STATE_LOC="BC")
+## Download from multiple provinces
+download_realtime_dd(STATION_NUMBER=c("01CD005","08MF005"))
 
 # To download all stations in Prince Edward Island:
-download_realtime_dd(STATION_NUMBER = "ALL", PROV_TERR_STATE_LOC = "PE")
+download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
 
 }
 \seealso{
