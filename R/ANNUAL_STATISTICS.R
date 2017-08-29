@@ -37,6 +37,10 @@
 ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_STATE_LOC=NULL, 
                               start_year = "ALL", end_year = "ALL") {
   
+  if(!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL"){
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?ANNUAL_STATISTICS for examples.")
+  }
+  
   if(is.null(hydat_path)){
     hydat_path = Sys.getenv("hydat")
     if(is.na(hydat_path)){

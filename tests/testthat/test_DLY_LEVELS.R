@@ -41,3 +41,8 @@ test_that("DLY_LEVELS correctly parses leaps year",{
                             start_date = "1988-02-29" ,
                             end_date = "1988-02-29"), regexp = NA)
 })
+
+
+test_that("When DLY_LEVELS is ALL there is an error",{
+  expect_error(DLY_LEVELS(STATION_NUMBER = "ALL"))
+})
