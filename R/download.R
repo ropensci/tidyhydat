@@ -355,6 +355,12 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,
   
   ## Turn it into a tibble
   csv_df = httr::content(get_ws)
+  
+  ## Check here to see if csv_df has any data in it
+  if(nrow(csv_df) == 0){
+    stop("No exists for this station query")
+  }
+  
   ## Rename columns to reflect tidyhydat naming
   csv_df = dplyr::rename(csv_df, STATION_NUMBER = ID)
   csv_df = dplyr::left_join(csv_df, 
@@ -364,7 +370,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46,16,52,47,8,5,
   csv_df = dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit, Grade, Symbol, Approval, Parameter, Code)
   
   ## What stations were missed?
-  differ = setdiff(unique(stns), unique(csv_df$STATION_NUMBER))
+  differ = setdiff(unique(STATION_NUMBER), unique(csv_df$STATION_NUMBER))
   if( length(differ) !=0 ){
     if( length(differ) <= 10) {
       message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
