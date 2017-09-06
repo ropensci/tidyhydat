@@ -4,7 +4,7 @@
 \name{bcstations}
 \alias{bcstations}
 \title{A tibble of BC stations and their names}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2293 rows and 2 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2280 rows and 2 columns.}
 \source{
 HYDAT
 }
