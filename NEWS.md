@@ -1,4 +1,9 @@
-# tidyhdyat 0.2.5
+# tidyhydat 0.2.6
+* using `styler` package to format code to tidyverse style guide
+* added `PROV_TERR_STATE_LOC` to `allstations`
+* added `search_number` function
+
+# tidyhydat 0.2.5
 * fixed minor bug in download_realtime_ws so that better error message is outputted when no data is returned
 
 # tidyhydat 0.2.4
