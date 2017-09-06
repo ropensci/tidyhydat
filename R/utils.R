@@ -1,10 +1,15 @@
-#' @title A search function for hydrometric station name
+#' A search function for hydrometric station name or number
 #'
-#' @description Use this search function when you only know the partial station name.
+#' Use this search function when you only know the partial station name or want to search.
 #'
 #' @param search_term Only accepts one word.
 #'
 #' @return A tibble of stations that match the \code{search_term}
+#' 
+#' @examples 
+#' search_name("Cowichan")
+#' 
+#' search_number("08HF")
 #'
 #'
 #' @export
@@ -12,10 +17,21 @@
 
 
 search_name <- function(search_term) {
-  results <- tidyhydat::bcstations[grepl(toupper(search_term), tidyhydat::bcstations$STATION_NAME), ]
+  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NAME), ]
 
   if (nrow(results) == 0) {
     message("No station names match this criteria!")
+  } else {
+    return(results)
+  }
+}
+
+#' @rdname search_name
+search_number <- function(search_term) {
+  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NUMBER), ]
+  
+  if (nrow(results) == 0) {
+    message("No station number match this criteria!")
   } else {
     return(results)
   }
