@@ -7,18 +7,18 @@
 download_realtime_dd(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
 is returned. See \code{unique(realtime_network_meta()$PROV_TERR_STATE_LOC)}}
 }
 \value{
 A tibble of water flow and level values
 }
 \description{
-Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize 
-downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution 
+Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize
+downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution
 daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
 }
 \examples{

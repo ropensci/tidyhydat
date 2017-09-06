@@ -15,12 +15,12 @@ get_ws_token(username, password)
 The token as a string that should be supplied the \code{download_ws_realtime} function.
 }
 \description{
-Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes. 
+Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes.
 You can only have 5 tokens out at once.
 }
 \details{
-The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console. 
-Rather these credentials should be stored in your \code{.Renviron} file. The .Renviron file can edited using \code{file.edit("~/.Renviron")}. 
-In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables 
+The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.
+Rather these credentials should be stored in your \code{.Renviron} file. The .Renviron file can edited using \code{file.edit("~/.Renviron")}.
+In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables
 and then call those environmental variables in your R session. See \code{?download_ws} for examples.
 }

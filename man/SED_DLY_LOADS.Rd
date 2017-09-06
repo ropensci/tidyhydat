@@ -8,14 +8,14 @@ SED_DLY_LOADS(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL")
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
+The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
 is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
 
 \item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
@@ -26,7 +26,7 @@ is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TER
 A tibble of daily suspended sediment concentration (mg/l)
 }
 \description{
-Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and 
+Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
 \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
 That is a large vector for \code{SED_DLY_LOADS}.
 }
