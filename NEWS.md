@@ -5,6 +5,7 @@
 * added `MONTHLY` functions
 * created function families
 * added `on.exit()` to internal code; a better way to disconnect
+* Updated documentation
 
 # tidyhydat 0.2.5
 * fixed minor bug in download_realtime_ws so that better error message is outputted when no data is returned
