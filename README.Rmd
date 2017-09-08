@@ -4,11 +4,7 @@ output:
     variant: markdown_github
 ---
 
-```{r echo=FALSE, results='asis'}
-## Insert 'inspiration', 'exploration', or 'delivery'
-bcgovr::devex_badge('exploration')
-```
-[![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
+<div id="devex-badge"><a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a></div> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -21,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 # tidyhydat
-Here is a list of what tidyhydat does:
+Here is a list of what `tidyhydat` does:
 
 - Perform a number of common queries on the HYDAT database and returns tidy data
 - Keep functions are low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data. 
