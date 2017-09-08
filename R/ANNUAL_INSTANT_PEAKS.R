@@ -45,6 +45,8 @@ ANNUAL_INSTANT_PEAKS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_ST
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -78,8 +80,6 @@ ANNUAL_INSTANT_PEAKS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_ST
   aip <- dplyr::select(aip, STATION_NUMBER, DATA_TYPE_EN, YEAR, PEAK_CODE, PRECISION_CODE, MONTH, DAY, HOUR, MINUTE, TIME_ZONE, PEAK, SYMBOL_EN) %>%
     dplyr::rename(Parameter = DATA_TYPE_EN, Symbol = SYMBOL_EN, Value = PEAK)
 
-  DBI::dbDisconnect(hydat_con)
-
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(aip$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -94,5 +94,5 @@ ANNUAL_INSTANT_PEAKS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_ST
     message("All station successfully retrieved")
   }
 
-  return(aip)
+  aip
 }

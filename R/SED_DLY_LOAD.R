@@ -72,6 +72,8 @@ SED_DLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -111,7 +113,6 @@ SED_DLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
 
   colnames(sed_dly_loads) <- c("STATION_NUMBER", "Date", "Parameter", "Value")
 
-  DBI::dbDisconnect(hydat_con)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
@@ -128,5 +129,5 @@ SED_DLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
   }
 
 
-  return(sed_dly_loads)
+  sed_dly_loads
 }

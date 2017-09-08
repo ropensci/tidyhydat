@@ -11,7 +11,6 @@
 #' 
 #' search_number("08HF")
 #'
-#'
 #' @export
 
 
@@ -22,18 +21,20 @@ search_name <- function(search_term) {
   if (nrow(results) == 0) {
     message("No station names match this criteria!")
   } else {
-    return(results)
+    results
   }
 }
 
 #' @rdname search_name
+#' @export
+#' 
 search_number <- function(search_term) {
   results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NUMBER), ]
   
   if (nrow(results) == 0) {
     message("No station number match this criteria!")
   } else {
-    return(results)
+    results
   }
 }
 
@@ -59,13 +60,13 @@ AGENCY_LIST <- function(hydat_path=NULL) {
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
     collect()
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(agency_list)
+  agency_list
 }
 
 
@@ -88,15 +89,15 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
 
 
   regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
     collect()
-
-  DBI::dbDisconnect(hydat_con)
-
-  return(regional_office_list)
+  
+  regional_office_list
 }
 
 #' @title DATUM_LIST function
@@ -118,13 +119,13 @@ DATUM_LIST <- function(hydat_path=NULL) {
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
     collect()
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(datum_list)
+  datum_list
 }
 
 
@@ -147,12 +148,12 @@ VERSION <- function(hydat_path=NULL) {
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%
     dplyr::mutate(Date = lubridate::ymd_hms(Date))
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(version)
+  version
 }

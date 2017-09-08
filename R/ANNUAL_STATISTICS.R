@@ -50,6 +50,8 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -100,8 +102,6 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
   colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")
 
 
-  DBI::dbDisconnect(hydat_con)
-
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -116,5 +116,5 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
     message("All station successfully retrieved")
   }
 
-  return(annual_statistics)
+  annual_statistics
 }

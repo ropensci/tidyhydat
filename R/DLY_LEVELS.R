@@ -74,6 +74,8 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -113,7 +115,6 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
 
   colnames(dly_levels) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
 
-  DBI::dbDisconnect(hydat_con)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
@@ -129,5 +130,5 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
     message("All station successfully retrieved")
   }
 
-  return(dly_levels)
+  dly_levels
 }

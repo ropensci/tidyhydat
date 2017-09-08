@@ -76,6 +76,8 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -116,7 +118,6 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
 
   colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
 
-  DBI::dbDisconnect(hydat_con)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
@@ -133,5 +134,5 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
   }
 
 
-  return(dly_flows)
+  dly_flows
 }

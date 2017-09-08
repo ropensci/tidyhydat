@@ -22,7 +22,6 @@ station_choice <- function(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC) {
     prov <- PROV_TERR_STATE_LOC ## Prov info
 
     if (any(!prov %in% stn_option) == TRUE) {
-      DBI::dbDisconnect(hydat_con)
       stop("Invalid PROV_TERR_STATE_LOC value")
     }
   }
@@ -48,5 +47,5 @@ station_choice <- function(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC) {
       dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
       dplyr::pull(STATION_NUMBER)
   }
-  return(stns)
+  stns
 }

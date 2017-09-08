@@ -166,7 +166,7 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
     output_c <- dplyr::bind_rows(output, output_c)
   }
-  return(output_c)
+  output_c
 }
 
 
@@ -210,7 +210,7 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
   }
 
   net_tibble <- dplyr::filter(net_tibble, PROV_TERR_STATE_LOC %in% prov)
-  return(net_tibble)
+  net_tibble
 }
 
 #' @title Request a token from the Environment and Climate Change Canada
@@ -256,7 +256,7 @@ get_ws_token <- function(username, password) {
   ## Extract token from POST
   token <- httr::content(r, "text", encoding = "ISO-8859-1")
 
-  return(token)
+  token
 }
 
 #' @title Download realtime data from the ECCC web service
@@ -372,7 +372,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   }
 
   ## Return it
-  return(csv_df)
+  csv_df
 
   ## Need to output a warning to see if any stations weren't retrieved
 }

@@ -72,6 +72,8 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -106,8 +108,6 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   )
 
 
-  DBI::dbDisconnect(hydat_con)
-
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_samples$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -122,5 +122,5 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
     message("All station successfully retrieved")
   }
 
-  return(sed_samples)
+  sed_samples
 }

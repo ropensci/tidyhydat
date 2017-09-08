@@ -54,6 +54,8 @@ STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -85,7 +87,6 @@ STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC
         TRUE ~ "NA"
       )
     )
-  DBI::dbDisconnect(hydat_con)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(df$STATION_NUMBER))
@@ -101,5 +102,5 @@ STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC
     message("All station successfully retrieved")
   }
 
-  return(df)
+  df
 }

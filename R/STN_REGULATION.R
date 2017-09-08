@@ -44,6 +44,8 @@ STN_REGULATION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -58,7 +60,6 @@ STN_REGULATION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
         REGULATED == 1 ~ "Regulated"
       )
     )
-  DBI::dbDisconnect(hydat_con)
 
-  return(df)
+  df
 }

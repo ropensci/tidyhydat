@@ -17,6 +17,8 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -27,9 +29,7 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
     dplyr::select(STATION_NUMBER, REMARK_TYPE_EN, YEAR, REMARK_EN) %>%
     dplyr::collect()
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(stn_remarks)
+  stn_remarks
 }
 
 #' @title STN_DATUM_CONVERTION function
@@ -51,6 +51,8 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
@@ -64,9 +66,7 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
     dplyr::select(STATION_NUMBER, DATUM_EN_FROM, DATUM_EN_TO, CONVERSION_FACTOR) %>%
     dplyr::collect()
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(stn_datum_conversion)
+  stn_datum_conversion
 }
 
 #' @title STN_DATA_RANGE function
@@ -91,14 +91,14 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_RANGE") %>%
     filter(STATION_NUMBER %in% stns) %>%
     collect()
-
-  DBI::dbDisconnect(hydat_con)
-
-  return(stn_data_range)
+  
+  stn_data_range
 }
 
 #' @title STN_DATA_COLLECTION function
@@ -123,6 +123,8 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_COLLECTION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
@@ -133,9 +135,8 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR_FROM, YEAR_TO, MEASUREMENT_EN, OPERATION_EN) %>%
     dplyr::arrange(STATION_NUMBER, YEAR_FROM)
 
-  DBI::dbDisconnect(hydat_con)
 
-  return(stn_data_range)
+  stn_data_range
 }
 
 
@@ -161,6 +162,8 @@ STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
 
   stn_operation_schedule <- dplyr::tbl(hydat_con, "STN_OPERATION_SCHEDULE") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
@@ -168,7 +171,5 @@ STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_
     dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
 
-  DBI::dbDisconnect(hydat_con)
-
-  return(stn_operation_schedule)
+  stn_operation_schedule
 }
