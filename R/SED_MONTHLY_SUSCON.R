@@ -10,36 +10,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily flows information from the HYDAT database
+#' Extract monthly flows information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
-#' That is a large vector for \code{DLY_FLOWS}.
+#' Provides wrapper to turn the SED_MONTHLY_SUSCON table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#'   \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
+#'   That is a large vector for \code{SED_MONTHLY_SUSCON}.
 #'
 #' @inheritParams STATIONS
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of daily levels
+#' @return A tibble of monthly suspended sediment concentrations. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
+#'   TOTAL this is not presented as those aren't daily values.
 #'
 #' @examples
 #' \donttest{
-#' DLY_FLOWS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
+#' SED_MONTHLY_SUSCON(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
 #' start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
-#'
+#' SED_MONTHLY_SUSCON(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'           }
-#'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 
 
 
-DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+SED_MONTHLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?DLY_FLOWS for examples.")
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?SED_MONTHLY_SUSCON for examples.")
   }
 
   if (start_date == "ALL" & end_date == "ALL") {
@@ -78,7 +77,6 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
@@ -86,43 +84,40 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
 
 
   ## Data manipulations to make it "tidy"
-  dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-  dly_flows <- dplyr::filter(dly_flows, STATION_NUMBER %in% stns)
+  sed_monthly_suscon <- dplyr::tbl(hydat_con, "SED_DLY_SUSCON")
+  sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, YEAR >= start_year &
+    sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, YEAR >= start_year &
       YEAR <= end_year)
+    
+    #sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, MONTH >= start_month &
+    #                             MONTH <= end_month)
   }
 
-  dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("FLOW"))
-  dly_flows <- dplyr::collect(dly_flows)
-  dly_flows <- tidyr::gather(dly_flows, variable, temp, -(STATION_NUMBER:NO_DAYS))
-  dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable)))
-  dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", "", variable))
-  dly_flows <- tidyr::spread(dly_flows, variable, temp)
-  dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
-  ## No days that exceed actual number of days in the month
-  dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
+  sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, STATION_NUMBER:MAX)
+  sed_monthly_suscon <- dplyr::collect(sed_monthly_suscon)
+  
+  ## Need to rename columns for gather
+  colnames(sed_monthly_suscon) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS",
+                           "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
+  
+  
 
-  ## convert into R date.
-  dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))
+  sed_monthly_suscon <- tidyr::gather(sed_monthly_suscon, variable, temp, -(STATION_NUMBER:NO_DAYS))
+  sed_monthly_suscon <- tidyr::separate(sed_monthly_suscon, variable, into = c("Sum_stat","temp2"), sep = "_")
 
-  ## Then when a date column exist fine tune the subset
-  if (start_date != "ALL" | end_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, Date >= start_date &
-      Date <= end_date)
-  }
-  dly_flows <- dplyr::left_join(dly_flows, DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  dly_flows <- dplyr::mutate(dly_flows, Parameter = "FLOW")
-  dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, FLOW, SYMBOL_EN)
-  dly_flows <- dplyr::arrange(dly_flows, Date)
+  sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, temp2, temp)
 
-  colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
+  ## convert into R date for date of occurence.
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
 
+  sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -DAY)
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
 
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
+  differ <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
   if (length(differ) != 0) {
     if (length(differ) <= 10) {
       message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
@@ -136,5 +131,5 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
   }
 
 
-  dly_flows
+  sed_monthly_suscon
 }

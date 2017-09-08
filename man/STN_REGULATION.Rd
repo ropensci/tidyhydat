@@ -3,35 +3,55 @@
 \name{STN_REGULATION}
 \alias{STN_REGULATION}
 \title{Extract station regulation from the HYDAT database}
+\source{
+HYDAT
+}
 \usage{
 STN_REGULATION(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
+The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC} 
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER} 
-is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
+is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 }
 \value{
 A tibble of stations, years of regulation and the regulation status
 }
 \description{
-Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and 
+Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
 \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
 }
 \examples{
 \donttest{
-## Multiple stations province not specified 
+## Multiple stations province not specified
 STN_REGULATION(STATION_NUMBER = c("08NM083","08NE102"), hydat_path = "H:/Hydat.sqlite3")
 
 ## Multiple province, station number not specified
 STN_REGULATION(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
 }
 
+}
+\seealso{
+Other HYDAT functions: \code{\link{AGENCY_LIST}},
+  \code{\link{ANNUAL_INSTANT_PEAKS}},
+  \code{\link{ANNUAL_STATISTICS}},
+  \code{\link{DATUM_LIST}}, \code{\link{DLY_FLOWS}},
+  \code{\link{DLY_LEVELS}}, \code{\link{MONTHLY_FLOWS}},
+  \code{\link{MONTHLY_LEVELS}},
+  \code{\link{REGIONAL_OFFICE_LIST}},
+  \code{\link{SED_DLY_LOADS}},
+  \code{\link{SED_DLY_SUSCON}},
+  \code{\link{SED_MONTHLY_LOADS}},
+  \code{\link{SED_MONTHLY_SUSCON}},
+  \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
+  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STN_OPERATION_SCHEDULE}},
+  \code{\link{VERSION}}
 }

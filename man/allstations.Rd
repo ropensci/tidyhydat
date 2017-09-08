@@ -4,7 +4,7 @@
 \name{allstations}
 \alias{allstations}
 \title{A tibble of all Canadian Stations stations and their names.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7791 rows and 15 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7791 rows and 3 columns.}
 \source{
 HYDAT
 }

@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{search_name}
 \alias{search_name}
-\title{A search function for hydrometric station name}
+\alias{search_number}
+\title{A search function for hydrometric station name or number}
 \usage{
 search_name(search_term)
+
+search_number(search_term)
 }
 \arguments{
 \item{search_term}{Only accepts one word.}
@@ -13,5 +16,11 @@ search_name(search_term)
 A tibble of stations that match the \code{search_term}
 }
 \description{
-Use this search function when you only know the partial station name.
+Use this search function when you only know the partial station name or want to search.
+}
+\examples{
+search_name("Cowichan")
+
+search_number("08HF")
+
 }

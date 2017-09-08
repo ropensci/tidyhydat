@@ -1,4 +1,13 @@
-# tidyhdyat 0.2.5
+# tidyhydat 0.2.6
+* using `styler` package to format code to tidyverse style guide
+* added `PROV_TERR_STATE_LOC` to `allstations`
+* added `search_number` function
+* added `MONTHLY` functions
+* created function families
+* added `on.exit()` to internal code; a better way to disconnect
+* Updated documentation
+
+# tidyhydat 0.2.5
 * fixed minor bug in download_realtime_ws so that better error message is outputted when no data is returned
 
 # tidyhydat 0.2.4

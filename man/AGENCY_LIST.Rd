@@ -3,12 +3,15 @@
 \name{AGENCY_LIST}
 \alias{AGENCY_LIST}
 \title{AGENCY_LIST function}
+\source{
+HYDAT
+}
 \usage{
 AGENCY_LIST(hydat_path = NULL)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory. 
-The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should 
+\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
+The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 }
 \value{
@@ -16,4 +19,20 @@ A tibble of agencies
 }
 \description{
 AGENCY_LIST – AGENCY look-up Table
+}
+\seealso{
+Other HYDAT functions: \code{\link{ANNUAL_INSTANT_PEAKS}},
+  \code{\link{ANNUAL_STATISTICS}},
+  \code{\link{DATUM_LIST}}, \code{\link{DLY_FLOWS}},
+  \code{\link{DLY_LEVELS}}, \code{\link{MONTHLY_FLOWS}},
+  \code{\link{MONTHLY_LEVELS}},
+  \code{\link{REGIONAL_OFFICE_LIST}},
+  \code{\link{SED_DLY_LOADS}},
+  \code{\link{SED_DLY_SUSCON}},
+  \code{\link{SED_MONTHLY_LOADS}},
+  \code{\link{SED_MONTHLY_SUSCON}},
+  \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
+  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STN_OPERATION_SCHEDULE}},
+  \code{\link{STN_REGULATION}}, \code{\link{VERSION}}
 }

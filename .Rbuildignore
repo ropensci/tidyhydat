@@ -8,6 +8,5 @@
 ^\.travis\.yml$
 ^\.bib$
 ^Thumbs.db$
-^tidyhydat_with_spatial\.Rmd$
 ^tidyhydat\.md$
 
