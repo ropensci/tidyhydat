@@ -2,7 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{VERSION}
 \alias{VERSION}
-\title{Version number of HYDAT}
+\title{Version number of HYDAT
+A function to get version number of hydat}
+\source{
+HYDAT
+}
 \usage{
 VERSION(hydat_path = NULL)
 }
@@ -15,5 +19,23 @@ set as the variable \code{hydat}. Open the \code{.Renviron} file using this comm
 version number
 }
 \description{
+Version number of HYDAT
 A function to get version number of hydat
+}
+\seealso{
+Other HYDAT functions: \code{\link{AGENCY_LIST}},
+  \code{\link{ANNUAL_INSTANT_PEAKS}},
+  \code{\link{ANNUAL_STATISTICS}},
+  \code{\link{DATUM_LIST}}, \code{\link{DLY_FLOWS}},
+  \code{\link{DLY_LEVELS}}, \code{\link{MONTHLY_FLOWS}},
+  \code{\link{MONTHLY_LEVELS}},
+  \code{\link{REGIONAL_OFFICE_LIST}},
+  \code{\link{SED_DLY_LOADS}},
+  \code{\link{SED_DLY_SUSCON}},
+  \code{\link{SED_MONTHLY_LOADS}},
+  \code{\link{SED_MONTHLY_SUSCON}},
+  \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
+  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STN_OPERATION_SCHEDULE}},
+  \code{\link{STN_REGULATION}}
 }

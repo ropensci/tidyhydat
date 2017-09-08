@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily sediment load information from the HYDAT database
+#' Extract daily sediment load information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#' Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
 #' That is a large vector for \code{SED_DLY_LOADS}.
 #'
@@ -20,7 +20,7 @@
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of daily suspended sediment concentration (mg/l)
+#' @return A tibble of daily suspended sediment loads (tonnes)
 #'
 #' @examples
 #' \donttest{
@@ -31,6 +31,8 @@
 #'
 #'           }
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 

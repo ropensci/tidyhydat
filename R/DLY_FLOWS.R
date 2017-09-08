@@ -31,6 +31,8 @@
 #'
 #'           }
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 

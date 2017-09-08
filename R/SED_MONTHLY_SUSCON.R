@@ -20,7 +20,7 @@
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of monthly flows. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
+#' @return A tibble of monthly suspended sediment concentrations. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
 #'   TOTAL this is not presented as those aren't daily values.
 #'
 #' @examples

@@ -12,11 +12,10 @@
 
 
 
-#' @title Extract tidy river data
+#' Extract tidy river data
 #'
-#' @description tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
+#' tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
 #'
-#' \code{tidyhydat} package
 #'
 #' @docType package
 #' @name tidyhydat
@@ -46,5 +45,6 @@
 #'  \itemize{
 #'   \item \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'   }
+#'   
 #'
 NULL

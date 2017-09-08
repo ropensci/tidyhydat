@@ -38,15 +38,17 @@ search_number <- function(search_term) {
   }
 }
 
-#' @title AGENCY_LIST function
+#' AGENCY_LIST function
 #'
-#' @description AGENCY_LIST – AGENCY look-up Table
+#' AGENCY_LIST – AGENCY look-up Table
 #' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
 #' The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 #' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
 #'
 #' @return A tibble of agencies
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 AGENCY_LIST <- function(hydat_path=NULL) {
@@ -70,12 +72,14 @@ AGENCY_LIST <- function(hydat_path=NULL) {
 }
 
 
-#' @title REGIONAL_OFFICE_LIST function
+#'  REGIONAL_OFFICE_LIST function
 #'
-#' @description REGIONAL_OFFICE_LIST – OFFICE look-up Table
+#'  REGIONAL_OFFICE_LIST – OFFICE look-up Table
 #' @inheritParams AGENCY_LIST
 #' @return A tibble of offices
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
@@ -100,13 +104,15 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
   regional_office_list
 }
 
-#' @title DATUM_LIST function
+#'  DATUM_LIST function
 #'
-#' @description DATUM_LIST – DATUM look-up Table
+#'  DATUM_LIST – DATUM look-up Table
 #' @inheritParams AGENCY_LIST
 #'
 #' @return A tibble of DATUMS
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 DATUM_LIST <- function(hydat_path=NULL) {
@@ -129,13 +135,15 @@ DATUM_LIST <- function(hydat_path=NULL) {
 }
 
 
-#' @title Version number of HYDAT
-#' @description A function to get version number of hydat
+#' Version number of HYDAT
+#' A function to get version number of hydat
 #'
 #' @inheritParams AGENCY_LIST
 #'
 #' @return version number
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 VERSION <- function(hydat_path=NULL) {

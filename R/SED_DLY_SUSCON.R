@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily suspended sediment concentration information from the HYDAT database
+#' Extract daily suspended sediment concentration information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the SED_DLY_SUSCON table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#' Provides wrapper to turn the SED_DLY_SUSCON table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
 #' That is a large vector for \code{SED_DLY_SUSCON}.
 #'
@@ -31,6 +31,8 @@
 #'
 #'           }
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 

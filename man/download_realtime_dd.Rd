@@ -11,7 +11,7 @@ download_realtime_dd(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC)
 is returned.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(realtime_network_meta()$PROV_TERR_STATE_LOC)}}
+is returned.}
 }
 \value{
 A tibble of water flow and level values
@@ -30,5 +30,7 @@ download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
 
 }
 \seealso{
-\code{realtime_network_meta()}.
+Other realtime functions: \code{\link{download_realtime_ws}},
+  \code{\link{get_ws_token}},
+  \code{\link{realtime_network_meta}}
 }

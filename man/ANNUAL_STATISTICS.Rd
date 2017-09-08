@@ -2,7 +2,10 @@
 % Please edit documentation in R/ANNUAL_STATISTICS.R
 \name{ANNUAL_STATISTICS}
 \alias{ANNUAL_STATISTICS}
-\title{Extract daily flows information from the HYDAT database}
+\title{Extract annual statistics information from the HYDAT database}
+\source{
+HYDAT
+}
 \usage{
 ANNUAL_STATISTICS(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
@@ -12,11 +15,11 @@ ANNUAL_STATISTICS(hydat_path = NULL, STATION_NUMBER = NULL,
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
+is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 
 \item{start_year}{First year of the returned record}
 
@@ -27,16 +30,31 @@ A tibble of ANNUAL_STATISTICS
 }
 \description{
 Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-\code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides
-where those stations come from.
+  \code{PROV_TERR_STATE_LOC} must both be supplied.
 }
 \examples{
 \donttest{
-## Multiple stations province not specified
-ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
-
-## Multiple province, station number not specified
-ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+  ## Multiple stations province not specified
+  ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
+ 
+  ## Multiple province, station number not specified
+  ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 }
 
+}
+\seealso{
+Other HYDAT functions: \code{\link{AGENCY_LIST}},
+  \code{\link{ANNUAL_INSTANT_PEAKS}},
+  \code{\link{DATUM_LIST}}, \code{\link{DLY_FLOWS}},
+  \code{\link{DLY_LEVELS}}, \code{\link{MONTHLY_FLOWS}},
+  \code{\link{MONTHLY_LEVELS}},
+  \code{\link{REGIONAL_OFFICE_LIST}},
+  \code{\link{SED_DLY_LOADS}},
+  \code{\link{SED_DLY_SUSCON}},
+  \code{\link{SED_MONTHLY_LOADS}},
+  \code{\link{SED_MONTHLY_SUSCON}},
+  \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
+  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STN_OPERATION_SCHEDULE}},
+  \code{\link{STN_REGULATION}}, \code{\link{VERSION}}
 }

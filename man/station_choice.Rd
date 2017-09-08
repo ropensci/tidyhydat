@@ -9,11 +9,11 @@ station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
 \arguments{
 \item{hydat_con}{A database connection}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
+is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 }
 \description{
 A function to avoid duplication in HYDAT functions.  This function is not intended for external use.

@@ -11,21 +11,18 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Download a tibble of realtime discharge data from the MSC datamart
+#' Download a tibble of realtime discharge data from the MSC datamart
 #'
-#' @description Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize
+#' Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize
 #' downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution
 #' daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
 #'
 #' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
 #' is returned.
 #' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-#' is returned. See \code{unique(realtime_network_meta()$PROV_TERR_STATE_LOC)}
+#' is returned.
 #'
 #' @return A tibble of water flow and level values
-#'
-#' @seealso
-#' \code{realtime_network_meta()}.
 #'
 #'
 #' @examples
@@ -34,7 +31,8 @@
 #'
 #' # To download all stations in Prince Edward Island:
 #' download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
-#'
+#' 
+#' @family realtime functions
 #' @export
 download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
@@ -170,12 +168,13 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 }
 
 
-#' @title download a tibble of active realtime stations
+#' download a tibble of active realtime stations
 #'
-#' @description Returns all stations in the Realtime Water Survey of Canada hydrometric network operated by Environment and Cliamte Change Canada
+#' An up to date dataframe of all stations in the Realtime Water Survey of Canada hydrometric network operated by Environment and Cliamte Change Canada
 #'
 #' @param PROV_TERR_STATE_LOC Province/State/Territory or Location. See examples for list of available options. realtime_network_meta() for all stations.
 #'
+#' @family realtime functions
 #' @export
 #'
 #' @examples
@@ -213,10 +212,10 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
   net_tibble
 }
 
-#' @title Request a token from the Environment and Climate Change Canada
+#' Request a token from the Environment and Climate Change Canada
 #' @param username Supplied by ECCC
 #' @param password Supplied by ECCC
-#' @description Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes.
+#' Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes.
 #' You can only have 5 tokens out at once.
 #'
 #' @details The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.
@@ -225,7 +224,8 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #' and then call those environmental variables in your R session. See \code{?download_ws} for examples.
 #'
 #' @return The token as a string that should be supplied the \code{download_ws_realtime} function.
-#'
+#' 
+#' @family realtime functions
 #' @export
 #'
 
@@ -259,8 +259,8 @@ get_ws_token <- function(username, password) {
   token
 }
 
-#' @title Download realtime data from the ECCC web service
-#' @description Function to actually retrieve data from ECCC webservice. Before using this function,
+#' Download realtime data from the ECCC web service
+#' Function to actually retrieve data from ECCC webservice. Before using this function,
 #' a token from \code{get_ws_token()} is needed.
 #' @param STATION_NUMBER Water Survey of Canada station number.
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
@@ -282,6 +282,7 @@ get_ws_token <- function(username, password) {
 #'                          start_date = Sys.Date() - 5, #five days ago
 #'                          token = token_out)
 #' }
+#' @family realtime functions
 #' @export
 
 
@@ -377,9 +378,9 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   ## Need to output a warning to see if any stations weren't retrieved
 }
 
-#' @title A function to download hydat
+#' A function to download hydat
 #'
-#' @description Download the hydat sqlite database. The function will check for a existing sqlite file and stop if the same version
+#' Download the hydat sqlite database. The function will check for a existing sqlite file and stop if the same version
 #' is already present. \code{download_hydat} also looks to see if you have the hydat environmental variable set.
 #'
 #' @param dl_hydat_here Directory to the hydat database. The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should

@@ -10,7 +10,7 @@ realtime_network_meta(PROV_TERR_STATE_LOC = NULL)
 \item{PROV_TERR_STATE_LOC}{Province/State/Territory or Location. See examples for list of available options. realtime_network_meta() for all stations.}
 }
 \description{
-Returns all stations in the Realtime Water Survey of Canada hydrometric network operated by Environment and Cliamte Change Canada
+An up to date dataframe of all stations in the Realtime Water Survey of Canada hydrometric network operated by Environment and Cliamte Change Canada
 }
 \examples{
 ## Available inputs for PROV_TERR_STATE_LOC argument:
@@ -18,4 +18,9 @@ unique(realtime_network_meta()$PROV_TERR_STATE_LOC)
 
 realtime_network_meta(PROV_TERR_STATE_LOC = "BC")
 realtime_network_meta(PROV_TERR_STATE_LOC = c("QC","PE"))
+}
+\seealso{
+Other realtime functions: \code{\link{download_realtime_dd}},
+  \code{\link{download_realtime_ws}},
+  \code{\link{get_ws_token}}
 }

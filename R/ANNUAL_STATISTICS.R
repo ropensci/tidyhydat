@@ -11,11 +11,10 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Extract daily flows information from the HYDAT database
+#' Extract annual statistics information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} must both be supplied. When STATION_NUMBER="ALL" the PROV_TERR_STATE_LOC argument decides
-#' where those stations come from.
+#' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#'   \code{PROV_TERR_STATE_LOC} must both be supplied. 
 #'
 #' @inheritParams STATIONS
 #' @param start_year First year of the returned record
@@ -25,13 +24,15 @@
 #'
 #' @examples
 #' \donttest{
-#' ## Multiple stations province not specified
-#' ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
-#'
-#' ## Multiple province, station number not specified
-#' ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+#'   ## Multiple stations province not specified
+#'   ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
+#'  
+#'   ## Multiple province, station number not specified
+#'   ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 #' }
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_STATE_LOC=NULL,

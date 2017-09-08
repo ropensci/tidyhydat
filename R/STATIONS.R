@@ -12,18 +12,16 @@
 
 
 
-#' @title Extract station information from the HYDAT database
+#' Extract station information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#' Provides wrapper to turn the STATIONS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
 #'
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
-#' The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
-#' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
-#' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+#' @inheritParams AGENCY_LIST
+#' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
 #' is returned.
-#' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-#' is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}
+#' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
+#' is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}
 #'
 #' @return A tibble of stations and associated metadata
 #'
@@ -37,6 +35,8 @@
 #' }
 #'
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {

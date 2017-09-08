@@ -1,6 +1,6 @@
-#' @title STN_REMARKS function
+#' STN_REMARKS function
 #'
-#' @description STN_REMARKS look-up Table
+#' STN_REMARKS look-up Table
 #' @inheritParams STATIONS
 #'
 #' @return A tibble of STN_REMARKS
@@ -32,9 +32,9 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   stn_remarks
 }
 
-#' @title STN_DATUM_CONVERTION function
+#' STN_DATUM_CONVERTION function
 #'
-#' @description STN_DATUM_CONVERTION look-up Table
+#' STN_DATUM_CONVERTION look-up Table
 #' @inheritParams STATIONS
 #'
 #' @return A tibble of STN_DATUM_CONVERTION
@@ -69,13 +69,15 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
   stn_datum_conversion
 }
 
-#' @title STN_DATA_RANGE function
+#' STN_DATA_RANGE function
 #'
-#' @description STN_DATA_RANGE look-up Table
+#' STN_DATA_RANGE look-up Table
 #' @inheritParams STATIONS
 #'
 #' @return A tibble of STN_DATA_RANGE
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
@@ -101,13 +103,15 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
   stn_data_range
 }
 
-#' @title STN_DATA_COLLECTION function
+#' STN_DATA_COLLECTION function
 #'
-#' @description STN_DATA_COLLECTION look-up Table
+#' STN_DATA_COLLECTION look-up Table
 #' @inheritParams STATIONS
 #'
 #' @return A tibble of STN_DATA_COLLECTION
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
@@ -140,13 +144,15 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 }
 
 
-#' @title STN_OPERATION_SCHEDULE function
+#' STN_OPERATION_SCHEDULE function
 #'
-#' @description STN_OPERATION_SCHEDULE look-up Table
+#' STN_OPERATION_SCHEDULE look-up Table
 #' @inheritParams STATIONS
 #'
 #' @return A tibble of STN_OPERATION_SCHEDULE
 #'
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {

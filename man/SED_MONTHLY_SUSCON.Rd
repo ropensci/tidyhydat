@@ -15,18 +15,18 @@ SED_MONTHLY_SUSCON(hydat_path = NULL, STATION_NUMBER = NULL,
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(STATIONS(hydat_path = "H:/Hydat.sqlite3")$PROV_TERR_STATE_LOC)}}
+\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
+is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 
 \item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
 \item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 }
 \value{
-A tibble of monthly flows. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
+A tibble of monthly suspended sediment concentrations. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
   TOTAL this is not presented as those aren't daily values.
 }
 \description{
@@ -43,7 +43,18 @@ SED_MONTHLY_SUSCON(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
           }
 }
 \seealso{
-Other HYDAT functions: \code{\link{MONTHLY_FLOWS}},
+Other HYDAT functions: \code{\link{AGENCY_LIST}},
+  \code{\link{ANNUAL_INSTANT_PEAKS}},
+  \code{\link{ANNUAL_STATISTICS}},
+  \code{\link{DATUM_LIST}}, \code{\link{DLY_FLOWS}},
+  \code{\link{DLY_LEVELS}}, \code{\link{MONTHLY_FLOWS}},
   \code{\link{MONTHLY_LEVELS}},
-  \code{\link{SED_MONTHLY_LOADS}}
+  \code{\link{REGIONAL_OFFICE_LIST}},
+  \code{\link{SED_DLY_LOADS}},
+  \code{\link{SED_DLY_SUSCON}},
+  \code{\link{SED_MONTHLY_LOADS}},
+  \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
+  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STN_OPERATION_SCHEDULE}},
+  \code{\link{STN_REGULATION}}, \code{\link{VERSION}}
 }

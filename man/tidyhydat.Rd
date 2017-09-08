@@ -7,8 +7,6 @@
 \title{Extract tidy river data}
 \description{
 tidyhydat provides functions to extract river data from Water Survey of Canada sources and make it tidy.
-
-\code{tidyhydat} package
 }
 \references{
 For more information on tidy data please see

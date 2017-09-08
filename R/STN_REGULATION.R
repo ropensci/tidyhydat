@@ -12,9 +12,9 @@
 
 
 
-#' @title Extract station regulation from the HYDAT database
+#' Extract station regulation from the HYDAT database
 #'
-#' @description Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#' Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
 #'
 #' @inheritParams STATIONS
@@ -31,6 +31,8 @@
 #' }
 #'
 
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 
 STN_REGULATION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {

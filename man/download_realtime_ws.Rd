@@ -2,7 +2,9 @@
 % Please edit documentation in R/download.R
 \name{download_realtime_ws}
 \alias{download_realtime_ws}
-\title{Download realtime data from the ECCC web service}
+\title{Download realtime data from the ECCC web service
+Function to actually retrieve data from ECCC webservice. Before using this function,
+a token from \code{get_ws_token()} is needed.}
 \usage{
 download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
   18), start_date = Sys.Date() - 30, end_date = Sys.Date(), token)
@@ -19,6 +21,7 @@ download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
 \item{token}{generate by \code{get_ws_token()}}
 }
 \description{
+Download realtime data from the ECCC web service
 Function to actually retrieve data from ECCC webservice. Before using this function,
 a token from \code{get_ws_token()} is needed.
 }
@@ -36,4 +39,9 @@ fivedays <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
                          start_date = Sys.Date() - 5, #five days ago
                          token = token_out)
 }
+}
+\seealso{
+Other realtime functions: \code{\link{download_realtime_dd}},
+  \code{\link{get_ws_token}},
+  \code{\link{realtime_network_meta}}
 }

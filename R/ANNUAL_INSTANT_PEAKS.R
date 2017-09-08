@@ -11,11 +11,11 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Annual maximum/minimum instantaneous flows and water levels
+#' Annual maximum/minimum instantaneous flows and water levels
 #'
-#' @description Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
-#'
+#' Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. 
+#' 
 #' @inheritParams STATIONS
 #' @param start_year First year of the returned record
 #' @param end_year Last year of the returned record
@@ -30,7 +30,9 @@
 #' ## Multiple province, station number not specified
 #' ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
 #' }
-#'
+#' 
+#' @family HYDAT functions
+#' @source HYDAT
 #' @export
 #'
 ANNUAL_INSTANT_PEAKS <- function(hydat_path, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL,
