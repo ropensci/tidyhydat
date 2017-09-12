@@ -27,7 +27,7 @@ is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 }
 \value{
 A tibble of monthly flows. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
-  TOTAL this is not presented as those aren't daily values.
+  TOTAL this is not presented as those are not daily values.
 }
 \description{
 Provides wrapper to turn the MONTHLY_FLOWS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and

@@ -3,7 +3,7 @@
 \docType{data}
 \name{DATA_TYPES}
 \alias{DATA_TYPES}
-\title{DATA_TYPES – DATA TYPES look-up table}
+\title{DATA TYPES look-up table}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 3 columns.}
 \source{
 HYDAT

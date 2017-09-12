@@ -10,7 +10,7 @@ get_ws_token(username, password)
 \item{username}{Supplied by ECCC}
 
 \item{password}{Supplied by ECCC
-Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes.
+Request a token from the ECCC web service using the POST method. This token expires after 10 minutes.
 You can only have 5 tokens out at once.}
 }
 \value{

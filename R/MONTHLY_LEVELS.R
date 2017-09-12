@@ -21,7 +21,7 @@
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
 #' @return A tibble of monthly levels. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
-#'   TOTAL this is not presented as those aren't daily values.
+#'   TOTAL this is not presented as those are not daily values.
 #'
 #' @examples
 #' \donttest{

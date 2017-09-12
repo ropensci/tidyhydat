@@ -18,7 +18,7 @@ set as the variable \code{hydat}. Open the \code{.Renviron} file using this comm
 A tibble of DATUMS
 }
 \description{
-DATUM_LIST – DATUM look-up Table
+DATUM look-up Table
 }
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},

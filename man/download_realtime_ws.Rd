@@ -3,7 +3,7 @@
 \name{download_realtime_ws}
 \alias{download_realtime_ws}
 \title{Download realtime data from the ECCC web service
-Function to actually retrieve data from ECCC webservice. Before using this function,
+Function to actually retrieve data from ECCC web service. Before using this function,
 a token from \code{get_ws_token()} is needed.}
 \usage{
 download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
@@ -22,7 +22,7 @@ download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
 }
 \description{
 Download realtime data from the ECCC web service
-Function to actually retrieve data from ECCC webservice. Before using this function,
+Function to actually retrieve data from ECCC web service. Before using this function,
 a token from \code{get_ws_token()} is needed.
 }
 \examples{

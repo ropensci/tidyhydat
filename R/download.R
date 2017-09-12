@@ -170,9 +170,11 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
 #' download a tibble of active realtime stations
 #'
-#' An up to date dataframe of all stations in the Realtime Water Survey of Canada hydrometric network operated by Environment and Cliamte Change Canada
+#' An up to date dataframe of all stations in the Realtime Water Survey of Canada 
+#'   hydrometric network operated by Environment and Climate Change Canada
 #'
-#' @param PROV_TERR_STATE_LOC Province/State/Territory or Location. See examples for list of available options. realtime_network_meta() for all stations.
+#' @param PROV_TERR_STATE_LOC Province/State/Territory or Location. See examples for list of available options. 
+#'   realtime_network_meta() for all stations.
 #'
 #' @family realtime functions
 #' @export
@@ -215,7 +217,7 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #' Request a token from the Environment and Climate Change Canada
 #' @param username Supplied by ECCC
 #' @param password Supplied by ECCC
-#' Request a token from the ECCC webservice using the POST method. This token expires after 10 minutes.
+#' Request a token from the ECCC web service using the POST method. This token expires after 10 minutes.
 #' You can only have 5 tokens out at once.
 #'
 #' @details The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.
@@ -238,13 +240,13 @@ get_ws_token <- function(username, password) {
   r <- httr::POST("https://wateroffice.ec.gc.ca/services/auth", body = login)
 
   ## If the POST request was not a successful, print out why.
-  ## Possibly could provide errors as per Webservice guidelines
+  ## Possibly could provide errors as per web service guidelines
   if (httr::status_code(r) == 422) {
     stop("422 Unprocessable Entity: Username and/or password are missing or are formatted incorrectly.")
   }
 
   if (httr::status_code(r) == 403) {
-    stop("403 Forbidden: the webservice is denying your request. Try any of the following options: ensure you are not currently using all 5 tokens, 
+    stop("403 Forbidden: the web service is denying your request. Try any of the following options: ensure you are not currently using all 5 tokens, 
          wait a few minutes and try again or copy the get_ws_token code and paste it directly into the console.")
   }
 
@@ -260,7 +262,7 @@ get_ws_token <- function(username, password) {
 }
 
 #' Download realtime data from the ECCC web service
-#' Function to actually retrieve data from ECCC webservice. Before using this function,
+#' Function to actually retrieve data from ECCC web service. Before using this function,
 #' a token from \code{get_ws_token()} is needed.
 #' @param STATION_NUMBER Water Survey of Canada station number.
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
@@ -330,7 +332,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   get_ws <- httr::GET(url_for_GET)
 
   if (httr::status_code(get_ws) == 403) {
-    stop("403 Forbidden: the webservice is denying your request. Try any of the following options: wait a few minutes and try 
+    stop("403 Forbidden: the web service is denying your request. Try any of the following options: wait a few minutes and try 
          again or copy the get_ws_token code and paste it directly into the console.")
   }
 
