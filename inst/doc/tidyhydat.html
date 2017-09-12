@@ -12,7 +12,7 @@
 
 <meta name="author" content="Sam Albers" />
 
-<meta name="date" content="2017-08-29" />
+<meta name="date" content="2017-09-12" />
 
 <title>tidyhydat</title>
 
@@ -70,125 +70,54 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">tidyhydat</h1>
 <h4 class="author"><em>Sam Albers</em></h4>
-<h4 class="date"><em>2017-08-29</em></h4>
+<h4 class="date"><em>2017-09-12</em></h4>
 
 
 
 <blockquote>
-<p>“Tidy datasets are all alike but every messy dataset is messy in its own way -” <span class="citation">Wickham (2014)</span></p>
+<p>“Tidy datasets are all alike but every messy dataset is messy in its own way -” <span class="citation">@wickham2014tidy</span></p>
 </blockquote>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
-<p>Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data product of a national integrated hydrometric network. Historical data are stored in the <a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/">HYDAT database</a>. Real-time data are provided by ECCC through two sources. The first real-time data option is a login only web service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the available of hydrometric data is more like 2.5 hours. The second is the <a href="http://dd.weather.gc.ca/hydrometric/">datamart</a> which is an open source organized as a directory tree structure by province. The objective of this document is the outline the usage of <code>tidyhydat</code>, an R package that makes ECCC hydrometric data <em>tidy</em>. The primary goal of <code>tidyhydat</code> is to provide a common API and data structure for ECCC data sources using a clean, easy to use interface that use tidy data principles developed by <span class="citation">Wickham (2014)</span> within the R project <span class="citation">(R Core Team 2017)</span>.</p>
-<div id="why-use-r" class="section level2">
-<h2>Why use R?</h2>
-<p>There are many statistical computing projects that offer great functionality for users. For <code>tidyhydat</code> we have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. There are several commonly cited reasons to use R:</p>
-<ul>
-<li>R is and always will be free to use and modify</li>
-<li>R is flexible and can be easily adapted to a wide range of problems</li>
-<li>R is well established and well used.</li>
-<li>R has a friendly community which is an important infrastructure element of any open source project.</li>
-</ul>
-</div>
-<div id="what-is-tidy-data" class="section level2">
-<h2>What is tidy data?</h2>
-<p>Embedded within <code>tidyhydat</code> is the principle of <em>tidy data</em>. <span class="citation">Wickham (2014)</span> defines tidy data by three principles:</p>
-<ul>
-<li>Each variable variable forms a column</li>
-<li>Each observation forms a row</li>
-<li>Each type of observational unit forms a table</li>
-</ul>
-<p>It is illustrative here to provide an example of the types of data <em>tidying</em> processes that <code>tidyhydat</code> does for you automatically. A basic SQL query to the <code>DLY_FLOWS</code> table in the HYDAT database returns data that looks like this:</p>
-<pre><code>## # Source:   lazy query [?? x 73]
-## # Database: sqlite 3.19.3 [H:\Hydat.sqlite3]
-##    STATION_NUMBER  YEAR MONTH FULL_MONTH NO_DAYS MONTHLY_MEAN
-##             &lt;chr&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;   &lt;int&gt;        &lt;dbl&gt;
-##  1        08MF005  1912     3          1      31          485
-##  2        08MF005  1912     4          1      30         1150
-##  3        08MF005  1912     5          1      31         4990
-##  4        08MF005  1912     6          1      30         6130
-##  5        08MF005  1912     7          1      31         4780
-##  6        08MF005  1912     8          1      31         3960
-##  7        08MF005  1912     9          1      30         2160
-##  8        08MF005  1912    10          1      31         1530
-##  9        08MF005  1912    11          1      30         1060
-## 10        08MF005  1912    12          1      31          761
-## # ... with more rows, and 67 more variables: MONTHLY_TOTAL &lt;dbl&gt;,
-## #   FIRST_DAY_MIN &lt;int&gt;, MIN &lt;dbl&gt;, FIRST_DAY_MAX &lt;int&gt;, MAX &lt;dbl&gt;,
-## #   FLOW1 &lt;dbl&gt;, FLOW_SYMBOL1 &lt;chr&gt;, FLOW2 &lt;dbl&gt;, FLOW_SYMBOL2 &lt;chr&gt;,
-## #   FLOW3 &lt;dbl&gt;, FLOW_SYMBOL3 &lt;chr&gt;, FLOW4 &lt;dbl&gt;, FLOW_SYMBOL4 &lt;chr&gt;,
-## #   FLOW5 &lt;dbl&gt;, FLOW_SYMBOL5 &lt;chr&gt;, FLOW6 &lt;dbl&gt;, FLOW_SYMBOL6 &lt;chr&gt;,
-## #   FLOW7 &lt;dbl&gt;, FLOW_SYMBOL7 &lt;chr&gt;, FLOW8 &lt;dbl&gt;, FLOW_SYMBOL8 &lt;chr&gt;,
-## #   FLOW9 &lt;dbl&gt;, FLOW_SYMBOL9 &lt;chr&gt;, FLOW10 &lt;dbl&gt;, FLOW_SYMBOL10 &lt;chr&gt;,
-## #   FLOW11 &lt;dbl&gt;, FLOW_SYMBOL11 &lt;chr&gt;, FLOW12 &lt;dbl&gt;, FLOW_SYMBOL12 &lt;chr&gt;,
-## #   FLOW13 &lt;dbl&gt;, FLOW_SYMBOL13 &lt;chr&gt;, FLOW14 &lt;dbl&gt;, FLOW_SYMBOL14 &lt;chr&gt;,
-## #   FLOW15 &lt;dbl&gt;, FLOW_SYMBOL15 &lt;chr&gt;, FLOW16 &lt;dbl&gt;, FLOW_SYMBOL16 &lt;chr&gt;,
-## #   FLOW17 &lt;dbl&gt;, FLOW_SYMBOL17 &lt;chr&gt;, FLOW18 &lt;dbl&gt;, FLOW_SYMBOL18 &lt;chr&gt;,
-## #   FLOW19 &lt;dbl&gt;, FLOW_SYMBOL19 &lt;chr&gt;, FLOW20 &lt;dbl&gt;, FLOW_SYMBOL20 &lt;chr&gt;,
-## #   FLOW21 &lt;dbl&gt;, FLOW_SYMBOL21 &lt;chr&gt;, FLOW22 &lt;dbl&gt;, FLOW_SYMBOL22 &lt;chr&gt;,
-## #   FLOW23 &lt;dbl&gt;, FLOW_SYMBOL23 &lt;chr&gt;, FLOW24 &lt;dbl&gt;, FLOW_SYMBOL24 &lt;chr&gt;,
-## #   FLOW25 &lt;dbl&gt;, FLOW_SYMBOL25 &lt;chr&gt;, FLOW26 &lt;dbl&gt;, FLOW_SYMBOL26 &lt;chr&gt;,
-## #   FLOW27 &lt;dbl&gt;, FLOW_SYMBOL27 &lt;chr&gt;, FLOW28 &lt;dbl&gt;, FLOW_SYMBOL28 &lt;chr&gt;,
-## #   FLOW29 &lt;dbl&gt;, FLOW_SYMBOL29 &lt;chr&gt;, FLOW30 &lt;dbl&gt;, FLOW_SYMBOL30 &lt;chr&gt;,
-## #   FLOW31 &lt;dbl&gt;, FLOW_SYMBOL31 &lt;chr&gt;</code></pre>
-<p>This data structure clearly violates the principles of tidy data - this is messy data. For example, column header (e.g. <code>FLOW1</code>) contains the day number - a value. HYDAT is structured like this for very reasonable historical reasons. It does, however, significantly limit the analyst’s ability to efficiently extract hydrometric data. For example, given the current data structure, it is not possible to only extract from the 15th of one month to the 15th of the next. Rather a query would need to be made on all data from the relevant months and then further processing would need to occur.</p>
-<p><code>tidyhydat</code> makes this process simpler. If we want the same data as the example above, we can use the <code>DLY_FLOWS()</code> function in <code>tidyhydat</code> to query the same data in HYDAT but return a much tidier data structure. It is now very simple to extract data between say March 15, 1992 and April 15, 1992. We just need to supply these arguments to <code>DLY_FLOWS()</code> after loading the package itself:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyhydat)
-<span class="kw">DLY_FLOWS</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>,
-          <span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08MF005&quot;</span>,
-          <span class="dt">start_date =</span> <span class="st">&quot;1992-03-15&quot;</span>,
-          <span class="dt">end_date =</span> <span class="st">&quot;1992-04-15&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 32 x 5
-##    STATION_NUMBER       Date Parameter Value Symbol
-##             &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt;  &lt;chr&gt;
-##  1        08MF005 1992-03-15      FLOW  1630   &lt;NA&gt;
-##  2        08MF005 1992-03-16      FLOW  1730   &lt;NA&gt;
-##  3        08MF005 1992-03-17      FLOW  1900   &lt;NA&gt;
-##  4        08MF005 1992-03-18      FLOW  2040   &lt;NA&gt;
-##  5        08MF005 1992-03-19      FLOW  2140   &lt;NA&gt;
-##  6        08MF005 1992-03-20      FLOW  2180   &lt;NA&gt;
-##  7        08MF005 1992-03-21      FLOW  2170   &lt;NA&gt;
-##  8        08MF005 1992-03-22      FLOW  2150   &lt;NA&gt;
-##  9        08MF005 1992-03-23      FLOW  2130   &lt;NA&gt;
-## 10        08MF005 1992-03-24      FLOW  2120   &lt;NA&gt;
-## # ... with 22 more rows</code></pre>
-<p>As you can see, this is much tidier data and is much easier to work with. In addition to these tidy principles, specific to <code>tidyhydat</code> we can also define that <em>for a common data structure, variables should be referred to by a common name</em>. For example, hydrometric stations are given a unique 7 digit identifier that contains important watershed information. This identifier is variously referred to as <code>STATION_NUMBER</code> or <code>ID</code> depending on the ECCC data source. To tidy this hydrometric data, we have renamed where necessary each instance of the unique identifier as <code>STATION_NUMBER</code>.</p>
-</div>
-</div>
 <div id="tidyhydat-package" class="section level1">
 <h1><code>tidyhydat</code> package</h1>
-<p>There have also been recent calls to use R more broadly in the field of hydrology <span class="citation">(Moore and Hutchinson 2017)</span>. The <code>tidyhydat</code> package is an effort to push this call forward by being the standard package by which hydrologists and other users interact with WSC data in R. Functions in <code>tidyhydat</code> can be split into two categories: functions that directly access HYDAT and functions that access real-time data ultimately destined for HYDAT. We’ve already seen some usage of <code>tidyhydat</code> when we illustrated the principles of tidy data above. In this section, we will outline a few key options that will hopefully make <code>tidyhydat</code> useful.</p>
+<p>This vignette will outline a few key options that will hopefully make <code>tidyhydat</code> useful.</p>
 <div id="hydat-functions" class="section level2">
 <h2>HYDAT functions</h2>
-<p>All functions that interact with HYDAT are capitalized (e.g. <code>STATIONS</code>). To use any of these functions you will need a locally stored copy of the HYDAT database which can be downloaded here:</p>
+<p>All functions that interact with HYDAT are capitalized (e.g. <code>STATIONS</code>). Functions in <code>tidyhydat</code> can be split into two categories: functions that directly access HYDAT and functions that access real-time data ultimately destined for HYDAT. To use any of these functions you will need a locally stored copy of the HYDAT database which can be downloaded here:</p>
 <ul>
 <li><a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/" class="uri">http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/</a></li>
 </ul>
 <p><code>tidyhydat</code> also provides a convenience function to download hydat (be patient though this takes a long time!):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_hydat</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/&quot;</span>)</code></pre></div>
-<p>You can check your version of HYDAT with the <code>VERSION()</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">VERSION</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 1 x 2
-##   Version                Date
-##     &lt;chr&gt;              &lt;dttm&gt;
-## 1     1.0 2017-07-18 11:36:03</code></pre>
-<p>These functions follow a common argument structure which can be illustrated with the <code>DLY_FLOWS()</code> function. For these functions, you can supply either the <code>STATION_NUMBER</code> and the <code>PROV_TERR_STATE_LOC</code> arguments. The <code>hydat_path</code> argument is supplied here as a local path to the database. Yours will be different:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
-<p>If you would like to query the database for two or more stations you would combine the <code>STATION_NUMBER</code> into a vector using <code>c()</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="kw">c</span>(<span class="st">&quot;08LA001&quot;</span>,<span class="st">&quot;08NL071&quot;</span>), <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell <code>tidyhydat</code> where the HYDAT database. One option to is enter the path in each function like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">STATIONS</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<p>It will quickly get tiring manually entering <code>hydat_path =</code>. R provides a means setting a hydat path once in the <code>.Renviron</code> file which is then automatically called by each HYDAT function. In R you can open up <code>.Renviron</code> like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.edit</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</code></pre></div>
+<p>This opens your <code>.Renviron</code> file which may be a blank file. Add this line somewhere in the file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hydat =<span class="st"> &quot;YOUR HYDAT PATH&quot;</span></code></pre></div>
+<p>It is important that you name the variable <code>hydat</code> as that is name of the variable that the functions are looking for.</p>
+<div id="usage" class="section level3">
+<h3>Usage</h3>
+<p>All functions in <code>tidyhydat</code> follow a common argument structure which can be illustrated with the <code>DLY_FLOWS()</code> function. For these functions, you can supply either the <code>STATION_NUMBER</code> and the <code>PROV_TERR_STATE_LOC</code> arguments. The <code>hydat_path</code> argument is omitted here and it is assumed you set the variable in your <code>.Renviron</code> file which is highly recommend. If you would like to query the database for two or more stations you could vectorize <code>STATION_NUMBER</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="kw">c</span>(<span class="st">&quot;08LA001&quot;</span>,<span class="st">&quot;08NL071&quot;</span>))</code></pre></div>
 <p>If instead you would like to extract flows for all stations from a jurisdiction, you can simply specific the province:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>)</code></pre></div>
 <p>We saw above that if we were only interested in a subset of dates we could use the <code>start_date</code> and <code>end_date</code> arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number “08LA001” for 1981, you would specify all days in 1981 :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">DLY_FLOWS</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LA001&quot;</span>, <span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>,
           <span class="dt">start_date =</span> <span class="st">&quot;1981-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;1981-12-31&quot;</span>)</code></pre></div>
-<p>You can also make use of auxiliary function in <code>tidyhdyat</code> called <code>search_name</code> to look for matches when you know part of a name of a station. For example:</p>
+<p>You can also make use of auxiliary function in <code>tidyhydat</code> called <code>search_name</code> to look for matches when you know part of a name of a station. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search_name</span>(<span class="st">&quot;liard&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 3 x 2
-##   STATION_NUMBER                    STATION_NAME
-##            &lt;chr&gt;                           &lt;chr&gt;
-## 1        10BE001   LIARD RIVER AT LOWER CROSSING
-## 2        10BE005  LIARD RIVER ABOVE BEAVER RIVER
-## 3        10BE006 LIARD RIVER ABOVE KECHIKA RIVER</code></pre>
+<pre><code>## # A tibble: 8 x 3
+##   STATION_NUMBER                      STATION_NAME PROV_TERR_STATE_LOC
+##            &lt;chr&gt;                             &lt;chr&gt;               &lt;chr&gt;
+## 1        10AA001     LIARD RIVER AT UPPER CROSSING                  YT
+## 2        10BE001     LIARD RIVER AT LOWER CROSSING                  BC
+## 3        10BE005    LIARD RIVER ABOVE BEAVER RIVER                  BC
+## 4        10BE006   LIARD RIVER ABOVE KECHIKA RIVER                  BC
+## 5        10ED001         LIARD RIVER AT FORT LIARD                  NT
+## 6        10ED002        LIARD RIVER NEAR THE MOUTH                  NT
+## 7        10ED008   LIARD RIVER AT LINDBERG LANDING                  NT
+## 8        10GC004 MACKENZIE RIVER ABOVE LIARD RIVER                  NT</code></pre>
+</div>
 </div>
 <div id="setting-the-hydat-path." class="section level2">
 <h2>Setting the HYDAT path.</h2>
@@ -257,37 +186,37 @@ WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</s
 <h2>MSC datamart - <code>download_realtime_dd()</code></h2>
 <p>To download real-time data using the datamart we can use approximately the same conventions discussed above. Using <code>download_realtime_dd()</code> we can easily select specific stations by supplying a station of interest:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LG006&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 17,508 x 8
+<pre><code>## # A tibble: 17,580 x 8
 ##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
 ##             &lt;chr&gt;               &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt;
-##  1        08LG006                  BC 2017-07-30 08:00:00      FLOW  7.41
-##  2        08LG006                  BC 2017-07-30 08:05:00      FLOW  7.41
-##  3        08LG006                  BC 2017-07-30 08:10:00      FLOW  7.41
-##  4        08LG006                  BC 2017-07-30 08:15:00      FLOW  7.38
-##  5        08LG006                  BC 2017-07-30 08:20:00      FLOW  7.38
-##  6        08LG006                  BC 2017-07-30 08:25:00      FLOW  7.38
-##  7        08LG006                  BC 2017-07-30 08:30:00      FLOW  7.38
-##  8        08LG006                  BC 2017-07-30 08:35:00      FLOW  7.38
-##  9        08LG006                  BC 2017-07-30 08:40:00      FLOW  7.38
-## 10        08LG006                  BC 2017-07-30 08:45:00      FLOW  7.38
-## # ... with 17,498 more rows, and 3 more variables: Grade &lt;chr&gt;,
+##  1        08LG006                  BC 2017-08-13 08:00:00      FLOW  6.69
+##  2        08LG006                  BC 2017-08-13 08:05:00      FLOW  6.72
+##  3        08LG006                  BC 2017-08-13 08:10:00      FLOW  6.72
+##  4        08LG006                  BC 2017-08-13 08:15:00      FLOW  6.69
+##  5        08LG006                  BC 2017-08-13 08:20:00      FLOW  6.72
+##  6        08LG006                  BC 2017-08-13 08:25:00      FLOW  6.72
+##  7        08LG006                  BC 2017-08-13 08:30:00      FLOW  6.72
+##  8        08LG006                  BC 2017-08-13 08:35:00      FLOW  6.72
+##  9        08LG006                  BC 2017-08-13 08:40:00      FLOW  6.72
+## 10        08LG006                  BC 2017-08-13 08:45:00      FLOW  6.72
+## # ... with 17,570 more rows, and 3 more variables: Grade &lt;chr&gt;,
 ## #   Symbol &lt;chr&gt;, Code &lt;chr&gt;</code></pre>
 <p>Another option is to provide simply the province as an argument and download all stations from that province:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 77,824 x 8
+<pre><code>## # A tibble: 77,894 x 8
 ##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
 ##             &lt;chr&gt;               &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt;
-##  1        01CD005                  PE 2017-07-30 04:00:00      FLOW    NA
-##  2        01CD005                  PE 2017-07-30 04:05:00      FLOW    NA
-##  3        01CD005                  PE 2017-07-30 04:10:00      FLOW    NA
-##  4        01CD005                  PE 2017-07-30 04:15:00      FLOW    NA
-##  5        01CD005                  PE 2017-07-30 04:20:00      FLOW    NA
-##  6        01CD005                  PE 2017-07-30 04:25:00      FLOW    NA
-##  7        01CD005                  PE 2017-07-30 04:30:00      FLOW    NA
-##  8        01CD005                  PE 2017-07-30 04:35:00      FLOW    NA
-##  9        01CD005                  PE 2017-07-30 04:40:00      FLOW    NA
-## 10        01CD005                  PE 2017-07-30 04:45:00      FLOW    NA
-## # ... with 77,814 more rows, and 3 more variables: Grade &lt;chr&gt;,
+##  1        01CD005                  PE 2017-08-13 04:00:00      FLOW    NA
+##  2        01CD005                  PE 2017-08-13 04:05:00      FLOW    NA
+##  3        01CD005                  PE 2017-08-13 04:10:00      FLOW    NA
+##  4        01CD005                  PE 2017-08-13 04:15:00      FLOW    NA
+##  5        01CD005                  PE 2017-08-13 04:20:00      FLOW    NA
+##  6        01CD005                  PE 2017-08-13 04:25:00      FLOW    NA
+##  7        01CD005                  PE 2017-08-13 04:30:00      FLOW    NA
+##  8        01CD005                  PE 2017-08-13 04:35:00      FLOW    NA
+##  9        01CD005                  PE 2017-08-13 04:40:00      FLOW    NA
+## 10        01CD005                  PE 2017-08-13 04:45:00      FLOW    NA
+## # ... with 77,884 more rows, and 3 more variables: Grade &lt;chr&gt;,
 ## #   Symbol &lt;chr&gt;, Code &lt;chr&gt;</code></pre>
 </div>
 <div id="compare-download_realtime_ws-and-download_realtime_dd" class="section level2">
@@ -318,20 +247,6 @@ distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</code></pre>
-</div>
-<div id="references" class="section level1 unnumbered">
-<h1>References</h1>
-<div id="refs" class="references">
-<div id="ref-moore2017watershed">
-<p>Moore, RD Dan, and David Hutchinson. 2017. “Why Watershed Analysts Should Use R for Data Processing and Analysis.” <em>Confluence: Journal of Watershed Science and Management</em> 1 (1).</p>
-</div>
-<div id="ref-RCore">
-<p>R Core Team. 2017. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
-</div>
-<div id="ref-wickham2014tidy">
-<p>Wickham, Hadley. 2014. “Tidy Data.” <em>Journal of Statistical Software</em> 59 (10). Foundation for Open Access Statistics: 1–23.</p>
-</div>
-</div>
 </div>
 
 

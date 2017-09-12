@@ -1,15 +1,4 @@
 ## ----options, include=FALSE----------------------------------------------
-#render_keep_md = function(vignette_name){
-#  rmarkdown::render(paste0("./vignettes/",vignette_name, ".Rmd"), clean=FALSE)
-#  files_to_remove = paste0("./vignettes/",vignette_name,c(".html",".md",".utf8.md"))
-#  lapply(files_to_remove, file.remove)
-#  
-#  file.rename(from = paste0("./vignettes/",vignette_name, ".knit.md"), to = paste0("./vignettes/",vignette_name, ".md"))
-#}
-#
-#
-#render_keep_md("tidyhydat")
-
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, messages = FALSE, fig.width = 8, fig.height = 12)
 
 ## ----packages, warning=FALSE, message=FALSE, echo = FALSE----------------
@@ -17,35 +6,23 @@ library(tidyverse)
 library(tidyhydat)
 library(dbplyr)
 
-## ---- echo = FALSE-------------------------------------------------------
-hydat_con <- DBI::dbConnect(RSQLite::SQLite(), 'H:/Hydat.sqlite3')
-tbl(hydat_con, "DLY_FLOWS") %>%
-  filter(STATION_NUMBER == "08MF005")# %>%
-  #select(STATION_NUMBER:FLOW_SYMBOL10) %>%
-  #mutate(`Truncated for the sake of brevity` = NA) %>%
-  #glimpse()
-
-## ---- echo = TRUE, message=FALSE-----------------------------------------
-library(tidyhydat)
-DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
-          STATION_NUMBER = "08MF005",
-          start_date = "1992-03-15",
-          end_date = "1992-04-15")
-
 ## ---- eval=FALSE---------------------------------------------------------
 #  download_hydat(hydat_path = "H:/")
 
-## ------------------------------------------------------------------------
-VERSION(hydat_path = "H:/Hydat.sqlite3")
+## ---- eval = FALSE-------------------------------------------------------
+#  STATIONS(hydat_path = "H:/Hydat.sqlite3")
 
-## ----example, warning=FALSE, message=FALSE, eval=FALSE-------------------
-#  DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3")
+## ---- eval= FALSE, echo = TRUE-------------------------------------------
+#  file.edit("~/.Renviron")
+
+## ---- eval=FALSE, echo=TRUE----------------------------------------------
+#  hydat = "YOUR HYDAT PATH"
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
-#  DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"), hydat_path = "H:/Hydat.sqlite3")
+#  DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"))
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
-#  DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#  DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
 
 ## ----warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE-------------
 #  DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3",
