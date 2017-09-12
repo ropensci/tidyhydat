@@ -1,5 +1,5 @@
 Package: tidyhydat
-Title: Extract Tidy Canadian Hydrometric Data
+Title: Extract and Tidy Canadian Hydrometric Data
 Version: 0.2.7
 Date: 2017-09-12
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
