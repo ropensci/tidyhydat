@@ -28,32 +28,32 @@
 #  select(STATION_NUMBER, STATION_NAME) %>%
 #  bind_rows(bcstations)
 
-#' @title A tibble of BC stations and their names
+#' A tibble of BC stations and their names
 #'
-#' @description A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
 #'
 #' @source HYDAT
 "bcstations"
 
 
-#' @title A tibble of all Canadian Stations stations and their names.
+#' A tibble of all Canadian Stations stations and their names.
 #'
-#' @description A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
 #'
 #' @source HYDAT
 "allstations"
 
 
-#' @title DATA_SYMBOLS – DATA SYMBOLS look-up table
+#' DATA SYMBOLS look-up table
 #'
-#' @description A look table for data symbols
+#' A look table for data symbols
 #'
 #' @source HYDAT
 "DATA_SYMBOLS"
 
-#' @title DATA_TYPES – DATA TYPES look-up table
+#' DATA TYPES look-up table
 #'
-#' @description A look table for data types
+#' A look table for data types
 #'
 #' @source HYDAT
 "DATA_TYPES"

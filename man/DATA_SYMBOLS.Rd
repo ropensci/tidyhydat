@@ -3,7 +3,7 @@
 \docType{data}
 \name{DATA_SYMBOLS}
 \alias{DATA_SYMBOLS}
-\title{DATA_SYMBOLS – DATA SYMBOLS look-up table}
+\title{DATA SYMBOLS look-up table}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 3 columns.}
 \source{
 HYDAT

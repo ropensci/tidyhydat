@@ -18,7 +18,7 @@ set as the variable \code{hydat}. Open the \code{.Renviron} file using this comm
 A tibble of agencies
 }
 \description{
-AGENCY_LIST – AGENCY look-up Table
+AGENCY look-up Table
 }
 \seealso{
 Other HYDAT functions: \code{\link{ANNUAL_INSTANT_PEAKS}},

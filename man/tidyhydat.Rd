@@ -15,8 +15,9 @@ For more information on tidy data please see
  \item tidy data vignette: \url{https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html}
  }
 
- To download the latest version of hydat please follow this link:
+ To download the latest version of hydat please either:
  \itemize{
-  \item \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
+  \item Follow this link \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/} or;
+  \item use the \code{download_hydat()} function.
   }
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/STN_.R
 \name{STN_DATUM_CONVERSION}
 \alias{STN_DATUM_CONVERSION}
-\title{STN_DATUM_CONVERTION function}
+\title{STN_DATUM_CONVERSION function}
 \usage{
 STN_DATUM_CONVERSION(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL)
@@ -19,8 +19,8 @@ is returned.}
 is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 }
 \value{
-A tibble of STN_DATUM_CONVERTION
+A tibble of STN_DATUM_CONVERSION
 }
 \description{
-STN_DATUM_CONVERTION look-up Table
+STN_DATUM_CONVERSION look-up Table
 }

@@ -32,12 +32,12 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   stn_remarks
 }
 
-#' STN_DATUM_CONVERTION function
+#' STN_DATUM_CONVERSION function
 #'
-#' STN_DATUM_CONVERTION look-up Table
+#' STN_DATUM_CONVERSION look-up Table
 #' @inheritParams STATIONS
 #'
-#' @return A tibble of STN_DATUM_CONVERTION
+#' @return A tibble of STN_DATUM_CONVERSION
 #'
 #' @export
 #'

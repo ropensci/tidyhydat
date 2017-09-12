@@ -18,7 +18,7 @@ set as the variable \code{hydat}. Open the \code{.Renviron} file using this comm
 A tibble of offices
 }
 \description{
-REGIONAL_OFFICE_LIST – OFFICE look-up Table
+OFFICE look-up Table
 }
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
