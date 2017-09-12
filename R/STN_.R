@@ -88,11 +88,13 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
     }
   }
 
-  ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  ## Determine which stations we are querying
+  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
   on.exit(DBI::dbDisconnect(hydat_con))
 
@@ -122,11 +124,11 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
     }
   }
 
-  ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
-
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  ## Determine which stations we are querying
+  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
   on.exit(DBI::dbDisconnect(hydat_con))
 
