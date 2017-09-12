@@ -1,3 +1,9 @@
+# tidyhydat 0.2.7
+* Updated documentation
+* Updated README
+* Created a small database so that unit testing occurs remotely (#1)
+* Fixed `STN_DATA_RANGE` bug (#26)
+
 # tidyhydat 0.2.6
 * using `styler` package to format code to tidyverse style guide
 * added `PROV_TERR_STATE_LOC` to `allstations`
