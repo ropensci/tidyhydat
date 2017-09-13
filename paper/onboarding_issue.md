@@ -1,7 +1,6 @@
 ### Summary
 
--   What does this package do? (explain in 50 words or less):
-
+-   What does this package do? (explain in 50 words or less): `tidyhydat` provides functions to extract historical and real-time national hydrometric data from Water Survey of Canada data sources
 
 -   Paste the full DESCRIPTION file inside a code block below:
 
@@ -40,16 +39,12 @@ VignetteBuilder: knitr
 
 ```
 
--   URL for the package (the development repository, not a stylized html page):
+-   URL for the package (the development repository, not a stylized html page): https://github.com/bcgov/tidyhydat
 
-https://github.com/bcgov/tidyhydat
-
-- Please indicate which category or categories from our [package fit policies](https://github.com/ropensci/onboarding/blob/master/policies.md#package-fit) this package falls under ***and why**(? (e.g., data retrieval, reproducibility. If you are unsure, we suggest you make a pre-submission inquiry.):
-[e.g., "data extraction, because the package parses a scientific data file format"]
+- Please indicate which category or categories from our [package fit policies](https://github.com/ropensci/onboarding/blob/master/policies.md#package-fit) this package falls under ***and why**:
 
   - data retrieval: `tidyhydat` retrieves data from the Water Survey of Canada *datamart* via the `download_realtime_dd()` function from http://dd.weather.gc.ca/hydrometric/csv/
-  - data extraction: The majority of `tidyhydat`'s exported functions provides easy access to Environment and Climate Change Canada's (ECCC) publicly available HYDAT sqlite3 database (http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) of historical river and lake Canada. HYDAT is updated quarterly and is distributed via the [Canadian Open Government License](https://github.com/bcgov/tidyhydat/blob/master/data-raw/HYDAT_internal_data/LICENSE.OGL-CAN-2.0). HYDAT is not included with this package because it is regularly updated and because the file size is prohibitively large (>1GB) for inclusion in an R package. Rather `tidyhydat` provides the `download_hydat()` function that downloads it for the user. `download_realtime_ws` provides access via the `httr` package to a new password protected web service provided by ECCC. Differences between the download realtime functions are outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd#compare-download_realtime_ws-and-download_realtime_dd)
-
+  - data extraction: The majority of `tidyhydat`'s exported functions provide easy access to Environment and Climate Change Canada's (ECCC) publicly available and open-licenced HYDAT sqlite3 database (http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) of historical river and lake levels in Canada. HYDAT is updated quarterly and is distributed via the [Canadian Open Government Licence](https://github.com/bcgov/tidyhydat/blob/master/data-raw/HYDAT_internal_data/LICENSE.OGL-CAN-2.0). HYDAT is not included with this package because it is regularly updated and because the file size is prohibitively large (>1GB) for inclusion in an R package. Rather `tidyhydat` provides the `download_hydat()` function that downloads it for the user. `download_realtime_ws` provides access via the `httr` package to a new password protected web service provided by ECCC. Differences between the download real-time functions are outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd#compare-download_realtime_ws-and-download_realtime_dd)
 
 
 -   Who is the target audience?  
@@ -64,7 +59,7 @@ yours differ or meet [our criteria for best-in-category](https://github.com/rope
     -[hydatr](https://github.com/paleolimbot/hydatr) was developed at approximately the same time as `tidyhdyat`. 
     - `tidyhydat` documentation is more thorough than both packages.
     - Through the realtime functions `tidyhydat` provides greater functionality than both packages (webservice for both; datamart for `hydatr`)
-    - An express goal of `tidyhydat` is to provide data in a tidy format. This conceptual data science goal provides a clear goal and objective that is missing from both other packages. 
+    - An express goal of `tidyhydat` is to provide data in a tidy format. This conceptual data science goal provides a clear objective that is missing from both other packages. 
 
 ### Requirements
 
