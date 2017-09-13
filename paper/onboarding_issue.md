@@ -11,7 +11,7 @@ Version: 0.2.8
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
            ), person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
            person("Province of British Columbia", role = "cph"))
-Description: `tidyhydat` provides functions to extract historical and real-time national hydrometric
+Description: tidyhydat provides functions to extract historical and real-time national hydrometric
   data from Water Survey of Canada data sources (http://dd.weather.gc.ca/hydrometric/csv/ and
   http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) and then apply tidy data principles.
 Depends: R (>= 3.4.0)
