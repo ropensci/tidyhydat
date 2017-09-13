@@ -10,7 +10,8 @@ Package: tidyhydat
 Title: Extract and Tidy Canadian Hydrometric Data
 Version: 0.2.8
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
-           ), person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"), person("Province of British Columbia", role = "cph"))
+           ), person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
+           person("Province of British Columbia", role = "cph"))
 Description: tidyhydat provides functions to extract river and lake data from Water Survey of 
     Canada historical and real-time data sources (http://dd.weather.gc.ca/hydrometric/csv/ and 
     http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) and then apply tidy data principles.
@@ -20,14 +21,14 @@ URL: https://github.com/bcgov/tidyhydat
 BugReports: https://github.com/bcgov/tidyhydat/issues
 Encoding: UTF-8
 Imports:
-    dplyr,
-    readr,
-    lubridate,
-    tidyr,
-    DBI,
-    RSQLite,
-    tibble,
-    httr
+    dplyr (>= 0.7.3),
+    readr (>= 1.1.1),
+    lubridate (>= 1.6.0),
+    tidyr (>= 0.7.1),
+    DBI (>= 0.7),
+    RSQLite (>= 2.0),
+    tibble (>= 1.3.4),
+    httr (>= 1.3.1)
 Suggests:
     tidyverse,
     dbplyr,
@@ -47,23 +48,22 @@ https://github.com/bcgov/tidyhydat
 - Please indicate which category or categories from our [package fit policies](https://github.com/ropensci/onboarding/blob/master/policies.md#package-fit) this package falls under ***and why**(? (e.g., data retrieval, reproducibility. If you are unsure, we suggest you make a pre-submission inquiry.):
 [e.g., "data extraction, because the package parses a scientific data file format"]
 
-  - data retrieval: `tidyhydat` retrieves data from the Water Survey of Canada *datamart* via the `download_realtime_dd()` function from http://dd.weather.gc.ca/hydrometric/csv/
-  - data extraction: The majority of `tidyhydat`'s exported functions provides easy access to Environment and Climate Change Canada's (ECCC) publicly available HYDAT sqlite3 database (http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) of historical river and lake Canada. HYDAT is updated quarterly and is distributed via the [Canadian Open Government License](https://github.com/bcgov/tidyhydat/blob/master/data-raw/HYDAT_internal_data/LICENSE.OGL-CAN-2.0). HYDAT is not included with this package because it is regularly updated and because the file size is prohibitively large (>1GB) for inclusion in an R package. Rather `tidyhydat` provides the `download_hydat()` function that downloads it for the user. `download_realtime_ws` provides access via the `httr` package to a new password protected web service provided by ECCC. Differences between the download realtime functions are outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd#compare-download_realtime_ws-and-download_realtime_dd)
-
+  - data retrieval: `tidyhydat` retrieves data from the Water Survey of Canada *datamart* via the `download_realtime_dd()` function from http://dd.weather.gc.ca/hydrometric/csv/. `download_realtime_ws` provides access via the `httr` package to a new password protected web service provided by ECCC. Differences between the download realtime functions are outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd#compare-download_realtime_ws-and-download_realtime_dd)
+  - data extraction: The majority of `tidyhydat`'s exported functions provides easy access to Environment and Climate Change Canada's (ECCC) publicly available HYDAT sqlite3 database (http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) of historical river and lake Canada. HYDAT is updated quarterly and is distributed via the [Canadian Open Government License](https://github.com/bcgov/tidyhydat/blob/master/data-raw/HYDAT_internal_data/LICENSE.OGL-CAN-2.0). HYDAT is not included with this package because it is regularly updated and because the file size is prohibitively large (>1GB) for inclusion in an R package. Rather `tidyhydat` provides the `download_hydat()` function that downloads it for the user. 
 
 
 -   Who is the target audience?  
 
-Anyone who is interested in making use of the Water Survey of Canada data sources in R.
+Anyone who is interested in making use of the Water Survey of Canada data sources in R including industry, government and academics.
 
 -   Are there other R packages that accomplish the same thing? If so, how does
 yours differ or meet [our criteria for best-in-category](https://github.com/ropensci/onboarding/blob/master/policies.md#overlap)?
 
     - A search of the term "hydat" on github reveals two R packages that provide similar (but not all the same) functionality:
     - [HYDAT](https://github.com/CentreForHydrology/HYDAT): the original author of **HYDAT** is a contributor to this package and will soon cease further development of **HYDAT**. 
-    -[hydatr](https://github.com/paleolimbot/hydatr) was developed at approximately the same time as `tidyhdyat`. 
-    - `tidyhydat` documentation is more thorough than both packages.
-    - Through the realtime functions `tidyhydat` provides greater functionality than both packages (webservice for both; datamart for `hydatr`)
+    - [hydatr](https://github.com/paleolimbot/hydatr) was developed at approximately the same time as `tidyhydat`. 
+    - `tidyhydat` documentation is more comprehensive than both packages.
+    - Through the realtime functions `tidyhydat` provides added functionality not present in both packages. Neither `HYDAT` nor `hydatr` provide any functionality to access the web service and `hydatr` does not access any real-time datamart data.
     - An express goal of `tidyhydat` is to provide data in a tidy format. This conceptual data science goal provides a clear goal and objective that is missing from both other packages. 
 
 ### Requirements
