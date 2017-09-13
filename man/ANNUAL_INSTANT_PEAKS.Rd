@@ -7,7 +7,7 @@
 HYDAT
 }
 \usage{
-ANNUAL_INSTANT_PEAKS(hydat_path, STATION_NUMBER = NULL,
+ANNUAL_INSTANT_PEAKS(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
@@ -54,7 +54,9 @@ Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{SED_MONTHLY_LOADS}},
   \code{\link{SED_MONTHLY_SUSCON}},
   \code{\link{SED_SAMPLES_PSD}}, \code{\link{SED_SAMPLES}},
-  \code{\link{STATIONS}}, \code{\link{STN_DATA_RANGE}},
+  \code{\link{STATIONS}},
+  \code{\link{STN_DATA_COLLECTION}},
+  \code{\link{STN_DATA_RANGE}},
   \code{\link{STN_OPERATION_SCHEDULE}},
   \code{\link{STN_REGULATION}}, \code{\link{VERSION}}
 }

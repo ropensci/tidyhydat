@@ -55,7 +55,8 @@ AGENCY_LIST <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 
@@ -86,9 +87,10 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
-  }
+    }
 
 
   ## Read on database
@@ -119,7 +121,8 @@ DATUM_LIST <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 
@@ -150,7 +153,8 @@ VERSION <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 

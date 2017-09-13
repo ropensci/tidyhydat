@@ -69,10 +69,10 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
-
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)

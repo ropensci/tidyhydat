@@ -56,6 +56,7 @@ Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{SED_MONTHLY_LOADS}},
   \code{\link{SED_MONTHLY_SUSCON}},
   \code{\link{SED_SAMPLES}}, \code{\link{STATIONS}},
+  \code{\link{STN_DATA_COLLECTION}},
   \code{\link{STN_DATA_RANGE}},
   \code{\link{STN_OPERATION_SCHEDULE}},
   \code{\link{STN_REGULATION}}, \code{\link{VERSION}}
