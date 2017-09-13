@@ -24,3 +24,9 @@ A tibble of STN_REMARKS
 \description{
 STN_REMARKS look-up Table
 }
+\examples{
+\donttest{
+STN_REMARKS(STATION_NUMBER = c("02JE013","08MF005"))
+}
+
+}

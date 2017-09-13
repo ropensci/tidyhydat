@@ -27,6 +27,12 @@ A tibble of STN_DATA_RANGE
 \description{
 STN_DATA_RANGE look-up Table
 }
+\examples{
+\donttest{
+STN_DATA_RANGE(STATION_NUMBER = c("02JE013","08MF005"))
+}
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{ANNUAL_INSTANT_PEAKS}},

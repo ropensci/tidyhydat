@@ -6,6 +6,11 @@
 #' @return A tibble of STN_REMARKS
 #'
 #' @export
+#' 
+#' @examples
+#' \donttest{
+#' STN_REMARKS(STATION_NUMBER = c("02JE013","08MF005"))
+#'}
 #'
 STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
@@ -40,7 +45,10 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
 #' @return A tibble of STN_DATUM_CONVERSION
 #'
 #' @export
-#'
+#' @examples
+#' \donttest{
+#' STN_DATUM_CONVERSION(STATION_NUMBER = c("02JE013","08MF005"))
+#'}
 STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
@@ -69,7 +77,7 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
   stn_datum_conversion
 }
 
-#' STN_DATUM_CONVERSION function
+#' STN_DATUM_UNRELATED function
 #'
 #' STN_DATUM_UNRELATED look-up Table
 #' @inheritParams STATIONS
@@ -77,6 +85,10 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
 #' @return A tibble of STN_DATUM_UNRELATED
 #'
 #' @export
+#' @examples
+#' \donttest{
+#' STN_DATUM_UNRELATED()
+#'}
 #'
 STN_DATUM_UNRELATED <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
@@ -112,6 +124,10 @@ STN_DATUM_UNRELATED <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' STN_DATA_RANGE(STATION_NUMBER = c("02JE013","08MF005"))
+#'}
 #'
 STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
@@ -149,6 +165,10 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' STN_DATA_COLLECTION(STATION_NUMBER = c("02JE013","08MF005"))
+#'}
 #'
 STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
@@ -191,6 +211,10 @@ STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' STN_OPERATION_SCHEDULE(STATION_NUMBER = c("02JE013"))
+#'}
 #'
 STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {

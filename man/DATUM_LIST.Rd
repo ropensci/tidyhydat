@@ -20,6 +20,12 @@ A tibble of DATUMS
 \description{
 DATUM look-up Table
 }
+\examples{
+\donttest{
+DATUM_LIST()
+}
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{ANNUAL_INSTANT_PEAKS}},

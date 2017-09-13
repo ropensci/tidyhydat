@@ -50,6 +50,10 @@ search_number <- function(search_term) {
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' AGENCY_LIST()
+#'}
 #'
 AGENCY_LIST <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
@@ -82,6 +86,11 @@ AGENCY_LIST <- function(hydat_path=NULL) {
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' REGIONAL_OFFICE_LIST()
+#'}
+#'
 #'
 REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {
@@ -115,6 +124,11 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
 #'
 #' @family HYDAT functions
 #' @source HYDAT
+#' @examples
+#' \donttest{
+#' DATUM_LIST()
+#'}
+#'
 #' @export
 #'
 DATUM_LIST <- function(hydat_path=NULL) {
@@ -148,6 +162,11 @@ DATUM_LIST <- function(hydat_path=NULL) {
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
+#' @examples
+#' \donttest{
+#' VERSION()
+#'}
+#'
 #'
 VERSION <- function(hydat_path=NULL) {
   if (is.null(hydat_path)) {

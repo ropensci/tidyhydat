@@ -27,6 +27,12 @@ A tibble of STN_OPERATION_SCHEDULE
 \description{
 STN_OPERATION_SCHEDULE look-up Table
 }
+\examples{
+\donttest{
+STN_OPERATION_SCHEDULE(STATION_NUMBER = c("02JE013"))
+}
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{ANNUAL_INSTANT_PEAKS}},

@@ -2,7 +2,7 @@
 % Please edit documentation in R/STN_.R
 \name{STN_DATUM_UNRELATED}
 \alias{STN_DATUM_UNRELATED}
-\title{STN_DATUM_CONVERSION function}
+\title{STN_DATUM_UNRELATED function}
 \usage{
 STN_DATUM_UNRELATED(hydat_path = NULL, STATION_NUMBER = NULL,
   PROV_TERR_STATE_LOC = NULL)
@@ -23,4 +23,10 @@ A tibble of STN_DATUM_UNRELATED
 }
 \description{
 STN_DATUM_UNRELATED look-up Table
+}
+\examples{
+\donttest{
+STN_DATUM_UNRELATED()
+}
+
 }

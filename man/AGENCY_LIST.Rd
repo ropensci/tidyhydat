@@ -20,6 +20,12 @@ A tibble of agencies
 \description{
 AGENCY look-up Table
 }
+\examples{
+\donttest{
+AGENCY_LIST()
+}
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{ANNUAL_INSTANT_PEAKS}},
   \code{\link{ANNUAL_STATISTICS}},

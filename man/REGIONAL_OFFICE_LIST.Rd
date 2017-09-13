@@ -20,6 +20,13 @@ A tibble of offices
 \description{
 OFFICE look-up Table
 }
+\examples{
+\donttest{
+REGIONAL_OFFICE_LIST()
+}
+
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{ANNUAL_INSTANT_PEAKS}},

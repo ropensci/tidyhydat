@@ -22,6 +22,13 @@ version number
 Version number of HYDAT
 A function to get version number of hydat
 }
+\examples{
+\donttest{
+VERSION()
+}
+
+
+}
 \seealso{
 Other HYDAT functions: \code{\link{AGENCY_LIST}},
   \code{\link{ANNUAL_INSTANT_PEAKS}},
