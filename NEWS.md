@@ -1,3 +1,10 @@
+#tidyhydat 0.2.8
+* Added examples to every function
+* Completed test suite including `download_realtime_ws` (#27)
+* Fixed bugs in several `STN_*` functions
+* Added `STN_DATUM_RELATED`
+* Updated documentation
+
 # tidyhydat 0.2.7
 * Updated documentation
 * Updated README
