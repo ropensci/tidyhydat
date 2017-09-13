@@ -69,6 +69,39 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
   stn_datum_conversion
 }
 
+#' STN_DATUM_CONVERSION function
+#'
+#' STN_DATUM_UNRELATED look-up Table
+#' @inheritParams STATIONS
+#'
+#' @return A tibble of STN_DATUM_UNRELATED
+#'
+#' @export
+#'
+STN_DATUM_UNRELATED <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
+  if (is.null(hydat_path)) {
+    hydat_path <- Sys.getenv("hydat")
+    if (is.na(hydat_path)) {
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
+    }
+  }
+  
+  ## Read on database
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
+  on.exit(DBI::dbDisconnect(hydat_con))
+  
+  ## Determine which stations we are querying
+  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  
+  stn_datum_unrelated <- dplyr::tbl(hydat_con, "STN_DATUM_UNRELATED") %>%
+    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::collect() 
+  
+  stn_datum_unrelated
+}
+
 #' STN_DATA_RANGE function
 #'
 #' STN_DATA_RANGE look-up Table
@@ -84,7 +117,8 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 
@@ -116,13 +150,14 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 #' @source HYDAT
 #' @export
 #'
-STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
+STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
-  }
+    }
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -161,15 +196,16 @@ STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
+      stop("No Hydat.sqlite3 path set either in this function or 
+           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
-  }
+    }
 
+    ## Read on database
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
+  
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
-
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   on.exit(DBI::dbDisconnect(hydat_con))
 
