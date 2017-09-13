@@ -6,6 +6,37 @@
 -   Paste the full DESCRIPTION file inside a code block below:
 
 ```
+Package: tidyhydat
+Title: Extract and Tidy Canadian Hydrometric Data
+Version: 0.2.8
+Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
+           ), person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"))
+Description: tidyhydat provides functions to extract river and lake data from Water Survey of 
+    Canada historical and real-time data sources (http://dd.weather.gc.ca/hydrometric/csv/ and 
+    http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/) and then apply tidy data principles.
+Depends: R (>= 3.4.0)
+License: Apache License (== 2.0) | file LICENSE
+URL: https://github.com/bcgov/tidyhydat
+BugReports: https://github.com/bcgov/tidyhydat/issues
+Encoding: UTF-8
+Imports:
+    dplyr,
+    readr,
+    lubridate,
+    tidyr,
+    DBI,
+    RSQLite,
+    tibble,
+    httr
+Suggests:
+    tidyverse,
+    dbplyr,
+    knitr,
+    rmarkdown,
+    testthat
+LazyData: true
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
 
 ```
 
@@ -42,7 +73,7 @@ Confirm each of the following by checking the box.  This package:
 - [x] does not violate the Terms of Service of any service it interacts with. 
 - [x] has a CRAN and OSI accepted license.
 - [x] contains a README with instructions for installing the development version. 
-- [ ] includes documentation with examples for all functions.
+- [x] includes documentation with examples for all functions.
 - [x] contains a vignette with examples of its essential functions and uses.
 - [x] has a test suite.
 - [x] has continuous integration, including reporting of test coverage, using services such as Travis CI, Coeveralls and/or CodeCov.
@@ -59,9 +90,9 @@ Confirm each of the following by checking the box.  This package:
 
 ### Detail
 
-- [ ] Does `R CMD check` (or `devtools::check()`) succeed?  Paste and describe any errors or warnings:
+- [x] Does `R CMD check` (or `devtools::check()`) succeed?  Paste and describe any errors or warnings:
 
-- [ ] Does the package conform to [rOpenSci packaging guidelines](https://github.com/ropensci/onboarding/blob/master/packaging_guide.md)? Please describe any exceptions:
+- [x] Does the package conform to [rOpenSci packaging guidelines](https://github.com/ropensci/onboarding/blob/master/packaging_guide.md)? Please describe any exceptions:
 
 - If this is a resubmission following rejection, please explain the change in circumstances:
 
