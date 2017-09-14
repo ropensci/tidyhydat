@@ -55,7 +55,7 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
   }
 
   output_c <- c()
-  for (i in 1:nrow(choose_df)) {
+  for (i in seq_along(choose_df$STATION_NUMBER)) {
     ## Specify from choose_df
     STATION_NUMBER_SEL <- choose_df$STATION_NUMBER[i]
     PROV_SEL <- choose_df$PROV_TERR_STATE_LOC[i]
@@ -393,7 +393,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
 #' @export
 #'
 #' @examples \donttest{
-#' download_hydat()
+#' #download_hydat()
 #' }
 #'
 
