@@ -16,7 +16,7 @@ is already present. \code{download_hydat} also looks to see if you have the hyda
 }
 \examples{
 \donttest{
-download_hydat()
+#download_hydat()
 }
 
 }

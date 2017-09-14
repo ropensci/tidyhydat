@@ -35,8 +35,6 @@ That is a large vector for \code{SED_DLY_SUSCON}.
 }
 \examples{
 \donttest{
-SED_DLY_SUSCON(STATION_NUMBER = c("08MH024","08MH001"), hydat_path = "H:/Hydat.sqlite3",
-start_date = "1996-01-01", end_date = "2000-01-01")
 
 SED_DLY_SUSCON(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 

@@ -25,9 +25,6 @@
 #'
 #' @examples
 #' \donttest{
-#' SED_MONTHLY_SUSCON(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
-#' start_date = "1996-01-01", end_date = "2000-01-01")
-#'
 #' SED_MONTHLY_SUSCON(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'           }
 #' @family HYDAT functions

@@ -35,11 +35,8 @@ That is a large vector for \code{SED_SAMPLES_PSD}.
 }
 \examples{
 \donttest{
-SED_SAMPLES_PSD(STATION_NUMBER = c("08MH024","08MH001"), hydat_path = "H:/Hydat.sqlite3",
-start_date = "1996-01-01", end_date = "2000-01-01")
 
 SED_SAMPLES_PSD(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
-
           }
 
 }
