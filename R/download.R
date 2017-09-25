@@ -272,7 +272,7 @@ get_ws_token <- function(username, password) {
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date
 #' @param token generate by \code{get_ws_token()}
 #' 
-#' @return Time is return as UTC for consistency
+#' @return Time is return as UTC for consistency.
 #'
 #' @examples
 #' \donttest{
