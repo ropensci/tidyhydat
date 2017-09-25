@@ -94,11 +94,15 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
     url_check <- httr::GET(infile[1])
     ## check if a valid url
     if(httr::http_error(url_check) == TRUE){
+      
       h <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
                      F = NA, G = NA, H = NA, I = NA, J = NA)
+      
       colnames(h) <- colHeaders
-    } else{h <- readr::read_csv(
+    } else{h <- httr::content(
         infile[1],
+        type = "text/csv",
+        encoding = "UTF-8",
         skip = 1,
         col_names = colHeaders,
         col_types = readr::cols(
@@ -123,8 +127,10 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
       d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
                           F = NA, G = NA, H = NA, I = NA, J = NA)
       colnames(d) <- colHeaders
-    } else{d <- readr::read_csv(
+    } else{d <- httr::content(
         infile[2],
+        type = "text/csv",
+        encoding = "UTF-8",
         skip = 1,
         col_names = colHeaders,
         col_types = readr::cols(
