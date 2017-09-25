@@ -8,7 +8,8 @@ HYDAT
 }
 \usage{
 DLY_FLOWS(hydat_path = NULL, STATION_NUMBER = NULL,
-  PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL")
+  PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL",
+  symbol_output = "code")
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
@@ -24,6 +25,9 @@ is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 \item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
 \item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
+
+\item{symbol_output}{Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default 
+value is \code{code}.}
 }
 \value{
 A tibble of daily levels
