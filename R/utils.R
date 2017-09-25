@@ -185,6 +185,6 @@ VERSION <- function(hydat_path=NULL) {
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%
     dplyr::mutate(Date = lubridate::ymd_hms(Date))
-
+  
   version
 }

@@ -238,6 +238,6 @@ STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_
     dplyr::collect() %>%
     dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
-
+  
   stn_operation_schedule
 }

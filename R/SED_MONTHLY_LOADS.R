@@ -38,7 +38,7 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?SED_MONTHLY_LOADS for examples.")
   }
-
+  
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
   } else {
@@ -47,24 +47,24 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
     start_year <- lubridate::year(start_date)
     start_month <- lubridate::month(start_date)
     start_day <- lubridate::day(start_date)
-
+    
     ## End
     end_year <- lubridate::year(end_date)
     end_month <- lubridate::month(end_date)
     end_day <- lubridate::day(end_date)
   }
-
+  
   ## Check date is in the right format
   if (start_date != "ALL" | end_date != "ALL") {
     if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
       stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
     }
-
+    
     if (start_date > end_date) {
       stop("start_date is after end_date. Try swapping values.")
     }
   }
-
+  
   if (is.null(hydat_path)) {
     hydat_path <- Sys.getenv("hydat")
     if (is.na(hydat_path)) {
@@ -72,29 +72,29 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
-
-
+  
+  
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
-
-
+  
+  
   ## Data manipulations to make it "tidy"
   sed_monthly_loads <- dplyr::tbl(hydat_con, "SED_DLY_LOADS")
   sed_monthly_loads <- dplyr::filter(sed_monthly_loads, STATION_NUMBER %in% stns)
-
+  
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
     sed_monthly_loads <- dplyr::filter(sed_monthly_loads, YEAR >= start_year &
-      YEAR <= end_year)
+                                         YEAR <= end_year)
     
     #sed_monthly_loads <- dplyr::filter(sed_monthly_loads, MONTH >= start_month &
     #                             MONTH <= end_month)
   }
-
+  
   sed_monthly_loads <- dplyr::select(sed_monthly_loads, STATION_NUMBER:MAX)
   sed_monthly_loads <- dplyr::collect(sed_monthly_loads)
   

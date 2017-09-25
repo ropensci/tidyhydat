@@ -101,11 +101,11 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
 
   ## Clean up the variables
   annual_statistics <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value, Date, SYMBOL_EN)
-
+  
   ## Rename to tidyhydat format
   colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")
-
-
+  
+  
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -119,6 +119,6 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
   } else {
     message("All station successfully retrieved")
   }
-
+  
   annual_statistics
 }

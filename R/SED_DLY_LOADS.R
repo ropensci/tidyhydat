@@ -127,6 +127,6 @@ SED_DLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
     message("All station successfully retrieved")
   }
 
-
+  
   sed_dly_loads
 }
