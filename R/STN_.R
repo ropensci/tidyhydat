@@ -149,8 +149,8 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
   on.exit(DBI::dbDisconnect(hydat_con))
 
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_RANGE") %>%
-    filter(STATION_NUMBER %in% stns) %>%
-    collect()
+    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::collect()
   
   stn_data_range
 }

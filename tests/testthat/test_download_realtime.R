@@ -15,12 +15,12 @@ context("Testing download_realtime functions")
                    c("STATION_NUMBER", "Date", "Name_En", "Value", "Unit", "Grade",
                      "Symbol", "Approval", "Parameter", "Code"))
  })
-
-
-test_that("download_realtime_dd returns the correct data header", {
-  expect_identical(
-    colnames(download_realtime_dd(STATION_NUMBER = "08MF005", PROV_TERR_STATE_LOC = "BC")),
-    c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
+ 
+ 
+ test_that("download_realtime_dd returns the correct data header", {
+   expect_identical(
+     colnames(download_realtime_dd(STATION_NUMBER = "08MF005", PROV_TERR_STATE_LOC = "BC")),
+     c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
   )
 })
 

@@ -45,13 +45,13 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
   if (!is.null(STATION_NUMBER)) {
     stns <- STATION_NUMBER
     choose_df <- realtime_network_meta()
-    choose_df <- filter(choose_df, STATION_NUMBER %in% stns)
-    choose_df <- select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   if (is.null(STATION_NUMBER)) {
     choose_df <- realtime_network_meta(PROV_TERR_STATE_LOC = PROV_TERR_STATE_LOC)
-    choose_df <- select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   output_c <- c()
@@ -156,7 +156,7 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
 
     # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-    if(NROW(na.omit(h)) == 0){
+    if(NROW(stats::na.omit(h)) == 0){
       output <- d
     } else{
       p <- which(d$Date < min(h$Date))
@@ -398,7 +398,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   csv_df <- dplyr::rename(csv_df, STATION_NUMBER = ID)
   csv_df <- dplyr::left_join(
     csv_df,
-    select(param_id, -Name_Fr),
+    dplyr::select(param_id, -Name_Fr),
     by = c("Parameter")
   )
   csv_df <- dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit, Grade, Symbol, Approval, Parameter, Code)
@@ -465,12 +465,12 @@ download_hydat <- function(dl_hydat_here = NULL) {
   ## If there is an existing hydat file get the date of release
   if (length(list.files(dl_hydat_here, pattern = "Hydat.sqlite3")) == 1) {
     VERSION(hydat_path) %>%
-      mutate(condensed_date = paste0(
+      dplyr::mutate(condensed_date = paste0(
         substr(Date, 1, 4),
         substr(Date, 6, 7),
         substr(Date, 9, 10)
       )) %>%
-      pull(condensed_date) -> existing_hydat
+      dplyr::pull(condensed_date) -> existing_hydat
   } else {
     existing_hydat <- "HYDAT not present"
   }
@@ -495,5 +495,5 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
   utils::download.file(url, temp)
 
-  utils::unzip(temp, files = (unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
+  utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
 }

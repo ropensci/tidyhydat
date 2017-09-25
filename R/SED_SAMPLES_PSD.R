@@ -93,7 +93,7 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
   }
 
 
-  sed_samples_psd <- select(sed_samples_psd, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, PARTICLE_SIZE, PERCENT)
+  sed_samples_psd <- dplyr::select(sed_samples_psd, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, PARTICLE_SIZE, PERCENT)
 
 
   ## What stations were missed?
