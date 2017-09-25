@@ -67,10 +67,10 @@ ANNUAL_INSTANT_PEAKS <- function(hydat_path = NULL, STATION_NUMBER = NULL,
     dplyr::collect()
 
   ## Add in english data type
-  aip <- dplyr::left_join(aip, DATA_TYPES, by = c("DATA_TYPE"))
+  aip <- dplyr::left_join(aip, tidyhydat::DATA_TYPES, by = c("DATA_TYPE"))
 
   ## Add in Symbol
-  aip <- dplyr::left_join(aip, DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
+  aip <- dplyr::left_join(aip, tidyhydat::DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## If a yearis supplied...
   if (start_year != "ALL" | end_year != "ALL") {
@@ -103,6 +103,6 @@ ANNUAL_INSTANT_PEAKS <- function(hydat_path = NULL, STATION_NUMBER = NULL,
   } else {
     message("All station successfully retrieved")
   }
-
+  
   aip
 }

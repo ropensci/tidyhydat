@@ -14,7 +14,7 @@ is returned.}
 is returned.}
 }
 \value{
-A tibble of water flow and level values
+A tibble of water flow and level values. Time is return as UTC for consistency.
 }
 \description{
 Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize

@@ -93,27 +93,27 @@ SED_MONTHLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR
     #sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, MONTH >= start_month &
     #                             MONTH <= end_month)
   }
-
+  
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, STATION_NUMBER:MAX)
   sed_monthly_suscon <- dplyr::collect(sed_monthly_suscon)
   
   ## Need to rename columns for gather
   colnames(sed_monthly_suscon) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS",
-                           "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
+                                    "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
   
   
-
+  
   sed_monthly_suscon <- tidyr::gather(sed_monthly_suscon, variable, temp, -(STATION_NUMBER:NO_DAYS))
   sed_monthly_suscon <- tidyr::separate(sed_monthly_suscon, variable, into = c("Sum_stat","temp2"), sep = "_")
-
+  
   sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, temp2, temp)
-
+  
   ## convert into R date for date of occurence.
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
-
+  
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -DAY)
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
-
+  
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -127,7 +127,7 @@ SED_MONTHLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR
   } else {
     message("All station successfully retrieved")
   }
-
+  
 
   sed_monthly_suscon
 }

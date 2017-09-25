@@ -19,21 +19,8 @@
 #'
 #' @docType package
 #' @name tidyhydat
-#'
-#' @importFrom DBI dbConnect
-#' @importFrom DBI dbDisconnect
-#' @importFrom RSQLite SQLite
-#' @importFrom tidyr gather
-#' @importFrom tibble tibble
-#' @importFrom lubridate ymd
-#' @importFrom lubridate year
-#' @importFrom lubridate month
-#' @importFrom lubridate day
-#' @importFrom utils download.file
-#' @importFrom utils unzip
-#' @import readr
-#' @import dplyr
-#' @import httr
+#' 
+#' @importFrom dplyr %>%
 #'
 #' @references For more information on tidy data please see
 #' \itemize{

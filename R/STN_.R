@@ -137,9 +137,9 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
-
   
-
+  
+  
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
@@ -147,10 +147,10 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_RANGE") %>%
-    filter(STATION_NUMBER %in% stns) %>%
-    collect()
+    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::collect()
   
   stn_data_range
 }
@@ -177,8 +177,8 @@ STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
       stop("No Hydat.sqlite3 path set either in this function or 
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
-    }
-
+  }
+  
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
@@ -186,7 +186,7 @@ STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_COLLECTION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "MEASUREMENT_CODES"), by = c("MEASUREMENT_CODE")) %>%
@@ -195,8 +195,8 @@ STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
     dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR_FROM, YEAR_TO, MEASUREMENT_EN, OPERATION_EN) %>%
     dplyr::arrange(STATION_NUMBER, YEAR_FROM)
-
-
+  
+  
   stn_data_range
 }
 
@@ -223,21 +223,21 @@ STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_
       stop("No Hydat.sqlite3 path set either in this function or 
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
-    }
-
-    ## Read on database
+  }
+  
+  ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
   
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   stn_operation_schedule <- dplyr::tbl(hydat_con, "STN_OPERATION_SCHEDULE") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
     dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
-
+  
   stn_operation_schedule
 }

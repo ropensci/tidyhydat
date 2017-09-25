@@ -45,7 +45,8 @@
         "CONVERSION_FACTOR", "DATE", "DATUM_EN", "DATUM_EN_FROM", "DATUM_EN_TO", "LOAD", "MEASUREMENT_EN",
         "MONTH_FROM", "MONTH_TO", "OPERATION_EN", "PARTICLE_SIZE", "PERCENT", "REMARK_EN", "REMARK_TYPE_EN",
         "SAMPLER_TYPE", "SAMPLE_REMARK_EN", "SAMPLING_VERTICAL_EN", "SAMPLING_VERTICAL_LOCATION", "SED_DATA_TYPE_EN",
-        "SV_DEPTH2", "TEMPERATURE", "TIME_SYMBOL", "YEAR_FROM", "YEAR_TO", "condensed_date","temp2",
+        "SV_DEPTH2", "TEMPERATURE", "TIME_SYMBOL", "YEAR_FROM", "YEAR_TO", "condensed_date","temp2","SYMBOL_FR",
+        "SUSCON_SYMBOL",
         "." # piping requires '.' at times
       )
     )

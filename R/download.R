@@ -22,7 +22,7 @@
 #' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
 #' is returned.
 #'
-#' @return A tibble of water flow and level values
+#' @return A tibble of water flow and level values. Time is return as UTC for consistency.
 #'
 #'
 #' @examples
@@ -45,13 +45,13 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
   if (!is.null(STATION_NUMBER)) {
     stns <- STATION_NUMBER
     choose_df <- realtime_network_meta()
-    choose_df <- filter(choose_df, STATION_NUMBER %in% stns)
-    choose_df <- select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   if (is.null(STATION_NUMBER)) {
     choose_df <- realtime_network_meta(PROV_TERR_STATE_LOC = PROV_TERR_STATE_LOC)
-    choose_df <- select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   output_c <- c()
@@ -90,11 +90,21 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
         "FLOW_SYMBOL",
         "FLOW_CODE"
       )
-
-
-    h <- tryCatch(
-      readr::read_csv(
-        infile[1],
+    
+    url_check <- httr::GET(infile[1])
+    ## check if a valid url
+    if(httr::http_error(url_check) == TRUE){
+      message(paste0("No hourly data found for ",STATION_NUMBER_SEL))
+      
+      h <- tibble::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
+                     F = NA, G = NA, H = NA, I = NA, J = NA)
+      
+      colnames(h) <- colHeaders
+    } else{
+      h <- httr::content(
+        url_check,
+        type = "text/csv",
+        encoding = "UTF-8",
         skip = 1,
         col_names = colHeaders,
         col_types = readr::cols(
@@ -109,18 +119,23 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
           FLOW_SYMBOL = readr::col_character(),
           FLOW_CODE = readr::col_integer()
         )
-      ),
-      error = function(c) {
-        c$message <- paste0(STATION_NUMBER_SEL, " cannot be found")
-        stop(c)
-      }
-    )
-
+      )
+    }
 
     # download daily file
-    d <- tryCatch(
-      readr::read_csv(
-        infile[2],
+    url_check_d <- httr::GET(infile[2])
+    ## check if a valid url
+    if(httr::http_error(url_check_d) == TRUE){
+      message(paste0("No daily data found for ",STATION_NUMBER_SEL))
+      
+      d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
+                          F = NA, G = NA, H = NA, I = NA, J = NA)
+      colnames(d) <- colHeaders
+    } else{
+      d <- httr::content(
+        url_check_d,
+        type = "text/csv",
+        encoding = "UTF-8",
         skip = 1,
         col_names = colHeaders,
         col_types = readr::cols(
@@ -135,17 +150,18 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
           FLOW_SYMBOL = readr::col_character(),
           FLOW_CODE = readr::col_integer()
         )
-      ),
-      error = function(c) {
-        c$message <- paste0(STATION_NUMBER_SEL, " cannot be found")
-        stop(c)
-      }
-    )
+      )
+    }
+    
 
 
     # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-    p <- which(d$Date < min(h$Date))
-    output <- rbind(d[p, ], h)
+    if(NROW(stats::na.omit(h)) == 0){
+      output <- d
+    } else{
+      p <- which(d$Date < min(h$Date))
+      output <- rbind(d[p, ], h)
+    }
 
     ## Now tidy the data
     ## TODO: Find a better way to do this
@@ -192,20 +208,43 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
   ## Need to implement a search by station
   # try((if(hasArg(PROV_TERR_STATE_LOC_SEL) == FALSE) stop("Stopppppte")))
 
-  net_tibble <- readr::read_csv(
-    "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv",
-    skip = 1,
-    col_names = c(
-      "STATION_NUMBER",
-      "STATION_NAME",
-      "LATITUDE",
-      "LONGITUDE",
-      "PROV_TERR_STATE_LOC",
-      "TIMEZONE"
-    ),
-    col_types = readr::cols()
-  )
-
+  #net_tibble <- readr::read_csv(
+  #  "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv",
+  #  skip = 1,
+  #  col_names = c(
+  #    "STATION_NUMBER",
+  #    "STATION_NAME",
+  #    "LATITUDE",
+  #    "LONGITUDE",
+  #    "PROV_TERR_STATE_LOC",
+  #    "TIMEZONE"
+  #  ),
+  #  col_types = readr::cols()
+  #)
+  
+  url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
+  
+  ## Checking to make sure the link is valid
+  if(httr::http_error(url_check) == "TRUE"){
+    stop("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv is not a valid url. Datamart may be
+         down or the url has changed.")
+  }
+  
+  net_tibble <- httr::content(url_check,
+                              type = "text/csv",
+                              encoding = "UTF-8",
+                              skip = 1,
+                              col_names = c(
+                                "STATION_NUMBER",
+                                "STATION_NAME",
+                                "LATITUDE",
+                                "LONGITUDE",
+                                "PROV_TERR_STATE_LOC",
+                                "TIMEZONE"
+                              ),
+                              col_types = readr::cols()
+                          )
+  
   if (is.null(prov)) {
     return(net_tibble)
   }
@@ -258,7 +297,7 @@ get_ws_token <- function(username, password) {
   message(paste0("This token will expire at ", format(Sys.time() + 10 * 60, "%H:%M:%S")))
 
   ## Extract token from POST
-  token <- httr::content(r, "text", encoding = "ISO-8859-1")
+  token <- httr::content(r, "text", encoding = "UTF-8")
 
   token
 }
@@ -271,6 +310,8 @@ get_ws_token <- function(username, password) {
 #' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date
 #' @param token generate by \code{get_ws_token()}
+#' 
+#' @return Time is return as UTC for consistency.
 #'
 #' @examples
 #' \donttest{
@@ -357,7 +398,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   csv_df <- dplyr::rename(csv_df, STATION_NUMBER = ID)
   csv_df <- dplyr::left_join(
     csv_df,
-    select(param_id, -Name_Fr),
+    dplyr::select(param_id, -Name_Fr),
     by = c("Parameter")
   )
   csv_df <- dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit, Grade, Symbol, Approval, Parameter, Code)
@@ -424,12 +465,12 @@ download_hydat <- function(dl_hydat_here = NULL) {
   ## If there is an existing hydat file get the date of release
   if (length(list.files(dl_hydat_here, pattern = "Hydat.sqlite3")) == 1) {
     VERSION(hydat_path) %>%
-      mutate(condensed_date = paste0(
+      dplyr::mutate(condensed_date = paste0(
         substr(Date, 1, 4),
         substr(Date, 6, 7),
         substr(Date, 9, 10)
       )) %>%
-      pull(condensed_date) -> existing_hydat
+      dplyr::pull(condensed_date) -> existing_hydat
   } else {
     existing_hydat <- "HYDAT not present"
   }
@@ -454,5 +495,5 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
   utils::download.file(url, temp)
 
-  utils::unzip(temp, files = (unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
+  utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
 }

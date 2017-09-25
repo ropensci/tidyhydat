@@ -98,17 +98,17 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   ## SUBSET by date
   if (start_date != "ALL" | end_date != "ALL") {
     sed_samples <- dplyr::filter(sed_samples, DATE >= start_date &
-      DATE <= end_date)
+                                   DATE <= end_date)
   }
-
-
-  sed_samples <- select(
+  
+  
+  sed_samples <- dplyr::select(
     sed_samples, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, SAMPLE_REMARK_EN, TIME_SYMBOL,
     FLOW, SYMBOL_EN, SAMPLER_TYPE, SAMPLING_VERTICAL_LOCATION, SAMPLING_VERTICAL_EN,
     TEMPERATURE, CONCENTRATION, CONCENTRATION_EN:SV_DEPTH2
   )
-
-
+  
+  
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_samples$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -122,6 +122,6 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   } else {
     message("All station successfully retrieved")
   }
-
+  
   sed_samples
 }

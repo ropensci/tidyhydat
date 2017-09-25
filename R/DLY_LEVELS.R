@@ -35,7 +35,8 @@
 
 
 
-DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, 
+                       start_date ="ALL", end_date = "ALL", symbol_output = "code") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?DLY_LEVELS for examples.")
   }
@@ -110,14 +111,27 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
     dly_levels <- dplyr::filter(dly_levels, Date >= start_date &
       Date <= end_date)
   }
-  dly_levels <- dplyr::left_join(dly_levels, DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
+  dly_levels <- dplyr::left_join(dly_levels, tidyhydat::DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
   dly_levels <- dplyr::mutate(dly_levels, Parameter = "LEVEL")
-  dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, SYMBOL_EN)
+  
+  ## Control for symbol ouput
+  if(symbol_output == "code"){
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, LEVEL_SYMBOL)
+  }
+  
+  if(symbol_output == "english"){
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, SYMBOL_EN)
+  }
+  
+  if(symbol_output == "french"){
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, SYMBOL_FR)
+  }
+  
   dly_levels <- dplyr::arrange(dly_levels, Date)
-
+  
   colnames(dly_levels) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
-
-
+  
+  
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
   if (length(differ) != 0) {

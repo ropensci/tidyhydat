@@ -16,9 +16,7 @@
 #' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
 #' That is a large vector for \code{SED_DLY_SUSCON}.
 #'
-#' @inheritParams STATIONS
-#' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
-#' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
+#' @inheritParams DLY_FLOWS
 #'
 #' @return A tibble of daily suspended sediment concentration (mg/l)
 #'
@@ -35,7 +33,8 @@
 
 
 
-SED_DLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+SED_DLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, 
+                           start_date ="ALL", end_date = "ALL", symbol_output = "code") {
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
   } else {
@@ -107,9 +106,24 @@ SED_DLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
     sed_dly_suscon <- dplyr::filter(sed_dly_suscon, Date >= start_date &
       Date <= end_date)
   }
+  
+  
   sed_dly_suscon <- dplyr::left_join(sed_dly_suscon, DATA_SYMBOLS, by = c("SUSCON_SYMBOL" = "SYMBOL_ID"))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, Parameter = "SUSCON")
-  sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, SUSCON, SYMBOL_EN)
+  
+  ## Control for symbol ouput
+  if(symbol_output == "code"){
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, SUSCON, SUSCON_SYMBOL)
+  }
+  
+  if(symbol_output == "english"){
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, SUSCON, SYMBOL_EN)
+  }
+  
+  if(symbol_output == "french"){
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, SUSCON, SYMBOL_FR)
+  }
+  
   sed_dly_suscon <- dplyr::arrange(sed_dly_suscon, Date)
 
   colnames(sed_dly_suscon) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")

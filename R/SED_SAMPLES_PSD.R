@@ -91,11 +91,11 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
     sed_samples_psd <- dplyr::filter(sed_samples_psd, DATE >= start_date &
       DATE <= end_date)
   }
-
-
-  sed_samples_psd <- select(sed_samples_psd, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, PARTICLE_SIZE, PERCENT)
-
-
+  
+  
+  sed_samples_psd <- dplyr::select(sed_samples_psd, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, PARTICLE_SIZE, PERCENT)
+  
+  
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_samples_psd$STATION_NUMBER))
   if (length(differ) != 0) {
@@ -109,6 +109,6 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
   } else {
     message("All station successfully retrieved")
   }
-
+  
   sed_samples_psd
 }

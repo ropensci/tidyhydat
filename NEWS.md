@@ -1,4 +1,12 @@
-#tidyhydat 0.2.8
+# tidyhydat 0.2.9
+* Explicitly state in docs that time is in UTC (#32)
+* Added test for realtime_network_meta and moved to httr to download.
+* download functions all use httr now
+* removed need for almost all @import statement by referencing them all directly (#34)
+* Fixed error message when directly calling some tidyhydat function using :: (#31)
+* To reduce overhead, `output_symbol` has been added as an argument so code can be produced if desired (#33)
+
+# tidyhydat 0.2.8
 * Added examples to every function
 * Completed test suite including `download_realtime_ws` (#27)
 * Fixed bugs in several `STN_*` functions
