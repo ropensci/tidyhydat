@@ -94,13 +94,15 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
     url_check <- httr::GET(infile[1])
     ## check if a valid url
     if(httr::http_error(url_check) == TRUE){
+      message(paste0("No hourly data found for ",STATION_NUMBER_SEL))
       
-      h <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
+      h <- tibble::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
                      F = NA, G = NA, H = NA, I = NA, J = NA)
       
       colnames(h) <- colHeaders
-    } else{h <- httr::content(
-        infile[1],
+    } else{
+      h <- httr::content(
+        url_check,
         type = "text/csv",
         encoding = "UTF-8",
         skip = 1,
@@ -124,11 +126,14 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
     url_check_d <- httr::GET(infile[2])
     ## check if a valid url
     if(httr::http_error(url_check_d) == TRUE){
+      message(paste0("No daily data found for ",STATION_NUMBER_SEL))
+      
       d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
                           F = NA, G = NA, H = NA, I = NA, J = NA)
       colnames(d) <- colHeaders
-    } else{d <- httr::content(
-        infile[2],
+    } else{
+      d <- httr::content(
+        url_check_d,
         type = "text/csv",
         encoding = "UTF-8",
         skip = 1,
@@ -151,8 +156,12 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
 
     # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-    p <- which(d$Date < min(h$Date))
-    output <- rbind(d[p, ], h)
+    if(NROW(na.omit(h)) == 0){
+      output <- d
+    } else{
+      p <- which(d$Date < min(h$Date))
+      output <- rbind(d[p, ], h)
+    }
 
     ## Now tidy the data
     ## TODO: Find a better way to do this
