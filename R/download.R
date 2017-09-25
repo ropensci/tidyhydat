@@ -192,20 +192,43 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
   ## Need to implement a search by station
   # try((if(hasArg(PROV_TERR_STATE_LOC_SEL) == FALSE) stop("Stopppppte")))
 
-  net_tibble <- readr::read_csv(
-    "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv",
-    skip = 1,
-    col_names = c(
-      "STATION_NUMBER",
-      "STATION_NAME",
-      "LATITUDE",
-      "LONGITUDE",
-      "PROV_TERR_STATE_LOC",
-      "TIMEZONE"
-    ),
-    col_types = readr::cols()
-  )
-
+  #net_tibble <- readr::read_csv(
+  #  "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv",
+  #  skip = 1,
+  #  col_names = c(
+  #    "STATION_NUMBER",
+  #    "STATION_NAME",
+  #    "LATITUDE",
+  #    "LONGITUDE",
+  #    "PROV_TERR_STATE_LOC",
+  #    "TIMEZONE"
+  #  ),
+  #  col_types = readr::cols()
+  #)
+  
+  url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
+  
+  ## Checking to make sure the link is valid
+  if(httr::http_error(url_check) == "TRUE"){
+    stop("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv is not a valid url. Datamart may be
+         down or the url has changed.")
+  }
+  
+  net_tibble <- httr::content(url_check,
+                              type = "text/csv",
+                              encoding = "UTF-8",
+                              skip = 1,
+                              col_names = c(
+                                "STATION_NUMBER",
+                                "STATION_NAME",
+                                "LATITUDE",
+                                "LONGITUDE",
+                                "PROV_TERR_STATE_LOC",
+                                "TIMEZONE"
+                              ),
+                              col_types = readr::cols()
+                          )
+  
   if (is.null(prov)) {
     return(net_tibble)
   }
@@ -258,7 +281,7 @@ get_ws_token <- function(username, password) {
   message(paste0("This token will expire at ", format(Sys.time() + 10 * 60, "%H:%M:%S")))
 
   ## Extract token from POST
-  token <- httr::content(r, "text", encoding = "ISO-8859-1")
+  token <- httr::content(r, "text", encoding = "UTF-8")
 
   token
 }

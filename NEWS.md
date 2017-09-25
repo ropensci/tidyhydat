@@ -1,4 +1,8 @@
-#tidyhydat 0.2.8
+# tidyhydat 0.2.9
+* Explicitly state in docs that time is in UTC (#32)
+* Added test for realtime_network_meta and moved to httr to download.
+
+# tidyhydat 0.2.8
 * Added examples to every function
 * Completed test suite including `download_realtime_ws` (#27)
 * Fixed bugs in several `STN_*` functions
