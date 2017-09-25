@@ -109,6 +109,6 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
   } else {
     message("All station successfully retrieved")
   }
-
+  
   sed_samples_psd
 }

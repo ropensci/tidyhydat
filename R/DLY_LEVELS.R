@@ -110,7 +110,7 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
     dly_levels <- dplyr::filter(dly_levels, Date >= start_date &
       Date <= end_date)
   }
-  dly_levels <- dplyr::left_join(dly_levels, DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
+  dly_levels <- dplyr::left_join(dly_levels, tidyhydat::DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
   dly_levels <- dplyr::mutate(dly_levels, Parameter = "LEVEL")
   dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter, LEVEL, SYMBOL_EN)
   dly_levels <- dplyr::arrange(dly_levels, Date)

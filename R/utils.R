@@ -139,15 +139,15 @@ DATUM_LIST <- function(hydat_path=NULL) {
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
-
+  
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
     dplyr::collect()
-
+  
   datum_list
 }
 
@@ -176,12 +176,12 @@ VERSION <- function(hydat_path=NULL) {
            in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
-
+  
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   on.exit(DBI::dbDisconnect(hydat_con))
-
+  
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%
     dplyr::mutate(Date = lubridate::ymd_hms(Date))

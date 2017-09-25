@@ -114,7 +114,8 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LO
     dly_flows <- dplyr::filter(dly_flows, Date >= start_date &
       Date <= end_date)
   }
-  dly_flows <- dplyr::left_join(dly_flows, DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  
+  dly_flows <- dplyr::left_join(dly_flows, tidyhydat::DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   dly_flows <- dplyr::mutate(dly_flows, Parameter = "FLOW")
   dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, FLOW, SYMBOL_EN)
   dly_flows <- dplyr::arrange(dly_flows, Date)

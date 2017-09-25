@@ -91,13 +91,13 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
     dplyr::bind_rows(as_min) %>%
     dplyr::bind_rows(as_max) %>%
     dplyr::arrange(YEAR) %>%
-    dplyr::left_join(DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
+    dplyr::left_join(tidyhydat::DATA_SYMBOLS, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## Format date of occurence; SuppressWarnings are justified because NA's are valid for MEAN Sum_stat
   annual_statistics <- dplyr::mutate(annual_statistics, Date = suppressWarnings(lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-"))))
 
   ## Format
-  annual_statistics <- dplyr::left_join(annual_statistics, DATA_TYPES, by = c("DATA_TYPE"))
+  annual_statistics <- dplyr::left_join(annual_statistics, tidyhydat::DATA_TYPES, by = c("DATA_TYPE"))
 
   ## Clean up the variables
   annual_statistics <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value, Date, SYMBOL_EN)
