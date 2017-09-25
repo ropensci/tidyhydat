@@ -90,10 +90,14 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
         "FLOW_SYMBOL",
         "FLOW_CODE"
       )
-
-
-    h <- tryCatch(
-      readr::read_csv(
+    
+    url_check <- httr::GET(infile[1])
+    ## check if a valid url
+    if(httr::http_error(url_check) == TRUE){
+      h <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
+                     F = NA, G = NA, H = NA, I = NA, J = NA)
+      colnames(h) <- colHeaders
+    } else{h <- readr::read_csv(
         infile[1],
         skip = 1,
         col_names = colHeaders,
@@ -109,17 +113,17 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
           FLOW_SYMBOL = readr::col_character(),
           FLOW_CODE = readr::col_integer()
         )
-      ),
-      error = function(c) {
-        c$message <- paste0(STATION_NUMBER_SEL, " cannot be found")
-        stop(c)
-      }
-    )
-
+      )
+    }
 
     # download daily file
-    d <- tryCatch(
-      readr::read_csv(
+    url_check_d <- httr::GET(infile[2])
+    ## check if a valid url
+    if(httr::http_error(url_check_d) == TRUE){
+      d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
+                          F = NA, G = NA, H = NA, I = NA, J = NA)
+      colnames(d) <- colHeaders
+    } else{d <- readr::read_csv(
         infile[2],
         skip = 1,
         col_names = colHeaders,
@@ -135,12 +139,9 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
           FLOW_SYMBOL = readr::col_character(),
           FLOW_CODE = readr::col_integer()
         )
-      ),
-      error = function(c) {
-        c$message <- paste0(STATION_NUMBER_SEL, " cannot be found")
-        stop(c)
-      }
-    )
+      )
+    }
+    
 
 
     # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
