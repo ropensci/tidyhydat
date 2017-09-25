@@ -20,6 +20,9 @@ download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
 
 \item{token}{generate by \code{get_ws_token()}}
 }
+\value{
+Time is return as UTC for consistency
+}
 \description{
 Download realtime data from the ECCC web service
 Function to actually retrieve data from ECCC web service. Before using this function,

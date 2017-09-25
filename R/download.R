@@ -22,7 +22,7 @@
 #' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
 #' is returned.
 #'
-#' @return A tibble of water flow and level values
+#' @return A tibble of water flow and level values. Time is return as UTC for consistency.
 #'
 #'
 #' @examples
@@ -271,6 +271,8 @@ get_ws_token <- function(username, password) {
 #' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date
 #' @param token generate by \code{get_ws_token()}
+#' 
+#' @return Time is return as UTC for consistency
 #'
 #' @examples
 #' \donttest{
