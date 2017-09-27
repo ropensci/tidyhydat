@@ -1,8 +1,9 @@
-<a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-tidyhydat
-=========
+tidyhydat <img src="img/tidyhydat.png" align="right" />
+=======================================================
+
+<a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat)
 
 Here is a list of what `tidyhydat` does:
 
@@ -193,19 +194,24 @@ Get citation information for `tidyhydat` in R by running:
 
 ``` r
 citation("tidyhydat")
+#> Warning in citation("tidyhydat"): no date field in DESCRIPTION file of
+#> package 'tidyhydat'
+#> Warning in citation("tidyhydat"): could not determine year for 'tidyhydat'
+#> from package DESCRIPTION file
 #> 
 #> To cite package 'tidyhydat' in publications use:
 #> 
-#>   Sam Albers (2017). tidyhydat: Extract tidy Canadian hydrometric
-#>   data. R package version 0.2.6.
+#>   Sam Albers (NA). tidyhydat: Extract and Tidy Canadian
+#>   Hydrometric Data. R package version 0.2.9.
+#>   https://github.com/bcgov/tidyhydat
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {tidyhydat: Extract tidy Canadian hydrometric data},
+#>     title = {tidyhydat: Extract and Tidy Canadian Hydrometric Data},
 #>     author = {Sam Albers},
-#>     year = {2017},
-#>     note = {R package version 0.2.6},
+#>     note = {R package version 0.2.9},
+#>     url = {https://github.com/bcgov/tidyhydat},
 #>   }
 ```
 

@@ -1,11 +1,9 @@
 ---
 output:
-  md_document:
-    variant: markdown_github
+  github_document:
+    html_preview: true
 ---
-  
-<div id="devex-badge"><a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) </div>
-    
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     
 ```{r, echo = FALSE}
@@ -16,7 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tidyhydat
+# tidyhydat <img src="img/tidyhydat.png" align="right" />
+  
+<div id="devex-badge"><a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) </div>
+
 Here is a list of what `tidyhydat` does:
   
 - Provide function that access each tables in the HYDAT database and return tidy data.
