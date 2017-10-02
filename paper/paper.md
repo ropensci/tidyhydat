@@ -12,11 +12,11 @@
 Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). Real-time data are provided by ECCC through two sources: a web service and a datamart. The web service is a login only service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is more like 2.5 hours. The [datamart](http://dd.weather.gc.ca/hydrometric/) is an open data source and is organized in a directory tree structure by province. The objective of this document is the outline the usage of `tidyhydat`, an R package that accesses these data sources and *tidies* them. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
 
 ## Why use R in hydrology?
-There are many statistical computing projects that offer great functionality for users. For `tidyhydat` I have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. There are several commonly cited reasons to use R:
+There are many statistical computing projects that offer great functionality for users. For `tidyhydat` I have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. For hydrologists consdering data analysis tools there are several commonly cited reasons to use R:
 
-- R is and always will be free to use and modify
-- R is flexible and can be easily adapted to a wide range of problems
-- R is well established and well used.
+- R is and always will be free to use and modify.
+- R is easily extensible and comprehensive. It is complimented by a rich suite of packages that implement a vast array of classical and modern statistical methods, exceptionally high-quality graphing capabilities and powerful data manipulation tools to handle a wide variety of data formats.
+- R facilitates the scientific method by allowing for a fully reproducible data workflow that can be repeated by others when code is shared.  
 - R has a friendly community which is an important infrastructure element of any open source project. 
 
 There have been recent calls to use R more broadly in the field of hydrology [@moore2017watershed]. The `tidyhydat` package is an effort to push this call forward by being a standard package by which hydrologists and other users interact with WSC data in R. 
