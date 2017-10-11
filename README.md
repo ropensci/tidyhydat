@@ -12,7 +12,7 @@ Here is a list of what `tidyhydat` does:
 -   Provide functions that access Environment and Climate Change Canada's real-time hydrometric data source.
 -   Provide functions that search full station lists and aid in generating station vectors
 
-A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.md)
+A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd)
 
 Installation
 ------------
@@ -29,6 +29,7 @@ Then to load the package you need to using the `library()` function. When you in
 ``` r
 library(tidyhydat)
 library(dplyr)
+#> Warning: package 'dplyr' was built under R version 3.4.2
 ```
 
 ### HYDAT download

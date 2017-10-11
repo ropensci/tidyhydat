@@ -25,7 +25,7 @@ Here is a list of what `tidyhydat` does:
 - Provide functions that access Environment and Climate Change Canada's real-time hydrometric data source. 
 - Provide functions that search full station lists and aid in generating station vectors
   
-A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.md)
+A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd)
   
 ## Installation
 To install the `tidyhydat` package, you need to install the `devtools` package then the `tidyhydat` package
