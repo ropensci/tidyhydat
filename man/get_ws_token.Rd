@@ -25,10 +25,6 @@ Rather these credentials should be stored in your \code{.Renviron} file. The .Re
 In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables
 and then call those environmental variables in your R session. See \code{?download_ws} for examples.
 }
-\examples{
-\donttest{See ?download_realtime_ws}
-
-}
 \seealso{
 Other realtime functions: \code{\link{download_realtime_dd}},
   \code{\link{download_realtime_ws}},

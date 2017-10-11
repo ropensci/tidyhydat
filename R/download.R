@@ -266,7 +266,7 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #'
 #' @return The token as a string that should be supplied the \code{download_ws_realtime} function.
 #' 
-#' @examples \donttest{See ?download_realtime_ws}
+#' @example \donttest{See ?download_realtime_ws}
 #' 
 #' @family realtime functions
 #' @export
