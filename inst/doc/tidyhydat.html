@@ -12,7 +12,7 @@
 
 <meta name="author" content="Sam Albers" />
 
-<meta name="date" content="2017-09-12" />
+<meta name="date" content="2017-10-12" />
 
 <title>tidyhydat</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">tidyhydat</h1>
 <h4 class="author"><em>Sam Albers</em></h4>
-<h4 class="date"><em>2017-09-12</em></h4>
+<h4 class="date"><em>2017-10-12</em></h4>
 
 
 
@@ -87,7 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/" class="uri">http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/</a></li>
 </ul>
 <p><code>tidyhydat</code> also provides a convenience function to download hydat (be patient though this takes a long time!):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_hydat</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_hydat</span>(<span class="dt">dl_hydat_here =</span> <span class="st">&quot;H:/&quot;</span>)</code></pre></div>
 <p>However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell <code>tidyhydat</code> where the HYDAT database. One option to is enter the path in each function like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">STATIONS</span>(<span class="dt">hydat_path =</span> <span class="st">&quot;H:/Hydat.sqlite3&quot;</span>)</code></pre></div>
 <p>It will quickly get tiring manually entering <code>hydat_path =</code>. R provides a means setting a hydat path once in the <code>.Renviron</code> file which is then automatically called by each HYDAT function. In R you can open up <code>.Renviron</code> like this:</p>
@@ -186,37 +186,37 @@ WS_PWD =<span class="st"> &quot;here is the password that ECCC gave you&quot;</s
 <h2>MSC datamart - <code>download_realtime_dd()</code></h2>
 <p>To download real-time data using the datamart we can use approximately the same conventions discussed above. Using <code>download_realtime_dd()</code> we can easily select specific stations by supplying a station of interest:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">STATION_NUMBER =</span> <span class="st">&quot;08LG006&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 17,580 x 8
+<pre><code>## # A tibble: 17,364 x 8
 ##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
 ##             &lt;chr&gt;               &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt;
-##  1        08LG006                  BC 2017-08-13 08:00:00      FLOW  6.69
-##  2        08LG006                  BC 2017-08-13 08:05:00      FLOW  6.72
-##  3        08LG006                  BC 2017-08-13 08:10:00      FLOW  6.72
-##  4        08LG006                  BC 2017-08-13 08:15:00      FLOW  6.69
-##  5        08LG006                  BC 2017-08-13 08:20:00      FLOW  6.72
-##  6        08LG006                  BC 2017-08-13 08:25:00      FLOW  6.72
-##  7        08LG006                  BC 2017-08-13 08:30:00      FLOW  6.72
-##  8        08LG006                  BC 2017-08-13 08:35:00      FLOW  6.72
-##  9        08LG006                  BC 2017-08-13 08:40:00      FLOW  6.72
-## 10        08LG006                  BC 2017-08-13 08:45:00      FLOW  6.72
-## # ... with 17,570 more rows, and 3 more variables: Grade &lt;chr&gt;,
+##  1        08LG006                  BC 2017-09-12 08:00:00      FLOW  3.29
+##  2        08LG006                  BC 2017-09-12 08:05:00      FLOW  3.29
+##  3        08LG006                  BC 2017-09-12 08:10:00      FLOW  3.29
+##  4        08LG006                  BC 2017-09-12 08:15:00      FLOW  3.29
+##  5        08LG006                  BC 2017-09-12 08:20:00      FLOW  3.29
+##  6        08LG006                  BC 2017-09-12 08:25:00      FLOW  3.29
+##  7        08LG006                  BC 2017-09-12 08:30:00      FLOW  3.29
+##  8        08LG006                  BC 2017-09-12 08:35:00      FLOW  3.29
+##  9        08LG006                  BC 2017-09-12 08:40:00      FLOW  3.26
+## 10        08LG006                  BC 2017-09-12 08:45:00      FLOW  3.29
+## # ... with 17,354 more rows, and 3 more variables: Grade &lt;chr&gt;,
 ## #   Symbol &lt;chr&gt;, Code &lt;chr&gt;</code></pre>
 <p>Another option is to provide simply the province as an argument and download all stations from that province:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download_realtime_dd</span>(<span class="dt">PROV_TERR_STATE_LOC =</span> <span class="st">&quot;PE&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 77,894 x 8
+<pre><code>## # A tibble: 77,172 x 8
 ##    STATION_NUMBER PROV_TERR_STATE_LOC                Date Parameter Value
 ##             &lt;chr&gt;               &lt;chr&gt;              &lt;dttm&gt;     &lt;chr&gt; &lt;dbl&gt;
-##  1        01CD005                  PE 2017-08-13 04:00:00      FLOW    NA
-##  2        01CD005                  PE 2017-08-13 04:05:00      FLOW    NA
-##  3        01CD005                  PE 2017-08-13 04:10:00      FLOW    NA
-##  4        01CD005                  PE 2017-08-13 04:15:00      FLOW    NA
-##  5        01CD005                  PE 2017-08-13 04:20:00      FLOW    NA
-##  6        01CD005                  PE 2017-08-13 04:25:00      FLOW    NA
-##  7        01CD005                  PE 2017-08-13 04:30:00      FLOW    NA
-##  8        01CD005                  PE 2017-08-13 04:35:00      FLOW    NA
-##  9        01CD005                  PE 2017-08-13 04:40:00      FLOW    NA
-## 10        01CD005                  PE 2017-08-13 04:45:00      FLOW    NA
-## # ... with 77,884 more rows, and 3 more variables: Grade &lt;chr&gt;,
+##  1        01CD005                  PE 2017-09-12 04:00:00      FLOW    NA
+##  2        01CD005                  PE 2017-09-12 04:05:00      FLOW    NA
+##  3        01CD005                  PE 2017-09-12 04:10:00      FLOW    NA
+##  4        01CD005                  PE 2017-09-12 04:15:00      FLOW    NA
+##  5        01CD005                  PE 2017-09-12 04:20:00      FLOW    NA
+##  6        01CD005                  PE 2017-09-12 04:25:00      FLOW    NA
+##  7        01CD005                  PE 2017-09-12 04:30:00      FLOW    NA
+##  8        01CD005                  PE 2017-09-12 04:35:00      FLOW    NA
+##  9        01CD005                  PE 2017-09-12 04:40:00      FLOW    NA
+## 10        01CD005                  PE 2017-09-12 04:45:00      FLOW    NA
+## # ... with 77,162 more rows, and 3 more variables: Grade &lt;chr&gt;,
 ## #   Symbol &lt;chr&gt;, Code &lt;chr&gt;</code></pre>
 </div>
 <div id="compare-download_realtime_ws-and-download_realtime_dd" class="section level2">

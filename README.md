@@ -41,7 +41,7 @@ To use most of the `tidyhydat` package you will need the most recent version of 
 `tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
 
 ``` r
-download_hydat(hydat_path = "H:/")
+download_hydat(dl_hydat_here = "H:/")
 ```
 
 However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell `tidyhydat` where the HYDAT database. One option to is enter the path in each function like this:

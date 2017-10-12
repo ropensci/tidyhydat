@@ -37,7 +37,7 @@ All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). Functi
 
 `tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
 ```{r, eval=FALSE}
-download_hydat(hydat_path = "H:/")
+download_hydat(dl_hydat_here = "H:/")
 ```
 
 However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell `tidyhydat` where the HYDAT database. One option to is enter the path in each function like this:

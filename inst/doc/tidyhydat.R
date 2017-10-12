@@ -7,7 +7,7 @@ library(tidyhydat)
 library(dbplyr)
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  download_hydat(hydat_path = "H:/")
+#  download_hydat(dl_hydat_here = "H:/")
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  STATIONS(hydat_path = "H:/Hydat.sqlite3")
