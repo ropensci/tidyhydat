@@ -3,12 +3,26 @@
 tidyhydat <img src="img/tidyhydat.png" align="right" />
 =======================================================
 
-<a rel="Delivery" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
+<a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
+
+Project Status
+--------------
+
+This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: <https://github.com/ropensci/onboarding/issues/152>. As a result breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
+
+``` r
+devtools::install_github("bcgov/tidyhydat@v0.2.9")
+```
+
+However, you should strongly consider migrating to the updated `tidyhydat` once the reveiw process is complete.
+
+What does it do?
+----------------
 
 Here is a list of what `tidyhydat` does:
 
--   Provide function that access each tables in the HYDAT database and return tidy data.
--   Keep functions are low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data.
+-   Provide function that access each table in the HYDAT database and return tidy data.
+-   Keep functions as low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data.
 -   Provide functions that access Environment and Climate Change Canada's real-time hydrometric data source.
 -   Provide functions that search full station lists and aid in generating station vectors
 
@@ -29,7 +43,6 @@ Then to load the package you need to using the `library()` function. When you in
 ``` r
 library(tidyhydat)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 3.4.2
 ```
 
 ### HYDAT download
@@ -168,11 +181,6 @@ search_number("08MF")
 #> 10        08MF011                     STEIN RIVER NEAR LYTTON
 #> # ... with 39 more rows, and 1 more variables: PROV_TERR_STATE_LOC <chr>
 ```
-
-Project Status
---------------
-
-This package is under active development.
 
 Getting Help or Reporting an Issue
 ----------------------------------
