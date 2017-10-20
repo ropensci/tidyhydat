@@ -264,9 +264,9 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #' In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables
 #' and then call those environmental variables in your R session. See \code{?download_ws} for examples.
 #'
-#' @return The token as a string that should be supplied the \code{download_ws_realtime} function.
+#' @return The token as a string that should be supplied the \code{download_ws_realtime} function. 
 #' 
-#' @example \donttest{See ?download_realtime_ws}
+#' @examples \donttest{See \code{?download_realtime_ws}}
 #' 
 #' @family realtime functions
 #' @export
@@ -280,6 +280,7 @@ get_ws_token <- function(username, password) {
   )
   r <- httr::POST("https://wateroffice.ec.gc.ca/services/auth", body = login)
   
+  ## A workaround that pauses for the connection 
   Sys.sleep(1)
 
   ## If the POST request was not a successful, print out why.
