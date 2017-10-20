@@ -90,6 +90,10 @@ SED_DLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 
   sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("SUSCON"))
   sed_dly_suscon <- dplyr::collect(sed_dly_suscon)
+  
+  if(is.data.frame(sed_dly_suscon) && nrow(sed_dly_suscon)==0)
+  {stop("This station is not present in HYDAT")}
+  
   sed_dly_suscon <- tidyr::gather(sed_dly_suscon, variable, temp, -(STATION_NUMBER:NO_DAYS))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, DAY = as.numeric(gsub("SUSCON|SUSCON_SYMBOL", "", variable)))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, variable = gsub("[0-9]+", "", variable))

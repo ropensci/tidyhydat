@@ -95,6 +95,10 @@ DLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_L
 
   dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LEVEL"))
   dly_levels <- dplyr::collect(dly_levels)
+  
+  if(is.data.frame(dly_levels) && nrow(dly_levels)==0)
+  {stop("This station is not present in HYDAT.")}
+  
   dly_levels <- tidyr::gather(dly_levels, variable, temp, -(STATION_NUMBER:NO_DAYS))
   dly_levels <- dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", variable)))
   dly_levels <- dplyr::mutate(dly_levels, variable = gsub("[0-9]+", "", variable))

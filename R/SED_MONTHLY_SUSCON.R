@@ -97,6 +97,9 @@ SED_MONTHLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, STATION_NUMBER:MAX)
   sed_monthly_suscon <- dplyr::collect(sed_monthly_suscon)
   
+  if(is.data.frame(sed_monthly_suscon) && nrow(sed_monthly_suscon)==0)
+  {stop("This station is not present in HYDAT")}
+  
   ## Need to rename columns for gather
   colnames(sed_monthly_suscon) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS",
                                     "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")

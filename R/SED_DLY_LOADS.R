@@ -89,6 +89,10 @@ SED_DLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
 
   sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LOAD"))
   sed_dly_loads <- dplyr::collect(sed_dly_loads)
+  
+  if(is.data.frame(sed_dly_loads) && nrow(sed_dly_loads)==0)
+  {stop("This station is not present in HYDAT")}
+  
   sed_dly_loads <- tidyr::gather(sed_dly_loads, variable, temp, -(STATION_NUMBER:NO_DAYS))
   sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", variable)))
   sed_dly_loads <- dplyr::mutate(sed_dly_loads, variable = gsub("[0-9]+", "", variable))

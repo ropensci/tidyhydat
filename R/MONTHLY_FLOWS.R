@@ -100,6 +100,9 @@ MONTHLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
   monthly_flows <- dplyr::select(monthly_flows, STATION_NUMBER:MAX)
   monthly_flows <- dplyr::collect(monthly_flows)
   
+  if(is.data.frame(monthly_flows) && nrow(monthly_flows)==0)
+  {stop("This station is not present in HYDAT")}
+  
   ## Need to rename columns for gather
   colnames(monthly_flows) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS", "MEAN_Value",
                            "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")

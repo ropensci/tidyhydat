@@ -84,6 +84,10 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
   sed_samples_psd <- dplyr::left_join(sed_samples_psd, dplyr::tbl(hydat_con, "SED_DATA_TYPES"), by = c("SED_DATA_TYPE"))
 
   sed_samples_psd <- dplyr::collect(sed_samples_psd)
+  
+  if(is.data.frame(sed_samples_psd) && nrow(sed_samples_psd)==0)
+  {stop("This station is not present in HYDAT")}
+  
   sed_samples_psd <- dplyr::mutate(sed_samples_psd, DATE = lubridate::ymd_hms(DATE))
 
   ## SUBSET by date

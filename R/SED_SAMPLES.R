@@ -92,6 +92,10 @@ SED_SAMPLES <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
   sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "CONCENTRATION_SYMBOLS"), by = c("CONCENTRATION_SYMBOL"))
 
   sed_samples <- dplyr::collect(sed_samples)
+  
+  if(is.data.frame(sed_samples) && nrow(sed_samples)==0)
+  {stop("This station is not present in HYDAT")}
+  
   sed_samples <- dplyr::left_join(sed_samples, tidyhydat::DATA_SYMBOLS, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(DATE))
 

@@ -98,6 +98,9 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
   sed_monthly_loads <- dplyr::select(sed_monthly_loads, STATION_NUMBER:MAX)
   sed_monthly_loads <- dplyr::collect(sed_monthly_loads)
   
+  if(is.data.frame(sed_monthly_loads) && nrow(sed_monthly_loads)==0)
+  {stop("This station is not present in HYDAT")}
+  
   ## Need to rename columns for gather
   colnames(sed_monthly_loads) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS","MEAN_Value",
                            "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
