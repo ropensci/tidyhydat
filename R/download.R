@@ -375,6 +375,9 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
 
   ## Get data
   get_ws <- httr::GET(url_for_GET)
+  
+  ## Give webservice some time
+  Sys.sleep(1)
 
   if (httr::status_code(get_ws) == 403) {
     stop("403 Forbidden: the web service is denying your request. Try any of the following options: wait a few minutes and try 
@@ -388,8 +391,23 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
     stop("GET response is not a csv file")
   }
 
-  ## Turn it into a tibble
-  csv_df <- httr::content(get_ws)
+  ## Turn it into a tibble and specify correct column classes
+  csv_df <- httr::content(
+    get_ws,
+    type = "text/csv",
+    encoding = "UTF-8",
+    col_types = readr::cols(
+      ID = readr::col_character(),
+      Date = readr::col_datetime(),
+      Parameter = readr::col_integer(),
+      Value = readr::col_double(),
+      Grade = readr::col_character(),
+      Symbol = readr::col_character(),
+      Approval = readr::col_integer()
+    )
+  )
+  
+
 
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {

@@ -14,6 +14,9 @@ context("Testing download_realtime functions")
   expect_identical(colnames(ws_test),
                    c("STATION_NUMBER", "Date", "Name_En", "Value", "Unit", "Grade",
                      "Symbol", "Approval", "Parameter", "Code"))
+  
+  ## Turned #42 into a test
+  expect_is(ws_08$Value, "numeric")
  })
  
  
