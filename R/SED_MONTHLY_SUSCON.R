@@ -115,7 +115,7 @@ SED_MONTHLY_SUSCON <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
   
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -DAY)
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = FULL_MONTH == 1)
   
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))

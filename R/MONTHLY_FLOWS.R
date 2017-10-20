@@ -118,7 +118,7 @@ MONTHLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STAT
   monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
 
   monthly_flows <- dplyr::select(monthly_flows, -DAY)
-  monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
+  monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = FULL_MONTH == 1)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))

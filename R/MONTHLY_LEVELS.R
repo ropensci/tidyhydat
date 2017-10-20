@@ -119,7 +119,7 @@ MONTHLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
   ## TODO: convert dates incorrectly. Make sure NA DAYs aren't converted into dates
 
   monthly_levels <- dplyr::select(monthly_levels, -DAY)
-  monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
+  monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = FULL_MONTH == 1)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(monthly_levels$STATION_NUMBER))

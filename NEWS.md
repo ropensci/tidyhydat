@@ -6,13 +6,15 @@ tidyhydat 0.3.0 ()
   * New NEWS template!
 
 ### MINOR IMPROVEMENTS
-
+  * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
+  * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
 
 ### BUG FIXES
 
+  * Fixed `SED_MONTHLY_LOADS` (bcgov/tidyhydat#51)
   * Fixed failing behaviour of `get_ws_token` (bcgov/tidyhydat#43)
   * No longer trying to build .Rd file for `.onload` (bcgov/tidyhydat#47)
-  * Fixed httr:content parsing error in `download_realtime_ws`. Closes #42"
+  * Fixed httr:content parsing error in `download_realtime_ws`. (bcgov/tidyhydat#42)
 
 ### DEPRECATED AND DEFUNCT
 

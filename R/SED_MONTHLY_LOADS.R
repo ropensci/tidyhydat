@@ -116,7 +116,7 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
   sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
 
   sed_monthly_loads <- dplyr::select(sed_monthly_loads, -DAY)
-  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, FULL_MONTH = ifelse(FULL_MONTH == 1, "Yes", "No"))
+  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, FULL_MONTH = FULL_MONTH == 1)
 
   ## What stations were missed?
   differ <- setdiff(unique(stns), unique(sed_monthly_loads$STATION_NUMBER))
