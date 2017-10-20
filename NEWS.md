@@ -6,6 +6,7 @@ tidyhydat 0.3.0 ()
   * New NEWS template!
 
 ### MINOR IMPROVEMENTS
+  * Adding `rappdirs` to imports and using to generate download path for `download_hydat()` (bcgov/tidyhydat#44)
   * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
   * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
 

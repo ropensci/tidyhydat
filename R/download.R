@@ -445,11 +445,11 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
 
 #' A function to download hydat
 #'
-#' Download the hydat sqlite database. The function will check for a existing sqlite file and stop if the same version
-#' is already present. \code{download_hydat} also looks to see if you have the hydat environmental variable set.
+#' Download the hydat sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
+#' The function will check for a existing sqlite file and won't download the file if the same version is already present. 
+#' \code{download_hydat} also looks to see if you have the hydat environmental variable set.
 #'
-#' @param dl_hydat_here Directory to the hydat database. The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
-#' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
+#' @param dl_hydat_here Directory to the hydat database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. This path is also supplied automatically to any function that uses the hydat database. A user specified path can be set though this is not the advised approach. 
 #'
 #' @export
 #'
@@ -458,28 +458,20 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
 #' }
 #'
 
-download_hydat <- function(dl_hydat_here = NULL) {
+download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
   response <- readline(prompt = "Downloading HYDAT will take approximately 10 minutes. Are you sure you want to continue? (Y/N) ")
 
   if (!response %in% c("Y", "Yes", "yes", "y")) {
     stop("Maybe another day...")
   }
-
-  if (is.null(dl_hydat_here)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
-    }
-  } else {
-    ## Create actual hydat_path
-    hydat_path <- paste0(dl_hydat_here, "Hydat.sqlite3")
-    # path_to = gsub("Hydat.sqlite3", "",hydat_path)
-  }
+  
+  message(paste0("Downloading HYDAT.sqlite3 to ",dl_hydat_here))
 
 
+  ## Create actual hydat_path
+  hydat_path <- paste0(dl_hydat_here, "\\Hydat.sqlite3")
 
   temp <- tempfile()
-
 
 
   ## If there is an existing hydat file get the date of release
