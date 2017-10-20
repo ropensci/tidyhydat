@@ -279,6 +279,8 @@ get_ws_token <- function(username, password) {
     password = password
   )
   r <- httr::POST("https://wateroffice.ec.gc.ca/services/auth", body = login)
+  
+  Sys.sleep(1)
 
   ## If the POST request was not a successful, print out why.
   ## Possibly could provide errors as per web service guidelines
