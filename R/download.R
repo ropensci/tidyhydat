@@ -266,7 +266,6 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #'
 #' @return The token as a string that should be supplied the \code{download_ws_realtime} function. 
 #' 
-#' @examples \donttest{See \code{?download_realtime_ws}}
 #' 
 #' @family realtime functions
 #' @export
@@ -281,7 +280,7 @@ get_ws_token <- function(username, password) {
   r <- httr::POST("https://wateroffice.ec.gc.ca/services/auth", body = login)
   
   ## A workaround that pauses for the connection 
-  Sys.sleep(1)
+  Sys.sleep(2)
 
   ## If the POST request was not a successful, print out why.
   ## Possibly could provide errors as per web service guidelines
