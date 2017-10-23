@@ -29,7 +29,7 @@ Function to actually retrieve data from ECCC web service. Before using this func
 a token from \code{get_ws_token()} is needed.
 }
 \examples{
-\donttest{
+\dontrun{
 token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
 ws_08 <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
