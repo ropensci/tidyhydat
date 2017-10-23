@@ -316,7 +316,7 @@ get_ws_token <- function(username, password) {
 #' @return Time is return as UTC for consistency.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 #'
 #' ws_08 <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
