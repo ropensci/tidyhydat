@@ -205,23 +205,7 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
 realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
   prov <- PROV_TERR_STATE_LOC
-  ## Need to implement a search by station
-  # try((if(hasArg(PROV_TERR_STATE_LOC_SEL) == FALSE) stop("Stopppppte")))
 
-  #net_tibble <- readr::read_csv(
-  #  "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv",
-  #  skip = 1,
-  #  col_names = c(
-  #    "STATION_NUMBER",
-  #    "STATION_NAME",
-  #    "LATITUDE",
-  #    "LONGITUDE",
-  #    "PROV_TERR_STATE_LOC",
-  #    "TIMEZONE"
-  #  ),
-  #  col_types = readr::cols()
-  #)
-  
   url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
   
   ## Checking to make sure the link is valid
@@ -289,8 +273,12 @@ get_ws_token <- function(username, password) {
   }
 
   if (httr::status_code(r) == 403) {
-    stop("403 Forbidden: the web service is denying your request. Try any of the following options: ensure you are not currently using all 5 tokens, 
-         wait a few minutes and try again or copy the get_ws_token code and paste it directly into the console.")
+    stop("403 Forbidden: the web service is denying your request. Try any of the following options: 
+          -Ensure you are not currently using all 5 tokens
+          -Wait a few minutes and try again 
+          -Copy the get_ws_token call and paste it directly into the console
+          -Try using download_realtime_ws if you only need water quantity data
+         ")
   }
 
   ## Catch all error for anything not covered above.
@@ -305,15 +293,19 @@ get_ws_token <- function(username, password) {
 }
 
 #' Download realtime data from the ECCC web service
+#' 
 #' Function to actually retrieve data from ECCC web service. Before using this function,
-#' a token from \code{get_ws_token()} is needed.
+#' a token from \code{get_ws_token()} is needed. The maximum number of days that can be 
+#' queried depends on other parameters being requested. If one station is requested, 18 
+#' months of data can be requested. If you continually receiving errors when invoking this
+#' function, reduce the number of observations (via station_number, parameters or dates) being requested. 
 #' @param STATION_NUMBER Water Survey of Canada station number.
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
-#' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date
-#' @param end_date Need to be in YYYY-MM-DD. Defaults to current date
+#' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date. 
+#' @param end_date Need to be in YYYY-MM-DD. Defaults to current date.
 #' @param token generate by \code{get_ws_token()}
 #' 
-#' @return Time is return as UTC for consistency.
+#' @return Time is returned as UTC for consistency.
 #'
 #' @examples
 #' \dontrun{
@@ -340,16 +332,17 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
          a separate request should be issued to include the excess stations. This second request will 
          require an additional token.")
   }
-
+  
+  
   ## Check date is in the right format
   if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
     stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
   }
 
-  if (as.Date(end_date) - as.Date(start_date) > 60) {
-    stop("The time period of data being requested should not exceed 2 months. 
-         If more data is required, then a separate request should be issued to include a different time period.")
-  }
+  #if (as.Date(end_date) - as.Date(start_date) > 60) {
+  #  stop("The time period of data being requested should not exceed 2 months. 
+  #       If more data is required, then a separate request should be issued to include a different time period.")
+  #}
   ## English parameter names
 
   ## Is it a valid parameter name?
@@ -380,8 +373,12 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   Sys.sleep(1)
 
   if (httr::status_code(get_ws) == 403) {
-    stop("403 Forbidden: the web service is denying your request. Try any of the following options: wait a few minutes and try 
-         again or copy the get_ws_token code and paste it directly into the console.")
+    stop("403 Forbidden: the web service is denying your request. Try any of the following options: 
+          -Ensure you are not currently using all 5 tokens
+         -Wait a few minutes and try again 
+         -Copy the get_ws_token call and paste it directly into the console
+         -Try using download_realtime_ws if you only need water quantity data
+         ")
   }
 
   ## Check the GET status
@@ -411,7 +408,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
 
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {
-    stop("No exists for this station query")
+    stop("No data exists for this station query")
   }
 
   ## Rename columns to reflect tidyhydat naming
@@ -428,7 +425,7 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
   if (length(differ) != 0) {
     if (length(differ) <= 10) {
       message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
+      message("Check station number for typos or if it is a valid station in the network")
     }
     else {
       message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")

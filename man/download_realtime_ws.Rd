@@ -2,9 +2,7 @@
 % Please edit documentation in R/download.R
 \name{download_realtime_ws}
 \alias{download_realtime_ws}
-\title{Download realtime data from the ECCC web service
-Function to actually retrieve data from ECCC web service. Before using this function,
-a token from \code{get_ws_token()} is needed.}
+\title{Download realtime data from the ECCC web service}
 \usage{
 download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
   18), start_date = Sys.Date() - 30, end_date = Sys.Date(), token)
@@ -14,19 +12,21 @@ download_realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
 
 \item{parameters}{parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.}
 
-\item{start_date}{Need to be in YYYY-MM-DD. Defaults to 30 days before current date}
+\item{start_date}{Need to be in YYYY-MM-DD. Defaults to 30 days before current date.}
 
-\item{end_date}{Need to be in YYYY-MM-DD. Defaults to current date}
+\item{end_date}{Need to be in YYYY-MM-DD. Defaults to current date.}
 
 \item{token}{generate by \code{get_ws_token()}}
 }
 \value{
-Time is return as UTC for consistency.
+Time is returned as UTC for consistency.
 }
 \description{
-Download realtime data from the ECCC web service
 Function to actually retrieve data from ECCC web service. Before using this function,
-a token from \code{get_ws_token()} is needed.
+a token from \code{get_ws_token()} is needed. The maximum number of days that can be 
+queried depends on other parameters being requested. If one station is requested, 18 
+months of data can be requested. If you continually receiving errors when invoking this
+function, reduce the number of observations (via station_number, parameters or dates) being requested.
 }
 \examples{
 \dontrun{
