@@ -10,7 +10,7 @@ tidyhydat 0.3.0 ()
   * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
   * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
   * All download tests are skipped on cran (bcgov/tidyhydat#53)
-  * Removed time limit for `download_realtime_ws()` with some documentation on actual limits. (https://github.com/bcgov/tidyhydat/commit/3234c2246c97fed5860e8dfb9adc3d6f0aa503fe)
+  * Removed time limit for `download_realtime_ws()` with some documentation on actual limits. [(3234c22)](https://github.com/bcgov/tidyhydat/commit/3234c2246c97fed5860e8dfb9adc3d6f0aa503fe)
 
 ### BUG FIXES
 
