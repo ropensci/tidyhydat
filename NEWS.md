@@ -16,6 +16,7 @@ tidyhydat 0.3.0 ()
   * Fixed failing behaviour of `get_ws_token` (bcgov/tidyhydat#43)
   * No longer trying to build .Rd file for `.onload` (bcgov/tidyhydat#47)
   * Fixed httr:content parsing error in `download_realtime_ws`. (bcgov/tidyhydat#42)
+  * Wrapped download_realtime_ws examples in dontrun (bcgov/tidyhydat#52)
 
 ### DEPRECATED AND DEFUNCT
 
