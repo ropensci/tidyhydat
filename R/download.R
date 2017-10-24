@@ -506,4 +506,6 @@ download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
   utils::download.file(url, temp)
 
   utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
+  
+  invisible(TRUE)
 }
