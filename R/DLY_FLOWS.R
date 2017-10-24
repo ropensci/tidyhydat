@@ -26,8 +26,8 @@
 #'
 #' @examples
 #' \donttest{
-#' DLY_FLOWS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
-#' start_date = "1996-01-01", end_date = "2000-01-01")
+#' DLY_FLOWS(STATION_NUMBER = c("02JE013","08MF005"), 
+#'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
 #' DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'
@@ -39,8 +39,9 @@
 
 
 
-DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL, 
-                      PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL",
+DLY_FLOWS <- function(STATION_NUMBER = NULL,
+                      hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                      PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL",
                       symbol_output = "code") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?DLY_FLOWS for examples.")
@@ -72,12 +73,9 @@ DLY_FLOWS <- function(hydat_path=NULL, STATION_NUMBER = NULL,
     }
   }
   
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
   
   

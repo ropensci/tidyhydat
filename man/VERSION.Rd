@@ -8,7 +8,7 @@ A function to get version number of hydat}
 HYDAT
 }
 \usage{
-VERSION(hydat_path = NULL)
+VERSION(hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"))
 }
 \arguments{
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.

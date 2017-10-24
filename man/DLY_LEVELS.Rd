@@ -7,17 +7,18 @@
 HYDAT
 }
 \usage{
-DLY_LEVELS(hydat_path = NULL, STATION_NUMBER = NULL,
+DLY_LEVELS(STATION_NUMBER = NULL,
+  hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"),
   PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL",
   symbol_output = "code")
 }
 \arguments{
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+is returned.}
+
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
-
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
-is returned.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
 is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
@@ -39,8 +40,8 @@ That is a large vector for \code{DLY_LEVELS}.
 }
 \examples{
 \donttest{
-DLY_LEVELS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
-start_date = "1996-01-01", end_date = "2000-01-01")
+DLY_LEVELS(STATION_NUMBER = c("02JE013","08MF005"), 
+  start_date = "1996-01-01", end_date = "2000-01-01")
 
 DLY_LEVELS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 

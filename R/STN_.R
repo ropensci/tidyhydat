@@ -12,13 +12,14 @@
 #' STN_REMARKS(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
-    }
+STN_REMARKS <- function(STATION_NUMBER = NULL, 
+                        hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
+                        PROV_TERR_STATE_LOC = NULL) {
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -49,13 +50,13 @@ STN_REMARKS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_
 #' \donttest{
 #' STN_DATUM_CONVERSION(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
-STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or in your .Renviron file. See tidyhydat for more documentation.")
-    }
+STN_DATUM_CONVERSION <- function(STATION_NUMBER = NULL, 
+                                 hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -90,14 +91,13 @@ STN_DATUM_CONVERSION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TE
 #' STN_DATUM_UNRELATED()
 #'}
 #'
-STN_DATUM_UNRELATED <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+STN_DATUM_UNRELATED <- function(STATION_NUMBER = NULL, 
+                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -129,14 +129,15 @@ STN_DATUM_UNRELATED <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
 #' STN_DATA_RANGE(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+STN_DATA_RANGE <- function(STATION_NUMBER = NULL, 
+                           hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                           PROV_TERR_STATE_LOC = NULL) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   
   
@@ -170,14 +171,14 @@ STN_DATA_RANGE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 #' STN_DATA_COLLECTION(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+STN_DATA_COLLECTION <- function(STATION_NUMBER = NULL, 
+                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -216,14 +217,15 @@ STN_DATA_COLLECTION <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TER
 #' STN_OPERATION_SCHEDULE(STATION_NUMBER = c("02JE013"))
 #'}
 #'
-STN_OPERATION_SCHEDULE <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+STN_OPERATION_SCHEDULE <- function(STATION_NUMBER = NULL, 
+                                   hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                                   PROV_TERR_STATE_LOC = NULL) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)

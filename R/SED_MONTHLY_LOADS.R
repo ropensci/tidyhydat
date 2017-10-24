@@ -26,7 +26,7 @@
 #' @examples
 #' \donttest{
 #'
-#' SED_MONTHLY_LOADS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' SED_DLY_SUSCON(STATION_NUMBER = "01CE003")
 #'           }
 #' @family HYDAT functions
 #' @source HYDAT
@@ -34,7 +34,9 @@
 
 
 
-SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+SED_MONTHLY_LOADS <- function(STATION_NUMBER = NULL,
+                              hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                              PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?SED_MONTHLY_LOADS for examples.")
   }
@@ -65,15 +67,7 @@ SED_MONTHLY_LOADS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_
     }
   }
   
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
-  }
-  
-  
+
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   on.exit(DBI::dbDisconnect(hydat_con))

@@ -55,15 +55,13 @@ search_number <- function(search_term) {
 #' AGENCY_LIST()
 #'}
 #'
-AGENCY_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+AGENCY_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
-
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -92,15 +90,13 @@ AGENCY_LIST <- function(hydat_path=NULL) {
 #'}
 #'
 #'
-REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
-    }
-
+REGIONAL_OFFICE_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+  }
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -131,14 +127,12 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
 #'
 #' @export
 #'
-DATUM_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+DATUM_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -168,14 +162,13 @@ DATUM_LIST <- function(hydat_path=NULL) {
 #'}
 #'
 #'
-VERSION <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+VERSION <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -187,4 +180,5 @@ VERSION <- function(hydat_path=NULL) {
     dplyr::mutate(Date = lubridate::ymd_hms(Date))
   
   version
+  
 }

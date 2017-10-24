@@ -25,7 +25,7 @@
 #' @examples
 #' \donttest{
 #'
-#' SED_SAMPLES_PSD(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' SED_SAMPLES_PSD(STATION_NUMBER = "01CA004")
 #'           }
 #'
 #' @family HYDAT functions
@@ -34,7 +34,15 @@
 
 
 
-SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+SED_SAMPLES_PSD <- function(STATION_NUMBER = NULL,
+                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                            PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+  }
+  
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
   } else {
@@ -58,14 +66,6 @@ SED_SAMPLES_PSD <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_ST
 
     if (start_date > end_date) {
       stop("start_date is after end_date. Try swapping values.")
-    }
-  }
-
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 

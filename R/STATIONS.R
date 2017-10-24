@@ -28,10 +28,10 @@
 #' @examples
 #' \donttest{
 #' ## Multiple stations province not specified
-#' STATIONS(STATION_NUMBER = c("08NM083","08NE102"), hydat_path = "H:/Hydat.sqlite3")
+#' STATIONS(STATION_NUMBER = c("08NM083","08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' STATIONS(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
+#' STATIONS(PROV_TERR_STATE_LOC = c("AB","YT"))
 #' }
 #'
 #'
@@ -39,18 +39,18 @@
 #' @source HYDAT
 #' @export
 
-STATIONS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL) {
+STATIONS <- function(STATION_NUMBER = NULL, 
+                     hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
+                     PROV_TERR_STATE_LOC = NULL) {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?download_realtime_dd for examples.")
   }
 
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
   }
+  
 
 
   ## Read in database

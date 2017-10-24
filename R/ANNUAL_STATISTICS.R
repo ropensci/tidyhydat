@@ -25,7 +25,7 @@
 #' @examples
 #' \donttest{
 #'   ## Multiple stations province not specified
-#'   ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
+#'   ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"))
 #'  
 #'   ## Multiple province, station number not specified
 #'   ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
@@ -35,7 +35,9 @@
 #' @source HYDAT
 #' @export
 
-ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_STATE_LOC=NULL,
+ANNUAL_STATISTICS <- function(STATION_NUMBER =NULL, 
+                              hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                              PROV_TERR_STATE_LOC=NULL,
                               start_year = "ALL", end_year = "ALL") {
   
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
@@ -43,14 +45,10 @@ ANNUAL_STATISTICS <- function(hydat_path=NULL, STATION_NUMBER =NULL, PROV_TERR_S
          \"ALL\" argument. See ?ANNUAL_STATISTICS for examples.")
   }
   
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
-    }
-
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+  }
 
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)

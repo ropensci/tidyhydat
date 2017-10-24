@@ -7,16 +7,17 @@
 HYDAT
 }
 \usage{
-ANNUAL_STATISTICS(hydat_path = NULL, STATION_NUMBER = NULL,
+ANNUAL_STATISTICS(STATION_NUMBER = NULL,
+  hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"),
   PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
+\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+is returned.}
+
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
-
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
-is returned.}
 
 \item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
 is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
@@ -35,7 +36,7 @@ Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data f
 \examples{
 \donttest{
   ## Multiple stations province not specified
-  ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"), hydat_path = "H:/Hydat.sqlite3")
+  ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"))
  
   ## Multiple province, station number not specified
   ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")

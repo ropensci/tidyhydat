@@ -25,8 +25,8 @@
 #'
 #' @examples
 #' \donttest{
-#' MONTHLY_LEVELS(STATION_NUMBER = c("02JE013","08MF005"), hydat_path = "H:/Hydat.sqlite3",
-#' start_date = "1996-01-01", end_date = "2000-01-01")
+#' MONTHLY_LEVELS(STATION_NUMBER = c("02JE013","08MF005"), 
+#'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
 #' MONTHLY_LEVELS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'           }
@@ -36,10 +36,18 @@
 
 
 
-MONTHLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
+MONTHLY_LEVELS <- function(STATION_NUMBER = NULL,
+                           hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
+                           PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?MONTHLY_LEVELS for examples.")
   }
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+  }
+  
 
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
@@ -64,14 +72,6 @@ MONTHLY_LEVELS <- function(hydat_path=NULL, STATION_NUMBER = NULL, PROV_TERR_STA
 
     if (start_date > end_date) {
       stop("start_date is after end_date. Try swapping values.")
-    }
-  }
-
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
     }
   }
 

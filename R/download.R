@@ -488,6 +488,7 @@ download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
   ## Create the link to download HYDAT
   base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
   x <- httr::GET(base_url)
+  httr::stop_for_status(x)
   new_hydat <- substr(gsub(
     "^.*\\Hydat_sqlite3_", "",
     httr::content(x, "text")
@@ -495,7 +496,7 @@ download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
 
   ## Do we need to download a new version?
   if (new_hydat == existing_hydat) {
-    stop(paste0("Existing version of hydat, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available."))
+    stop(paste0("The existing local version of hydat, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available."))
   } else {
     message(paste0("Downloading version of hydat published on ", lubridate::ymd(new_hydat)))
   }
