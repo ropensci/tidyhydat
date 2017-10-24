@@ -1,33 +1,33 @@
-context("Testing ANNUAL_INSTANT_PEAKS")
+context("Testing hy_annual_instant_peaks")
 
-test_that("ANNUAL_INSTANT_PEAKS accepts single and multiple province arguments", {
+test_that("hy_annual_instant_peaks accepts single and multiple province arguments", {
   stns <- "08NM083"
-  expect_identical(unique(ANNUAL_INSTANT_PEAKS(STATION_NUMBER = stns, hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER), stns)
-  expect_identical(length(unique(ANNUAL_INSTANT_PEAKS(STATION_NUMBER = c("08NM083", "08NE102"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER)), length(c("08NM083", "08NE102")))
+  expect_identical(unique(hy_annual_instant_peaks(STATION_NUMBER = stns, hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER), stns)
+  expect_identical(length(unique(hy_annual_instant_peaks(STATION_NUMBER = c("08NM083", "08NE102"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER)), length(c("08NM083", "08NE102")))
 })
 
 
-test_that("ANNUAL_INSTANT_PEAKS accepts single and multiple province arguments", {
-  expect_true(nrow(ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = "BC", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
-  expect_true(nrow(ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = c("BC", "YT"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
+test_that("hy_annual_instant_peaks accepts single and multiple province arguments", {
+  expect_true(nrow(hy_annual_instant_peaks(PROV_TERR_STATE_LOC = "BC", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
+  expect_true(nrow(hy_annual_instant_peaks(PROV_TERR_STATE_LOC = c("BC", "YT"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
 })
 
-test_that("ANNUAL_INSTANT_PEAKS produces an error when a province is not specified correctly", {
-  expect_error(ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = "BCD", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")))
-  expect_error(ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = c("AB", "BCD"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")))
+test_that("hy_annual_instant_peaks produces an error when a province is not specified correctly", {
+  expect_error(hy_annual_instant_peaks(PROV_TERR_STATE_LOC = "BCD", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")))
+  expect_error(hy_annual_instant_peaks(PROV_TERR_STATE_LOC = c("AB", "BCD"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")))
 })
 
-test_that("ANNUAL_INSTANT_PEAKS gather data when no arguments are supplied", {
-  expect_true(nrow(ANNUAL_INSTANT_PEAKS(hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
+test_that("hy_annual_instant_peaks gather data when no arguments are supplied", {
+  expect_true(nrow(hy_annual_instant_peaks(hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
 })
 
-test_that("ANNUAL_INSTANT_PEAKS can accept both arguments for backward compatability", {
-  expect_true(nrow(ANNUAL_INSTANT_PEAKS(PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "08MF005", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
+test_that("hy_annual_instant_peaks can accept both arguments for backward compatability", {
+  expect_true(nrow(hy_annual_instant_peaks(PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "08MF005", hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
 })
 
 
-test_that("ANNUAL_INSTANT_PEAKS respects year inputs", {
-  df <- ANNUAL_INSTANT_PEAKS(STATION_NUMBER = c("08NM083", "08NE102"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"), start_year = 1981, end_year = 2007)
+test_that("hy_annual_instant_peaks respects year inputs", {
+  df <- hy_annual_instant_peaks(STATION_NUMBER = c("08NM083", "08NE102"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"), start_year = 1981, end_year = 2007)
   expect_equal(2007, max(df$YEAR))
   expect_equal(1981, min(df$YEAR))
 })
