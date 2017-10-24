@@ -12,18 +12,18 @@
 
 #' Extract daily suspended sediment concentration information from the HYDAT database
 #'
-#' Provides wrapper to turn the SED_DLY_SUSCON table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
-#' That is a large vector for \code{SED_DLY_SUSCON}.
+#' Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+#' That is a large vector for \code{hy_sed_daily_suscon}.
 #'
-#' @inheritParams DLY_FLOWS
+#' @inheritParams hy_daily_flows
 #'
 #' @return A tibble of daily suspended sediment concentration (mg/l)
 #'
 #' @examples
 #' \donttest{
 #'
-#' SED_DLY_SUSCON(STATION_NUMBER = "01CE003")
+#' hy_sed_daily_suscon(STATION_NUMBER = "01CE003")
 #'
 #'           }
 #'
@@ -33,7 +33,7 @@
 
 
 
-SED_DLY_SUSCON <- function(STATION_NUMBER = NULL,
+hy_sed_daily_suscon <- function(STATION_NUMBER = NULL,
                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                            PROV_TERR_STATE_LOC = NULL, 
                            start_date ="ALL", end_date = "ALL", symbol_output = "code") {

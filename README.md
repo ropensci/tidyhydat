@@ -14,7 +14,7 @@ This package is under active development. The package is currently undergoing a 
 devtools::install_github("bcgov/tidyhydat@v0.2.9")
 ```
 
-However, you should strongly consider migrating to the updated `tidyhydat` once the reveiw process is complete.
+However, you should strongly consider migrating to the updated `tidyhydat` once the review process is complete.
 
 What does it do?
 ----------------
@@ -47,48 +47,26 @@ library(dplyr)
 
 ### HYDAT download
 
-To use most of the `tidyhydat` package you will need the most recent version of the HYDAT database, Environment and Climate Change Canada's comprehensive database of historical hydrometric data. A zipped version of sqlite3 version can be downloaded here:
-
--   <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>
-
-`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+To use most of the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's comprehensive database of historical hydrometric data then tell R where to find the database. `tidyhydat` does all this for you via:
 
 ``` r
-download_hydat(dl_hydat_here = "H:/")
+download_hydat()
 ```
 
-However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell `tidyhydat` where the HYDAT database. One option to is enter the path in each function like this:
-
-``` r
-STATIONS(hydat_path = "H:/Hydat.sqlite3")
-```
-
-It will quickly get tiring manually entering `hydat_path =`. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In R you can open up `.Renviron` like this:
-
-``` r
-file.edit("~/.Renviron")
-```
-
-This opens your `.Renviron` file which may be a blank file. Add this line somewhere in the file:
-
-``` r
-hydat = "YOUR HYDAT PATH"
-```
-
-It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for.
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `rappdirs::site_data_dir()`.
 
 Usage
 -----
 
 ### HYDAT functions
 
-All functions that interact with HYDAT are capitalized. These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is omitted here and it is assumed you set the variable in your `.Renviron` file which is highly recommend.
+Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`.
 
 ``` r
 DLY_FLOWS(STATION_NUMBER = "08LA001")
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
-#> # A tibble: 28,794 x 5
+#> # A tibble: 29,159 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
 #>  1        08LA001 1914-01-01      FLOW   144   <NA>
@@ -101,7 +79,7 @@ DLY_FLOWS(STATION_NUMBER = "08LA001")
 #>  8        08LA001 1914-01-08      FLOW   140   <NA>
 #>  9        08LA001 1914-01-09      FLOW   140   <NA>
 #> 10        08LA001 1914-01-10      FLOW   140   <NA>
-#> # ... with 28,784 more rows
+#> # ... with 29,149 more rows
 ```
 
 If you would instead prefer all stations from a province, you can use the `PROV_TERR_STATE_LOC` argument and omit the `STATION_NUMBER` argument:
@@ -111,7 +89,7 @@ DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
 #> No start and end dates specified. All dates available will be returned.
 #> The following station(s) were not retrieved: 01CB011
 #> Check station number typos or if it is a valid station in the network
-#> # A tibble: 186,858 x 5
+#> # A tibble: 187,953 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
 #>  1        01CC001 1919-07-01      FLOW    NA   <NA>
@@ -124,7 +102,7 @@ DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
 #>  8        01CE001 1919-07-03      FLOW    NA   <NA>
 #>  9        01CE002 1919-07-03      FLOW    NA   <NA>
 #> 10        01CC001 1919-07-04      FLOW    NA   <NA>
-#> # ... with 186,848 more rows
+#> # ... with 187,943 more rows
 ```
 
 ### Real-time

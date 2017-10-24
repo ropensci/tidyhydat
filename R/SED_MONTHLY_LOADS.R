@@ -12,11 +12,11 @@
 
 #' Extract monthly flows information from the HYDAT database
 #'
-#' Provides wrapper to turn the SED_MONTHLY_LOADS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-#'   \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
-#'   That is a large vector for \code{SED_MONTHLY_LOADS}.
+#' Provides wrapper to turn the hy_sed_monthly_loads table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#'   \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+#'   That is a large vector for \code{hy_sed_monthly_loads}.
 #'
-#' @inheritParams STATIONS
+#' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
@@ -26,7 +26,7 @@
 #' @examples
 #' \donttest{
 #'
-#' SED_DLY_SUSCON(STATION_NUMBER = "01CE003")
+#' hy_sed_daily_suscon(STATION_NUMBER = "01CE003")
 #'           }
 #' @family HYDAT functions
 #' @source HYDAT
@@ -34,11 +34,11 @@
 
 
 
-SED_MONTHLY_LOADS <- function(STATION_NUMBER = NULL,
+hy_sed_monthly_loads <- function(STATION_NUMBER = NULL,
                               hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                               PROV_TERR_STATE_LOC = NULL, start_date ="ALL", end_date = "ALL") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?SED_MONTHLY_LOADS for examples.")
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?hy_sed_monthly_loads for examples.")
   }
   
   if (start_date == "ALL" & end_date == "ALL") {

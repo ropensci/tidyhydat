@@ -13,36 +13,36 @@
 
 #' Extract annual statistics information from the HYDAT database
 #'
-#' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#' Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
 #'   \code{PROV_TERR_STATE_LOC} must both be supplied. 
 #'
-#' @inheritParams STATIONS
+#' @inheritParams hy_stations
 #' @param start_year First year of the returned record
 #' @param end_year Last year of the returned record
 #'
-#' @return A tibble of ANNUAL_STATISTICS
+#' @return A tibble of hy_annual_stats
 #'
 #' @examples
 #' \donttest{
 #'   ## Multiple stations province not specified
-#'   ANNUAL_STATISTICS(STATION_NUMBER = c("08NM083","05AE027"))
+#'   hy_annual_stats(STATION_NUMBER = c("08NM083","05AE027"))
 #'  
 #'   ## Multiple province, station number not specified
-#'   ANNUAL_STATISTICS(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+#'   hy_annual_stats(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 #' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 
-ANNUAL_STATISTICS <- function(STATION_NUMBER =NULL, 
+hy_annual_stats <- function(STATION_NUMBER =NULL, 
                               hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                               PROV_TERR_STATE_LOC=NULL,
                               start_year = "ALL", end_year = "ALL") {
   
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
     stop("Deprecated behaviour.Omit the STATION_NUMBER = 
-         \"ALL\" argument. See ?ANNUAL_STATISTICS for examples.")
+         \"ALL\" argument. See ?hy_annual_stats for examples.")
   }
   
   ## Check if hydat is present

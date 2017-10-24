@@ -14,20 +14,20 @@
 
 #' Extract station regulation from the HYDAT database
 #'
-#' Provides wrapper to turn the STN_REGULATION table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned
+#' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 #'
-#' @inheritParams STATIONS
+#' @inheritParams hy_stations
 #'
 #' @return A tibble of stations, years of regulation and the regulation status
 #'
 #' @examples
 #' \donttest{
 #' ## Multiple stations province not specified
-#' STN_REGULATION(STATION_NUMBER = c("08NM083","08NE102"))
+#' hy_stn_regulation(STATION_NUMBER = c("08NM083","08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' STN_REGULATION(PROV_TERR_STATE_LOC = c("AB","YT"))
+#' hy_stn_regulation(PROV_TERR_STATE_LOC = c("AB","YT"))
 #' }
 #'
 
@@ -35,7 +35,7 @@
 #' @source HYDAT
 #' @export
 
-STN_REGULATION <- function(STATION_NUMBER = NULL, 
+hy_stn_regulation <- function(STATION_NUMBER = NULL, 
                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                            PROV_TERR_STATE_LOC = NULL) {
   

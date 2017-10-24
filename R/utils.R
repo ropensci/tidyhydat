@@ -7,15 +7,14 @@
 #' @return A tibble of stations that match the \code{search_term}
 #' 
 #' @examples 
-#' search_name("Cowichan")
+#' search_stn_name("Cowichan")
 #' 
-#' search_number("08HF")
+#' search_stn_number("08HF")
 #'
 #' @export
 
-
-
-search_name <- function(search_term) {
+search_stn_name <- function(search_term) {
+  
   results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NAME), ]
 
   if (nrow(results) == 0) {
@@ -25,10 +24,10 @@ search_name <- function(search_term) {
   }
 }
 
-#' @rdname search_name
+#' @rdname search_stn_name
 #' @export
 #' 
-search_number <- function(search_term) {
+search_stn_number <- function(search_term) {
   results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NUMBER), ]
   
   if (nrow(results) == 0) {
@@ -38,7 +37,7 @@ search_number <- function(search_term) {
   }
 }
 
-#' AGENCY_LIST function
+#' hy_agency_list function
 #'
 #' AGENCY look-up Table
 #' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
@@ -52,10 +51,10 @@ search_number <- function(search_term) {
 #' @export
 #' @examples
 #' \donttest{
-#' AGENCY_LIST()
+#' hy_agency_list()
 #'}
 #'
-AGENCY_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+hy_agency_list <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -75,10 +74,10 @@ AGENCY_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.s
 }
 
 
-#'  REGIONAL_OFFICE_LIST function
+#'  hy_reg_office_list function
 #'
 #'  OFFICE look-up Table
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #' @return A tibble of offices
 #'
 #' @family HYDAT functions
@@ -86,11 +85,11 @@ AGENCY_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.s
 #' @export
 #' @examples
 #' \donttest{
-#' REGIONAL_OFFICE_LIST()
+#' hy_reg_office_list()
 #'}
 #'
 #'
-REGIONAL_OFFICE_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+hy_reg_office_list <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -111,10 +110,10 @@ REGIONAL_OFFICE_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"
   regional_office_list
 }
 
-#'  DATUM_LIST function
+#'  hy_datum_list function
 #'
 #'  DATUM look-up Table
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #'
 #' @return A tibble of DATUMS
 #'
@@ -122,12 +121,12 @@ REGIONAL_OFFICE_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"
 #' @source HYDAT
 #' @examples
 #' \donttest{
-#' DATUM_LIST()
+#' hy_datum_list()
 #'}
 #'
 #' @export
 #'
-DATUM_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+hy_datum_list <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
     stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
@@ -149,7 +148,7 @@ DATUM_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sq
 #' Version number of HYDAT
 #' A function to get version number of hydat
 #'
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #'
 #' @return version number
 #'
@@ -158,11 +157,11 @@ DATUM_LIST <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sq
 #' @export
 #' @examples
 #' \donttest{
-#' VERSION()
+#' hy_version()
 #'}
 #'
 #'
-VERSION <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
+hy_version <- function(hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){

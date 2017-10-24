@@ -27,30 +27,30 @@
 #'
 #' @examples
 #' ## Download from multiple provinces
-#' download_realtime_dd(STATION_NUMBER=c("01CD005","08MF005"))
+#' realtime_dd(STATION_NUMBER=c("01CD005","08MF005"))
 #'
 #' # To download all stations in Prince Edward Island:
-#' download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+#' realtime_dd(PROV_TERR_STATE_LOC = "PE")
 #' 
 #' @family realtime functions
 #' @export
-download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
+realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 
   ## TODO: HAve a warning message if not internet connection exists
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?download_realtime_dd for examples.")
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?realtime_dd for examples.")
   }
 
 
   if (!is.null(STATION_NUMBER)) {
     stns <- STATION_NUMBER
-    choose_df <- realtime_network_meta()
+    choose_df <- realtime_stations()
     choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
     choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   if (is.null(STATION_NUMBER)) {
-    choose_df <- realtime_network_meta(PROV_TERR_STATE_LOC = PROV_TERR_STATE_LOC)
+    choose_df <- realtime_stations(PROV_TERR_STATE_LOC = PROV_TERR_STATE_LOC)
     choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
@@ -190,20 +190,20 @@ download_realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 #'   hydrometric network operated by Environment and Climate Change Canada
 #'
 #' @param PROV_TERR_STATE_LOC Province/State/Territory or Location. See examples for list of available options. 
-#'   realtime_network_meta() for all stations.
+#'   realtime_stations() for all stations.
 #'
 #' @family realtime functions
 #' @export
 #'
 #' @examples
 #' ## Available inputs for PROV_TERR_STATE_LOC argument:
-#' unique(realtime_network_meta()$PROV_TERR_STATE_LOC)
+#' unique(realtime_stations()$PROV_TERR_STATE_LOC)
 #'
-#' realtime_network_meta(PROV_TERR_STATE_LOC = "BC")
-#' realtime_network_meta(PROV_TERR_STATE_LOC = c("QC","PE"))
+#' realtime_stations(PROV_TERR_STATE_LOC = "BC")
+#' realtime_stations(PROV_TERR_STATE_LOC = c("QC","PE"))
 
 
-realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
+realtime_stations <- function(PROV_TERR_STATE_LOC = NULL) {
   prov <- PROV_TERR_STATE_LOC
 
   url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
@@ -256,7 +256,7 @@ realtime_network_meta <- function(PROV_TERR_STATE_LOC = NULL) {
 #'
 
 
-get_ws_token <- function(username, password) {
+token_ws <- function(username, password) {
   login <- list(
     username = username,
     password = password
@@ -276,8 +276,8 @@ get_ws_token <- function(username, password) {
     stop("403 Forbidden: the web service is denying your request. Try any of the following options: 
           -Ensure you are not currently using all 5 tokens
           -Wait a few minutes and try again 
-          -Copy the get_ws_token call and paste it directly into the console
-          -Try using download_realtime_ws if you only need water quantity data
+          -Copy the token_ws call and paste it directly into the console
+          -Try using realtime_ws if you only need water quantity data
          ")
   }
 
@@ -295,7 +295,7 @@ get_ws_token <- function(username, password) {
 #' Download realtime data from the ECCC web service
 #' 
 #' Function to actually retrieve data from ECCC web service. Before using this function,
-#' a token from \code{get_ws_token()} is needed. The maximum number of days that can be 
+#' a token from \code{token_ws()} is needed. The maximum number of days that can be 
 #' queried depends on other parameters being requested. If one station is requested, 18 
 #' months of data can be requested. If you continually receiving errors when invoking this
 #' function, reduce the number of observations (via station_number, parameters or dates) being requested. 
@@ -303,19 +303,19 @@ get_ws_token <- function(username, password) {
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
 #' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date. 
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date.
-#' @param token generate by \code{get_ws_token()}
+#' @param token generate by \code{token_ws()}
 #' 
 #' @return Time is returned as UTC for consistency.
 #'
 #' @examples
 #' \dontrun{
-#' token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+#' token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 #'
-#' ws_08 <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+#' ws_08 <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          token = token_out)
 #'
-#' fivedays <- download_realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+#' fivedays <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          end_date = Sys.Date(), #today
 #'                          start_date = Sys.Date() - 5, #five days ago
@@ -325,7 +325,7 @@ get_ws_token <- function(username, password) {
 #' @export
 
 
-download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
+realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
                                  start_date = Sys.Date() - 30, end_date = Sys.Date(), token) {
   if (length(STATION_NUMBER) >= 300) {
     stop("Only 300 stations are supported for one request. If more stations are required, 
@@ -376,8 +376,8 @@ download_realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 
     stop("403 Forbidden: the web service is denying your request. Try any of the following options: 
           -Ensure you are not currently using all 5 tokens
          -Wait a few minutes and try again 
-         -Copy the get_ws_token call and paste it directly into the console
-         -Try using download_realtime_ws if you only need water quantity data
+         -Copy the token_ws call and paste it directly into the console
+         -Try using realtime_ws if you only need water quantity data
          ")
   }
 
@@ -473,7 +473,7 @@ download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
 
   ## If there is an existing hydat file get the date of release
   if (length(list.files(dl_hydat_here, pattern = "Hydat.sqlite3")) == 1) {
-    VERSION(hydat_path) %>%
+    hy_version(hydat_path) %>%
       dplyr::mutate(condensed_date = paste0(
         substr(Date, 1, 4),
         substr(Date, 6, 7),

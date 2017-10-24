@@ -2,7 +2,7 @@
 #'
 #' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
 #'
-#' @inheritParams STATIONS
+#' @inheritParams hy_stations
 #' @param hydat_con A database connection
 #'
 #' @keywords internal

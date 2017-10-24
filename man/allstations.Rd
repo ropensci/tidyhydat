@@ -12,6 +12,6 @@ HYDAT
 allstations
 }
 \description{
-A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
 }
 \keyword{datasets}

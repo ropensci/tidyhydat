@@ -30,86 +30,58 @@ library(dbplyr)
 # `tidyhydat` package
 This vignette will outline a few key options that will hopefully make `tidyhydat` useful.  
 
-## HYDAT functions
-All functions that interact with HYDAT are capitalized (e.g. `STATIONS`). Functions in `tidyhydat` can be split into two categories: functions that directly access HYDAT and functions that access real-time data ultimately destined for HYDAT. To use any of these functions you will need a locally stored copy of the HYDAT database which can be downloaded here:
-
-- http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
-
-`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+### HYDAT download
+To use most of the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's comprehensive database of historical hydrometric data then tell R where to find the database. `tidyhydat` does all this for you via:
 ```{r, eval=FALSE}
-download_hydat(dl_hydat_here = "H:/")
+download_hydat()
 ```
-
-However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell `tidyhydat` where the HYDAT database. One option to is enter the path in each function like this:
-```{r, eval = FALSE}
-STATIONS(hydat_path = "H:/Hydat.sqlite3")
-```
-It will quickly get tiring manually entering `hydat_path = `. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In R you can open up `.Renviron` like this:
-```{r, eval= FALSE, echo = TRUE}
-file.edit("~/.Renviron")
-```
-This opens your `.Renviron` file which may be a blank file. Add this line somewhere in the file:
-```{r, eval=FALSE, echo=TRUE}
-hydat = "YOUR HYDAT PATH"
-```
-It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for. 
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `rappdirs::site_data_dir()`.
 
 ### Usage
-All functions in `tidyhydat` follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments.  The `hydat_path` argument is omitted here and it is assumed you set the variable in your `.Renviron` file which is highly recommend. If you would like to query the database for two or more stations you could vectorize `STATION_NUMBER`:
+All functions in `tidyhydat` follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. If you would like to query the database for two or more stations you could vectorize `STATION_NUMBER`:
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-DLY_FLOWS(STATION_NUMBER = c("08LA001","08NL071"))
+hy_daily_flows(STATION_NUMBER = c("08LA001","08NL071"))
 ```
 
 If instead you would like to extract flows for all stations from a jurisdiction, you can simply specific the province:
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
+hy_daily_flows(PROV_TERR_STATE_LOC = "PE")
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-DLY_FLOWS(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3",
+hy_daily_flows(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3",
           start_date = "1981-01-01", end_date = "1981-12-31")
 ```
 
 You can also make use of auxiliary function in `tidyhydat` called `search_name` to look for matches when you know part of a name of a station. For example:
 ```{r, echo=TRUE}
-search_name("liard")
+search_stn_name("liard")
 ```
-
-## Setting the HYDAT path. 
-It will quickly get tiring manually entering `hydat_path`. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In RStudio you can open up `.Renviron` like this:
-```{r, eval= FALSE, echo = TRUE}
-file.edit("~/.Renviron")
-```
-This opens your `.Renviron` file which is most likely blank. Add this line:
-```{r, eval=FALSE, echo=TRUE}
-hydat = "YOUR HYDAT PATH"
-```
-It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for. 
 
 This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
 
 ## Real-time functions
 In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. `tidyhydat` provides three functions to access these data sources. Remember these are **unapproved** data and should treated as such:
 
-- `realtime_network_meta()`
-- `download_realtime_ws()`
-- `download_reatime2()`
+- `realtime_stations()`
+- `realtime_ws()`
+- `realtime_dd()`
 
-Not every stations is currently part of the real-time network. Therefore `realtime_network_meta()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_network_meta()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
+Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 ```{r, eval=FALSE}
-realtime_network_meta(PROV_TERR_STATE_LOC = "PE")
+realtime_stations(PROV_TERR_STATE_LOC = "PE")
 ```
 
-`STATIONS()` and `realtime_network_meta()` perform similar tasks albeit on different data sources. `STATIONS()` extracts directly from HYDAT. In addition to real-time stations, `STATIONS()` outputs discontinued and non-real-time stations:
+`hy_stations()` and `realtime_stations()` perform similar tasks albeit on different data sources. `hy_stations()` extracts directly from HYDAT. In addition to real-time stations, `hy_stations()` outputs discontinued and non-real-time stations:
 ```{r stations, eval=FALSE}
-STATIONS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+hy_stations(PROV_TERR_STATE_LOC = "PE")
 ```
 
-This is contrast to `realtime_network_meta()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_network_meta()` when dealing with real-time data and `STATIONS()` when interacting with HYDAT. It is also appropriate to filter the output of `STATIONS()` by the `REAL_TIME` column.   
+This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.   
 
-## Water Office web service - `download_realtime_ws()` 
-The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The `download_realtime_ws()` function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the `parameters` argument as an integer code. The corresponding parameters can be examined using the internal `param_id` dataset:
+## Water Office web service - `realtime_ws()` 
+The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The `realtime_ws()` function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the `parameters` argument as an integer code. The corresponding parameters can be examined using the internal `param_id` dataset:
 ```{r, echo=TRUE, eval=TRUE}
 data("param_id")
 param_id
@@ -118,16 +90,16 @@ The `parameters` argument will take any value in the `param_id$Parameter` column
 
 ```{r, eval=FALSE}
 ## Get token
-token_out <- get_ws_token(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
 ## Input STATION_NUMBER, parameters and date range
-ws_test <- download_realtime_ws(STATION_NUMBER = "08LG006",
+ws_test <- realtime_ws(STATION_NUMBER = "08LG006",
                                 parameters = c(46,5), ## Water level and temperature
                                 start_date = "2017-06-25",
                                 end_date = "2017-07-24",
                                 token = token_out)
 ``` 
-Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `download_realtime_ws()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
+Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `realtime_ws()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
 
 ### Managing your credentials in R
 Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren't shared widely. Please read [this article](http://httr.r-lib.org/articles/secrets.html) to familiarize yourself with credential management. [This section](http://httr.r-lib.org/articles/secrets.html#environment-variables) is summarized here specific to `tidyhydat`. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important values are again stored in the `.Renviron` file. Run the following in a console:
@@ -146,24 +118,24 @@ WS_PWD = "here is the password that ECCC gave you"
 
 Now these values can be accessed within an R session without giving away your secrets (Using `Sys.getenv()`). Just remember to call them directly and don't assign them to a variable. 
 
-## MSC datamart - `download_realtime_dd()`
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+## MSC datamart - `realtime_dd()`
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r}
-download_realtime_dd(STATION_NUMBER = "08LG006")
+realtime_dd(STATION_NUMBER = "08LG006")
 ```
 Another option is to provide simply the province as an argument and download all stations from that province:
 ```{r}
-download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+realtime_dd(PROV_TERR_STATE_LOC = "PE")
 ```
 
-## Compare `download_realtime_ws` and `download_realtime_dd`
-`tidyhydat` provides two methods to download real-time data. `download_realtime_ws()`, coupled with `get_ws_token()`, is an API client for a web service hosted by ECCC. `download_realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `download_realtime_ws()` has several difference to `download_realtime_dd()`. These include:
+## Compare `realtime_ws` and `realtime_dd`
+`tidyhydat` provides two methods to download real-time data. `realtime_ws()`, coupled with `token_ws()`, is an API client for a web service hosted by ECCC. `realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `realtime_ws()` has several difference to `realtime_dd()`. These include:
 
-- *Speed*: `download_realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries `download_realtime_dd()` if more appropriate.
-- *Length of record*: `download_realtime_ws()` records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.   
-- *Type of parameters*: `download_realtime_dd()` is restricted to river flow (either LEVEL and FLOW) data. In contrast `download_realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
-- *Date/Time filtering*: `download_realtime_ws()` provides argument to select a date range. Selecting a data range with `download_realtime_dd()` is not possible until after all files have been downloaded. 
-- *Accessibility*: `download_realtime_dd()` downloads data that openly accessible. `download_realtime_ws()` downloads data using a username and password which must be provided by ECCC. 
+- *Speed*: `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries `realtime_dd()` if more appropriate.
+- *Length of record*: `realtime_ws()` records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.   
+- *Type of parameters*: `realtime_dd()` is restricted to river flow (either LEVEL and FLOW) data. In contrast `realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
+- *Date/Time filtering*: `realtime_ws()` provides argument to select a date range. Selecting a data range with `realtime_dd()` is not possible until after all files have been downloaded. 
+- *Accessibility*: `realtime_dd()` downloads data that openly accessible. `realtime_ws()` downloads data using a username and password which must be provided by ECCC. 
 
 # License
 

@@ -22,7 +22,7 @@
 
 ## To add to list
 # bcstations <- download_network(PROV_TERR_STATE_LOC = "BC") %>%
-#  anti_join(STATIONS(hydat_path = "H:/Hydat.sqlite3",
+#  anti_join(hy_stations(hydat_path = "H:/Hydat.sqlite3",
 #                     PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "ALL"),
 #            by = c("STATION_NUMBER", "STATION_NAME")) %>%
 #  select(STATION_NUMBER, STATION_NAME) %>%
@@ -30,7 +30,7 @@
 
 #' A tibble of BC stations and their names
 #'
-#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
 #'
 #' @source HYDAT
 "bcstations"
@@ -38,7 +38,7 @@
 
 #' A tibble of all Canadian Stations stations and their names.
 #'
-#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
 #'
 #' @source HYDAT
 "allstations"

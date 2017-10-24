@@ -12,11 +12,11 @@
 
 #' @title Extract daily flows information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{STATIONS} table are returned.
-#' That is a large vector for \code{DLY_FLOWS}.
+#' @description Provides wrapper to turn the hy_daily_flows table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
+#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+#' That is a large vector for \code{hy_daily_flows}.
 #'
-#' @inheritParams STATIONS
+#' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param symbol_output Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default 
@@ -26,10 +26,10 @@
 #'
 #' @examples
 #' \donttest{
-#' DLY_FLOWS(STATION_NUMBER = c("02JE013","08MF005"), 
+#' hy_daily_flows(STATION_NUMBER = c("02JE013","08MF005"), 
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' DLY_FLOWS(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' hy_daily_flows(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'
 #'           }
 #'
@@ -39,12 +39,12 @@
 
 
 
-DLY_FLOWS <- function(STATION_NUMBER = NULL,
+hy_daily_flows <- function(STATION_NUMBER = NULL,
                       hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                       PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL",
                       symbol_output = "code") {
   if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?DLY_FLOWS for examples.")
+    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?hy_daily_flows for examples.")
   }
   
   if (start_date == "ALL" & end_date == "ALL") {

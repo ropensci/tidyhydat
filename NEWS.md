@@ -7,6 +7,8 @@ tidyhydat 0.3.0 ()
 
 ### MINOR IMPROVEMENTS
   * Adding `rappdirs` to imports and using to generate download path for `download_hydat()` (bcgov/tidyhydat#44)
+  * Adding `rappdirs` so that all the hy_* functions access hydat from `rappdirs::user_data_dir()` (bcgov/tidyhydat#44)
+  * Moved `station_number` to first argument to facilitate piped analysis (bcgov/tidyhydat#54)
   * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
   * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
   * All download tests are skipped on cran (bcgov/tidyhydat#53)
@@ -20,8 +22,38 @@ tidyhydat 0.3.0 ()
   * Fixed httr:content parsing error in `download_realtime_ws`. (bcgov/tidyhydat#42)
   * Wrapped download_realtime_ws examples in dontrun (bcgov/tidyhydat#52)
 
-### DEPRECATED AND DEFUNCT
-  * 
+### FUNCTION NAME CHANGES
+  * hy_agency_list <- AGENCY_LIST
+  * hy_annual_instant_peaks <- ANNUAL_INSTANT_PEAKS
+  * hy_annual_stats <- ANNUAL_STATISTICS
+  * hy_daily_flows <- DLY_FLOWS
+  * hy_daily_levels <- DLY_LEVELS
+  * hy_monthly_flows <- MONTHLY_FLOWS
+  * hy_monthly_levels <- MONTHLY_LEVELS
+  * hy_sed_daily_loads <- SED_DLY_LOADS
+  * hy_sed_daily_suscon <- SED_DLY_SUSCON
+  * hy_sed_monthly_loads <- SED_MONTHLY_LOADS
+  * hy_sed_monthly_suscon <- SED_MONTHLY_SUSCON
+  * hy_sed_samples <- SED_SAMPLES
+  * hy_sed_samples_psd <- SED_SAMPLES_PSD
+  * hy_stations <- STATIONS
+  * hy_stn_remarks <- STN_REMARKS
+  * hy_stn_datum_conv <- STN_DATUM_CONVERSION
+  * hy_stn_datum_unrelated <- STN_DATUM_UNRELATED
+  * hy_stn_data_range <- STN_DATA_RANGE
+  * hy_stn_data_coll <- STN_DATA_COLLECTION
+  * hy_stn_op_schedule <- STN_OPERATION_SCHEDULE
+  * hy_stn_regulation <- STN_REGULATION
+  * hy_agency_list <- AGENCY_LIST
+  * hy_reg_office_list <- REGIONAL_OFFICE_LIST
+  * hy_datum_list <- DATUM_LIST
+  * hy_version <- VERSION
+  * realtime_dd <- download_realtime_dd
+  * realtime_ws <- download_realtime_ws
+  * token_ws <- get_ws_token
+  * realtime_stations <- realtime_network_meta
+  * search_stn_name <- search_name
+  * search_stn_number <- search_number
 
 
 

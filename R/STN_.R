@@ -1,18 +1,18 @@
-#' STN_REMARKS function
+#' hy_stn_remarks function
 #'
-#' STN_REMARKS look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_remarks look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_REMARKS
+#' @return A tibble of hy_stn_remarks
 #'
 #' @export
 #' 
 #' @examples
 #' \donttest{
-#' STN_REMARKS(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_remarks(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_REMARKS <- function(STATION_NUMBER = NULL, 
+hy_stn_remarks <- function(STATION_NUMBER = NULL, 
                         hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
                         PROV_TERR_STATE_LOC = NULL) {
   ## Check if hydat is present
@@ -38,19 +38,19 @@ STN_REMARKS <- function(STATION_NUMBER = NULL,
   stn_remarks
 }
 
-#' STN_DATUM_CONVERSION function
+#' hy_stn_datum_conv function
 #'
-#' STN_DATUM_CONVERSION look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_datum_conv look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_DATUM_CONVERSION
+#' @return A tibble of hy_stn_datum_conv
 #'
 #' @export
 #' @examples
 #' \donttest{
-#' STN_DATUM_CONVERSION(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_datum_conv(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
-STN_DATUM_CONVERSION <- function(STATION_NUMBER = NULL, 
+hy_stn_datum_conv <- function(STATION_NUMBER = NULL, 
                                  hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -78,20 +78,20 @@ STN_DATUM_CONVERSION <- function(STATION_NUMBER = NULL,
   stn_datum_conversion
 }
 
-#' STN_DATUM_UNRELATED function
+#' hy_stn_datum_unrelated function
 #'
-#' STN_DATUM_UNRELATED look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_datum_unrelated look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_DATUM_UNRELATED
+#' @return A tibble of hy_stn_datum_unrelated
 #'
 #' @export
 #' @examples
 #' \donttest{
-#' STN_DATUM_UNRELATED()
+#' hy_stn_datum_unrelated()
 #'}
 #'
-STN_DATUM_UNRELATED <- function(STATION_NUMBER = NULL, 
+hy_stn_datum_unrelated <- function(STATION_NUMBER = NULL, 
                                 hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -114,22 +114,22 @@ STN_DATUM_UNRELATED <- function(STATION_NUMBER = NULL,
   stn_datum_unrelated
 }
 
-#' STN_DATA_RANGE function
+#' hy_stn_data_range function
 #'
-#' STN_DATA_RANGE look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_data_range look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_DATA_RANGE
+#' @return A tibble of hy_stn_data_range
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
 #' \donttest{
-#' STN_DATA_RANGE(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_data_range(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_DATA_RANGE <- function(STATION_NUMBER = NULL, 
+hy_stn_data_range <- function(STATION_NUMBER = NULL, 
                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                            PROV_TERR_STATE_LOC = NULL) {
   
@@ -156,22 +156,22 @@ STN_DATA_RANGE <- function(STATION_NUMBER = NULL,
   stn_data_range
 }
 
-#' STN_DATA_COLLECTION function
+#' hy_stn_data_coll function
 #'
-#' STN_DATA_COLLECTION look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_data_coll look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_DATA_COLLECTION
+#' @return A tibble of hy_stn_data_coll
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
 #' \donttest{
-#' STN_DATA_COLLECTION(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_data_coll(STATION_NUMBER = c("02JE013","08MF005"))
 #'}
 #'
-STN_DATA_COLLECTION <- function(STATION_NUMBER = NULL, 
+hy_stn_data_coll <- function(STATION_NUMBER = NULL, 
                                 hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
   
   ## Check if hydat is present
@@ -202,22 +202,22 @@ STN_DATA_COLLECTION <- function(STATION_NUMBER = NULL,
 }
 
 
-#' STN_OPERATION_SCHEDULE function
+#' hy_stn_op_schedule function
 #'
-#' STN_OPERATION_SCHEDULE look-up Table
-#' @inheritParams STATIONS
+#' hy_stn_op_schedule look-up Table
+#' @inheritParams hy_stations
 #'
-#' @return A tibble of STN_OPERATION_SCHEDULE
+#' @return A tibble of hy_stn_op_schedule
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
 #' \donttest{
-#' STN_OPERATION_SCHEDULE(STATION_NUMBER = c("02JE013"))
+#' hy_stn_op_schedule(STATION_NUMBER = c("02JE013"))
 #'}
 #'
-STN_OPERATION_SCHEDULE <- function(STATION_NUMBER = NULL, 
+hy_stn_op_schedule <- function(STATION_NUMBER = NULL, 
                                    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
                                    PROV_TERR_STATE_LOC = NULL) {
   
