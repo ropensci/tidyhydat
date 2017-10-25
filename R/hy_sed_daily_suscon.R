@@ -112,7 +112,7 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   }
   
   
-  sed_dly_suscon <- dplyr::left_join(sed_dly_suscon, DATA_SYMBOLS, by = c("SUSCON_SYMBOL" = "SYMBOL_ID"))
+  sed_dly_suscon <- dplyr::left_join(sed_dly_suscon, data_symbols, by = c("SUSCON_SYMBOL" = "SYMBOL_ID"))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, Parameter = "SUSCON")
   
   ## Control for symbol ouput

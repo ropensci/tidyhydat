@@ -193,7 +193,7 @@ hy_stn_data_coll <- function(station_number = NULL,
     dplyr::left_join(dplyr::tbl(hydat_con, "MEASUREMENT_CODES"), by = c("MEASUREMENT_CODE")) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "OPERATION_CODES"), by = c("OPERATION_CODE")) %>%
     dplyr::collect() %>%
-    dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
+    dplyr::left_join(tidyhydat::data_types, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR_FROM, YEAR_TO, MEASUREMENT_EN, OPERATION_EN) %>%
     dplyr::arrange(STATION_NUMBER, YEAR_FROM)
   
@@ -238,7 +238,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
   stn_operation_schedule <- dplyr::tbl(hydat_con, "STN_OPERATION_SCHEDULE") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
-    dplyr::left_join(tidyhydat::DATA_TYPES, by = c("DATA_TYPE")) %>%
+    dplyr::left_join(tidyhydat::data_types, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
   
   stn_operation_schedule

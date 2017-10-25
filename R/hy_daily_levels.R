@@ -114,7 +114,7 @@ hy_daily_levels <- function(station_number = NULL,
     dly_levels <- dplyr::filter(dly_levels, Date >= start_date &
       Date <= end_date)
   }
-  dly_levels <- dplyr::left_join(dly_levels, tidyhydat::DATA_SYMBOLS, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
+  dly_levels <- dplyr::left_join(dly_levels, tidyhydat::data_symbols, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
   dly_levels <- dplyr::mutate(dly_levels, Parameter = "LEVEL")
   
   ## Control for symbol ouput

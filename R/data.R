@@ -20,23 +20,7 @@
 #'
 "param_id"
 
-## To add to list
-# bcstations <- download_network(prov_terr_state_loc = "BC") %>%
-#  anti_join(hy_stations(hydat_path = "H:/Hydat.sqlite3",
-#                     prov_terr_state_loc = "BC", station_number = "ALL"),
-#            by = c("station_number", "STATION_NAME")) %>%
-#  select(station_number, STATION_NAME) %>%
-#  bind_rows(bcstations)
 
-#' A tibble of BC stations and their names
-#'
-#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
-#'
-#' @source HYDAT
-"bcstations"
-
-
-#' A tibble of all Canadian Stations stations and their names.
 #'
 #' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
 #'
@@ -49,11 +33,11 @@
 #' A look table for data symbols
 #'
 #' @source HYDAT
-"DATA_SYMBOLS"
+"data_symbols"
 
 #' DATA TYPES look-up table
 #'
 #' A look table for data types
 #'
 #' @source HYDAT
-"DATA_TYPES"
+"data_types"
