@@ -14,24 +14,24 @@
 
 #' Extract station information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
+#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame. \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 #'
 #' @inheritParams hy_agency_list
-#' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+#' @param station_number Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 #' is returned.
-#' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
-#' is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}
+#' @param prov_terr_state_loc Province, state or territory. If this argument is omitted, the value of \code{station_number}
+#' is returned. See \code{unique(allstations$prov_terr_state_loc)}
 #'
 #' @return A tibble of stations and associated metadata
 #'
 #' @examples
 #' \donttest{
 #' ## Multiple stations province not specified
-#' hy_stations(STATION_NUMBER = c("08NM083","08NE102"))
+#' hy_stations(station_number = c("08NM083","08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' hy_stations(PROV_TERR_STATE_LOC = c("AB","YT"))
+#' hy_stations(prov_terr_state_loc = c("AB","YT"))
 #' }
 #'
 #'
@@ -39,11 +39,11 @@
 #' @source HYDAT
 #' @export
 
-hy_stations <- function(STATION_NUMBER = NULL, 
+hy_stations <- function(station_number = NULL, 
                      hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
-                     PROV_TERR_STATE_LOC = NULL) {
-  if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?realtime_dd for examples.")
+                     prov_terr_state_loc = NULL) {
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
   }
 
   ## Check if hydat is present
@@ -59,7 +59,7 @@ hy_stations <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## Create the dataframe to return
   df <- dplyr::tbl(hydat_con, "STATIONS") %>%

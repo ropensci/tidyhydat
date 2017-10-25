@@ -12,8 +12,8 @@
 
 #' @title Extract daily levels information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the hy_daily_levels table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+#' @description Provides wrapper to turn the hy_daily_levels table in HYDAT into a tidy data frame.  \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
 #' That is a large vector for \code{hy_daily_levels}.
 #'
 #' @inheritParams hy_daily_flows
@@ -22,10 +22,10 @@
 #'
 #' @examples
 #' \donttest{
-#' hy_daily_levels(STATION_NUMBER = c("02JE013","08MF005"), 
+#' hy_daily_levels(station_number = c("02JE013","08MF005"), 
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' hy_daily_levels(PROV_TERR_STATE_LOC = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' hy_daily_levels(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
 #'
 #'           }
 #'
@@ -35,12 +35,12 @@
 
 
 
-hy_daily_levels <- function(STATION_NUMBER = NULL, 
+hy_daily_levels <- function(station_number = NULL, 
                        hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
-                       PROV_TERR_STATE_LOC = NULL, 
+                       prov_terr_state_loc = NULL, 
                        start_date ="ALL", end_date = "ALL", symbol_output = "code") {
-  if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?hy_daily_levels for examples.")
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_daily_levels for examples.")
   }
 
   if (start_date == "ALL" & end_date == "ALL") {
@@ -80,7 +80,7 @@ hy_daily_levels <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## Data manipulations
   dly_levels <- dplyr::tbl(hydat_con, "DLY_LEVELS")

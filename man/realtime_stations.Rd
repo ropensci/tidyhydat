@@ -4,10 +4,10 @@
 \alias{realtime_stations}
 \title{download a tibble of active realtime stations}
 \usage{
-realtime_stations(PROV_TERR_STATE_LOC = NULL)
+realtime_stations(prov_terr_state_loc = NULL)
 }
 \arguments{
-\item{PROV_TERR_STATE_LOC}{Province/State/Territory or Location. See examples for list of available options. 
+\item{prov_terr_state_loc}{Province/State/Territory or Location. See examples for list of available options. 
 realtime_stations() for all stations.}
 }
 \description{
@@ -15,11 +15,11 @@ An up to date dataframe of all stations in the Realtime Water Survey of Canada
   hydrometric network operated by Environment and Climate Change Canada
 }
 \examples{
-## Available inputs for PROV_TERR_STATE_LOC argument:
-unique(realtime_stations()$PROV_TERR_STATE_LOC)
+## Available inputs for prov_terr_state_loc argument:
+unique(realtime_stations()$prov_terr_state_loc)
 
-realtime_stations(PROV_TERR_STATE_LOC = "BC")
-realtime_stations(PROV_TERR_STATE_LOC = c("QC","PE"))
+realtime_stations(prov_terr_state_loc = "BC")
+realtime_stations(prov_terr_state_loc = c("QC","PE"))
 }
 \seealso{
 Other realtime functions: \code{\link{realtime_dd}},

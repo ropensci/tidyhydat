@@ -6,6 +6,7 @@ tidyhydat 0.3.0 ()
   * New NEWS template!
 
 ### MINOR IMPROVEMENTS
+  * Significant function and argument name changes (see below)
   * Adding `rappdirs` to imports and using to generate download path for `download_hydat()` (bcgov/tidyhydat#44)
   * Adding `rappdirs` so that all the hy_* functions access hydat from `rappdirs::user_data_dir()` (bcgov/tidyhydat#44)
   * Moved `station_number` to first argument to facilitate piped analysis (bcgov/tidyhydat#54)
@@ -22,7 +23,7 @@ tidyhydat 0.3.0 ()
   * Fixed httr:content parsing error in `download_realtime_ws`. (bcgov/tidyhydat#42)
   * Wrapped download_realtime_ws examples in dontrun (bcgov/tidyhydat#52)
 
-### FUNCTION NAME CHANGES
+### FUNCTION NAME CHANGES (bcgov/tidyhydat#45)
   * hy_agency_list <- AGENCY_LIST
   * hy_annual_instant_peaks <- ANNUAL_INSTANT_PEAKS
   * hy_annual_stats <- ANNUAL_STATISTICS
@@ -54,6 +55,10 @@ tidyhydat 0.3.0 ()
   * realtime_stations <- realtime_network_meta
   * search_stn_name <- search_name
   * search_stn_number <- search_number
+  
+### ARGUMENT NAME CHANGES (bcgov/tidyhydat#45)
+  * station_number <- STATION_NUMBER
+  * prov_terr_state_loc <- PROV_TERR_STATE_LOC
 
 
 

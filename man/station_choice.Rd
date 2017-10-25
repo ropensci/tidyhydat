@@ -4,16 +4,16 @@
 \alias{station_choice}
 \title{Function to chose a station based on consistent arguments for hydat functions.}
 \usage{
-station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+station_choice(hydat_con, station_number, prov_terr_state_loc)
 }
 \arguments{
 \item{hydat_con}{A database connection}
 
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 }
 \description{
 A function to avoid duplication in HYDAT functions.  This function is not intended for external use.

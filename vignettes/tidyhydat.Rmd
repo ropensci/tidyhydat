@@ -38,19 +38,19 @@ download_hydat()
 This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `rappdirs::site_data_dir()`.
 
 ### Usage
-All functions in `tidyhydat` follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `STATION_NUMBER` and the `PROV_TERR_STATE_LOC` arguments. If you would like to query the database for two or more stations you could vectorize `STATION_NUMBER`:
+All functions in `tidyhydat` follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `station_number` and the `prov_terr_state_loc` arguments. If you would like to query the database for two or more stations you could vectorize `station_number`:
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-hy_daily_flows(STATION_NUMBER = c("08LA001","08NL071"))
+hy_daily_flows(station_number = c("08LA001","08NL071"))
 ```
 
 If instead you would like to extract flows for all stations from a jurisdiction, you can simply specific the province:
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-hy_daily_flows(PROV_TERR_STATE_LOC = "PE")
+hy_daily_flows(prov_terr_state_loc = "PE")
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-hy_daily_flows(STATION_NUMBER = "08LA001", hydat_path = "H:/Hydat.sqlite3",
+hy_daily_flows(station_number = "08LA001", hydat_path = "H:/Hydat.sqlite3",
           start_date = "1981-01-01", end_date = "1981-12-31")
 ```
 
@@ -70,12 +70,12 @@ In addition to the approved and vetted data in the HYDAT database ECCC also offe
 
 Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 ```{r, eval=FALSE}
-realtime_stations(PROV_TERR_STATE_LOC = "PE")
+realtime_stations(prov_terr_state_loc = "PE")
 ```
 
 `hy_stations()` and `realtime_stations()` perform similar tasks albeit on different data sources. `hy_stations()` extracts directly from HYDAT. In addition to real-time stations, `hy_stations()` outputs discontinued and non-real-time stations:
 ```{r stations, eval=FALSE}
-hy_stations(PROV_TERR_STATE_LOC = "PE")
+hy_stations(prov_terr_state_loc = "PE")
 ```
 
 This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.   
@@ -92,8 +92,8 @@ The `parameters` argument will take any value in the `param_id$Parameter` column
 ## Get token
 token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
-## Input STATION_NUMBER, parameters and date range
-ws_test <- realtime_ws(STATION_NUMBER = "08LG006",
+## Input station_number, parameters and date range
+ws_test <- realtime_ws(station_number = "08LG006",
                                 parameters = c(46,5), ## Water level and temperature
                                 start_date = "2017-06-25",
                                 end_date = "2017-07-24",
@@ -120,12 +120,12 @@ Now these values can be accessed within an R session without giving away your se
 
 ## MSC datamart - `realtime_dd()`
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
-```{r}
-realtime_dd(STATION_NUMBER = "08LG006")
+```{r, eval=FALSE}
+realtime_dd(station_number = "08LG006")
 ```
 Another option is to provide simply the province as an argument and download all stations from that province:
-```{r}
-realtime_dd(PROV_TERR_STATE_LOC = "PE")
+```{r, eval=FALSE}
+realtime_dd(prov_terr_state_loc = "PE")
 ```
 
 ## Compare `realtime_ws` and `realtime_dd`

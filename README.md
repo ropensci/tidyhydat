@@ -60,10 +60,10 @@ Usage
 
 ### HYDAT functions
 
-Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`.
+Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `hy_daily_flows()` function. If you would like to extract only station `08LA001` you can supply the `station_number`.
 
 ``` r
-DLY_FLOWS(STATION_NUMBER = "08LA001")
+hy_daily_flows(station_number = "08LA001")
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
 #> # A tibble: 29,159 x 5
@@ -82,10 +82,10 @@ DLY_FLOWS(STATION_NUMBER = "08LA001")
 #> # ... with 29,149 more rows
 ```
 
-If you would instead prefer all stations from a province, you can use the `PROV_TERR_STATE_LOC` argument and omit the `STATION_NUMBER` argument:
+If you would instead prefer all stations from a province, you can use the `prov_terr_state_loc` argument and omit the `station_number` argument:
 
 ``` r
-DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
+hy_daily_flows(prov_terr_state_loc = "PE")
 #> No start and end dates specified. All dates available will be returned.
 #> The following station(s) were not retrieved: 01CB011
 #> Check station number typos or if it is a valid station in the network
@@ -107,26 +107,26 @@ DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
 
 ### Real-time
 
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 
 ``` r
-download_realtime_dd(STATION_NUMBER = "08LG006")
+realtime_dd(station_number = "08LG006")
 ```
 
 Another option is to provide simply the province as an argument and download all stations from that province:
 
 ``` r
-download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+realtime_dd(prov_terr_state_loc = "PE")
 ```
 
 Additionally `download_realtime_ws()` provides another means of acquiring real time data though that requires a username and password from Environment and Climate Change Canada.
 
 ### Search functions
 
-You can also make use of auxiliary functions in `tidyhdyat` called `search_name()` and `search_number()` to look for matches when you know part of a name of a station. For example:
+You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
 
 ``` r
-search_name("liard")
+search_stn_name("liard")
 #> # A tibble: 8 x 3
 #>   STATION_NUMBER                      STATION_NAME PROV_TERR_STATE_LOC
 #>            <chr>                             <chr>               <chr>
@@ -140,24 +140,12 @@ search_name("liard")
 #> 8        10GC004 MACKENZIE RIVER ABOVE LIARD RIVER                  NT
 ```
 
-Similarly, `search_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
+Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
 
 ``` r
-search_number("08MF")
-#> # A tibble: 49 x 3
-#>    STATION_NUMBER                                STATION_NAME
-#>             <chr>                                       <chr>
-#>  1        08MF001              ANDERSON RIVER NEAR BOSTON BAR
-#>  2        08MF002                  BOULDER CREEK NEAR LAIDLAW
-#>  3        08MF003                  COQUIHALLA RIVER NEAR HOPE
-#>  4        08MF004           FRASER RIVER ABOVE THOMPSON RIVER
-#>  5        08MF005                        FRASER RIVER AT HOPE
-#>  6        08MF006 WAHLEACH CREEK NEAR LAIDLAW (UPPER STATION)
-#>  7        08MF007  NAHATLATCH RIVER AT OUTLET OF FRANCES LAKE
-#>  8        08MF008               NAHATLATCH RIVER NEAR KEEFERS
-#>  9        08MF009                  SILVERHOPE CREEK NEAR HOPE
-#> 10        08MF011                     STEIN RIVER NEAR LYTTON
-#> # ... with 39 more rows, and 1 more variables: PROV_TERR_STATE_LOC <chr>
+search_stn_number("08MF")
+#> Warning: Unknown or uninitialised column: 'station_number'.
+#> No station number match this criteria!
 ```
 
 Getting Help or Reporting an Issue

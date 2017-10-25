@@ -7,21 +7,21 @@
 HYDAT
 }
 \usage{
-hy_sed_daily_suscon(STATION_NUMBER = NULL,
+hy_sed_daily_suscon(station_number = NULL,
   hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"),
-  PROV_TERR_STATE_LOC = NULL, start_date = "ALL", end_date = "ALL",
+  prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL",
   symbol_output = "code")
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 
 \item{start_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
@@ -34,14 +34,14 @@ value is \code{code}.}
 A tibble of daily suspended sediment concentration (mg/l)
 }
 \description{
-Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data frame.  \code{STATION_NUMBER} and
-\code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data frame.  \code{station_number} and
+\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
 That is a large vector for \code{hy_sed_daily_suscon}.
 }
 \examples{
 \donttest{
 
-hy_sed_daily_suscon(STATION_NUMBER = "01CE003")
+hy_sed_daily_suscon(station_number = "01CE003")
 
           }
 

@@ -6,7 +6,7 @@
       utils::globalVariables(
         # Vars used in Non-Standard Evaluations, declare here to avoid CRAN warnings
         ## This is getting ridiculous
-        c(
+        c("STATION_NUMBER",
           "PROV_TERR_STATE_LOC",
           "FULL_MONTH",
           "MAX",

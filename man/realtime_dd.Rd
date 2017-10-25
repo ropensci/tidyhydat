@@ -4,13 +4,13 @@
 \alias{realtime_dd}
 \title{Download a tibble of realtime discharge data from the MSC datamart}
 \usage{
-realtime_dd(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC)
+realtime_dd(station_number = NULL, prov_terr_state_loc)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+\item{station_number}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{prov_terr_state_loc}
 is returned.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted from the function call, the value of \code{station_number}
 is returned.}
 }
 \value{
@@ -23,10 +23,10 @@ daily averages are used. Currently, if a station does not exist or is not found,
 }
 \examples{
 ## Download from multiple provinces
-realtime_dd(STATION_NUMBER=c("01CD005","08MF005"))
+realtime_dd(station_number=c("01CD005","08MF005"))
 
 # To download all stations in Prince Edward Island:
-realtime_dd(PROV_TERR_STATE_LOC = "PE")
+realtime_dd(prov_terr_state_loc = "PE")
 
 }
 \seealso{

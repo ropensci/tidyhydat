@@ -7,20 +7,20 @@
 HYDAT
 }
 \usage{
-hy_annual_stats(STATION_NUMBER = NULL,
+hy_annual_stats(station_number = NULL,
   hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"),
-  PROV_TERR_STATE_LOC = NULL, start_year = "ALL", end_year = "ALL")
+  prov_terr_state_loc = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number. If this argument is omitted, the value of \code{PROV_TERR_STATE_LOC}
+\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
 The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
 set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
 
-\item{PROV_TERR_STATE_LOC}{Province, state or territory. If this argument is omitted, the value of \code{STATION_NUMBER}
-is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 
 \item{start_year}{First year of the returned record}
 
@@ -30,16 +30,16 @@ is returned. See \code{unique(allstations$PROV_TERR_STATE_LOC)}}
 A tibble of hy_annual_stats
 }
 \description{
-Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-  \code{PROV_TERR_STATE_LOC} must both be supplied.
+Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{station_number} and
+  \code{prov_terr_state_loc} must both be supplied.
 }
 \examples{
 \donttest{
   ## Multiple stations province not specified
-  hy_annual_stats(STATION_NUMBER = c("08NM083","05AE027"))
+  hy_annual_stats(station_number = c("08NM083","05AE027"))
  
   ## Multiple province, station number not specified
-  hy_annual_stats(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+  hy_annual_stats(prov_terr_state_loc = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 }
 
 }

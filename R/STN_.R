@@ -9,12 +9,12 @@
 #' 
 #' @examples
 #' \donttest{
-#' hy_stn_remarks(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_remarks(station_number = c("02JE013","08MF005"))
 #'}
 #'
-hy_stn_remarks <- function(STATION_NUMBER = NULL, 
+hy_stn_remarks <- function(station_number = NULL, 
                         hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
-                        PROV_TERR_STATE_LOC = NULL) {
+                        prov_terr_state_loc = NULL) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
     stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
@@ -27,7 +27,7 @@ hy_stn_remarks <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   stn_remarks <- dplyr::tbl(hydat_con, "STN_REMARKS") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
@@ -48,10 +48,10 @@ hy_stn_remarks <- function(STATION_NUMBER = NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' hy_stn_datum_conv(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_datum_conv(station_number = c("02JE013","08MF005"))
 #'}
-hy_stn_datum_conv <- function(STATION_NUMBER = NULL, 
-                                 hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+hy_stn_datum_conv <- function(station_number = NULL, 
+                                 hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), prov_terr_state_loc = NULL) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
     stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
@@ -64,7 +64,7 @@ hy_stn_datum_conv <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   stn_datum_conversion <- dplyr::tbl(hydat_con, "STN_DATUM_CONVERSION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
@@ -91,8 +91,8 @@ hy_stn_datum_conv <- function(STATION_NUMBER = NULL,
 #' hy_stn_datum_unrelated()
 #'}
 #'
-hy_stn_datum_unrelated <- function(STATION_NUMBER = NULL, 
-                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+hy_stn_datum_unrelated <- function(station_number = NULL, 
+                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), prov_terr_state_loc = NULL) {
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
     stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
@@ -105,7 +105,7 @@ hy_stn_datum_unrelated <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
   
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   stn_datum_unrelated <- dplyr::tbl(hydat_con, "STN_DATUM_UNRELATED") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
@@ -126,12 +126,12 @@ hy_stn_datum_unrelated <- function(STATION_NUMBER = NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' hy_stn_data_range(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_data_range(station_number = c("02JE013","08MF005"))
 #'}
 #'
-hy_stn_data_range <- function(STATION_NUMBER = NULL, 
+hy_stn_data_range <- function(station_number = NULL, 
                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
-                           PROV_TERR_STATE_LOC = NULL) {
+                           prov_terr_state_loc = NULL) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -145,7 +145,7 @@ hy_stn_data_range <- function(STATION_NUMBER = NULL,
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   on.exit(DBI::dbDisconnect(hydat_con))
   
@@ -168,11 +168,11 @@ hy_stn_data_range <- function(STATION_NUMBER = NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' hy_stn_data_coll(STATION_NUMBER = c("02JE013","08MF005"))
+#' hy_stn_data_coll(station_number = c("02JE013","08MF005"))
 #'}
 #'
-hy_stn_data_coll <- function(STATION_NUMBER = NULL, 
-                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), PROV_TERR_STATE_LOC = NULL) {
+hy_stn_data_coll <- function(station_number = NULL, 
+                                hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), prov_terr_state_loc = NULL) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -184,7 +184,7 @@ hy_stn_data_coll <- function(STATION_NUMBER = NULL,
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   on.exit(DBI::dbDisconnect(hydat_con))
   
@@ -214,12 +214,12 @@ hy_stn_data_coll <- function(STATION_NUMBER = NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' hy_stn_op_schedule(STATION_NUMBER = c("02JE013"))
+#' hy_stn_op_schedule(station_number = c("02JE013"))
 #'}
 #'
-hy_stn_op_schedule <- function(STATION_NUMBER = NULL, 
+hy_stn_op_schedule <- function(station_number = NULL, 
                                    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
-                                   PROV_TERR_STATE_LOC = NULL) {
+                                   prov_terr_state_loc = NULL) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -231,7 +231,7 @@ hy_stn_op_schedule <- function(STATION_NUMBER = NULL,
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   on.exit(DBI::dbDisconnect(hydat_con))
   

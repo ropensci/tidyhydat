@@ -64,37 +64,37 @@ This downloads the most recent version of HYDAT and then saves it in a location 
 ## Usage
 
 ### HYDAT functions
-Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. 
+Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `hy_daily_flows()` function. If you would like to extract only station `08LA001` you can supply the `station_number`. 
   
 ```{r example1, warning=FALSE}
-DLY_FLOWS(STATION_NUMBER = "08LA001")
+hy_daily_flows(station_number = "08LA001")
 ```
 
-If you would instead prefer all stations from a province, you can use the `PROV_TERR_STATE_LOC` argument and omit the `STATION_NUMBER` argument:
+If you would instead prefer all stations from a province, you can use the `prov_terr_state_loc` argument and omit the `station_number` argument:
   
 ```{r example2, warning=FALSE}
-DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
+hy_daily_flows(prov_terr_state_loc = "PE")
 ```
 
 ### Real-time
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r, eval = FALSE}
-download_realtime_dd(STATION_NUMBER = "08LG006")
+realtime_dd(station_number = "08LG006")
 ```
 Another option is to provide simply the province as an argument and download all stations from that province:
 ```{r, eval = FALSE}
-download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+realtime_dd(prov_terr_state_loc = "PE")
 ```
 Additionally `download_realtime_ws()` provides another means of acquiring real time data though that requires a username and password from Environment and Climate Change Canada.
 
 ### Search functions
-You can also make use of auxiliary functions in `tidyhdyat` called `search_name()` and `search_number()` to look for matches when you know part of a name of a station. For example:
+You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
 ```{r, echo=TRUE}
-search_name("liard")
+search_stn_name("liard")
 ```
-Similarly, `search_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
+Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
 ```{r, echo=TRUE}
-search_number("08MF")
+search_stn_number("08MF")
 ```
   
   

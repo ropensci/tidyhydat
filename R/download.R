@@ -17,9 +17,9 @@
 #' downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution
 #' daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
 #'
-#' @param STATION_NUMBER Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{PROV_TERR_STATE_LOC}
+#' @param station_number Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{prov_terr_state_loc}
 #' is returned.
-#' @param PROV_TERR_STATE_LOC Province, state or territory. If this argument is omitted from the function call, the value of \code{STATION_NUMBER}
+#' @param prov_terr_state_loc Province, state or territory. If this argument is omitted from the function call, the value of \code{station_number}
 #' is returned.
 #'
 #' @return A tibble of water flow and level values. Time is return as UTC for consistency.
@@ -27,30 +27,30 @@
 #'
 #' @examples
 #' ## Download from multiple provinces
-#' realtime_dd(STATION_NUMBER=c("01CD005","08MF005"))
+#' realtime_dd(station_number=c("01CD005","08MF005"))
 #'
 #' # To download all stations in Prince Edward Island:
-#' realtime_dd(PROV_TERR_STATE_LOC = "PE")
+#' realtime_dd(prov_terr_state_loc = "PE")
 #' 
 #' @family realtime functions
 #' @export
-realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
+realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
 
   ## TODO: HAve a warning message if not internet connection exists
-  if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = \"ALL\" argument. See ?realtime_dd for examples.")
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
   }
 
 
-  if (!is.null(STATION_NUMBER)) {
-    stns <- STATION_NUMBER
+  if (!is.null(station_number)) {
+    stns <- station_number
     choose_df <- realtime_stations()
     choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
-    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, prov_terr_state_loc)
   }
 
-  if (is.null(STATION_NUMBER)) {
-    choose_df <- realtime_stations(PROV_TERR_STATE_LOC = PROV_TERR_STATE_LOC)
+  if (is.null(station_number)) {
+    choose_df <- realtime_stations(prov_terr_state_loc = prov_terr_state_loc)
     choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
@@ -189,22 +189,22 @@ realtime_dd <- function(STATION_NUMBER = NULL, PROV_TERR_STATE_LOC) {
 #' An up to date dataframe of all stations in the Realtime Water Survey of Canada 
 #'   hydrometric network operated by Environment and Climate Change Canada
 #'
-#' @param PROV_TERR_STATE_LOC Province/State/Territory or Location. See examples for list of available options. 
+#' @param prov_terr_state_loc Province/State/Territory or Location. See examples for list of available options. 
 #'   realtime_stations() for all stations.
 #'
 #' @family realtime functions
 #' @export
 #'
 #' @examples
-#' ## Available inputs for PROV_TERR_STATE_LOC argument:
-#' unique(realtime_stations()$PROV_TERR_STATE_LOC)
+#' ## Available inputs for prov_terr_state_loc argument:
+#' unique(realtime_stations()$prov_terr_state_loc)
 #'
-#' realtime_stations(PROV_TERR_STATE_LOC = "BC")
-#' realtime_stations(PROV_TERR_STATE_LOC = c("QC","PE"))
+#' realtime_stations(prov_terr_state_loc = "BC")
+#' realtime_stations(prov_terr_state_loc = c("QC","PE"))
 
 
-realtime_stations <- function(PROV_TERR_STATE_LOC = NULL) {
-  prov <- PROV_TERR_STATE_LOC
+realtime_stations <- function(prov_terr_state_loc = NULL) {
+  prov <- prov_terr_state_loc
 
   url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
   
@@ -299,7 +299,7 @@ token_ws <- function(username, password) {
 #' queried depends on other parameters being requested. If one station is requested, 18 
 #' months of data can be requested. If you continually receiving errors when invoking this
 #' function, reduce the number of observations (via station_number, parameters or dates) being requested. 
-#' @param STATION_NUMBER Water Survey of Canada station number.
+#' @param station_number Water Survey of Canada station number.
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
 #' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date. 
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date.
@@ -311,11 +311,11 @@ token_ws <- function(username, password) {
 #' \dontrun{
 #' token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 #'
-#' ws_08 <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+#' ws_08 <- realtime_ws(station_number = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          token = token_out)
 #'
-#' fivedays <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+#' fivedays <- realtime_ws(station_number = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),
 #'                          end_date = Sys.Date(), #today
 #'                          start_date = Sys.Date() - 5, #five days ago
@@ -325,9 +325,9 @@ token_ws <- function(username, password) {
 #' @export
 
 
-realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
+realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
                                  start_date = Sys.Date() - 30, end_date = Sys.Date(), token) {
-  if (length(STATION_NUMBER) >= 300) {
+  if (length(station_number) >= 300) {
     stop("Only 300 stations are supported for one request. If more stations are required, 
          a separate request should be issued to include the excess stations. This second request will 
          require an additional token.")
@@ -352,7 +352,7 @@ realtime_ws <- function(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41,
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
-  station_string <- paste0("stations[]=", STATION_NUMBER, collapse = "&")
+  station_string <- paste0("stations[]=", station_number, collapse = "&")
   parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
   date_string <- paste0("start_date=", start_date, "%2000:00:00&end_date=", end_date, "%2023:59:59")
   token_string <- paste0("token=", token)

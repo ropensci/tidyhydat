@@ -13,8 +13,8 @@
 
 #' Annual maximum/minimum instantaneous flows and water levels
 #'
-#' Provides wrapper to turn the hy_annual_instant_peaks table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. 
+#' Provides wrapper to turn the hy_annual_instant_peaks table in HYDAT into a tidy data frame. \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. 
 #' 
 #' @inheritParams hy_stations
 #' @param start_year First year of the returned record
@@ -23,26 +23,26 @@
 #' @return A tibble of hy_annual_instant_peaks
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ## Multiple stations province not specified
-#' hy_annual_instant_peaks(STATION_NUMBER = c("08NM083","08NE102"))
+#' hy_annual_instant_peaks(station_number = c("08NM083","08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' hy_annual_instant_peaks(PROV_TERR_STATE_LOC = c("AB","YT"), hydat_path = "H:/Hydat.sqlite3")
+#' hy_annual_instant_peaks(prov_terr_state_loc = c("AB","YT"))
 #' }
 #' 
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #'
-hy_annual_instant_peaks <- function(STATION_NUMBER = NULL, 
+hy_annual_instant_peaks <- function(station_number = NULL, 
                                  hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
-                                 PROV_TERR_STATE_LOC = NULL,
+                                 prov_terr_state_loc = NULL,
                                  start_year = "ALL", end_year = "ALL") {
   
 
-  if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = 
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour.Omit the station_number = 
          \"ALL\" argument. See ?hy_annual_stats for examples.")
   }
   
@@ -58,7 +58,7 @@ hy_annual_instant_peaks <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## Data manipulations
   aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%

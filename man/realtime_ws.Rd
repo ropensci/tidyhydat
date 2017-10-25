@@ -4,11 +4,11 @@
 \alias{realtime_ws}
 \title{Download realtime data from the ECCC web service}
 \usage{
-realtime_ws(STATION_NUMBER, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
+realtime_ws(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
   start_date = Sys.Date() - 30, end_date = Sys.Date(), token)
 }
 \arguments{
-\item{STATION_NUMBER}{Water Survey of Canada station number.}
+\item{station_number}{Water Survey of Canada station number.}
 
 \item{parameters}{parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.}
 
@@ -32,11 +32,11 @@ function, reduce the number of observations (via station_number, parameters or d
 \dontrun{
 token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
-ws_08 <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+ws_08 <- realtime_ws(station_number = c("08NL071","08NM174"),
                          parameters = c(47, 5),
                          token = token_out)
 
-fivedays <- realtime_ws(STATION_NUMBER = c("08NL071","08NM174"),
+fivedays <- realtime_ws(station_number = c("08NL071","08NM174"),
                          parameters = c(47, 5),
                          end_date = Sys.Date(), #today
                          start_date = Sys.Date() - 5, #five days ago

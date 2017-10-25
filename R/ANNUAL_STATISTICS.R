@@ -13,8 +13,8 @@
 
 #' Extract annual statistics information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#'   \code{PROV_TERR_STATE_LOC} must both be supplied. 
+#' Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{station_number} and
+#'   \code{prov_terr_state_loc} must both be supplied. 
 #'
 #' @inheritParams hy_stations
 #' @param start_year First year of the returned record
@@ -25,23 +25,23 @@
 #' @examples
 #' \donttest{
 #'   ## Multiple stations province not specified
-#'   hy_annual_stats(STATION_NUMBER = c("08NM083","05AE027"))
+#'   hy_annual_stats(station_number = c("08NM083","05AE027"))
 #'  
 #'   ## Multiple province, station number not specified
-#'   hy_annual_stats(PROV_TERR_STATE_LOC = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+#'   hy_annual_stats(prov_terr_state_loc = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
 #' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 
-hy_annual_stats <- function(STATION_NUMBER =NULL, 
+hy_annual_stats <- function(station_number =NULL, 
                               hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
-                              PROV_TERR_STATE_LOC=NULL,
+                              prov_terr_state_loc=NULL,
                               start_year = "ALL", end_year = "ALL") {
   
-  if (!is.null(STATION_NUMBER) && STATION_NUMBER == "ALL") {
-    stop("Deprecated behaviour.Omit the STATION_NUMBER = 
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour.Omit the station_number = 
          \"ALL\" argument. See ?hy_annual_stats for examples.")
   }
   
@@ -56,7 +56,7 @@ hy_annual_stats <- function(STATION_NUMBER =NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## Data manipulations
   annual_statistics <- dplyr::tbl(hydat_con, "ANNUAL_STATISTICS")

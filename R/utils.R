@@ -28,7 +28,7 @@ search_stn_name <- function(search_term) {
 #' @export
 #' 
 search_stn_number <- function(search_term) {
-  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NUMBER), ]
+  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$station_number), ]
   
   if (nrow(results) == 0) {
     message("No station number match this criteria!")

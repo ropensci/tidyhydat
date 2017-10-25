@@ -14,8 +14,8 @@
 
 #' Extract station regulation from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame. \code{STATION_NUMBER} and
-#' \code{PROV_TERR_STATE_LOC} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
+#' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame. \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 #'
 #' @inheritParams hy_stations
 #'
@@ -24,10 +24,10 @@
 #' @examples
 #' \donttest{
 #' ## Multiple stations province not specified
-#' hy_stn_regulation(STATION_NUMBER = c("08NM083","08NE102"))
+#' hy_stn_regulation(station_number = c("08NM083","08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' hy_stn_regulation(PROV_TERR_STATE_LOC = c("AB","YT"))
+#' hy_stn_regulation(prov_terr_state_loc = c("AB","YT"))
 #' }
 #'
 
@@ -35,9 +35,9 @@
 #' @source HYDAT
 #' @export
 
-hy_stn_regulation <- function(STATION_NUMBER = NULL, 
+hy_stn_regulation <- function(station_number = NULL, 
                            hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
-                           PROV_TERR_STATE_LOC = NULL) {
+                           prov_terr_state_loc = NULL) {
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
@@ -51,7 +51,7 @@ hy_stn_regulation <- function(STATION_NUMBER = NULL,
   on.exit(DBI::dbDisconnect(hydat_con))
 
   ## Determine which stations we are querying
-  stns <- station_choice(hydat_con, STATION_NUMBER, PROV_TERR_STATE_LOC)
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## data manipulations to make it "tidy"
   dplyr::tbl(hydat_con, "STN_REGULATION") %>%

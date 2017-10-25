@@ -21,11 +21,11 @@
 "param_id"
 
 ## To add to list
-# bcstations <- download_network(PROV_TERR_STATE_LOC = "BC") %>%
+# bcstations <- download_network(prov_terr_state_loc = "BC") %>%
 #  anti_join(hy_stations(hydat_path = "H:/Hydat.sqlite3",
-#                     PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "ALL"),
-#            by = c("STATION_NUMBER", "STATION_NAME")) %>%
-#  select(STATION_NUMBER, STATION_NAME) %>%
+#                     prov_terr_state_loc = "BC", station_number = "ALL"),
+#            by = c("station_number", "STATION_NAME")) %>%
+#  select(station_number, STATION_NAME) %>%
 #  bind_rows(bcstations)
 
 #' A tibble of BC stations and their names
