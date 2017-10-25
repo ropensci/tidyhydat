@@ -9,7 +9,7 @@ station_choice(hydat_con, station_number, prov_terr_state_loc)
 \arguments{
 \item{hydat_con}{A database connection}
 
-\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

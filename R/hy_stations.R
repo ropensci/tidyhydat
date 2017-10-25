@@ -18,7 +18,7 @@
 #' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 #'
 #' @inheritParams hy_agency_list
-#' @param station_number Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+#' @param station_number A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 #' is returned.
 #' @param prov_terr_state_loc Province, state or territory. If this argument is omitted, the value of \code{station_number}
 #' is returned. See \code{unique(allstations$prov_terr_state_loc)}

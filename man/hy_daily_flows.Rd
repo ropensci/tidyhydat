@@ -12,7 +12,7 @@ hy_daily_flows(station_number = NULL, hydat_path = NULL,
   symbol_output = "code")
 }
 \arguments{
-\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{The default for this argument is to look for hydat in the same location where it

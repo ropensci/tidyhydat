@@ -13,22 +13,23 @@
 
 #' Extract annual statistics information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{station_number} and
+#' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{station_number} and
 #'   \code{prov_terr_state_loc} must both be supplied. 
 #'
 #' @inheritParams hy_stations
 #' @param start_year First year of the returned record
 #' @param end_year Last year of the returned record
 #'
-#' @return A tibble of hy_annual_stats
+#' @return A tibble of hy_annual_stats.
+#' 
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'   ## Multiple stations province not specified
 #'   hy_annual_stats(station_number = c("08NM083","05AE027"))
 #'  
 #'   ## Multiple province, station number not specified
-#'   hy_annual_stats(prov_terr_state_loc = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+#'   hy_annual_stats(prov_terr_state_loc = c("AB","SK"))
 #' }
 #'
 #' @family HYDAT functions

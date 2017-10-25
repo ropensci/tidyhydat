@@ -11,7 +11,7 @@ hy_annual_stats(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
-\item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{The default for this argument is to look for hydat in the same location where it
@@ -27,6 +27,10 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 }
 \value{
 A tibble of hy_annual_stats
+\itemize{
+ \item 1
+ \item 2
+ }
 }
 \description{
 Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{station_number} and
@@ -38,7 +42,7 @@ Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data fra
   hy_annual_stats(station_number = c("08NM083","05AE027"))
  
   ## Multiple province, station number not specified
-  hy_annual_stats(prov_terr_state_loc = c("AB","SK"), hydat_path = "H:/Hydat.sqlite3")
+  hy_annual_stats(prov_terr_state_loc = c("AB","SK"))
 }
 
 }
