@@ -17,7 +17,7 @@ library(dplyr)
 library(dbplyr)
 
 ## Create a subset of the data
-hydat_con <- DBI::dbConnect(RSQLite::SQLite(), Sys.getenv("hydat"))
+hydat_con <- DBI::dbConnect(RSQLite::SQLite(), paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"))
 
 all_tables <- DBI::dbListTables(hydat_con)
 
