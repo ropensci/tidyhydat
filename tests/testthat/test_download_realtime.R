@@ -5,8 +5,8 @@ context("Testing realtime functions")
   skip_on_travis()
   token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
 
-  ws_test <- realtime_ws(STATION_NUMBER = "08MF005",
-                               parameters = c(46), ## Water level and temperature
+  ws_test <- realtime_ws(station_number = "08MF005",
+                               parameters = c(46),  ## Water level and temperature
                                start_date = Sys.Date(),
                                end_date = Sys.Date(),
                                token = token_out)
@@ -23,23 +23,23 @@ context("Testing realtime functions")
  test_that("realtime_dd returns the correct data header", {
    skip_on_cran()
    expect_identical(
-     colnames(realtime_dd(STATION_NUMBER = "08MF005", PROV_TERR_STATE_LOC = "BC")),
-     c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
+     colnames(realtime_dd(station_number = "08MF005", prov_terr_state_loc = "BC")),
+     c("STATION_NUMBER", "prov_terr_state_loc", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
   )
 })
 
-test_that("realtime_dd can download stations from multiple provinces using PROV_TERR_STATE_LOC", {
+test_that("realtime_dd can download stations from multiple provinces using prov_terr_state_loc", {
   skip_on_cran()
-  realtime_dd(PROV_TERR_STATE_LOC = c("QC", "PE"))
+  realtime_dd(prov_terr_state_loc = c("QC", "PE"))
 })
 
 
-test_that("realtime_dd can download stations from multiple provinces using STATION_NUMBER", {
+test_that("realtime_dd can download stations from multiple provinces using station_number", {
   skip_on_cran()
-  expect_error(realtime_dd(STATION_NUMBER = c("01CD005", "08MF005")), regexp = NA)
+  expect_error(realtime_dd(station_number = c("01CD005", "08MF005")), regexp = NA)
 })
 
-test_that("When STATION_NUMBER is ALL there is an error", {
+test_that("When station_number is ALL there is an error", {
   skip_on_cran()
-  expect_error(realtime_dd(STATION_NUMBER = "ALL"))
+  expect_error(realtime_dd(station_number = "ALL"))
 })
