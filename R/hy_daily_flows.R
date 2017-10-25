@@ -40,7 +40,7 @@
 
 
 hy_daily_flows <- function(station_number = NULL,
-                      hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                      hydat_path = NULL, 
                       prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL",
                       symbol_output = "code") {
   if (!is.null(station_number) && station_number == "ALL") {
@@ -71,6 +71,10 @@ hy_daily_flows <- function(station_number = NULL,
     if (start_date > end_date) {
       stop("start_date is after end_date. Try swapping values.")
     }
+  }
+  
+  if(is.null(hydat_path)){
+    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present

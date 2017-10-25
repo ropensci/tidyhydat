@@ -8,13 +8,12 @@ A function to get version number of hydat}
 HYDAT
 }
 \usage{
-hy_version(hydat_path = paste0(rappdirs::user_data_dir(),
-  "\\\\Hydat.sqlite3"))
+hy_version(hydat_path = NULL)
 }
 \arguments{
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
-The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
-set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
+\item{hydat_path}{The default for this argument is to look for hydat in the same location where it
+was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
+You can see where hydat was downloaded using \code{rappdirs::user_data_dir()}}
 }
 \value{
 version number

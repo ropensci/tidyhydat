@@ -40,12 +40,16 @@
 #' @export
 
 hy_stations <- function(station_number = NULL, 
-                     hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"),
+                     hydat_path = NULL,
                      prov_terr_state_loc = NULL) {
   if (!is.null(station_number) && station_number == "ALL") {
     stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
   }
 
+  if(is.null(hydat_path)){
+    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+  }
+  
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
     stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))

@@ -7,17 +7,16 @@
 HYDAT
 }
 \usage{
-hy_annual_stats(station_number = NULL,
-  hydat_path = paste0(rappdirs::user_data_dir(), "\\\\Hydat.sqlite3"),
+hy_annual_stats(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
 \item{station_number}{Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
-\item{hydat_path}{Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
-The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
-set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.}
+\item{hydat_path}{The default for this argument is to look for hydat in the same location where it
+was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
+You can see where hydat was downloaded using \code{rappdirs::user_data_dir()}}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
 is returned. See \code{unique(allstations$prov_terr_state_loc)}}

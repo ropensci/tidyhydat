@@ -36,8 +36,12 @@
 #' @export
 
 hy_stn_regulation <- function(station_number = NULL, 
-                           hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                           hydat_path = NULL, 
                            prov_terr_state_loc = NULL) {
+  
+  if(is.null(hydat_path)){
+    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+  }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){

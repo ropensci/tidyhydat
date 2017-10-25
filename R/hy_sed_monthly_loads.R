@@ -35,7 +35,7 @@
 
 
 hy_sed_monthly_loads <- function(station_number = NULL,
-                              hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"), 
+                              hydat_path = NULL, 
                               prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
   if (!is.null(station_number) && station_number == "ALL") {
     stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_sed_monthly_loads for examples.")
