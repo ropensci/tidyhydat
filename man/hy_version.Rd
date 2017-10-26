@@ -16,14 +16,14 @@ was saved by using \code{download_hydat}. Therefore this argument is almost alwa
 You can see where hydat was downloaded using \code{rappdirs::user_data_dir()}}
 }
 \value{
-version number
+version number and release date
 }
 \description{
 Version number of HYDAT
 A function to get version number of hydat
 }
 \examples{
-\donttest{
+\dontrun{
 hy_version()
 }
 

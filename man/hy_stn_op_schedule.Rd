@@ -3,6 +3,14 @@
 \name{hy_stn_op_schedule}
 \alias{hy_stn_op_schedule}
 \title{hy_stn_op_schedule function}
+\format{A tibble with 6 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{DATA_TYPE_EN}{The type of data}
+  \item{YEAR}{Year of operation schedule}
+  \item{MONTH_FROM}{First month of use}
+  \item{MONTH_TO}{Last month of use}
+}}
 \source{
 HYDAT
 }
@@ -28,7 +36,7 @@ A tibble of hy_stn_op_schedule
 hy_stn_op_schedule look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_op_schedule(station_number = c("02JE013"))
 }
 

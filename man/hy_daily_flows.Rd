@@ -3,6 +3,14 @@
 \name{hy_daily_flows}
 \alias{hy_daily_flows}
 \title{Extract daily flows information from the HYDAT database}
+\format{A tibble with 5 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{Date}{Observation date. Formatted as a Date class.}
+  \item{Parameter}{Parameter being measured. Only possible value is FLOW}
+  \item{Value}{Discharge value. The units are m^3/s.}
+  \item{Symbol}{Measurement/river conditions}
+}}
 \source{
 HYDAT
 }
@@ -30,7 +38,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 value is \code{code}.}
 }
 \value{
-A tibble of daily levels
+A tibble of daily flows
 }
 \description{
 Provides wrapper to turn the hy_daily_flows table in HYDAT into a tidy data frame.  \code{station_number} and
@@ -38,12 +46,12 @@ Provides wrapper to turn the hy_daily_flows table in HYDAT into a tidy data fram
 That is a large vector for \code{hy_daily_flows}.
 }
 \examples{
-\donttest{
+\dontrun{
+#download_hydat()
 hy_daily_flows(station_number = c("02JE013","08MF005"), 
   start_date = "1996-01-01", end_date = "2000-01-01")
 
-hy_daily_flows(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
-
+hy_daily_flows(prov_terr_state_loc = "PE")
           }
 
 }

@@ -22,15 +22,24 @@
 #' @param symbol_output Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default 
 #'   value is \code{code}. 
 #'
-#' @return A tibble of daily levels
+#' @return A tibble of daily flows
+#' 
+#' @format A tibble with 5 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{Date}{Observation date. Formatted as a Date class.}
+#'   \item{Parameter}{Parameter being measured. Only possible value is FLOW}
+#'   \item{Value}{Discharge value. The units are m^3/s.}
+#'   \item{Symbol}{Measurement/river conditions}
+#' }
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#' #download_hydat()
 #' hy_daily_flows(station_number = c("02JE013","08MF005"), 
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' hy_daily_flows(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
-#'
+#' hy_daily_flows(prov_terr_state_loc = "PE")
 #'           }
 #'
 #' @family HYDAT functions
@@ -43,6 +52,7 @@ hy_daily_flows <- function(station_number = NULL,
                       hydat_path = NULL, 
                       prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL",
                       symbol_output = "code") {
+  
   if (!is.null(station_number) && station_number == "ALL") {
     stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_daily_flows for examples.")
   }

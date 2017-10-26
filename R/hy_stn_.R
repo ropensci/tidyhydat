@@ -4,11 +4,19 @@
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of hy_stn_remarks
+#' 
+#' @format A tibble with 4 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{REMARK_TYPE_EN}{Type of Remark}
+#'   \item{YEAR}{Year of the remark}
+#'   \item{REMARK_EN}{Remark}
+#' }
 #'
 #' @export
 #' 
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_remarks(station_number = c("02JE013","08MF005"))
 #'}
 #'
@@ -48,10 +56,20 @@ hy_stn_remarks <- function(station_number = NULL,
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of hy_stn_datum_conv
+#' 
+#' @format A tibble with 4 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{DATUM_EN_FROM}{Identifying a datum from which water level is being converted}
+#'   \item{DATUM_EN_TO}{Identifying a datum to which water level is being converted}
+#'   \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to 
+#'   one datum to obtain water levels referred to another datum}
+#' }
+#'
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_datum_conv(station_number = c("02JE013","08MF005"))
 #'}
 hy_stn_datum_conv <- function(station_number = NULL, 
@@ -92,10 +110,18 @@ hy_stn_datum_conv <- function(station_number = NULL,
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of hy_stn_datum_unrelated
+#' 
+#' @format A tibble with 4 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{DATUM_ID}{Unique code identifying a datum}
+#'   \item{YEAR_FROM}{First year of use}
+#'   \item{YEAR_TO}{Last year of use}
+#' } 
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_datum_unrelated()
 #'}
 #'
@@ -133,11 +159,21 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
 #'
 #' @return A tibble of hy_stn_data_range
 #'
+#' @format A tibble with 6 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{DATA_TYPE}{Code for the type of data}
+#'   \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
+#'   \item{YEAR_FROM}{First year of use}
+#'   \item{YEAR_TO}{Last year of use}
+#'   \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
+#' }
+#'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_data_range(station_number = c("02JE013","08MF005"))
 #'}
 #'
@@ -178,12 +214,24 @@ hy_stn_data_range <- function(station_number = NULL,
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of hy_stn_data_coll
+#' 
+#' @format A tibble with 6 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{DATA_TYPE_EN}{The type of data}
+#'   \item{YEAR_FROM}{First year of use}
+#'   \item{YEAR_TO}{Last year of use}
+#'   \item{MEASUREMENT_CODE_EN}{Either 1) the sampling method used in the collection of 
+#'   sediment data or 2) the type of the gauge used in the collection of the hydrometric data}
+#'   \item{OPERATION_CODE_EN}{The schedule of station operation 
+#'   for the collection of sediment or hydrometric data}
+#' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_data_coll(station_number = c("02JE013","08MF005"))
 #'}
 #'
@@ -228,12 +276,21 @@ hy_stn_data_coll <- function(station_number = NULL,
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of hy_stn_op_schedule
+#' 
+#' @format A tibble with 6 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{DATA_TYPE_EN}{The type of data}
+#'   \item{YEAR}{Year of operation schedule}
+#'   \item{MONTH_FROM}{First month of use}
+#'   \item{MONTH_TO}{Last month of use}
+#' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_stn_op_schedule(station_number = c("02JE013"))
 #'}
 #'

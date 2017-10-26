@@ -21,7 +21,7 @@ A tibble of offices
 OFFICE look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_reg_office_list()
 }
 

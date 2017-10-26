@@ -3,6 +3,26 @@
 \name{hy_sed_samples}
 \alias{hy_sed_samples}
 \title{Extract instantaneous sediment sample information from the HYDAT database}
+\format{A tibble with 19 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
+  \item{DATE}{Contains the time to the nearest minute of when the sample was taken}
+  \item{SAMPLE_REMARK_CODE}{Descriptive Sediment Sample Remark in English}
+  \item{TIME_SYMBOL}{An "E" symbol means the time is an estimate only}
+  \item{FLOW}{Contains the instantaneous discharge in cubic metres per second at the time the sample was taken}
+  \item{SYMBOL_EN}{Indicates a condition where the daily mean has a larger than expected error}
+  \item{SAMPLER_TYPE}{Contains the type of measurement device used to take the sample}
+  \item{SAMPLING_VERTICAL_LOCATION}{The location on the cross-section of the river 
+        at which the single sediment samples are collected. If one of the standard 
+        locations is not used the distance in meters will be shown}
+  \item{SAMPLING_VERTICAL_EN}{ndicates sample location relative to the 
+        regular measurement cross-section or the regular sampling site}
+  \item{TEMPERATURE}{Contains the instantaneous water temperature
+        in Celsius at the time the sample was taken}
+  \item{CONCENTRATION_EN}{Contains the instantaneous concentration sampled in milligrams per litre}
+  \item{SV_DEPTH2}{Depth 2 for split vertical depth integrating (m)}
+}}
 \source{
 HYDAT
 }
@@ -34,10 +54,8 @@ Provides wrapper to turn the hy_sed_samples table in HYDAT into a tidy data fram
 That is a large vector for \code{hy_sed_samples}.
 }
 \examples{
-\donttest{
-
+\dontrun{
 hy_sed_samples(station_number = "01CA004")
-
           }
 
 }

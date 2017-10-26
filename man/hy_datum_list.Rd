@@ -21,7 +21,7 @@ A tibble of DATUMS
 DATUM look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_datum_list()
 }
 

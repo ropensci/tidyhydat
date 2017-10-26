@@ -3,6 +3,17 @@
 \name{hy_stn_data_coll}
 \alias{hy_stn_data_coll}
 \title{hy_stn_data_coll function}
+\format{A tibble with 6 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{DATA_TYPE_EN}{The type of data}
+  \item{YEAR_FROM}{First year of use}
+  \item{YEAR_TO}{Last year of use}
+  \item{MEASUREMENT_CODE_EN}{Either 1) the sampling method used in the collection of 
+  sediment data or 2) the type of the gauge used in the collection of the hydrometric data}
+  \item{OPERATION_CODE_EN}{The schedule of station operation 
+  for the collection of sediment or hydrometric data}
+}}
 \source{
 HYDAT
 }
@@ -28,7 +39,7 @@ A tibble of hy_stn_data_coll
 hy_stn_data_coll look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_data_coll(station_number = c("02JE013","08MF005"))
 }
 

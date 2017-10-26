@@ -22,8 +22,20 @@
 #' @param prov_terr_state_loc Province, state or territory. If this argument is omitted from the function call, the value of \code{station_number}
 #' is returned.
 #'
-#' @return A tibble of water flow and level values. Time is return as UTC for consistency.
-#'
+#' @return A tibble of water flow and level values. 
+#' 
+#' @format A tibble with 8 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
+#'   \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
+#'   \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the 
+#'   units are metres.}
+#'   \item{Grade}{future use}
+#'   \item{Symbol}{future use}
+#'   \item{Code}{quality assurance/quality control flag for the discharge}
+#' }
 #'
 #' @examples
 #' ## Download from multiple provinces
@@ -193,14 +205,27 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
 #'   realtime_stations() for all stations.
 #'
 #' @family realtime functions
+#' 
+#' @format A tibble with 6 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{STATION_NAME}{Official name for station identification}
+#'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+#'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+#'   \item{TIMEZONE}{Timezone of the station}
+#' }
+#' 
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' ## Available inputs for prov_terr_state_loc argument:
 #' unique(realtime_stations()$prov_terr_state_loc)
 #'
 #' realtime_stations(prov_terr_state_loc = "BC")
 #' realtime_stations(prov_terr_state_loc = c("QC","PE"))
+#' }
 
 
 realtime_stations <- function(prov_terr_state_loc = NULL) {
@@ -237,7 +262,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   net_tibble
 }
 
-#' Request a token from the Environment and Climate Change Canada
+#' Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]
 #' @param username Supplied by ECCC
 #' @param password Supplied by ECCC
 #' Request a token from the ECCC web service using the POST method. This token expires after 10 minutes.
@@ -305,7 +330,20 @@ token_ws <- function(username, password) {
 #' @param end_date Need to be in YYYY-MM-DD. Defaults to current date.
 #' @param token generate by \code{token_ws()}
 #' 
-#' @return Time is returned as UTC for consistency.
+#' 
+#' @format A tibble with 6 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
+#'   \item{Name_En}{Code name in English}
+#'   \item{Value}{Value of the measurement.}
+#'   \item{Unit}{Value units}
+#'   \item{Grade}{future use}
+#'   \item{Symbol}{future use}
+#'   \item{Approval}{future use}
+#'   \item{Parameter}{Numeric parameter code}
+#'   \item{Code}{Letter parameter code}
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -450,8 +488,8 @@ realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41,
 #'
 #' @export
 #'
-#' @examples \donttest{
-#' #download_hydat()
+#' @examples \dontrun{
+#' download_hydat()
 #' }
 #'
 

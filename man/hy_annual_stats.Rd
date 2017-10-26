@@ -3,6 +3,18 @@
 \name{hy_annual_stats}
 \alias{hy_annual_stats}
 \title{Extract annual statistics information from the HYDAT database}
+\format{A tibble with 8 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
+  \item{Year}{Year of record.}
+  \item{Sum_stat}{Summary statistic being used.} 
+  \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the 
+  units are metres.}
+  \item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+  and therefore has an NA value for Date.}
+  \item{Symbol}{Measurement/river conditions}
+}}
 \source{
 HYDAT
 }
@@ -26,18 +38,14 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 \item{end_year}{Last year of the returned record}
 }
 \value{
-A tibble of hy_annual_stats
-\itemize{
- \item 1
- \item 2
- }
+A tibble of hy_annual_stats.
 }
 \description{
-Provides wrapper to turn the hy_annual_stats table in HYDAT into a tidy data frame. \code{station_number} and
+Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{station_number} and
   \code{prov_terr_state_loc} must both be supplied.
 }
 \examples{
-\donttest{
+\dontrun{
   ## Multiple stations province not specified
   hy_annual_stats(station_number = c("08NM083","05AE027"))
  

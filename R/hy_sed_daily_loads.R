@@ -20,11 +20,19 @@
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of daily suspended sediment loads (tonnes)
+#' @return A tibble of daily suspended sediment loads
+#'
+#' @format A tibble with 4 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{Date}{Observation date. Formatted as a Date class.}
+#'   \item{Parameter}{Parameter being measured. Only possible value is LOAD}
+#'   \item{Value}{Discharge value. The units are tonnes.}
+#' }
 #'
 #' @examples
-#' \donttest{
-#' hy_sed_daily_loads(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
+#' \dontrun{
+#' hy_sed_daily_loads(prov_terr_state_loc = "PE")
 #'           }
 #'
 #' @family HYDAT functions

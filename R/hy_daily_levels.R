@@ -19,14 +19,22 @@
 #' @inheritParams hy_daily_flows
 #'
 #' @return A tibble of daily levels
+#' 
+#' @format A tibble with 5 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{Date}{Observation date. Formatted as a Date class.}
+#'   \item{Parameter}{Parameter being measured. Only possible value is LEVEL}
+#'   \item{Value}{Level value. The units are metres.}
+#'   \item{Symbol}{Measurement/river conditions}
+#' }
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_daily_levels(station_number = c("02JE013","08MF005"), 
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
-#' hy_daily_levels(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
-#'
+#' hy_daily_levels(prov_terr_state_loc = "PE")
 #'           }
 #'
 #' @family HYDAT functions

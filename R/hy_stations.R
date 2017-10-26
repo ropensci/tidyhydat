@@ -25,8 +25,32 @@
 #'
 #' @return A tibble of stations and associated metadata
 #'
+#' @format A tibble with 15 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{STATION_NAME}{Official name for station identification}
+#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+#'   \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station. 
+#'   Links to \link[tidyhydat]{hy_reg_office_list}}
+#'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+#'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+#'   \item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
+#'   \item{DRAINAGE_AREA_EFFECT}{The portion of the drainage basin that contributes runoff to 
+#'   the gauge site, calculated by subtracting any noncontributing portion from the 
+#'   gross drainage area (km^2)}
+#'   \item{RHBN}{Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric 
+#'   Basin Network (RHBN) is a sub-set of the national network that has been identified 
+#'   for use in the detection, monitoring, and assessment of climate change.}
+#'   \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in 
+#'   real-time or near real-time}
+#'   \item{CONTRIBUTOR_ID}{Unique ID of an agency that contributes data to the 
+#'   HYDAT database. The agency is non-WSC and non WSC funded}
+#'   \item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
+#'   \item{DATUM_ID}{Unique ID for a datum}
+#' }
+#'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ## Multiple stations province not specified
 #' hy_stations(station_number = c("08NM083","08NE102"))
 #'
@@ -81,16 +105,8 @@ hy_stations <- function(station_number = NULL,
         SED_STATUS == "A" ~ "ACTIVE",
         TRUE ~ "NA"
       ),
-      RHBN = dplyr::case_when(
-        RHBN == "1" ~ "Yes",
-        RHBN == "0" ~ "No",
-        TRUE ~ "NA"
-      ),
-      REAL_TIME = dplyr::case_when(
-        REAL_TIME == "1" ~ "Yes",
-        REAL_TIME == "0" ~ "No",
-        TRUE ~ "NA"
-      )
+      RHBN = RHBN == 1,
+      REAL_TIME = REAL_TIME == 1
     )
 
   ## What stations were missed?

@@ -3,6 +3,15 @@
 \name{hy_stn_data_range}
 \alias{hy_stn_data_range}
 \title{hy_stn_data_range function}
+\format{A tibble with 6 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{DATA_TYPE}{Code for the type of data}
+  \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
+  \item{YEAR_FROM}{First year of use}
+  \item{YEAR_TO}{Last year of use}
+  \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
+}}
 \source{
 HYDAT
 }
@@ -28,7 +37,7 @@ A tibble of hy_stn_data_range
 hy_stn_data_range look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_data_range(station_number = c("02JE013","08MF005"))
 }
 

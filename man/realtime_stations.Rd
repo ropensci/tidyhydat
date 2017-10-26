@@ -3,6 +3,15 @@
 \name{realtime_stations}
 \alias{realtime_stations}
 \title{download a tibble of active realtime stations}
+\format{A tibble with 6 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{STATION_NAME}{Official name for station identification}
+  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+  \item{TIMEZONE}{Timezone of the station}
+}}
 \usage{
 realtime_stations(prov_terr_state_loc = NULL)
 }
@@ -15,11 +24,13 @@ An up to date dataframe of all stations in the Realtime Water Survey of Canada
   hydrometric network operated by Environment and Climate Change Canada
 }
 \examples{
+\dontrun{
 ## Available inputs for prov_terr_state_loc argument:
 unique(realtime_stations()$prov_terr_state_loc)
 
 realtime_stations(prov_terr_state_loc = "BC")
 realtime_stations(prov_terr_state_loc = c("QC","PE"))
+}
 }
 \seealso{
 Other realtime functions: \code{\link{realtime_dd}},

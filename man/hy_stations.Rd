@@ -3,6 +3,29 @@
 \name{hy_stations}
 \alias{hy_stations}
 \title{Extract station information from the HYDAT database}
+\format{A tibble with 15 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{STATION_NAME}{Official name for station identification}
+  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+  \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station. 
+  Links to \link[tidyhydat]{hy_reg_office_list}}
+  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+  \item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
+  \item{DRAINAGE_AREA_EFFECT}{The portion of the drainage basin that contributes runoff to 
+  the gauge site, calculated by subtracting any noncontributing portion from the 
+  gross drainage area (km^2)}
+  \item{RHBN}{Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric 
+  Basin Network (RHBN) is a sub-set of the national network that has been identified 
+  for use in the detection, monitoring, and assessment of climate change.}
+  \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in 
+  real-time or near real-time}
+  \item{CONTRIBUTOR_ID}{Unique ID of an agency that contributes data to the 
+  HYDAT database. The agency is non-WSC and non WSC funded}
+  \item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
+  \item{DATUM_ID}{Unique ID for a datum}
+}}
 \source{
 HYDAT
 }
@@ -29,7 +52,7 @@ Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame. 
 \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 }
 \examples{
-\donttest{
+\dontrun{
 ## Multiple stations province not specified
 hy_stations(station_number = c("08NM083","08NE102"))
 

@@ -8,6 +8,9 @@
         ## This is getting ridiculous
         c("STATION_NUMBER",
           "STATION_NAME",
+          "REAL_TIME",
+          "REGULATED",
+          "RHBN",
           "LATITUDE",
           "LONGITUDE",
           "PROV_TERR_STATE_LOC",

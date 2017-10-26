@@ -3,6 +3,13 @@
 \name{hy_stn_regulation}
 \alias{hy_stn_regulation}
 \title{Extract station regulation from the HYDAT database}
+\format{A tibble with 4 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{YEAR_FROM}{First year of use}
+  \item{YEAR_TO}{Last year of use}
+  \item{REGULATED}{logical}
+}}
 \source{
 HYDAT
 }
@@ -29,7 +36,7 @@ Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data f
 \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
 }
 \examples{
-\donttest{
+\dontrun{
 ## Multiple stations province not specified
 hy_stn_regulation(station_number = c("08NM083","08NE102"))
 

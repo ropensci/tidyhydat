@@ -18,13 +18,20 @@
 #'
 #' @inheritParams hy_daily_flows
 #'
-#' @return A tibble of daily suspended sediment concentration (mg/l)
+#' @return A tibble of daily suspended sediment concentration
+#'
+#' @format A tibble with 5 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{Date}{Observation date. Formatted as a Date class.}
+#'   \item{Parameter}{Parameter being measured. Only possible value is SUSCON}
+#'   \item{Value}{Discharge value. The units are mg/l.}
+#'   \item{Symbol}{Measurement/river conditions}
+#' }
 #'
 #' @examples
-#' \donttest{
-#'
+#' \dontrun{
 #' hy_sed_daily_suscon(station_number = "01CE003")
-#'
 #'           }
 #'
 #' @family HYDAT functions

@@ -21,6 +21,7 @@
 #' @param end_year Last year of the returned record
 #'
 #' @return A tibble of hy_annual_instant_peaks
+#' 
 #'
 #' @examples
 #' \dontrun{

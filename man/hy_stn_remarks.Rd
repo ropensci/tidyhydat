@@ -3,6 +3,13 @@
 \name{hy_stn_remarks}
 \alias{hy_stn_remarks}
 \title{hy_stn_remarks function}
+\format{A tibble with 4 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{REMARK_TYPE_EN}{Type of Remark}
+  \item{YEAR}{Year of the remark}
+  \item{REMARK_EN}{Remark}
+}}
 \usage{
 hy_stn_remarks(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL)
@@ -25,7 +32,7 @@ A tibble of hy_stn_remarks
 hy_stn_remarks look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_remarks(station_number = c("02JE013","08MF005"))
 }
 

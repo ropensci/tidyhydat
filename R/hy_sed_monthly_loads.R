@@ -20,14 +20,26 @@
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of monthly sediment loads. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
-#'   TOTAL this is not presented as those are not daily values.
+#' @return A tibble of monthly sediment loads. 
+#'   
+#' @format A tibble with 8 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{YEAR}{Year of record.}
+#'   \item{MONTH}{Numeric month value}
+#'   \item{FULL_MONTH}{Logical value is there is full record from MONTH}
+#'   \item{NO_DAYS}{Number of days in that month}
+#'   \item{Sum_stat}{Summary statistic being used.} 
+#'   \item{Value}{Value of the measurement in tonnes.}
+#'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+#'   and therefore has an NA value for Date.}
+#' }
 #'
 #' @examples
-#' \donttest{
-#'
-#' hy_sed_daily_suscon(station_number = "01CE003")
+#' \dontrun{
+#' hy_sed_monthly_loads(station_number = "01CE003")
 #'           }
+#'           
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
@@ -37,6 +49,16 @@
 hy_sed_monthly_loads <- function(station_number = NULL,
                               hydat_path = NULL, 
                               prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
+  
+  if(is.null(hydat_path)){
+    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+  }
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+  }
+  
   if (!is.null(station_number) && station_number == "ALL") {
     stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_sed_monthly_loads for examples.")
   }

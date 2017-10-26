@@ -3,6 +3,14 @@
 \name{hy_stn_datum_conv}
 \alias{hy_stn_datum_conv}
 \title{hy_stn_datum_conv function}
+\format{A tibble with 4 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{DATUM_EN_FROM}{Identifying a datum from which water level is being converted}
+  \item{DATUM_EN_TO}{Identifying a datum to which water level is being converted}
+  \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to 
+  one datum to obtain water levels referred to another datum}
+}}
 \usage{
 hy_stn_datum_conv(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL)
@@ -25,7 +33,7 @@ A tibble of hy_stn_datum_conv
 hy_stn_datum_conv look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_datum_conv(station_number = c("02JE013","08MF005"))
 }
 }

@@ -3,6 +3,14 @@
 \name{hy_sed_daily_suscon}
 \alias{hy_sed_daily_suscon}
 \title{Extract daily suspended sediment concentration information from the HYDAT database}
+\format{A tibble with 5 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{Date}{Observation date. Formatted as a Date class.}
+  \item{Parameter}{Parameter being measured. Only possible value is SUSCON}
+  \item{Value}{Discharge value. The units are mg/l.}
+  \item{Symbol}{Measurement/river conditions}
+}}
 \source{
 HYDAT
 }
@@ -30,7 +38,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 value is \code{code}.}
 }
 \value{
-A tibble of daily suspended sediment concentration (mg/l)
+A tibble of daily suspended sediment concentration
 }
 \description{
 Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data frame.  \code{station_number} and
@@ -38,10 +46,8 @@ Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data
 That is a large vector for \code{hy_sed_daily_suscon}.
 }
 \examples{
-\donttest{
-
+\dontrun{
 hy_sed_daily_suscon(station_number = "01CE003")
-
           }
 
 }

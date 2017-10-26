@@ -3,6 +3,13 @@
 \name{hy_stn_datum_unrelated}
 \alias{hy_stn_datum_unrelated}
 \title{hy_stn_datum_unrelated function}
+\format{A tibble with 4 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{DATUM_ID}{Unique code identifying a datum}
+  \item{YEAR_FROM}{First year of use}
+  \item{YEAR_TO}{Last year of use}
+}}
 \usage{
 hy_stn_datum_unrelated(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL)
@@ -25,7 +32,7 @@ A tibble of hy_stn_datum_unrelated
 hy_stn_datum_unrelated look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_stn_datum_unrelated()
 }
 

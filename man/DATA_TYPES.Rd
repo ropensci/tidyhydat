@@ -4,7 +4,12 @@
 \name{data_types}
 \alias{data_types}
 \title{DATA TYPES look-up table}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 3 columns.}
+\format{A tibble with 5 rows and 3 variables:
+\describe{
+  \item{DATA_TYPE}{Data type code}
+  \item{DATA_TYPE_EN}{Descriptive data type (English)}
+  \item{DATA_TYPE_FR}{Descriptive data type (French)}
+}}
 \source{
 HYDAT
 }

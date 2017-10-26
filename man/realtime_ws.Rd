@@ -3,6 +3,19 @@
 \name{realtime_ws}
 \alias{realtime_ws}
 \title{Download realtime data from the ECCC web service}
+\format{A tibble with 6 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
+  \item{Name_En}{Code name in English}
+  \item{Value}{Value of the measurement.}
+  \item{Unit}{Value units}
+  \item{Grade}{future use}
+  \item{Symbol}{future use}
+  \item{Approval}{future use}
+  \item{Parameter}{Numeric parameter code}
+  \item{Code}{Letter parameter code}
+}}
 \usage{
 realtime_ws(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
   start_date = Sys.Date() - 30, end_date = Sys.Date(), token)
@@ -17,9 +30,6 @@ realtime_ws(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41, 18),
 \item{end_date}{Need to be in YYYY-MM-DD. Defaults to current date.}
 
 \item{token}{generate by \code{token_ws()}}
-}
-\value{
-Time is returned as UTC for consistency.
 }
 \description{
 Function to actually retrieve data from ECCC web service. Before using this function,

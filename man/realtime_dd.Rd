@@ -3,6 +3,18 @@
 \name{realtime_dd}
 \alias{realtime_dd}
 \title{Download a tibble of realtime discharge data from the MSC datamart}
+\format{A tibble with 8 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+  \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
+  \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
+  \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the 
+  units are metres.}
+  \item{Grade}{future use}
+  \item{Symbol}{future use}
+  \item{Code}{quality assurance/quality control flag for the discharge}
+}}
 \usage{
 realtime_dd(station_number = NULL, prov_terr_state_loc)
 }
@@ -14,7 +26,7 @@ is returned.}
 is returned.}
 }
 \value{
-A tibble of water flow and level values. Time is return as UTC for consistency.
+A tibble of water flow and level values.
 }
 \description{
 Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize

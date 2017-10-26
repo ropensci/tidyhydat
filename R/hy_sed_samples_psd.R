@@ -21,10 +21,19 @@
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
 #' @return A tibble of sediment sample particle size data
+#' 
+#' @format A tibble with 5 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{SED_DATA_TYPE_EN}{Contains the type of sampling method used in collecting sediment for a station}
+#'   \item{DATE}{Contains the time to the nearest minute of when the sample was taken}
+#'   \item{PARTICLE_SIZE}{Particle size (mm)}
+#'   \item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
+#' }
+#'
 #'
 #' @examples
-#' \donttest{
-#'
+#' \dontrun{
 #' hy_sed_samples_psd(station_number = "01CA004")
 #'           }
 #'

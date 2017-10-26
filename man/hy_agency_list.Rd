@@ -21,7 +21,7 @@ A tibble of agencies
 AGENCY look-up Table
 }
 \examples{
-\donttest{
+\dontrun{
 hy_agency_list()
 }
 

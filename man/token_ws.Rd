@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{token_ws}
 \alias{token_ws}
-\title{Request a token from the Environment and Climate Change Canada}
+\title{Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]}
 \usage{
 token_ws(username, password)
 }
@@ -17,7 +17,7 @@ You can only have 5 tokens out at once.}
 The token as a string that should be supplied the \code{download_ws_realtime} function.
 }
 \description{
-Request a token from the Environment and Climate Change Canada
+Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]
 }
 \details{
 The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.

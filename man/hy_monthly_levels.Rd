@@ -3,6 +3,18 @@
 \name{hy_monthly_levels}
 \alias{hy_monthly_levels}
 \title{Extract monthly levels information from the HYDAT database}
+\format{A tibble with 8 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{YEAR}{Year of record.}
+  \item{MONTH}{Numeric month value}
+  \item{FULL_MONTH}{Logical value is there is full record from MONTH}
+  \item{NO_DAYS}{Number of days in that month}
+  \item{Sum_stat}{Summary statistic being used.} 
+  \item{Value}{Value of the measurement in metres.}
+  \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+  and therefore has an NA value for Date.}
+}}
 \source{
 HYDAT
 }
@@ -26,8 +38,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 \item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 }
 \value{
-A tibble of monthly levels. This includes a \code{Date_occured} column which indicates the date of the \code{Sum_stat}. For MEAN and 
-  TOTAL this is not presented as those are not daily values.
+A tibble of monthly levels.
 }
 \description{
 Provides wrapper to turn the hy_monthly_levels table in HYDAT into a tidy data frame.  \code{station_number} and
@@ -35,11 +46,11 @@ Provides wrapper to turn the hy_monthly_levels table in HYDAT into a tidy data f
   That is a large vector for \code{hy_monthly_levels}.
 }
 \examples{
-\donttest{
+\dontrun{
 hy_monthly_levels(station_number = c("02JE013","08MF005"), 
   start_date = "1996-01-01", end_date = "2000-01-01")
 
-hy_monthly_levels(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
+hy_monthly_levels(prov_terr_state_loc = "PE")
           }
 }
 \seealso{

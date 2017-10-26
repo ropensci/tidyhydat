@@ -4,7 +4,14 @@
 \name{param_id}
 \alias{param_id}
 \title{Parameter ID}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 8 rows and 7 columns.}
+\format{A tibble with 8 rows and 7 variables:
+\describe{
+  \item{Parameter}{Numeric parameter code}
+  \item{Code}{Letter parameter code}
+  \item{Name_En}{Code name in English}
+  \item{Name_En}{Code name in French}
+  \item{Unit}{Parameter units}
+}}
 \source{
 \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometric_additionalData/Document/WebService_Guidelines.pdf}
 }

@@ -15,8 +15,8 @@ The function will check for a existing sqlite file and won't download the file i
 \code{download_hydat} also looks to see if you have the hydat environmental variable set.
 }
 \examples{
-\donttest{
-#download_hydat()
+\dontrun{
+download_hydat()
 }
 
 }

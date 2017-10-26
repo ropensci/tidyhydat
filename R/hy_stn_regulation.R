@@ -20,9 +20,17 @@
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of stations, years of regulation and the regulation status
+#' 
+#' @format A tibble with 4 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{YEAR_FROM}{First year of use}
+#'   \item{YEAR_TO}{Last year of use}
+#'   \item{REGULATED}{logical}
+#' }
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ## Multiple stations province not specified
 #' hy_stn_regulation(station_number = c("08NM083","08NE102"))
 #'
@@ -61,11 +69,7 @@ hy_stn_regulation <- function(station_number = NULL,
   dplyr::tbl(hydat_con, "STN_REGULATION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
-    dplyr::mutate(
-      REGULATED = dplyr::case_when(
-        REGULATED == 0 ~ "Natural",
-        REGULATED == 1 ~ "Regulated"
-      )
-    )
+    dplyr::mutate(REGULATED = REGULATED == 1)
+
 
 }

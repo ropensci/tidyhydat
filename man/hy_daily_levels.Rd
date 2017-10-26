@@ -3,6 +3,14 @@
 \name{hy_daily_levels}
 \alias{hy_daily_levels}
 \title{Extract daily levels information from the HYDAT database}
+\format{A tibble with 5 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{Date}{Observation date. Formatted as a Date class.}
+  \item{Parameter}{Parameter being measured. Only possible value is LEVEL}
+  \item{Value}{Level value. The units are metres.}
+  \item{Symbol}{Measurement/river conditions}
+}}
 \source{
 HYDAT
 }
@@ -38,12 +46,11 @@ Provides wrapper to turn the hy_daily_levels table in HYDAT into a tidy data fra
 That is a large vector for \code{hy_daily_levels}.
 }
 \examples{
-\donttest{
+\dontrun{
 hy_daily_levels(station_number = c("02JE013","08MF005"), 
   start_date = "1996-01-01", end_date = "2000-01-01")
 
-hy_daily_levels(prov_terr_state_loc = "PE", hydat_path = "H:/Hydat.sqlite3")
-
+hy_daily_levels(prov_terr_state_loc = "PE")
           }
 
 }

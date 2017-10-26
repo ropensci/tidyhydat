@@ -61,7 +61,7 @@ search_stn_number <- function(search_term) {
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_agency_list()
 #'}
 #'
@@ -99,7 +99,7 @@ hy_agency_list <- function(hydat_path = NULL) {
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_reg_office_list()
 #'}
 #'
@@ -139,7 +139,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
 #' @family HYDAT functions
 #' @source HYDAT
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_datum_list()
 #'}
 #'
@@ -173,13 +173,13 @@ hy_datum_list <- function(hydat_path = NULL) {
 #'
 #' @inheritParams hy_agency_list
 #'
-#' @return version number
+#' @return version number and release date
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' hy_version()
 #'}
 #'
