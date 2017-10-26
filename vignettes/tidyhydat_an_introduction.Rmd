@@ -1,5 +1,5 @@
 ---
-title: "tidyhydat"
+title: "tidyhydat: An Introduction"
 author: "Sam Albers"
 date: "`r Sys.Date()`"
 #output:
@@ -18,11 +18,10 @@ vignette: >
 @wickham2014tidy
 
 ```{r options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, messages = FALSE, fig.width = 8, fig.height = 12)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 8, fig.height = 12)
 ```
 
 ```{r packages, warning=FALSE, message=FALSE, echo = FALSE}
-library(tidyverse)
 library(tidyhydat)
 library(dbplyr)
 ```

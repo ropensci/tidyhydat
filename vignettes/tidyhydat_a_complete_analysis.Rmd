@@ -1,0 +1,90 @@
+---
+title: "A full hydrological analysis with tidyhydat"
+author: "Sam Albers"
+date: "`r Sys.Date()`"
+output:
+  html_vignette:
+     keep_md: true
+vignette: >
+  %\VignetteIndexEntry{tidyhydat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Introduction
+
+The real power of tidyhydat comes with its ability to efficient import data into R which then can be used in conjunction with R's vast array of packages. `tidyhydat` gets hydrometric data into R and allows the user to start conducting data analysis immediately. This vignette is designed to take a user through a complete hydrological analysis and will therefore use additional tools beyond simply the command in tidyhdyat. This vignette assume familiarity with the following packages:
+
+```{r pck_load}
+library(tidyhydat)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(corrr)
+library(igraph)
+library(ggraph)
+library(ggmap)
+library(viridis)
+```
+
+## tidyhydat getting the data
+```{r getdata}
+## Let's try a watershed approach
+daily_flows_boxed <- hy_stations() %>%
+  mutate(WSCSSDA = substr(STATION_NUMBER, 1,4)) %>%
+  filter(WSCSSDA %in% c("08HA","08HB", "08NM","08NN", "08ME","08MG")) %>%
+  filter(HYD_STATUS == "ACTIVE") %>%
+  pull(STATION_NUMBER) %>%
+  hy_daily_flows()
+```
+
+## Conduct the correlation
+```{r correlation}
+cor_df <- daily_flows_boxed %>%
+  spread(STATION_NUMBER, Value) %>%
+  select(-Date, -Symbol, -Parameter) %>%
+  nest() %>%
+  mutate(data = map(data, purrr::compose(stretch, correlate))) %>% 
+  unnest() %>%
+  filter(!is.na(r))
+```
+
+## igraph munging
+```{r igraph_mung}
+## Convert to an igraph object for plotting
+graph_correlation <- cor_df  %>%
+  filter(abs(r) > .6) %>%
+  graph_from_data_frame(directed = FALSE)
+
+## Get the lat long data
+latlong <- hy_stations(station_number = unique(daily_flows_boxed$STATION_NUMBER)) 
+
+## Needs to go out the same length as graph_cors hence max(V())
+num_out <- length(V(graph_correlation))
+
+## Get the same number of lat long coordinates as vertices
+latlong_layout_ggmap <-  data.frame(x = rep(latlong$LONGITUDE, length.out = num_out),
+                                    y = rep(latlong$LATITUDE, length.out = num_out)) %>%
+  as.data.frame() 
+
+spatial_layout_ggmap <- create_layout(graph = graph_correlation,
+                                      layout = "manual", node.positions = latlong_layout_ggmap)
+```
+
+## Create plot
+```{r plt, fig.width=10, fig.height=10}
+map <- get_map(location = c(lon = mean(latlong_layout_ggmap$x), lat = mean(latlong_layout_ggmap$y)),
+               source = "google", maptype = 'satellite', zoom = 7)
+
+ggmap(map, base_layer = ggraph(spatial_layout_ggmap) ) +
+  geom_edge_link(aes(edge_alpha = abs(r), color = r), edge_width = 2) +
+  guides(edge_alpha = "none") +
+  scale_edge_colour_viridis() +
+  geom_node_point(color = "white", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_minimal()
+```
