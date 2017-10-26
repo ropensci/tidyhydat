@@ -96,8 +96,6 @@ Similarly, `search_stn_number()` can be useful if you are interested in all stat
 ```{r, echo=TRUE}
 search_stn_number("08MF")
 ```
-  
-  
 
 
 ## Getting Help or Reporting an Issue

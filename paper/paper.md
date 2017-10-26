@@ -9,7 +9,9 @@
 
 
 # Introduction
-Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). Real-time data are provided by ECCC through two sources: a web service and a datamart. The web service is a login only service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is more like 2.5 hours. The [datamart](http://dd.weather.gc.ca/hydrometric/) is an open data source and is organized in a directory tree structure by province. The objective of this document is the outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these data sources and *tidies* them. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
+Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canada national water data archive, plublished quarterly by the Government of Canada's Department of Environment and Climate Change. It is relational database that contains daily, monthly and annual data on water flow, water levels and sediment data.
+
+Real-time data are provided by ECCC through two sources: a web service and a datamart. The web service is a login only service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is more like 2.5 hours. The [datamart](http://dd.weather.gc.ca/hydrometric/) is an open data source and is organized in a directory tree structure by province. The objective of this document is the outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these data sources and *tidies* them. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
 
 ## Why use R in hydrology?
 There are many statistical computing projects that offer great functionality for users. For `tidyhydat` I have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. For hydrologists consdering data analysis tools there are several commonly cited reasons to use R:
@@ -73,8 +75,7 @@ This data structure clearly violates the principles of tidy data - this is messy
 
 ```r
 library(tidyhydat)
-DLY_FLOWS(hydat_path = "H:/Hydat.sqlite3",
-          STATION_NUMBER = "08MF005",
+hy_daily_flows(station_number = "08MF005",
           start_date = "1992-03-15",
           end_date = "1992-04-15")
 ```
