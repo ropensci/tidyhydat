@@ -4,25 +4,27 @@ tidyhydat 0.3.0 ()
 ### NEW FEATURES
 
   * New NEWS template!
+  * Moved `station_number` to first argument to facilitate piped analysis (bcgov/tidyhydat#54)
+  * `search_stn_name` and `search_stn_number` now query both realtime and historical data sources and have tests for a more complete list (bcgov/tidyhydat#56)
 
 ### MINOR IMPROVEMENTS
   * Significant function and argument name changes (see below)
   * Adding `rappdirs` to imports and using to generate download path for `download_hydat()` (bcgov/tidyhydat#44)
   * Adding `rappdirs` so that all the hy_* functions access hydat from `rappdirs::user_data_dir()` (bcgov/tidyhydat#44)
-  * Moved `station_number` to first argument to facilitate piped analysis (bcgov/tidyhydat#54)
-  * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
   * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
-  * All download tests are skipped on cran (bcgov/tidyhydat#53)
+  * All download tests are skipped on cran (bcgov/tidyhydat#53)  
   * Removed time limit for `download_realtime_ws()` with some documentation on actual limits. [(3234c22)](https://github.com/bcgov/tidyhydat/commit/3234c2246c97fed5860e8dfb9adc3d6f0aa503fe)
-  * `search_stn_name` and `search_stn_number` now query both realtime and historical data sources andh aves tests for a more complete list (bcgov/tidyhydat#56)
+
 
 ### BUG FIXES
 
-  * Fixed `SED_MONTHLY_LOADS` (bcgov/tidyhydat#51)
+  * Add informative error message for a single missing station input (bcgov/tidyhydat#38)
   * Fixed failing behaviour of `get_ws_token` (bcgov/tidyhydat#43)
-  * No longer trying to build .Rd file for `.onload` (bcgov/tidyhydat#47)
   * Fixed httr:content parsing error in `download_realtime_ws`. (bcgov/tidyhydat#42)
+  * No longer trying to build .Rd file for `.onload` (bcgov/tidyhydat#47)
+  * Fixed `SED_MONTHLY_LOADS` (bcgov/tidyhydat#51)
   * Wrapped download_realtime_ws examples in dontrun (bcgov/tidyhydat#52)
+  
 
 ### FUNCTION NAME CHANGES (bcgov/tidyhydat#45)
   * hy_agency_list <- AGENCY_LIST
