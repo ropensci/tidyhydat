@@ -12,9 +12,9 @@
 
 #' @title Extract daily flows information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the hy_daily_flows table in HYDAT into a tidy data frame.  \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#' That is a large vector for \code{hy_daily_flows}.
+#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame of daily flows. 
+#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all 
+#' values from the \code{hy_stations} table are returned. That is a large tibble for \code{hy_daily_flows}.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.

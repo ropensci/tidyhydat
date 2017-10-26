@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' Download a tibble of realtime discharge data from the MSC datamart
+#' Download a tibble of realtime discharge data from the Meteorological Service of Canada datamart
 #'
 #' Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize
 #' downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution
@@ -196,7 +196,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
 }
 
 
-#' download a tibble of active realtime stations
+#' Download a tibble of active realtime stations
 #'
 #' An up to date dataframe of all stations in the Realtime Water Survey of Canada 
 #'   hydrometric network operated by Environment and Climate Change Canada
@@ -324,6 +324,7 @@ token_ws <- function(username, password) {
 #' queried depends on other parameters being requested. If one station is requested, 18 
 #' months of data can be requested. If you continually receiving errors when invoking this
 #' function, reduce the number of observations (via station_number, parameters or dates) being requested. 
+#' 
 #' @param station_number Water Survey of Canada station number.
 #' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id} for options. Defaults to all parameters.
 #' @param start_date Need to be in YYYY-MM-DD. Defaults to 30 days before current date. 
@@ -478,13 +479,14 @@ realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41,
   ## Need to output a warning to see if any stations weren't retrieved
 }
 
-#' A function to download hydat
+#' Download and set the path to HYDAT
 #'
-#' Download the hydat sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
+#' Download the HYDAT sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
 #' The function will check for a existing sqlite file and won't download the file if the same version is already present. 
-#' \code{download_hydat} also looks to see if you have the hydat environmental variable set.
+#' \code{download_hydat} also looks to see if you have the HYDAT environmental variable set.
 #'
-#' @param dl_hydat_here Directory to the hydat database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. This path is also supplied automatically to any function that uses the hydat database. A user specified path can be set though this is not the advised approach. 
+#' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. 
+#' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
 #'
 #' @export
 #'

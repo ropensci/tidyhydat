@@ -12,9 +12,9 @@
 
 #' Extract daily sediment load information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_sed_daily_loads table in HYDAT into a tidy data frame.  \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#' That is a large vector for \code{hy_sed_daily_loads}.
+#' Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame of daily sediment load information.
+#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the 
+#' \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_daily_loads}.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.

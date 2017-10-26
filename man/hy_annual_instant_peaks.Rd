@@ -29,8 +29,8 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of hy_annual_instant_peaks
 }
 \description{
-Provides wrapper to turn the hy_annual_instant_peaks table in HYDAT into a tidy data frame. \code{station_number} and
-\code{prov_terr_state_loc} can both be supplied.
+Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels. 
+\code{station_number} and \code{prov_terr_state_loc} can both be supplied.
 }
 \examples{
 \dontrun{

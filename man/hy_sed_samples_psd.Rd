@@ -2,7 +2,7 @@
 % Please edit documentation in R/hy_sed_samples_psd.R
 \name{hy_sed_samples_psd}
 \alias{hy_sed_samples_psd}
-\title{Extract instantaneous sediment sample information from the HYDAT database}
+\title{Extract instantaneous sediment sample particle size distribution information from the HYDAT database}
 \format{A tibble with 5 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
@@ -37,9 +37,9 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of sediment sample particle size data
 }
 \description{
-Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame.  \code{station_number} and
-\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-That is a large vector for \code{hy_sed_samples_psd}.
+Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame of instantaneous sediment sample 
+particle size distribution.  \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both 
+are omitted all values from the \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_samples_psd}.
 }
 \examples{
 \dontrun{

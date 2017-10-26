@@ -12,9 +12,9 @@
 
 #' @title Extract daily levels information from the HYDAT database
 #'
-#' @description Provides wrapper to turn the hy_daily_levels table in HYDAT into a tidy data frame.  \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#' That is a large vector for \code{hy_daily_levels}.
+#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame.  The primary value returned by this 
+#' function is discharge. \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all 
+#' values from the \code{hy_stations} table are returned. That is a large vector for \code{hy_daily_levels}.
 #'
 #' @inheritParams hy_daily_flows
 #'

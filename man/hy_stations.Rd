@@ -48,8 +48,10 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of stations and associated metadata
 }
 \description{
-Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame. \code{station_number} and
-\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
+Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame of station information. \code{station_number} and
+\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned. This
+is the entry point for most analyses is tidyhydat as establish the stations for consideration is likely the first step in many
+instances.
 }
 \examples{
 \dontrun{

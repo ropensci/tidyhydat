@@ -14,8 +14,10 @@
 
 #' Extract station information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame. \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned
+#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame of station information. \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned. This
+#' is the entry point for most analyses is tidyhydat as establish the stations for consideration is likely the first step in many
+#' instances. 
 #'
 #' @inheritParams hy_agency_list
 #' @param station_number A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}

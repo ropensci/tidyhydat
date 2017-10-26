@@ -10,11 +10,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Extract instantaneous sediment sample information from the HYDAT database
+#' Extract instantaneous sediment sample particle size distribution information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame.  \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#' That is a large vector for \code{hy_sed_samples_psd}.
+#' Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame of instantaneous sediment sample 
+#' particle size distribution.  \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both 
+#' are omitted all values from the \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_samples_psd}.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.

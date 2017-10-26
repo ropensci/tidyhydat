@@ -41,8 +41,8 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of hy_annual_stats.
 }
 \description{
-Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{station_number} and
-  \code{prov_terr_state_loc} must both be supplied.
+Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame of annual statistics. 
+Statistics provided include MEAN, MAX and MIN on an annual basis.
 }
 \examples{
 \dontrun{

@@ -12,9 +12,9 @@
 
 #' Extract monthly flows information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_monthly_flows table in HYDAT into a tidy data frame.  \code{station_number} and
-#'   \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#'   That is a large vector for \code{hy_monthly_flows}.
+#' Tidy data of monthly flows information from the DLY_FLOWS HYDAT table. \code{station_number} and
+#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+#' That is a large vector for \code{hy_monthly_flows}.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.

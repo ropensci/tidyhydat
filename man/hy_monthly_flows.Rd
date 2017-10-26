@@ -41,9 +41,9 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of monthly flows.
 }
 \description{
-Provides wrapper to turn the hy_monthly_flows table in HYDAT into a tidy data frame.  \code{station_number} and
-  \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-  That is a large vector for \code{hy_monthly_flows}.
+Tidy data of monthly flows information from the DLY_FLOWS HYDAT table. \code{station_number} and
+\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+That is a large vector for \code{hy_monthly_flows}.
 }
 \examples{
 \dontrun{

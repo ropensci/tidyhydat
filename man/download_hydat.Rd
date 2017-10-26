@@ -2,17 +2,18 @@
 % Please edit documentation in R/download.R
 \name{download_hydat}
 \alias{download_hydat}
-\title{A function to download hydat}
+\title{Download and set the path to HYDAT}
 \usage{
 download_hydat(dl_hydat_here = rappdirs::user_data_dir())
 }
 \arguments{
-\item{dl_hydat_here}{Directory to the hydat database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. This path is also supplied automatically to any function that uses the hydat database. A user specified path can be set though this is not the advised approach.}
+\item{dl_hydat_here}{Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. 
+This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach.}
 }
 \description{
-Download the hydat sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
+Download the HYDAT sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
 The function will check for a existing sqlite file and won't download the file if the same version is already present. 
-\code{download_hydat} also looks to see if you have the hydat environmental variable set.
+\code{download_hydat} also looks to see if you have the HYDAT environmental variable set.
 }
 \examples{
 \dontrun{

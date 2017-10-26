@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{realtime_stations}
 \alias{realtime_stations}
-\title{download a tibble of active realtime stations}
+\title{Download a tibble of active realtime stations}
 \format{A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}

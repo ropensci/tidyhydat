@@ -13,8 +13,8 @@
 
 #' Extract annual statistics information from the HYDAT database
 #'
-#' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame. \code{station_number} and
-#'   \code{prov_terr_state_loc} must both be supplied. 
+#' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame of annual statistics. 
+#' Statistics provided include MEAN, MAX and MIN on an annual basis. 
 #'
 #' @inheritParams hy_stations
 #' @param start_year First year of the returned record

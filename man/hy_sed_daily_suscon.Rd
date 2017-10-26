@@ -41,9 +41,9 @@ value is \code{code}.}
 A tibble of daily suspended sediment concentration
 }
 \description{
-Provides wrapper to turn the hy_sed_daily_suscon table in HYDAT into a tidy data frame.  \code{station_number} and
-\code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-That is a large vector for \code{hy_sed_daily_suscon}.
+Provides wrapper to turn the SED_DLY_SUSCON table in HYDAT into a tidy data frame of daily suspended sediment concentration information.
+\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} 
+table are returned. That is a large vector for \code{hy_sed_daily_suscon}.
 }
 \examples{
 \dontrun{

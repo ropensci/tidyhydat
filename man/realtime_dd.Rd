@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{realtime_dd}
 \alias{realtime_dd}
-\title{Download a tibble of realtime discharge data from the MSC datamart}
+\title{Download a tibble of realtime discharge data from the Meteorological Service of Canada datamart}
 \format{A tibble with 8 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
