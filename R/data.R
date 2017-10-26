@@ -21,8 +21,9 @@
 "param_id"
 
 
-#'
-#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-07-18.
+#' All Canadian Station 
+#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-10-26. Populated by both 
+#' realtime and historical data from HYDAT. 
 #'
 #' @source HYDAT
 "allstations"
