@@ -24,13 +24,13 @@ context("Testing realtime functions")
    skip_on_cran()
    expect_identical(
      colnames(realtime_dd(station_number = "08MF005", prov_terr_state_loc = "BC")),
-     c("STATION_NUMBER", "prov_terr_state_loc", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
+     c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", "Value", "Grade", "Symbol", "Code")
   )
 })
 
 test_that("realtime_dd can download stations from multiple provinces using prov_terr_state_loc", {
   skip_on_cran()
-  realtime_dd(prov_terr_state_loc = c("QC", "PE"))
+  expect_silent(realtime_dd(prov_terr_state_loc = c("QC", "PE")))
 })
 
 

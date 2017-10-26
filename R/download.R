@@ -46,7 +46,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
     stns <- station_number
     choose_df <- realtime_stations()
     choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
-    choose_df <- dplyr::select(choose_df, STATION_NUMBER, prov_terr_state_loc)
+    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
   }
 
   if (is.null(station_number)) {
