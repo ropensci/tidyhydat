@@ -7,6 +7,9 @@
         # Vars used in Non-Standard Evaluations, declare here to avoid CRAN warnings
         ## This is getting ridiculous
         c("STATION_NUMBER",
+          "STATION_NAME",
+          "LATITUDE",
+          "LONGITUDE",
           "PROV_TERR_STATE_LOC",
           "FULL_MONTH",
           "MAX",

@@ -14,6 +14,7 @@ tidyhydat 0.3.0 ()
   * `FULL MONTH` evaluate to a logic (bcgov/tidyhydat#51)
   * All download tests are skipped on cran (bcgov/tidyhydat#53)
   * Removed time limit for `download_realtime_ws()` with some documentation on actual limits. [(3234c22)](https://github.com/bcgov/tidyhydat/commit/3234c2246c97fed5860e8dfb9adc3d6f0aa503fe)
+  * `search_stn_name` and `search_stn_number` now query both realtime and historical data sources andh aves tests for a more complete list (bcgov/tidyhydat#56)
 
 ### BUG FIXES
 

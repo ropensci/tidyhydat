@@ -15,8 +15,13 @@
 
 search_stn_name <- function(search_term) {
   
-  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NAME), ]
-
+  results <- realtime_stations() %>%
+    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+  
+  results <- results[grepl(toupper(search_term), results$STATION_NAME), ]
+  
   if (nrow(results) == 0) {
     message("No station names match this criteria!")
   } else {
@@ -28,7 +33,13 @@ search_stn_name <- function(search_term) {
 #' @export
 #' 
 search_stn_number <- function(search_term) {
-  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$station_number), ]
+  
+  results <- realtime_stations() %>%
+    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+  
+  results <- results[grepl(toupper(search_term), results$STATION_NUMBER), ]
   
   if (nrow(results) == 0) {
     message("No station number match this criteria!")
