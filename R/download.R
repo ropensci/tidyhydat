@@ -421,7 +421,7 @@ realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41,
   csv_df <- dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit, Grade, Symbol, Approval, Parameter, Code)
 
   ## What stations were missed?
-  differ <- setdiff(unique(STATION_NUMBER), unique(csv_df$STATION_NUMBER))
+  differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
   if (length(differ) != 0) {
     if (length(differ) <= 10) {
       message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
