@@ -4,5 +4,8 @@ language: R
 sudo: false
 cache: packages
 
+apt_packages:
+  - libudunits2-dev
+
 r_build_args: "--no-build-vignettes"
 r_check_args: "--no-build-vignettes --as-cran --no-examples"
