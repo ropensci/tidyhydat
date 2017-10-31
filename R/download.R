@@ -263,15 +263,15 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 }
 
 #' Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]
-#' @param username Supplied by ECCC
-#' @param password Supplied by ECCC
+#' @param username Supplied by ECCC. Defaults to NULL which will use WS_USRNM from .Renviron file
+#' @param password Supplied by ECCC. Defaults to NULL which will use WS_PWD from .Renviron file
 #' Request a token from the ECCC web service using the POST method. This token expires after 10 minutes.
 #' You can only have 5 tokens out at once.
 #'
 #' @details The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.
 #' Rather these credentials should be stored in your \code{.Renviron} file. The .Renviron file can edited using \code{file.edit("~/.Renviron")}.
-#' In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables
-#' and then call those environmental variables in your R session. See \code{?download_ws} for examples.
+#' In that file, which is only stored locally and is only available to you, you can assign your \code{username} to WS_USRNM and \code{password} 
+#' to WS_PWD and then simply issue \code{token_ws}. See \code{?download_ws} for examples.
 #'
 #' @return The token as a string that should be supplied the \code{download_ws_realtime} function. 
 #' 
@@ -281,7 +281,13 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #'
 
 
-token_ws <- function(username, password) {
+token_ws <- function(username = NULL, password = NULL) {
+  
+  if(is.null(username) | is.null(password)){
+    username <- Sys.getenv("WS_USRNM")
+    password <- Sys.getenv("WS_PWD")
+  }
+  
   login <- list(
     username = username,
     password = password
@@ -348,7 +354,7 @@ token_ws <- function(username, password) {
 #'
 #' @examples
 #' \dontrun{
-#' token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+#' token_out <- token_ws()
 #'
 #' ws_08 <- realtime_ws(station_number = c("08NL071","08NM174"),
 #'                          parameters = c(47, 5),

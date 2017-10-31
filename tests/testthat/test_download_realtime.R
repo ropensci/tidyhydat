@@ -3,7 +3,7 @@ context("Testing realtime functions")
  test_that("realtime_ws returns the correct data header", {
   skip_on_cran()
   skip_on_travis()
-  token_out = token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+  token_out <- token_ws()
 
   ws_test <- realtime_ws(station_number = "08MF005",
                                parameters = c(46),  ## Water level and temperature
