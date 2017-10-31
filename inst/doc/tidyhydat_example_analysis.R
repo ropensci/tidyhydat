@@ -53,7 +53,6 @@ longest_record_data %>%
   mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) %>% ## leap year as placeholder
   ggplot(aes(x = dayofyear_formatted, y = Value, colour = Year)) +
   geom_line() +
-  geom_point() +
   scale_x_date(date_labels = "%b %d") +
   labs(y = "Discharge (m)") +
   theme_minimal()
@@ -61,11 +60,12 @@ longest_record_data %>%
 ## ----tile_plt------------------------------------------------------------
 longest_record_data %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
-  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) %>% ## leap year as placeholder
+  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) %>% 
   ggplot(aes(x = dayofyear_formatted, y = Year, fill = Value)) +
   geom_tile() +
-  scale_x_date(date_labels = "%b %d") +
-  scale_fill_gradientn(name = "Discharge (m^3/s)", colours = rainbow(10)) +
+  scale_x_date(date_labels = "%b") +
+  scale_y_reverse(expand = c(0, 0)) +
+  scale_fill_gradientn(name = "Discharge (m^3/s) ", colours = rainbow(10)) +
   labs(y = "Year", x = "Date") +
   theme_minimal() +
   theme(legend.position="bottom")
