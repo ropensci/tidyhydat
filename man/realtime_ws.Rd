@@ -40,7 +40,7 @@ function, reduce the number of observations (via station_number, parameters or d
 }
 \examples{
 \dontrun{
-token_out <- token_ws(username = Sys.getenv("WS_USRNM"), password = Sys.getenv("WS_PWD"))
+token_out <- token_ws()
 
 ws_08 <- realtime_ws(station_number = c("08NL071","08NM174"),
                          parameters = c(47, 5),

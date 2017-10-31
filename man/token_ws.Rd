@@ -4,12 +4,12 @@
 \alias{token_ws}
 \title{Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]}
 \usage{
-token_ws(username, password)
+token_ws(username = NULL, password = NULL)
 }
 \arguments{
-\item{username}{Supplied by ECCC}
+\item{username}{Supplied by ECCC. Defaults to NULL which will use WS_USRNM from .Renviron file}
 
-\item{password}{Supplied by ECCC
+\item{password}{Supplied by ECCC. Defaults to NULL which will use WS_PWD from .Renviron file
 Request a token from the ECCC web service using the POST method. This token expires after 10 minutes.
 You can only have 5 tokens out at once.}
 }
@@ -22,8 +22,8 @@ Request a token from the Environment and Climate Change Canada [EXPERIMENTAL]
 \details{
 The \code{username} and \code{password} should be treated carefully and should never be entered directly into an r script or console.
 Rather these credentials should be stored in your \code{.Renviron} file. The .Renviron file can edited using \code{file.edit("~/.Renviron")}.
-In that file, which is only stored locally and is only available to you, you can assign your \code{username} and \code{password} to variables
-and then call those environmental variables in your R session. See \code{?download_ws} for examples.
+In that file, which is only stored locally and is only available to you, you can assign your \code{username} to WS_USRNM and \code{password} 
+to WS_PWD and then simply issue \code{token_ws}. See \code{?download_ws} for examples.
 }
 \seealso{
 Other realtime functions: \code{\link{realtime_dd}},
