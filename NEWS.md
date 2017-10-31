@@ -6,6 +6,8 @@ tidyhydat 0.3.0 ()
   * New NEWS template!
   * Moved `station_number` to first argument to facilitate piped analysis (bcgov/tidyhydat#54)
   * `search_stn_name` and `search_stn_number` now query both realtime and historical data sources and have tests for a more complete list (bcgov/tidyhydat#56)
+  * With credential stored in .Renviron file, `ws_token` can successfully be called by `ws_token()`.
+  * `.onAttach()` checks if HYDAT is downloaded on package load.
 
 ### MINOR IMPROVEMENTS
   * Significant function and argument name changes (see below)
