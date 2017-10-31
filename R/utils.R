@@ -48,12 +48,29 @@ search_stn_number <- function(search_term) {
   }
 }
 
+#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
+#'
+#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+#' 
+#' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
+#' 
+#' @examples \dontrun{
+#' hy_dir()
+#' }
+#'
+#' @export
+#'
+#'
+hy_dir <- function(...){
+  rappdirs::user_data_dir("tidyhydat")
+}
+
 #' hy_agency_list function
 #'
 #' AGENCY look-up Table
 #' @param hydat_path The default for this argument is to look for hydat in the same location where it
 #' was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
-#' You can see where hydat was downloaded using \code{rappdirs::user_data_dir()}
+#' You can see where hydat was downloaded using \code{hy_dir()}
 #'
 #' @return A tibble of agencies
 #'
@@ -68,12 +85,12 @@ search_stn_number <- function(search_term) {
 hy_agency_list <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
   }
   
 
@@ -107,12 +124,12 @@ hy_agency_list <- function(hydat_path = NULL) {
 hy_reg_office_list <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
   }
   
 
@@ -147,12 +164,12 @@ hy_reg_office_list <- function(hydat_path = NULL) {
 #'
 hy_datum_list <- function(hydat_path = NULL) {
   if(is.null(hydat_path)){
-    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
   }
   
   
@@ -187,12 +204,12 @@ hy_datum_list <- function(hydat_path = NULL) {
 hy_version <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
   }
   
   
