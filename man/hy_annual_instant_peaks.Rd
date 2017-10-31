@@ -2,7 +2,7 @@
 % Please edit documentation in R/hy_instant_annual_peaks.R
 \name{hy_annual_instant_peaks}
 \alias{hy_annual_instant_peaks}
-\title{Annual maximum/minimum instantaneous flows and water levels}
+\title{Extract annual max/min instantaneous flows and water levels from HYDAT database}
 \source{
 HYDAT
 }
@@ -11,7 +11,7 @@ hy_annual_instant_peaks(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL, start_year = "ALL", end_year = "ALL")
 }
 \arguments{
-\item{station_number}{A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{The default for this argument is to look for hydat in the same location where it
@@ -47,7 +47,8 @@ Other HYDAT functions: \code{\link{hy_agency_list}},
   \code{\link{hy_annual_stats}},
   \code{\link{hy_daily_flows}},
   \code{\link{hy_daily_levels}},
-  \code{\link{hy_datum_list}},
+  \code{\link{hy_data_symbols}},
+  \code{\link{hy_data_types}}, \code{\link{hy_datum_list}},
   \code{\link{hy_monthly_flows}},
   \code{\link{hy_monthly_levels}},
   \code{\link{hy_reg_office_list}},

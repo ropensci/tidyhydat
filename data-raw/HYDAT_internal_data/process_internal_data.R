@@ -20,13 +20,13 @@ use_data(allstations, overwrite = TRUE)
 hydat_con <- DBI::dbConnect(RSQLite::SQLite(), paste0(hy_dir(),"\\Hydat.sqlite3"))
 
 ## DATA_TYPES
-data_types <- tbl(hydat_con, "DATA_TYPES") %>%
+hy_data_types <- tbl(hydat_con, "DATA_TYPES") %>%
   collect()
-use_data(data_types, overwrite = TRUE)
+use_data(hy_data_types, overwrite = TRUE)
 
 ## DATA_SYMBOLS
-data_symbols <- tbl(hydat_con, "DATA_SYMBOLS") %>%
+hy_data_symbols <- tbl(hydat_con, "DATA_SYMBOLS") %>%
   collect()
-use_data(data_symbols, overwrite = TRUE)
+use_data(hy_data_symbols, overwrite = TRUE)
 
 DBI::dbDisconnect(hydat_con)

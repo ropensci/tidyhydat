@@ -135,7 +135,7 @@ hy_daily_flows <- function(station_number = NULL,
                                  Date <= end_date)
   }
   
-  dly_flows <- dplyr::left_join(dly_flows, tidyhydat::data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   dly_flows <- dplyr::mutate(dly_flows, Parameter = "FLOW")
   
   ## Control for symbol ouput

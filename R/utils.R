@@ -106,7 +106,7 @@ hy_agency_list <- function(hydat_path = NULL) {
 }
 
 
-#'  hy_reg_office_list function
+#'  Extract regional office list from HYDAT database
 #'
 #'  OFFICE look-up Table
 #' @inheritParams hy_agency_list
@@ -146,7 +146,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
   regional_office_list
 }
 
-#'  hy_datum_list function
+#'  Extract datum list from HYDAT database
 #'
 #'  DATUM look-up Table
 #' @inheritParams hy_agency_list
@@ -185,7 +185,8 @@ hy_datum_list <- function(hydat_path = NULL) {
 }
 
 
-#' Version number of HYDAT
+#' Extract version number from HYDAT database
+#' 
 #' A function to get version number of hydat
 #'
 #' @inheritParams hy_agency_list

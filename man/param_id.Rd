@@ -19,6 +19,6 @@
 param_id
 }
 \description{
-A tibble of parameter id codes and their corresponding explanation/description
+A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
 }
 \keyword{datasets}

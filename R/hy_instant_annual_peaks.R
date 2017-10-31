@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' Annual maximum/minimum instantaneous flows and water levels
+#' Extract annual max/min instantaneous flows and water levels from HYDAT database
 #'
 #' Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels. 
 #' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. 
@@ -71,10 +71,10 @@ hy_annual_instant_peaks <- function(station_number = NULL,
     dplyr::collect()
 
   ## Add in english data type
-  aip <- dplyr::left_join(aip, tidyhydat::data_types, by = c("DATA_TYPE"))
+  aip <- dplyr::left_join(aip, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
 
   ## Add in Symbol
-  aip <- dplyr::left_join(aip, tidyhydat::data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
+  aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## If a yearis supplied...
   if (start_year != "ALL" | end_year != "ALL") {

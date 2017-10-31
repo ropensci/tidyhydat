@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{hy_datum_list}
 \alias{hy_datum_list}
-\title{hy_datum_list function}
+\title{Extract datum list from HYDAT database}
 \source{
 HYDAT
 }
@@ -32,6 +32,8 @@ Other HYDAT functions: \code{\link{hy_agency_list}},
   \code{\link{hy_annual_stats}},
   \code{\link{hy_daily_flows}},
   \code{\link{hy_daily_levels}},
+  \code{\link{hy_data_symbols}},
+  \code{\link{hy_data_types}},
   \code{\link{hy_monthly_flows}},
   \code{\link{hy_monthly_levels}},
   \code{\link{hy_reg_office_list}},

@@ -2,7 +2,7 @@
 % Please edit documentation in R/hy_stn_.R
 \name{hy_stn_remarks}
 \alias{hy_stn_remarks}
-\title{hy_stn_remarks function}
+\title{Extract station remarks from HYDAT database}
 \format{A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
@@ -15,7 +15,7 @@ hy_stn_remarks(station_number = NULL, hydat_path = NULL,
   prov_terr_state_loc = NULL)
 }
 \arguments{
-\item{station_number}{A seven digits Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{hydat_path}{The default for this argument is to look for hydat in the same location where it

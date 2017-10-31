@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{hy_version}
 \alias{hy_version}
-\title{Version number of HYDAT
-A function to get version number of hydat}
+\title{Extract version number from HYDAT database}
 \source{
 HYDAT
 }
@@ -19,7 +18,6 @@ You can see where hydat was downloaded using \code{hy_dir()}}
 version number and release date
 }
 \description{
-Version number of HYDAT
 A function to get version number of hydat
 }
 \examples{
@@ -35,7 +33,8 @@ Other HYDAT functions: \code{\link{hy_agency_list}},
   \code{\link{hy_annual_stats}},
   \code{\link{hy_daily_flows}},
   \code{\link{hy_daily_levels}},
-  \code{\link{hy_datum_list}},
+  \code{\link{hy_data_symbols}},
+  \code{\link{hy_data_types}}, \code{\link{hy_datum_list}},
   \code{\link{hy_monthly_flows}},
   \code{\link{hy_monthly_levels}},
   \code{\link{hy_reg_office_list}},

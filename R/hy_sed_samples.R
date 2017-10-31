@@ -120,7 +120,7 @@ hy_sed_samples <- function(station_number = NULL,
   if(is.data.frame(sed_samples) && nrow(sed_samples)==0)
   {stop("This station is not present in HYDAT")}
   
-  sed_samples <- dplyr::left_join(sed_samples, tidyhydat::data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  sed_samples <- dplyr::left_join(sed_samples, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(DATE))
 
   ## SUBSET by date

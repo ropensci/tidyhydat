@@ -1,4 +1,4 @@
-#' hy_stn_remarks function
+#' Extract station remarks from HYDAT database
 #'
 #' hy_stn_remarks look-up Table
 #' @inheritParams hy_stations
@@ -50,7 +50,7 @@ hy_stn_remarks <- function(station_number = NULL,
   stn_remarks
 }
 
-#' hy_stn_datum_conv function
+#' Extract station datum conversions from HYDAT database
 #'
 #' hy_stn_datum_conv look-up Table
 #' @inheritParams hy_stations
@@ -104,7 +104,7 @@ hy_stn_datum_conv <- function(station_number = NULL,
   stn_datum_conversion
 }
 
-#' hy_stn_datum_unrelated function
+#' Extract station datum unrelated from HYDAT database
 #'
 #' hy_stn_datum_unrelated look-up Table
 #' @inheritParams hy_stations
@@ -152,7 +152,7 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   stn_datum_unrelated
 }
 
-#' hy_stn_data_range function
+#' Extract station data range from HYDAT database
 #'
 #' hy_stn_data_range look-up Table
 #' @inheritParams hy_stations
@@ -208,7 +208,7 @@ hy_stn_data_range <- function(station_number = NULL,
   stn_data_range
 }
 
-#' hy_stn_data_coll function
+#' Extract station data collection from HYDAT database
 #'
 #' hy_stn_data_coll look-up Table
 #' @inheritParams hy_stations
@@ -261,7 +261,7 @@ hy_stn_data_coll <- function(station_number = NULL,
     dplyr::left_join(dplyr::tbl(hydat_con, "MEASUREMENT_CODES"), by = c("MEASUREMENT_CODE")) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "OPERATION_CODES"), by = c("OPERATION_CODE")) %>%
     dplyr::collect() %>%
-    dplyr::left_join(tidyhydat::data_types, by = c("DATA_TYPE")) %>%
+    dplyr::left_join(tidyhydat::hy_data_types, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR_FROM, YEAR_TO, MEASUREMENT_EN, OPERATION_EN) %>%
     dplyr::arrange(STATION_NUMBER, YEAR_FROM)
   
@@ -270,7 +270,7 @@ hy_stn_data_coll <- function(station_number = NULL,
 }
 
 
-#' hy_stn_op_schedule function
+#' Extract station operation schedule from HYDAT database
 #'
 #' hy_stn_op_schedule look-up Table
 #' @inheritParams hy_stations
@@ -319,7 +319,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
   stn_operation_schedule <- dplyr::tbl(hydat_con, "STN_OPERATION_SCHEDULE") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
-    dplyr::left_join(tidyhydat::data_types, by = c("DATA_TYPE")) %>%
+    dplyr::left_join(tidyhydat::hy_data_types, by = c("DATA_TYPE")) %>%
     dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
   
   stn_operation_schedule

@@ -323,7 +323,7 @@ token_ws <- function(username = NULL, password = NULL) {
   token
 }
 
-#' Download realtime data from the ECCC web service
+#' Download realtime data from the ECCC web service [EXPERIMENTAL]
 #' 
 #' Function to actually retrieve data from ECCC web service. Before using this function,
 #' a token from \code{token_ws()} is needed. The maximum number of days that can be 
@@ -489,11 +489,11 @@ realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41,
 #'
 #' Download the HYDAT sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.
 #' The function will check for a existing sqlite file and won't download the file if the same version is already present. 
-#' \code{download_hydat} also looks to see if you have the HYDAT environmental variable set.
+
 #'
-#' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. 
+#' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{hy_dir}. 
 #' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
-#'
+#' It also downloads the database to a directory specified by \code{hy_dir}.
 #' @export
 #'
 #' @examples \dontrun{

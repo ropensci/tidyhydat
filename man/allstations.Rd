@@ -13,13 +13,13 @@
   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
 }}
 \source{
-HYDAT
+HYDAT, Meterological Service of Canada datamart
 }
 \usage{
 allstations
 }
 \description{
-A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-10-26. Populated by both 
+A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
 realtime and historical data from HYDAT.
 }
 \keyword{datasets}

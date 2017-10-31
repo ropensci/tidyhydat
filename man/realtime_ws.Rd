@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{realtime_ws}
 \alias{realtime_ws}
-\title{Download realtime data from the ECCC web service}
+\title{Download realtime data from the ECCC web service [EXPERIMENTAL]}
 \format{A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}

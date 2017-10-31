@@ -13,7 +13,7 @@
 
 #' @title Parameter ID
 #'
-#' @description A tibble of parameter id codes and their corresponding explanation/description
+#' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
 #' 
 #' @format A tibble with 8 rows and 7 variables:
 #' \describe{
@@ -32,7 +32,7 @@
 
 #' All Canadian stations 
 #' 
-#' A shorthand to avoid having always call \code{hy_stations}. Only up to date as of 2017-10-26. Populated by both 
+#' A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
 #' realtime and historical data from HYDAT. 
 #' 
 #' @format A tibble with 5 variables:
@@ -44,7 +44,7 @@
 #'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
 #' }
 #'
-#' @source HYDAT
+#' @source HYDAT, Meterological Service of Canada datamart
 "allstations"
 
 
@@ -58,9 +58,9 @@
 #'   \item{SYMBOL_EN}{Description of Symbol (English)}
 #'   \item{SYMBOL_FR}{Description of Symbol (French)}
 #' }
-#'
+#' @family HYDAT functions
 #' @source HYDAT
-"data_symbols"
+"hy_data_symbols"
 
 #' DATA TYPES look-up table
 #'
@@ -72,6 +72,7 @@
 #'   \item{DATA_TYPE_EN}{Descriptive data type (English)}
 #'   \item{DATA_TYPE_FR}{Descriptive data type (French)}
 #' }
+#' @family HYDAT functions
 #'
 #' @source HYDAT
-"data_types"
+"hy_data_types"
