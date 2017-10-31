@@ -8,7 +8,7 @@ tidyhydat <img src="img/tidyhydat.png" align="right" />
 Project Status
 --------------
 
-This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: <https://github.com/ropensci/onboarding/issues/152>. As a result breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
+This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: <https://github.com/ropensci/onboarding/issues/152>. As a result, breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
 
 ``` r
 devtools::install_github("bcgov/tidyhydat@v0.2.9")
@@ -19,26 +19,24 @@ However, you should strongly consider migrating to the updated `tidyhydat` once 
 What does it do?
 ----------------
 
-Here is a list of what `tidyhydat` does:
+Here is a summary of what `tidyhydat` does:
 
--   Provide function that access each table in the HYDAT database and return tidy data.
--   Keep functions as low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data.
--   Provide functions that access Environment and Climate Change Canada's real-time hydrometric data source.
--   Provide functions that search full station lists and aid in generating station vectors
-
-A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd)
+-   Provides functions (`hy_*`) that access hydrometric data from the HYDAT database, a national archive of Canadian hydrometric data and return tidy data.
+-   Provides functions (`realtime_*`) that access Environment and Climate Change Canada's real-time hydrometric data source.
+-   Provides functions (`search_*`) that can search through the approximately 7000 stations in the database and aid in generating station vectors
+-   Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](http://tibble.tidyverse.org/) of daily flows.
 
 Installation
 ------------
 
-To install the `tidyhydat` package, you need to install the `devtools` package then the `tidyhydat` package
+To install the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
 
 ``` r
 install.packages("remotes")
 remotes::install_github("bcgov/tidyhydat")
 ```
 
-Then to load the package you need to using the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
+Then to load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
 ``` r
 library(tidyhydat)
@@ -47,26 +45,26 @@ library(dplyr)
 
 ### HYDAT download
 
-To use most of the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's comprehensive database of historical hydrometric data then tell R where to find the database. `tidyhydat` does all this for you via:
+To use many of the functions in the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's database of historical hydrometric data then tell R where to find the database. Conveniently `tidyhydat` does all this for you via:
 
 ``` r
 download_hydat()
 ```
 
-This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `rappdirs::site_data_dir()`.
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
 
 Usage
 -----
 
-### HYDAT functions
+Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this.
 
-Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis. The following functions follow a common argument structure which can be illustrated with the `hy_daily_flows()` function. If you would like to extract only station `08LA001` you can supply the `station_number`.
+The simplest case is if you would like to extract only station. You can supply this directly to the `station_number` argument:
 
 ``` r
 hy_daily_flows(station_number = "08LA001")
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
-#> # A tibble: 29,159 x 5
+#> # A tibble: 28,794 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
 #>  1        08LA001 1914-01-01      FLOW   144   <NA>
@@ -79,31 +77,65 @@ hy_daily_flows(station_number = "08LA001")
 #>  8        08LA001 1914-01-08      FLOW   140   <NA>
 #>  9        08LA001 1914-01-09      FLOW   140   <NA>
 #> 10        08LA001 1914-01-10      FLOW   140   <NA>
-#> # ... with 29,149 more rows
+#> # ... with 28,784 more rows
 ```
 
-If you would instead prefer all stations from a province, you can use the `prov_terr_state_loc` argument and omit the `station_number` argument:
+Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector for `hy_daily_flows()`:
 
 ``` r
-hy_daily_flows(prov_terr_state_loc = "PE")
+PEI_stns <- hy_stations() %>%
+  filter(HYD_STATUS == "ACTIVE") %>%
+  filter(PROV_TERR_STATE_LOC == "PE") %>%
+  pull(STATION_NUMBER)
+#> All station successfully retrieved
+
+PEI_stns
+#> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CD005"
+
+hy_daily_flows(station_number = PEI_stns)
 #> No start and end dates specified. All dates available will be returned.
-#> The following station(s) were not retrieved: 01CB011
-#> Check station number typos or if it is a valid station in the network
-#> # A tibble: 187,953 x 5
+#> All station successfully retrieved
+#> # A tibble: 97,467 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
-#>  1        01CC001 1919-07-01      FLOW    NA   <NA>
-#>  2        01CE001 1919-07-01      FLOW    NA   <NA>
-#>  3        01CE002 1919-07-01      FLOW    NA   <NA>
-#>  4        01CC001 1919-07-02      FLOW    NA   <NA>
-#>  5        01CE001 1919-07-02      FLOW    NA   <NA>
-#>  6        01CE002 1919-07-02      FLOW    NA   <NA>
-#>  7        01CC001 1919-07-03      FLOW    NA   <NA>
-#>  8        01CE001 1919-07-03      FLOW    NA   <NA>
-#>  9        01CE002 1919-07-03      FLOW    NA   <NA>
-#> 10        01CC001 1919-07-04      FLOW    NA   <NA>
-#> # ... with 187,943 more rows
+#>  1        01CA003 1961-08-01      FLOW    NA   <NA>
+#>  2        01CB002 1961-08-01      FLOW    NA   <NA>
+#>  3        01CA003 1961-08-02      FLOW    NA   <NA>
+#>  4        01CB002 1961-08-02      FLOW    NA   <NA>
+#>  5        01CA003 1961-08-03      FLOW    NA   <NA>
+#>  6        01CB002 1961-08-03      FLOW    NA   <NA>
+#>  7        01CA003 1961-08-04      FLOW    NA   <NA>
+#>  8        01CB002 1961-08-04      FLOW    NA   <NA>
+#>  9        01CA003 1961-08-05      FLOW    NA   <NA>
+#> 10        01CB002 1961-08-05      FLOW    NA   <NA>
+#> # ... with 97,457 more rows
 ```
+
+We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
+
+``` r
+search_stn_name("canada") %>%
+  pull(STATION_NUMBER) %>%
+  hy_daily_flows()
+#> No start and end dates specified. All dates available will be returned.
+#> All station successfully retrieved
+#> # A tibble: 76,679 x 5
+#>    STATION_NUMBER       Date Parameter Value Symbol
+#>             <chr>     <date>     <chr> <dbl>  <chr>
+#>  1        01AK001 1918-08-01      FLOW    NA   <NA>
+#>  2        01AK001 1918-08-02      FLOW    NA   <NA>
+#>  3        01AK001 1918-08-03      FLOW    NA   <NA>
+#>  4        01AK001 1918-08-04      FLOW    NA   <NA>
+#>  5        01AK001 1918-08-05      FLOW    NA   <NA>
+#>  6        01AK001 1918-08-06      FLOW    NA   <NA>
+#>  7        01AK001 1918-08-07      FLOW  1.78   <NA>
+#>  8        01AK001 1918-08-08      FLOW  1.78   <NA>
+#>  9        01AK001 1918-08-09      FLOW  1.50   <NA>
+#> 10        01AK001 1918-08-10      FLOW  1.78   <NA>
+#> # ... with 76,669 more rows
+```
+
+These example illustrate a few ways that an vector can be generated and supplied to functions within `tidyhydat`.
 
 ### Real-time
 
@@ -120,33 +152,6 @@ realtime_dd(prov_terr_state_loc = "PE")
 ```
 
 Additionally `download_realtime_ws()` provides another means of acquiring real time data though that requires a username and password from Environment and Climate Change Canada.
-
-### Search functions
-
-You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
-
-``` r
-search_stn_name("liard")
-#> # A tibble: 8 x 3
-#>   STATION_NUMBER                      STATION_NAME PROV_TERR_STATE_LOC
-#>            <chr>                             <chr>               <chr>
-#> 1        10AA001     LIARD RIVER AT UPPER CROSSING                  YT
-#> 2        10BE001     LIARD RIVER AT LOWER CROSSING                  BC
-#> 3        10BE005    LIARD RIVER ABOVE BEAVER RIVER                  BC
-#> 4        10BE006   LIARD RIVER ABOVE KECHIKA RIVER                  BC
-#> 5        10ED001         LIARD RIVER AT FORT LIARD                  NT
-#> 6        10ED002        LIARD RIVER NEAR THE MOUTH                  NT
-#> 7        10ED008   LIARD RIVER AT LINDBERG LANDING                  NT
-#> 8        10GC004 MACKENZIE RIVER ABOVE LIARD RIVER                  NT
-```
-
-Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
-
-``` r
-search_stn_number("08MF")
-#> Warning: Unknown or uninitialised column: 'station_number'.
-#> No station number match this criteria!
-```
 
 Getting Help or Reporting an Issue
 ----------------------------------
@@ -177,7 +182,7 @@ citation("tidyhydat")
 #> To cite package 'tidyhydat' in publications use:
 #> 
 #>   Sam Albers (NA). tidyhydat: Extract and Tidy Canadian
-#>   Hydrometric Data. R package version 0.2.9.
+#>   Hydrometric Data. R package version 0.3.0.
 #>   https://github.com/bcgov/tidyhydat
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -185,7 +190,7 @@ citation("tidyhydat")
 #>   @Manual{,
 #>     title = {tidyhydat: Extract and Tidy Canadian Hydrometric Data},
 #>     author = {Sam Albers},
-#>     note = {R package version 0.2.9},
+#>     note = {R package version 0.3.0},
 #>     url = {https://github.com/bcgov/tidyhydat},
 #>   }
 ```
