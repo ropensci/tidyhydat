@@ -495,7 +495,12 @@ realtime_ws <- function(station_number, parameters = c(46, 16, 52, 47, 8, 5, 41,
 #' }
 #'
 
-download_hydat <- function(dl_hydat_here = rappdirs::user_data_dir()) {
+download_hydat <- function(dl_hydat_here = NULL) {
+  
+  if(is.null(dl_hydat_here)){
+    dl_hydat_here <- hy_dir()
+  }
+  
   response <- readline(prompt = "Downloading HYDAT will take approximately 10 minutes. Are you sure you want to continue? (Y/N) ")
 
   if (!response %in% c("Y", "Yes", "yes", "y")) {

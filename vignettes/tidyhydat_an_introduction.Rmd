@@ -34,7 +34,7 @@ To use most of the `tidyhydat` package you will need to download a version of th
 ```{r, eval=FALSE}
 download_hydat()
 ```
-This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `rappdirs::site_data_dir()`.
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`.
 
 ### Usage
 All functions in `tidyhydat` follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. For these functions, you can supply either the `station_number` and the `prov_terr_state_loc` arguments. If you would like to query the database for two or more stations you could vectorize `station_number`:

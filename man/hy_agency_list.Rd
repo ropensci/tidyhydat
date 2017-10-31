@@ -12,7 +12,7 @@ hy_agency_list(hydat_path = NULL)
 \arguments{
 \item{hydat_path}{The default for this argument is to look for hydat in the same location where it
 was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
-You can see where hydat was downloaded using \code{rappdirs::user_data_dir()}}
+You can see where hydat was downloaded using \code{hy_dir()}}
 }
 \value{
 A tibble of agencies

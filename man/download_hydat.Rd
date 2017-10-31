@@ -4,7 +4,7 @@
 \alias{download_hydat}
 \title{Download and set the path to HYDAT}
 \usage{
-download_hydat(dl_hydat_here = rappdirs::user_data_dir())
+download_hydat(dl_hydat_here = NULL)
 }
 \arguments{
 \item{dl_hydat_here}{Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{rappdirs::user_data_dir}. 

@@ -48,12 +48,12 @@ hy_sed_samples_psd <- function(station_number = NULL,
                             prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3")
+    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
   if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",rappdirs::user_data_dir(),". Run download_hydat() to download the database."))
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
   }
   
   if (start_date == "ALL" & end_date == "ALL") {

@@ -17,7 +17,7 @@ use_data(allstations, overwrite = TRUE)
 
 ## Load up hydat connection
 ## Read in database
-hydat_con <- DBI::dbConnect(RSQLite::SQLite(), paste0(rappdirs::user_data_dir(),"\\Hydat.sqlite3"))
+hydat_con <- DBI::dbConnect(RSQLite::SQLite(), paste0(hy_dir(),"\\Hydat.sqlite3"))
 
 ## DATA_TYPES
 data_types <- tbl(hydat_con, "DATA_TYPES") %>%
