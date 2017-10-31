@@ -256,7 +256,7 @@ hy_stn_data_coll <- function(station_number = NULL,
   
   on.exit(DBI::dbDisconnect(hydat_con))
   
-  stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_COLLECTION") %>%
+  stn_data_coll <- dplyr::tbl(hydat_con, "STN_DATA_COLLECTION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "MEASUREMENT_CODES"), by = c("MEASUREMENT_CODE")) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "OPERATION_CODES"), by = c("OPERATION_CODE")) %>%
@@ -266,7 +266,7 @@ hy_stn_data_coll <- function(station_number = NULL,
     dplyr::arrange(STATION_NUMBER, YEAR_FROM)
   
   
-  stn_data_range
+  stn_data_coll
 }
 
 
