@@ -85,7 +85,7 @@ hy_dir <- function(...){
 hy_agency_list <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -124,7 +124,7 @@ hy_agency_list <- function(hydat_path = NULL) {
 hy_reg_office_list <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -164,7 +164,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
 #'
 hy_datum_list <- function(hydat_path = NULL) {
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -205,7 +205,7 @@ hy_datum_list <- function(hydat_path = NULL) {
 hy_version <- function(hydat_path = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present

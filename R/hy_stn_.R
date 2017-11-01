@@ -24,7 +24,7 @@ hy_stn_remarks <- function(station_number = NULL,
                         hydat_path = NULL,
                         prov_terr_state_loc = NULL) {
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -75,7 +75,7 @@ hy_stn_remarks <- function(station_number = NULL,
 hy_stn_datum_conv <- function(station_number = NULL, 
                                  hydat_path = NULL, prov_terr_state_loc = NULL) {
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -128,7 +128,7 @@ hy_stn_datum_conv <- function(station_number = NULL,
 hy_stn_datum_unrelated <- function(station_number = NULL, 
                                 hydat_path = NULL, prov_terr_state_loc = NULL) {
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -182,7 +182,7 @@ hy_stn_data_range <- function(station_number = NULL,
                            prov_terr_state_loc = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -239,7 +239,7 @@ hy_stn_data_coll <- function(station_number = NULL,
                                 hydat_path = NULL, prov_terr_state_loc = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present
@@ -299,7 +299,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
                                    prov_terr_state_loc = NULL) {
   
   if(is.null(hydat_path)){
-    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
   
   ## Check if hydat is present

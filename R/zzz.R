@@ -106,7 +106,7 @@
 # Won't pass cmd check with this uncommented
 .onAttach <- function(libname, pkgname) {
 
-  if(!file.exists(paste0(hy_dir(),"\\Hydat.sqlite3"))){
+  if(!file.exists(file.path(hy_dir(),"Hydat.sqlite3"))){
     packageStartupMessage("Tidyhydat requires HYDAT which has not yet been downloaded. Download using download_hydat()")
   }
 #  
