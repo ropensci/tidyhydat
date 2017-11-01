@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-tidyhydat <img src="img/tidyhydat.png" align="right" />
-=======================================================
+tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
+================================================================
 
 <a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
 
@@ -64,7 +64,7 @@ The simplest case is if you would like to extract only station. You can supply t
 hy_daily_flows(station_number = "08LA001")
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
-#> # A tibble: 28,794 x 5
+#> # A tibble: 29,159 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
 #>  1        08LA001 1914-01-01      FLOW   144   <NA>
@@ -77,7 +77,7 @@ hy_daily_flows(station_number = "08LA001")
 #>  8        08LA001 1914-01-08      FLOW   140   <NA>
 #>  9        08LA001 1914-01-09      FLOW   140   <NA>
 #> 10        08LA001 1914-01-10      FLOW   140   <NA>
-#> # ... with 28,784 more rows
+#> # ... with 29,149 more rows
 ```
 
 Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector for `hy_daily_flows()`:
@@ -95,7 +95,7 @@ PEI_stns
 hy_daily_flows(station_number = PEI_stns)
 #> No start and end dates specified. All dates available will be returned.
 #> All station successfully retrieved
-#> # A tibble: 97,467 x 5
+#> # A tibble: 98,562 x 5
 #>    STATION_NUMBER       Date Parameter Value Symbol
 #>             <chr>     <date>     <chr> <dbl>  <chr>
 #>  1        01CA003 1961-08-01      FLOW    NA   <NA>
@@ -108,7 +108,7 @@ hy_daily_flows(station_number = PEI_stns)
 #>  8        01CB002 1961-08-04      FLOW    NA   <NA>
 #>  9        01CA003 1961-08-05      FLOW    NA   <NA>
 #> 10        01CB002 1961-08-05      FLOW    NA   <NA>
-#> # ... with 97,457 more rows
+#> # ... with 98,552 more rows
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:

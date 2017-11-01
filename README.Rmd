@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tidyhydat <img src="img/tidyhydat.png" align="right" />
+# tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 
 
   

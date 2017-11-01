@@ -27,7 +27,7 @@ To download the latest version of hydat please:
 For more information on tidy data please see
 \itemize{
  \item Wickham, Hadley. 2014. Tidy Data. The Journal of Statistical Software. 59. \url{https://www.jstatsoft.org/article/view/v059i10}
- \item tidy data vignette: \url{https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html}
+ \item tidy data vignette: \url{https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html}
  }
 
  For more information on HYDAT 

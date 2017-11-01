@@ -7,9 +7,11 @@
 #' @return A tibble of stations that match the \code{search_term}
 #' 
 #' @examples 
+#' \dontrun{
 #' search_stn_name("Cowichan")
 #' 
 #' search_stn_number("08HF")
+#' }
 #'
 #' @export
 

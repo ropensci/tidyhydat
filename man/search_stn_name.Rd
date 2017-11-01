@@ -19,8 +19,10 @@ A tibble of stations that match the \code{search_term}
 Use this search function when you only know the partial station name or want to search.
 }
 \examples{
+\dontrun{
 search_stn_name("Cowichan")
 
 search_stn_number("08HF")
+}
 
 }
