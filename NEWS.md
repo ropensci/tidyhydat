@@ -1,4 +1,4 @@
-tidyhydat 0.3.0 ()
+tidyhydat 0.3.0 
 =========================
 
 ### NEW FEATURES
