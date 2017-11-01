@@ -7,7 +7,7 @@
 \title{Extract tidy water data}
 \description{
 tidyhydat provides a series of functions to make downloading and importing data from HYDAT into R a 
-simple process for a user. HYDAT is the Canada national water data archive, plublished quarterly by 
+simple process for a user. HYDAT is the Canada national water data archive, published quarterly by 
 the Government of Canada's Department of Environment and Climate Change. It is relational database that 
 contains daily, monthly and annual data on water flow, water levels and sediment data. Functions are also 
 provided to extract station metadata like position and record history.

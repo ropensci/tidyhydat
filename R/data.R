@@ -44,7 +44,7 @@
 #'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
 #' }
 #'
-#' @source HYDAT, Meterological Service of Canada datamart
+#' @source HYDAT, Meteorological Service of Canada datamart
 "allstations"
 
 

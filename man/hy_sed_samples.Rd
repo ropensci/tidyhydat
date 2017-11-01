@@ -16,7 +16,7 @@
   \item{SAMPLING_VERTICAL_LOCATION}{The location on the cross-section of the river 
         at which the single sediment samples are collected. If one of the standard 
         locations is not used the distance in meters will be shown}
-  \item{SAMPLING_VERTICAL_EN}{ndicates sample location relative to the 
+  \item{SAMPLING_VERTICAL_EN}{Indicates sample location relative to the 
         regular measurement cross-section or the regular sampling site}
   \item{TEMPERATURE}{Contains the instantaneous water temperature
         in Celsius at the time the sample was taken}
