@@ -16,7 +16,7 @@ context("Testing realtime functions")
                      "Symbol", "Approval", "Parameter", "Code"))
   
   ## Turned #42 into a test
-  expect_is(ws_08$Value, "numeric")
+  expect_is(ws_test$Value, "numeric")
  })
  
  
