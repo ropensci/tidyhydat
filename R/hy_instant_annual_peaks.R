@@ -48,7 +48,7 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   }
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present

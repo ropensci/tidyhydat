@@ -51,7 +51,7 @@ hy_sed_monthly_loads <- function(station_number = NULL,
                               prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present

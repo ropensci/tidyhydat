@@ -46,7 +46,7 @@ hy_sed_daily_suscon <- function(station_number = NULL,
                            start_date ="ALL", end_date = "ALL", symbol_output = "code") {
   
   if(is.null(hydat_path)){
-    hydat_path = paste0(hy_dir(),"\\Hydat.sqlite3")
+    hydat_path <- paste0(hy_dir(),"\\Hydat.sqlite3")
   }
   
   ## Check if hydat is present
