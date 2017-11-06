@@ -7,17 +7,23 @@
 #' @return A tibble of stations that match the \code{search_term}
 #' 
 #' @examples 
-#' search_name("Cowichan")
+#' \dontrun{
+#' search_stn_name("Cowichan")
 #' 
-#' search_number("08HF")
+#' search_stn_number("08HF")
+#' }
 #'
 #' @export
 
-
-
-search_name <- function(search_term) {
-  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NAME), ]
-
+search_stn_name <- function(search_term) {
+  
+  results <- realtime_stations() %>%
+    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+  
+  results <- results[grepl(toupper(search_term), results$STATION_NAME), ]
+  
   if (nrow(results) == 0) {
     message("No station names match this criteria!")
   } else {
@@ -25,11 +31,17 @@ search_name <- function(search_term) {
   }
 }
 
-#' @rdname search_name
+#' @rdname search_stn_name
 #' @export
 #' 
-search_number <- function(search_term) {
-  results <- tidyhydat::allstations[grepl(toupper(search_term), tidyhydat::allstations$STATION_NUMBER), ]
+search_stn_number <- function(search_term) {
+  
+  results <- realtime_stations() %>%
+    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+  
+  results <- results[grepl(toupper(search_term), results$STATION_NUMBER), ]
   
   if (nrow(results) == 0) {
     message("No station number match this criteria!")
@@ -38,12 +50,29 @@ search_number <- function(search_term) {
   }
 }
 
-#' AGENCY_LIST function
+#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
+#'
+#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+#' 
+#' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
+#' 
+#' @examples \dontrun{
+#' hy_dir()
+#' }
+#'
+#' @export
+#'
+#'
+hy_dir <- function(...){
+  rappdirs::user_data_dir("tidyhydat")
+}
+
+#' hy_agency_list function
 #'
 #' AGENCY look-up Table
-#' @param hydat_path Directory to the hydat database. Can be set as "Hydat.sqlite3" which will look for Hydat in the working directory.
-#' The hydat path can also be set in the \code{.Renviron} file so that it doesn't have to specified every function call. The path should
-#' set as the variable \code{hydat}. Open the \code{.Renviron} file using this command: \code{file.edit("~/.Renviron")}.
+#' @param hydat_path The default for this argument is to look for hydat in the same location where it
+#' was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
+#' You can see where hydat was downloaded using \code{hy_dir()}
 #'
 #' @return A tibble of agencies
 #'
@@ -51,19 +80,21 @@ search_number <- function(search_term) {
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
-#' AGENCY_LIST()
+#' \dontrun{
+#' hy_agency_list()
 #'}
 #'
-AGENCY_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+hy_agency_list <- function(hydat_path = NULL) {
+  
+  if(is.null(hydat_path)){
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
-
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
+  }
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -77,30 +108,32 @@ AGENCY_LIST <- function(hydat_path=NULL) {
 }
 
 
-#'  REGIONAL_OFFICE_LIST function
+#'  Extract regional office list from HYDAT database
 #'
 #'  OFFICE look-up Table
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #' @return A tibble of offices
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
-#' REGIONAL_OFFICE_LIST()
+#' \dontrun{
+#' hy_reg_office_list()
 #'}
 #'
 #'
-REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
-    }
-
+hy_reg_office_list <- function(hydat_path = NULL) {
+  
+  if(is.null(hydat_path)){
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  }
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
+  }
+  
 
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -115,30 +148,32 @@ REGIONAL_OFFICE_LIST <- function(hydat_path=NULL) {
   regional_office_list
 }
 
-#'  DATUM_LIST function
+#'  Extract datum list from HYDAT database
 #'
 #'  DATUM look-up Table
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #'
 #' @return A tibble of DATUMS
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @examples
-#' \donttest{
-#' DATUM_LIST()
+#' \dontrun{
+#' hy_datum_list()
 #'}
 #'
 #' @export
 #'
-DATUM_LIST <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+hy_datum_list <- function(hydat_path = NULL) {
+  if(is.null(hydat_path)){
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
+  }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -152,30 +187,34 @@ DATUM_LIST <- function(hydat_path=NULL) {
 }
 
 
-#' Version number of HYDAT
+#' Extract version number from HYDAT database
+#' 
 #' A function to get version number of hydat
 #'
-#' @inheritParams AGENCY_LIST
+#' @inheritParams hy_agency_list
 #'
-#' @return version number
+#' @return version number and release date
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 #' @examples
-#' \donttest{
-#' VERSION()
+#' \dontrun{
+#' hy_version()
 #'}
 #'
 #'
-VERSION <- function(hydat_path=NULL) {
-  if (is.null(hydat_path)) {
-    hydat_path <- Sys.getenv("hydat")
-    if (is.na(hydat_path)) {
-      stop("No Hydat.sqlite3 path set either in this function or 
-           in your .Renviron file. See ?tidyhydat for more documentation.")
-    }
+hy_version <- function(hydat_path = NULL) {
+  
+  if(is.null(hydat_path)){
+    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   }
+  
+  ## Check if hydat is present
+  if (!file.exists(hydat_path)){
+    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
+  }
+  
   
   ## Read on database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
@@ -187,4 +226,5 @@ VERSION <- function(hydat_path=NULL) {
     dplyr::mutate(Date = lubridate::ymd_hms(Date))
   
   version
+  
 }

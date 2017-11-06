@@ -3,15 +3,23 @@
 \docType{data}
 \name{allstations}
 \alias{allstations}
-\title{A tibble of all Canadian Stations stations and their names.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7791 rows and 3 columns.}
+\title{All Canadian stations}
+\format{A tibble with 5 variables:
+\describe{
+  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+  \item{STATION_NAME}{Official name for station identification}
+  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+}}
 \source{
-HYDAT
+HYDAT, Meteorological Service of Canada datamart
 }
 \usage{
 allstations
 }
 \description{
-A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
+A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
+realtime and historical data from HYDAT.
 }
 \keyword{datasets}

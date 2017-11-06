@@ -13,34 +13,38 @@
 
 #' @title Parameter ID
 #'
-#' @description A tibble of parameter id codes and their corresponding explanation/description
+#' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
+#' 
+#' @format A tibble with 8 rows and 7 variables:
+#' \describe{
+#'   \item{Parameter}{Numeric parameter code}
+#'   \item{Code}{Letter parameter code}
+#'   \item{Name_En}{Code name in English}
+#'   \item{Name_En}{Code name in French}
+#'   \item{Unit}{Parameter units}
+#' }
 #'
 #' @source \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometric_additionalData/Document/WebService_Guidelines.pdf}
 #'
 #'
 "param_id"
 
-## To add to list
-# bcstations <- download_network(PROV_TERR_STATE_LOC = "BC") %>%
-#  anti_join(STATIONS(hydat_path = "H:/Hydat.sqlite3",
-#                     PROV_TERR_STATE_LOC = "BC", STATION_NUMBER = "ALL"),
-#            by = c("STATION_NUMBER", "STATION_NAME")) %>%
-#  select(STATION_NUMBER, STATION_NAME) %>%
-#  bind_rows(bcstations)
 
-#' A tibble of BC stations and their names
+#' All Canadian stations 
+#' 
+#' A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
+#' realtime and historical data from HYDAT. 
+#' 
+#' @format A tibble with 5 variables:
+#' \describe{
+#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+#'   \item{STATION_NAME}{Official name for station identification}
+#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+#'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+#'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+#' }
 #'
-#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
-#'
-#' @source HYDAT
-"bcstations"
-
-
-#' A tibble of all Canadian Stations stations and their names.
-#'
-#' A shorthand to avoid having always call \code{STATIONS}. Only up to date as of 2017-07-18.
-#'
-#' @source HYDAT
+#' @source HYDAT, Meteorological Service of Canada datamart
 "allstations"
 
 
@@ -48,12 +52,27 @@
 #'
 #' A look table for data symbols
 #'
+#' @format A tibble with 5 rows and 3 variables:
+#' \describe{
+#'   \item{SYMBOL_ID}{Symbol code}
+#'   \item{SYMBOL_EN}{Description of Symbol (English)}
+#'   \item{SYMBOL_FR}{Description of Symbol (French)}
+#' }
+#' @family HYDAT functions
 #' @source HYDAT
-"DATA_SYMBOLS"
+"hy_data_symbols"
 
 #' DATA TYPES look-up table
 #'
 #' A look table for data types
 #'
+#' @format A tibble with 5 rows and 3 variables:
+#' \describe{
+#'   \item{DATA_TYPE}{Data type code}
+#'   \item{DATA_TYPE_EN}{Descriptive data type (English)}
+#'   \item{DATA_TYPE_FR}{Descriptive data type (French)}
+#' }
+#' @family HYDAT functions
+#'
 #' @source HYDAT
-"DATA_TYPES"
+"hy_data_types"

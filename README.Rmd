@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tidyhydat <img src="img/tidyhydat.png" align="right" />
+# tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 
 
   
@@ -22,32 +22,30 @@ knitr::opts_chunk$set(
 
 ## Project Status
 
-This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: https://github.com/ropensci/onboarding/issues/152. As a result breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
+This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: https://github.com/ropensci/onboarding/issues/152. As a result, breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
 
 ```{r, eval = FALSE}
 devtools::install_github("bcgov/tidyhydat@v0.2.9")
 ```
-However, you should strongly consider migrating to the updated `tidyhydat` once the reveiw process is complete. 
+However, you should strongly consider migrating to the updated `tidyhydat` once the review process is complete. 
 
 ## What does it do?
 
-Here is a list of what `tidyhydat` does:
+Here is a summary of what `tidyhydat` does:
   
-- Provide function that access each table in the HYDAT database and return tidy data.
-- Keep functions as low-level as possible. For example, for daily flows, the `DLY_FLOWS()` function queries the database, *tidies* the data and returns the data. 
-- Provide functions that access Environment and Climate Change Canada's real-time hydrometric data source. 
-- Provide functions that search full station lists and aid in generating station vectors
-  
-A more thorough vignette outlining the full functionality of `tidyhydat` is outlined [here](https://github.com/bcgov/tidyhydat/blob/master/vignettes/tidyhydat.Rmd)
-  
+- Provides functions (`hy_*`) that access hydrometric data from the HYDAT database, a national archive of Canadian hydrometric data and return tidy data.
+- Provides functions (`realtime_*`) that access Environment and Climate Change Canada's real-time hydrometric data source.
+- Provides functions (`search_*`) that can search through the approximately 7000 stations in the database and aid in generating station vectors
+- Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](http://tibble.tidyverse.org/) of daily flows.
+
 ## Installation
-To install the `tidyhydat` package, you need to install the `devtools` package then the `tidyhydat` package
+To install the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("bcgov/tidyhydat")
 ```
   
-Then to load the package you need to using the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
+Then to load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
   
 ```{r, eval = TRUE, echo=TRUE, message=FALSE, warnig=FALSE}
 library(tidyhydat)
@@ -55,66 +53,52 @@ library(dplyr)
 ```
   
 ### HYDAT download
-To use most of the `tidyhydat` package you will need the most recent version of the HYDAT database, Environment and Climate Change Canada's comprehensive database of historical hydrometric data. A zipped version of sqlite3 version can be downloaded here:
-  
-- http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/
-  
-`tidyhydat` also provides a convenience function to download hydat (be patient though this takes a long time!):
+To use many of the functions in the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's database of historical hydrometric data then tell R where to find the database. Conveniently `tidyhydat` does all this for you via:
 ```{r, eval=FALSE}
-download_hydat(dl_hydat_here = "H:/")
+download_hydat()
 ```
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
   
-However you download it, the path to the sqlite3 must be specified within each function that uses HYDAT; you need tell `tidyhydat` where the HYDAT database. One option to is enter the path in each function like this:
-```{r, eval = FALSE}
-STATIONS(hydat_path = "H:/Hydat.sqlite3")
-```
-It will quickly get tiring manually entering `hydat_path = `. R provides a means setting a hydat path once in the `.Renviron` file which is then automatically called by each HYDAT function. In R you can open up `.Renviron` like this:
-```{r, eval= FALSE, echo = TRUE}
-file.edit("~/.Renviron")
-```
-This opens your `.Renviron` file which may be a blank file. Add this line somewhere in the file:
-```{r, eval=FALSE, echo=TRUE}
-hydat = "YOUR HYDAT PATH"
-```
-It is important that you name the variable `hydat` as that is name of the variable that the functions are looking for. 
-
 ## Usage
+Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this. 
 
-### HYDAT functions
-All functions that interact with HYDAT are capitalized. These functions follow a common argument structure which can be illustrated with the `DLY_FLOWS()` function. If you would like to extract only station `08LA001` you can supply the `STATION_NUMBER`. The `hydat_path` argument is omitted here and it is assumed you set the variable in your `.Renviron` file which is highly recommend. 
-  
+The simplest case is if you would like to extract only station. You can supply this directly to the `station_number` argument:
 ```{r example1, warning=FALSE}
-DLY_FLOWS(STATION_NUMBER = "08LA001")
+hy_daily_flows(station_number = "08LA001")
 ```
 
-If you would instead prefer all stations from a province, you can use the `PROV_TERR_STATE_LOC` argument and omit the `STATION_NUMBER` argument:
-  
+Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector for `hy_daily_flows()`:
+
 ```{r example2, warning=FALSE}
-DLY_FLOWS(PROV_TERR_STATE_LOC = "PE")
+PEI_stns <- hy_stations() %>%
+  filter(HYD_STATUS == "ACTIVE") %>%
+  filter(PROV_TERR_STATE_LOC == "PE") %>%
+  pull(STATION_NUMBER)
+
+PEI_stns
+
+hy_daily_flows(station_number = PEI_stns)
 ```
+
+We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
+```{r, example3}
+search_stn_name("canada") %>%
+  pull(STATION_NUMBER) %>%
+  hy_daily_flows()
+```
+
+These example illustrate a few ways that an vector can be generated and supplied to functions within `tidyhydat`.
 
 ### Real-time
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `download_realtime_dd()` we can easily select specific stations by supplying a station of interest:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r, eval = FALSE}
-download_realtime_dd(STATION_NUMBER = "08LG006")
+realtime_dd(station_number = "08LG006")
 ```
 Another option is to provide simply the province as an argument and download all stations from that province:
 ```{r, eval = FALSE}
-download_realtime_dd(PROV_TERR_STATE_LOC = "PE")
+realtime_dd(prov_terr_state_loc = "PE")
 ```
 Additionally `download_realtime_ws()` provides another means of acquiring real time data though that requires a username and password from Environment and Climate Change Canada.
-
-### Search functions
-You can also make use of auxiliary functions in `tidyhdyat` called `search_name()` and `search_number()` to look for matches when you know part of a name of a station. For example:
-```{r, echo=TRUE}
-search_name("liard")
-```
-Similarly, `search_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
-```{r, echo=TRUE}
-search_number("08MF")
-```
-  
-  
 
 
 ## Getting Help or Reporting an Issue
