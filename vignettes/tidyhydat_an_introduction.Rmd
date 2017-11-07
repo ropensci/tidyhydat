@@ -18,7 +18,11 @@ vignette: >
 @wickham2014tidy
 
 ```{r options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 8, fig.height = 12)
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      eval = nzchar(Sys.getenv("hydat_eval")),
+                      fig.width=7, fig.height=7)
 ```
 ## Package loading
 ```{r packages, warning=FALSE, message=FALSE, echo = TRUE}
