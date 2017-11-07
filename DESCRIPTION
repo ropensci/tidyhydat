@@ -9,8 +9,8 @@ Description: Provides functions to extract historical and real-time national hyd
   <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 Depends: R (>= 3.4.0)
 License: Apache License (== 2.0) | file LICENSE
-URL: https://github.com/bcgov/tidyhydat
-BugReports: https://github.com/bcgov/tidyhydat/issues
+URL: https://github.com/ropensci/tidyhydat
+BugReports: https://github.com/ropensci/tidyhydat/issues
 Encoding: UTF-8
 Imports:
     dplyr (>= 0.7.3),

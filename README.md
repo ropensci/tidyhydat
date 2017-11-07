@@ -3,18 +3,12 @@
 tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 ================================================================
 
-<a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a> [![Travis-CI Build Status](https://travis-ci.org/bcgov/tidyhydat.svg?branch=master)](https://travis-ci.org/bcgov/tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
+<a rel="Exploration" href="https://github.com/BCDevExchange/docs/blob/master/discussion/projectstates.md"><img alt="Being designed and built, but in the lab. May change, disappear, or be buggy." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/exploration.svg" title="Being designed and built, but in the lab. May change, disappear, or be buggy." /></a> [![Travis-CI Build Status](https://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
 
 Project Status
 --------------
 
-This package is under active development. The package is currently undergoing a review by [rOpenSci](https://ropensci.org/). You can see the progress of this review here: <https://github.com/ropensci/onboarding/issues/152>. As a result, breaking changes to `tidyhydat` functions will be made. To install the most recent version prior to these changes you can use this command:
-
-``` r
-devtools::install_github("bcgov/tidyhydat@v0.2.9")
-```
-
-However, you should strongly consider migrating to the updated `tidyhydat` once the review process is complete.
+This package is maintained by the Knowledge Management Branch of the [British Columbia Ministry of Environment and Climate Change Strategy](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/environment-climate-change).
 
 What does it do?
 ----------------
@@ -33,7 +27,7 @@ To install the `tidyhydat` package, you need to install the `remotes` package th
 
 ``` r
 install.packages("remotes")
-remotes::install_github("bcgov/tidyhydat")
+remotes::install_github("ropensci/tidyhydat")
 ```
 
 Then to load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
@@ -151,12 +145,10 @@ Another option is to provide simply the province as an argument and download all
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
-Additionally `download_realtime_ws()` provides another means of acquiring real time data though that requires a username and password from Environment and Climate Change Canada.
-
 Getting Help or Reporting an Issue
 ----------------------------------
 
-To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/tidyhydat/issues/).
+To report bugs/issues/feature requests, please file an [issue](https://github.com/ropensci/tidyhydat/issues/).
 
 These are very welcome!
 
@@ -183,7 +175,7 @@ citation("tidyhydat")
 #> 
 #>   Sam Albers (NA). tidyhydat: Extract and Tidy Canadian
 #>   Hydrometric Data. R package version 0.3.0.
-#>   https://github.com/bcgov/tidyhydat
+#>   https://github.com/ropensci/tidyhydat
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -191,9 +183,11 @@ citation("tidyhydat")
 #>     title = {tidyhydat: Extract and Tidy Canadian Hydrometric Data},
 #>     author = {Sam Albers},
 #>     note = {R package version 0.3.0},
-#>     url = {https://github.com/bcgov/tidyhydat},
+#>     url = {https://github.com/ropensci/tidyhydat},
 #>   }
 ```
+
+[![ropensci\_footer](tools/readme/ropensci_footer.png)](https://ropensci.org)
 
 License
 -------
