@@ -1,0 +1,132 @@
+---
+title: "tidyhydat: An Introduction"
+author: "Sam Albers"
+date: "`r Sys.Date()`"
+#output:
+#  md_document:
+#    variant: markdown_github
+output:
+  html_vignette:
+     keep_md: true
+vignette: >
+  %\VignetteIndexEntry{tidyhydat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+> "Tidy datasets are all alike but every messy dataset is messy in its own way - "
+@wickham2014tidy
+
+```{r options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      eval = nzchar(Sys.getenv("hydat_eval")),
+                      fig.width=7, fig.height=7)
+```
+## Package loading
+```{r packages, warning=FALSE, message=FALSE, echo = TRUE}
+library(tidyhydat)
+library(dplyr)
+```
+
+# `tidyhydat` package
+This vignette will outline a few key options that will hopefully make `tidyhydat` useful.  
+
+## HYDAT download
+To use many of the functions in the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's database of historical hydrometric data then tell R where to find the database. Conveniently `tidyhydat` does all this for you via:
+```{r, eval=FALSE}
+download_hydat()
+```
+This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
+  
+## Usage
+Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this. 
+
+The simplest case is if you would like to extract only station. You can supply this directly to the `station_number` argument:
+```{r example1, warning=FALSE}
+hy_daily_flows(station_number = "08LA001")
+```
+
+Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code:PE) and then create vector for `hy_daily_flows()`:
+
+```{r example2, warning=FALSE}
+PEI_stns <- hy_stations() %>%
+  filter(HYD_STATUS == "ACTIVE") %>%
+  filter(PROV_TERR_STATE_LOC == "PE") %>%
+  pull(STATION_NUMBER)
+
+PEI_stns
+
+hy_daily_flows(station_number = PEI_stns)
+```
+
+We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example if for some reason we wanted all the stations in Canada that had the name "Canada" in them we unify that selection and data extraction process into a single pipe:
+```{r, example3}
+search_stn_name("canada") %>%
+  pull(STATION_NUMBER) %>%
+  hy_daily_flows()
+```
+
+We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
+```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
+hy_daily_flows(station_number = "08LA001", 
+               start_date = "1981-01-01", end_date = "1981-12-31")
+```
+
+This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
+
+## Real-time functions
+In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. `tidyhydat` provides three functions to access these data sources. Remember these are **unapproved** data and should treated as such:
+
+- `realtime_stations()`
+- `realtime_ws()`
+- `realtime_dd()`
+
+Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
+```{r, eval=FALSE}
+realtime_stations(prov_terr_state_loc = "PE")
+```
+
+`hy_stations()` and `realtime_stations()` perform similar tasks albeit on different data sources. `hy_stations()` extracts directly from HYDAT. In addition to real-time stations, `hy_stations()` outputs discontinued and non-real-time stations:
+```{r stations, eval=FALSE}
+hy_stations(prov_terr_state_loc = "PE")
+```
+
+This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.   
+
+## Meterological Service of Canada datamart - `realtime_dd()`
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
+```{r, eval=FALSE}
+realtime_dd(station_number = "08LG006")
+```
+Another option is to provide simply the province as an argument and download all stations from that province:
+```{r, eval=FALSE}
+realtime_dd(prov_terr_state_loc = "PE")
+```
+
+## Search functions
+You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
+```{r, echo=TRUE}
+search_stn_name("liard")
+```
+Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
+```{r, echo=TRUE}
+search_stn_number("08MF")
+```
+
+# License
+
+    Copyright 2017 Province of British Columbia
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at 
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
