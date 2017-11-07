@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width=7
 
 # Introduction
 
-The real power of `tidyhydat` comes with its ability to efficiently import data into R which then can be used in conjunction with R's vast array of packages; `tidyhydat` gets hydrometric data into R and allows the user to start conducting data analysis as quickly as possible. This vignette is designed to take a user through two short examples of hydrological visualization and analysis and will therefore use additional tools beyond simply the functions in `tidyhydat`. 
+The real power of `tidyhydat` comes with its ability to efficiently import hydrometric data into R which then can be used in conjunction with R's vast array of packages; `tidyhydat` gets hydrometric data into R and allows the user to start conducting data analysis as quickly as possible. This vignette is designed to take a user through two short examples of importing data using `tidyhydat` for use for hydrological visualization and analysis and will therefore use additional tools beyond simply the functions in `tidyhydat`. 
 
 ## Familiarity with the tidyverse
 `tidyhydat` is designed to exist as a "tidy tool" that is complementary to the [tidyverse](https://www.tidyverse.org/) suite of packages. This vignette assumes some familiarity with basic tidy tools particularly `dplyr`, `tidyr`, `ggplot2` and `lubridate`. The [R for Data Science](http://r4ds.had.co.nz/) book by Garrett Grolemund and Hadley Wickham is an enormously useful book both for general R use and for `tidyhydat`. The following is a list of useful links to begin learning particular aspect of each `tidyverse` package:
@@ -38,7 +38,7 @@ library(lubridate)
 ```
 
 ## Objective
-Use `tidyhydat` to find the longest hydrometric network in Canada then use `ggplot2` to create some visualizations of the discharge data. 
+Use `tidyhydat` to find the longest flow record in the Canadian hydrometric network then use `ggplot2` to create some visualizations of the discharge data. 
 
 Your first step is to download the HYDAT database which `tidyhydat` facilitates for you:
 ```{r dl_hy, eval=FALSE}
@@ -48,6 +48,7 @@ This should be the only instance where you will need to interact directly with H
 
 ```{r, eval= FALSE, warning=FALSE, message=FALSE}
 longest_record_data <- hy_stn_data_range() %>%
+  filter(DATA_TYPE == "Q") %>% 
   filter(RECORD_LENGTH == max(RECORD_LENGTH)) %>%
   pull(STATION_NUMBER) %>%
   hy_daily_flows()
@@ -56,26 +57,29 @@ Let's break this down line by line to understand how `tidyhydat` uses tidy tools
 ```{r data_range}
 hy_stn_data_range()
 ```
-Our objective here is to filter from this data for the station that has the longest record. You'll also notice this symbol `%>%` which in R is called a [pipe](http://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by the maximum value of `RECORD_LENGTH`:
+Our objective here is to filter from this data for the station that has the longest record. You'll also notice this symbol `%>%` which in R is called a [pipe](http://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
 ```{r filter}
 hy_stn_data_range() %>%
+  filter(DATA_TYPE == "Q") %>% 
   filter(RECORD_LENGTH == max(RECORD_LENGTH))
 ```
 *then* pull the `STATION_NUMBER` that has the longest record:
 ```{r pull}
 hy_stn_data_range() %>%
+  filter(DATA_TYPE == "Q") %>% 
   filter(RECORD_LENGTH == max(RECORD_LENGTH)) %>%
   pull(STATION_NUMBER)
 ```
 *then* feed that number to `hy_daily_flows()`
 ```{r, full1}
 longest_record_data <- hy_stn_data_range() %>%
+  filter(DATA_TYPE == "Q") %>% 
   filter(RECORD_LENGTH == max(RECORD_LENGTH)) %>%
   pull(STATION_NUMBER) %>%
   hy_daily_flows()
 ```
 
-The result of this collection of simple functions is that we've extract data from station `02HA003`.If we wanted more information on this station we could query other tables in HYDAT for more information. The `hy_stations()` function is very useful and outputs considerable metadata on a given station (converted here to a list for viewing purposes):
+The result of this collection of simple functions is that we've extracted data the entire daily flow dataset (from 1860-2016) from station `02HA003`.If we wanted more information on this station we could query other tables in HYDAT for more information. The `hy_stations()` function is very useful and outputs considerable metadata on a given station (converted here to a list for viewing purposes):
 ```{r hy_stns}
 hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) %>%
   as.list()
@@ -141,11 +145,12 @@ nunavut_stn_flows <- hy_stations() %>%
   filter(PROV_TERR_STATE_LOC == "NU") %>%
   pull(STATION_NUMBER) %>%
   hy_stn_data_range() %>%
+  filter(DATA_TYPE == "Q") %>% 
   filter(RECORD_LENGTH == max(RECORD_LENGTH)) %>%
   pull(STATION_NUMBER) %>%
   hy_daily_flows()
 ``` 
-Armed with our data, we can now evaluate the historical distribution of data then compare it to some real time data. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
+Armed with our data, we can now evaluate the historical distribution of data then to put some real time data into historical context. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
 ```{r}
 pct_flow <- nunavut_stn_flows %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
