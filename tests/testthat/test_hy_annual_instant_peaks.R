@@ -3,7 +3,8 @@ context("Testing hy_annual_instant_peaks")
 test_that("hy_annual_instant_peaks accepts single and multiple province arguments", {
   stns <- "08NM083"
   expect_identical(unique(hy_annual_instant_peaks(station_number = stns, hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER), stns)
-  expect_identical(length(unique(hy_annual_instant_peaks(station_number = c("08NM083", "08NE102"), hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER)), length(c("08NM083", "08NE102")))
+  expect_identical(length(unique(hy_annual_instant_peaks(station_number = c("08NM083", "08NE102"), 
+                                                         hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))$STATION_NUMBER)), length(c("08NM083", "08NE102")))
 })
 
 

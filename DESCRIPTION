@@ -14,6 +14,7 @@ BugReports: https://github.com/bcgov/tidyhydat/issues
 Encoding: UTF-8
 Imports:
     dplyr (>= 0.7.3),
+    dbplyr (>= 1.1.0),
     readr (>= 1.1.1),
     lubridate (>= 1.6.0),
     tidyr (>= 0.7.1),
@@ -24,7 +25,6 @@ Imports:
     rappdirs (>= 0.3.1)
 Suggests:
     ggplot2,
-    dbplyr,
     knitr,
     rmarkdown,
     testthat
