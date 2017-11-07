@@ -33,6 +33,5 @@ realtime_stations(prov_terr_state_loc = c("QC","PE"))
 }
 }
 \seealso{
-Other realtime functions: \code{\link{realtime_dd}},
-  \code{\link{realtime_ws}}, \code{\link{token_ws}}
+Other realtime functions: \code{\link{realtime_dd}}
 }

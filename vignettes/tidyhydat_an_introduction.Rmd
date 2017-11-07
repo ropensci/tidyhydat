@@ -105,53 +105,6 @@ Another option is to provide simply the province as an argument and download all
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
-## Water Office web service - `realtime_ws()` 
-The National Hydrological Service has recently introduced an efficient service from which to query real-time data. The `realtime_ws()` function, which provides a convenient way to import this data into R, introduces two new arguments that impact the data that is returned. The web service provides additional data beyond simply hydrometric information. This is specified using the `parameters` argument as an integer code. The corresponding parameters can be examined using the internal `param_id` dataset:
-```{r, echo=TRUE, eval=TRUE}
-data("param_id")
-param_id
-```
-The `parameters` argument will take any value in the `param_id$Parameter` column. The web service requires credentials to access which can only be requested from ECCC. To retrieve data in this manner, `tidyhydat` employs a two stage process whereby we get a token from the web service using our credentials then use that token to access the web service. Therefore the second new argument is `token` the value of which is provided by `token_ws()`:
-
-```{r, eval=FALSE}
-## Get token
-token_out <- token_ws()
-
-## Input station_number, parameters and date range
-ws_test <- realtime_ws(station_number = "08LG006",
-                                parameters = c(46,5), ## Water level and temperature
-                                start_date = "2017-06-25",
-                                end_date = "2017-07-24",
-                                token = token_out)
-``` 
-Tokens only last for 10 minutes and users can only have 5 tokens at once. Therefore it is best to query the web service a little as possible by being efficient and strategic with your queries. `realtime_ws()` will only return data that is available. A message is returned if a particular station was not available. `parameters`, `start_date` and `end_date` fail silently if the station does not collect that parameter or data on that date. The web service constrains queries to be under 60 days and fewer than 300 stations. If more data is required, multiple queries should be made and combined using a function like `rbind()`.
-
-### Managing your credentials in R
-Because you are accessing the web service using credentials and potentially will be sharing your code will others, it is important that you set up some method so that your secrets aren't shared widely. Please read [this article](http://httr.r-lib.org/articles/secrets.html) to familiarize yourself with credential management. [This section](http://httr.r-lib.org/articles/secrets.html#environment-variables) is summarized here specific to `tidyhydat`. If you receive your credentials from ECCC it not advisable to directly include them in any code. Rather these important values are again stored in the `.Renviron` file. Run the following in a console:
-
-```{r, eval = FALSE}
-file.edit("~/.Renviron")
-```
-
-This opens your `.Renviron` file which where you enter the credentials given to you by ECCC. The code that you paste into the `.Renviron` file might look like something like this:
-
-```{r, eval=FALSE}
-## Credentials for ECCC web service
-WS_USRNM = "here is the username that ECCC gave you"
-WS_PWD = "here is the password that ECCC gave you"
-```
-
-Now these values can be accessed within an R session without giving away your secrets (Using `Sys.getenv()`). For `ws_token()` they are called automatically each time you use the function. 
-
-## Compare `realtime_ws` and `realtime_dd`
-`tidyhydat` provides two methods to download real-time data. `realtime_ws()`, coupled with `token_ws()`, is an API client for a web service hosted by ECCC. `realtime_dd()` provides a function to import openly accessible .csv files from [here](http://dd.weather.gc.ca/hydrometric/). `realtime_ws()` has several difference to `realtime_dd()`. These include:
-
-- *Speed*: `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries `realtime_dd()` if more appropriate.
-- *Length of record*: `realtime_ws()` records goes back further though only two months of data can accessed at one time. Though it varies for each station, typically the last 18 months of data are available with the web service.   
-- *Type of parameters*: `realtime_dd()` is restricted to river flow (either LEVEL and FLOW) data. In contrast `realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
-- *Date/Time filtering*: `realtime_ws()` provides argument to select a date range. Selecting a data range with `realtime_dd()` is not possible until after all files have been downloaded. 
-- *Accessibility*: `realtime_dd()` downloads data that openly accessible. `realtime_ws()` downloads data using a username and password which must be provided by ECCC. 
-
 ## Search functions
 You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
 ```{r, echo=TRUE}

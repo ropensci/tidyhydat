@@ -11,24 +11,6 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' @title Parameter ID
-#'
-#' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
-#' 
-#' @format A tibble with 8 rows and 7 variables:
-#' \describe{
-#'   \item{Parameter}{Numeric parameter code}
-#'   \item{Code}{Letter parameter code}
-#'   \item{Name_En}{Code name in English}
-#'   \item{Name_En}{Code name in French}
-#'   \item{Unit}{Parameter units}
-#' }
-#'
-#'
-#'
-"param_id"
-
-
 #' All Canadian stations 
 #' 
 #' A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
