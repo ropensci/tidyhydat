@@ -34,11 +34,13 @@ downloading data collected at the highest resolution. In instances where data is
 daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
 }
 \examples{
+\dontrun{
 ## Download from multiple provinces
 realtime_dd(station_number=c("01CD005","08MF005"))
 
 # To download all stations in Prince Edward Island:
 realtime_dd(prov_terr_state_loc = "PE")
+}
 
 }
 \seealso{

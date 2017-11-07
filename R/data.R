@@ -24,7 +24,6 @@
 #'   \item{Unit}{Parameter units}
 #' }
 #'
-#' @source \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometric_additionalData/Document/WebService_Guidelines.pdf}
 #'
 #'
 "param_id"

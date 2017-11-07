@@ -38,11 +38,13 @@
 #' }
 #'
 #' @examples
+#' \dontrun{
 #' ## Download from multiple provinces
 #' realtime_dd(station_number=c("01CD005","08MF005"))
 #'
 #' # To download all stations in Prince Edward Island:
 #' realtime_dd(prov_terr_state_loc = "PE")
+#' }
 #' 
 #' @family realtime functions
 #' @export

@@ -12,9 +12,6 @@
   \item{Name_En}{Code name in French}
   \item{Unit}{Parameter units}
 }}
-\source{
-\url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometric_additionalData/Document/WebService_Guidelines.pdf}
-}
 \usage{
 param_id
 }
