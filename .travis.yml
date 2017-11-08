@@ -4,5 +4,7 @@ language: R
 sudo: false
 cache: packages
 
-r_build_args: "--no-build-vignettes"
-r_check_args: "--no-build-vignettes --as-cran --no-examples"
+notifications:
+  email:
+    on_success: never
+    on_failure: never
