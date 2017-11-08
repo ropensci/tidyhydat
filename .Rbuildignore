@@ -9,6 +9,6 @@
 ^\.bib$
 ^Thumbs.db$
 ^tidyhydat\.md$
-^paper$
+^inst/JOSS$
 ^cran-comments.md$
 .github
