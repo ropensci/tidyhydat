@@ -7,7 +7,6 @@ date: "`r Sys.Date()`"
 output:
   html_document:
     keep_md: yes
-  pdf_document: default
 bibliography: paper.bib
 tags:
 - R
@@ -33,9 +32,9 @@ library(dbplyr)
 ```
 
 # Introduction
-Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canada national water data archive, plublished quarterly by the Government of Canada's Department of Environment and Climate Change. It is relational database that contains daily, monthly and annual data on water flow, water levels and sediment data.
+Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canadian national Water Data Archive, published quarterly by the Government of Canada's Department of Environment and Climate Change. It is relational database that contains daily, monthly and annual data on water flow, water levels and sediment data.
 
-Real-time data are provided by ECCC through two sources: a web service and a datamart. The web service is a login only service which is faster and contains more data that the datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is more like 2.5 hours. The [datamart](http://dd.weather.gc.ca/hydrometric/) is an open data source and is organized in a directory tree structure by province. The objective of this document is the outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these hydrometric data sources and *tidies* them. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
+Real-time data are provided by ECCC through a datamart. Files are updated to the datamart on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is approximately 2.5 hours. The [datamart](http://dd.weather.gc.ca/hydrometric/) is an open data source and is organized in a directory tree structure by province. The objective of this document is the outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these hydrometric data sources and *tidies* them. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
 
 ## Why use R in hydrology?
 There are many statistical computing projects that offer great functionality for users. For `tidyhydat` I have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. For hydrologists considering data analysis tools there are several commonly cited reasons to use R:
@@ -45,7 +44,7 @@ There are many statistical computing projects that offer great functionality for
 - R facilitates the scientific method by allowing for a fully reproducible data workflow that can be repeated by others when code is shared.  
 - R has a friendly community which is an important infrastructure element of any open source project. 
 
-There have been recent calls to use R more broadly in the field of hydrology [@moore2017watershed]. The `tidyhydat` package is an effort to push this call forward by being a standard package by which hydrologists and other users interact with WSC data in R. Conducting hydrological analysis in a programming environment like R allows hydrologists the ability to create fully reproducible workflows, automate repetitive tasks by letting the computer do the work and provides the same rigour to the data analysis process that hydrologists apply to field equipment and experimental design [@wilson2014best].
+There have been recent calls to use R more broadly in the field of hydrology [@moore2017watershed]. The `tidyhydat` package is an effort to push this call forward by being a standard package by which hydrologists and other users interact with WSC data in R. Conducting hydrological analysis in a programming environment like R allows hydrologists the ability to create fully reproducible workflows, automate repetitive tasks and provide the same rigour to the data analysis process that hydrologists apply to field equipment and experimental design [@wilson2014best].
 
 ## What is tidy data?
 Embedded within `tidyhydat` is the principle of *tidy data*. @wickham2014tidy defines tidy data by three principles:
@@ -71,6 +70,6 @@ hy_daily_flows(station_number = "08MF005",
           end_date = "1992-04-15")
 ```
 
-As you can see, this is much tidier data and is much easier to work with. In addition to these tidy principles, specific to `tidyhydat` we can also define that *for a common data source, variables should be referred to by a common name*. For example, hydrometric stations are given a unique 7 digit identifier that contains important watershed information. This identifier is variously referred to as `STATION_NUMBER` or `ID` depending on the exact ECCC data source. To tidy this hydrometric data, we have renamed, where necessary, each instance of the unique identifier as `STATION_NUMBER`. This consistency to data formats, and in particular tidy data, situates `tidyhydat` well to interact seamlessly with the powerful tools being developed as the `tidyverse` [@wickham2017tidyverse] and provides a path in R to realize some of the goals outlined by @moore2017watershed.
+As you can see, this is much tidier data and is much easier to work with. In addition to these tidy principles, specific to `tidyhydat`, we can also define that *for a common data source, variables should be referred to by a common name*. For example, hydrometric stations are given a unique 7 digit identifier that contains important watershed information. This identifier is variously referred to as `STATION_NUMBER` or `ID` depending on the exact ECCC data source. To tidy this hydrometric data, we have renamed, where necessary, each instance of the unique identifier as `STATION_NUMBER`. This consistency to data formats, and in particular tidy data, situates `tidyhydat` well to interact seamlessly with the powerful tools being developed in the `tidyverse` [@wickham2017tidyverse] and provides a path in R to realize some of the goals outlined by @moore2017watershed.
 
 # References
