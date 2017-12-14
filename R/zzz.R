@@ -112,7 +112,7 @@
   
   ## HYDAT is updated quarterly - should we go check if a new one is available for download?
   ## Only check when there is likely a new version i.e. about 3 months after last version
-  if(Sys.Date() > (as.Date(hy_version()$Date) + 10)){
+  if(file.exists(file.path(hy_dir(),"Hydat.sqlite3")) && Sys.Date() > (as.Date(hy_version()$Date) + 92)){
     packageStartupMessage("Checking for a new version of HYDAT...")
     base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
     x <- httr::GET(base_url)
