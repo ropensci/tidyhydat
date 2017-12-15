@@ -92,7 +92,7 @@ hy_stations <- function(station_number = NULL,
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
   ## Create the dataframe to return
-  df <- dplyr::tbl(hydat_con, "STATIONS") %>%
+  df <- dplyr::tbl(hydat_con, dbplyr::sql("SELECT * FROM `STATIONS`")) %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
     dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
