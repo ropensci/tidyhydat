@@ -5,9 +5,9 @@ Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("a
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
     person("Province of British Columbia", role = "cph"),
     person("Luke", "Winslow", role = "rev", 
-            comment = "Reviewed for rOpenSci, see <https://github.com/ropensci/onboarding/issues/118>"),
+            comment = "Reviewed for rOpenSci"),
     person("Laura", "DeCicco", role = "rev", 
-            comment = "Reviewed for rOpenSci, see <https://github.com/ropensci/onboarding/issues/118>")
+            comment = "Reviewed for rOpenSci")
     )
 Description: Provides functions to extract historical and real-time national 'hydrometric'
     data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
