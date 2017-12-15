@@ -5,6 +5,8 @@ tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 
 <a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511) [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 </div>
+ 
+
 Project Status
 --------------
 
@@ -23,12 +25,21 @@ Here is a summary of what `tidyhydat` does:
 Installation
 ------------
 
-To install the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
+You can installed `tidyhydat` from CRAN:
+
+``` r
+install.packages("tidyhydat")
+```
+
+To install the development version of the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
 
 ``` r
 install.packages("remotes")
 remotes::install_github("ropensci/tidyhydat")
 ```
+
+Usage
+-----
 
 Then to load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
@@ -46,9 +57,6 @@ download_hydat()
 ```
 
 This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
-
-Usage
------
 
 Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this.
 
@@ -166,24 +174,21 @@ Get citation information for `tidyhydat` in R by running:
 
 ``` r
 citation("tidyhydat")
-#> Warning in citation("tidyhydat"): no date field in DESCRIPTION file of
-#> package 'tidyhydat'
-#> Warning in citation("tidyhydat"): could not determine year for 'tidyhydat'
-#> from package DESCRIPTION file
 #> 
 #> To cite package 'tidyhydat' in publications use:
 #> 
-#>   Sam Albers (NA). tidyhydat: Extract and Tidy Canadian
-#>   Hydrometric Data. R package version 0.3.0.
-#>   https://github.com/ropensci/tidyhydat
+#>   Sam Albers (2017). tidyhydat: Extract and Tidy Canadian
+#>   'Hydrometric' Data. R package version 0.3.1.
+#>   https://CRAN.R-project.org/package=tidyhydat
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {tidyhydat: Extract and Tidy Canadian Hydrometric Data},
+#>     title = {tidyhydat: Extract and Tidy Canadian 'Hydrometric' Data},
 #>     author = {Sam Albers},
-#>     note = {R package version 0.3.0},
-#>     url = {https://github.com/ropensci/tidyhydat},
+#>     year = {2017},
+#>     note = {R package version 0.3.1},
+#>     url = {https://CRAN.R-project.org/package=tidyhydat},
 #>   }
 ```
 
