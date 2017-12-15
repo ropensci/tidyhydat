@@ -15,16 +15,12 @@ tags:
 - hydrology
 - Canada
 affiliations:
-  index: 1
+- index: 1
   name: Hydrology and Hydrometric Programs, Ministry of Environment and Climate Change Strategy, British Columbia Provincial Government
 ---
 
 > "Tidy datasets are all alike but every messy dataset is messy in its own way - "
 @wickham2014tidy
-
-
-
-
 
 # Introduction
 Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canadian national Water Data Archive, published quarterly by the Government of Canada's Department of Environment and Climate Change. It is relational database that contains daily, monthly and annual data on water flow, water levels and sediment.
