@@ -1,21 +1,20 @@
 ## Test environments
 
-* local Windows 7, R 3.4.2
-* ubuntu, os x, R 3.4.2 (travis-ci)
+* local Windows 7, R 3.4.3
+* ubuntu, R 3.4.3 (travis-ci)
 * win-builder (devel and release)
-* Windows 10, R 3.4.2 
+* local Windows 10, R 3.4.3 
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* macOS 10.11 El Capitan, R-release (experimental) - r-hub
+
 
 ## R CMD check results
 
 There were no ERRORs or WARNINGs.
 
-There was 1 NOTE:
-
-Possibly mis-spelled words in DESCRIPTION:
-  Hydrometric (2:34)
-  hydrometric (7:78)
-  
-All words are correctly spelled. 
+One NOTE:
+* checking data for non-ASCII characters ... NOTE
+  Note: found 7 marked UTF-8 strings
 
 ## Downstream dependencies
 
