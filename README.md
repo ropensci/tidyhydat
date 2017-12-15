@@ -3,10 +3,8 @@
 tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 ================================================================
 
-<a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat)
+<a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![Travis-CI Build Status](https://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat) [![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511) [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 </div>
-[![](https://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511) [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
-
 Project Status
 --------------
 
