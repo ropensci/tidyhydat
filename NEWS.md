@@ -1,3 +1,13 @@
+tidyhydat 0.3.1
+=========================
+### NEW FEATURES
+
+  * When package is loaded, tidyhydat checks to see if HYDAT is even present
+  * When package is loaded, it now tests to see if their a new version of HYDAT if the current date is greater than 3 months after the last release date of HYDAT. 
+  * Prep for CRAN release
+  * Starting to use raw SQL for table queries
+  * Removing 2nd vignette from build. Still available on github
+
 tidyhydat 0.3.0 
 =========================
 
