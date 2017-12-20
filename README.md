@@ -41,7 +41,9 @@ remotes::install_github("ropensci/tidyhydat")
 Usage
 -----
 
-Then to load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
+A more thorough vignette can be found on the `tidyhydat` [CRAN page](https://CRAN.R-project.org/package=tidyhydat).
+
+To load the package you need to use the `library()` function. When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. Even though `dplyr` is installed alongside `tidyhydat`, it is helpful to load it by itself as there are many useful functions contained within `dplyr`. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
 ``` r
 library(tidyhydat)
