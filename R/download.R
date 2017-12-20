@@ -286,7 +286,8 @@ download_hydat <- function(dl_hydat_here = NULL) {
     dl_hydat_here <- hy_dir()
   }
   
-  response <- readline(prompt = "Downloading HYDAT will take approximately 10 minutes. Are you sure you want to continue? (Y/N) ")
+  
+  response <- readline(prompt = "Downloading HYDAT will take ~10 minutes and will remove any older versions of HYDAT. Do you want to continue? (Y/N) ")
 
   if (!response %in% c("Y", "Yes", "yes", "y")) {
     stop("Maybe another day...")
@@ -302,7 +303,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
 
   ## If there is an existing hydat file get the date of release
-  if (length(list.files(dl_hydat_here, pattern = "Hydat.sqlite3")) == 1) {
+  if (file.exists(hydat_path)) {
     hy_version(hydat_path) %>%
       dplyr::mutate(condensed_date = paste0(
         substr(Date, 1, 4),
@@ -332,6 +333,11 @@ download_hydat <- function(dl_hydat_here = NULL) {
   }
 
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
+  
+  ## Remove current version of HYDAT
+  if (file.exists(hydat_path)){
+    file.remove(hydat_path)
+  }
 
   utils::download.file(url, temp)
 

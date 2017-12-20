@@ -1,3 +1,9 @@
+tidyhydat 0.3.2
+=========================
+### BUG FIXES
+  * Fixed a bug on `download_hydat()` where by sometimes R had trouble overwriting an existing version of existing database. Now the old database is simply deleted before the new one is downloaded.
+
+
 tidyhydat 0.3.1
 =========================
 ### NEW FEATURES
