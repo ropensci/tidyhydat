@@ -80,7 +80,6 @@ This generally outlines the usage of the HYDAT functions within `tidyhydat`.
 In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. `tidyhydat` provides three functions to access these data sources. Remember these are **unapproved** data and should treated as such:
 
 - `realtime_stations()`
-- `realtime_ws()`
 - `realtime_dd()`
 
 Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
