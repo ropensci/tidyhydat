@@ -10,13 +10,6 @@ matrix:
       dist: trusty
       r: release
 
-    - os: osx
-      osx_image: xcode8.1
-      r: release
-
-    - os: osx
-      r: release
-
   allow_failures:
     - os: linux
       dist: trusty
