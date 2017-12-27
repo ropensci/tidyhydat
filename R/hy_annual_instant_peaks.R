@@ -88,10 +88,10 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
 
   ## TODO: Convert to dttm
-  # aip = dplyr::mutate(aip, Datetime = lubridate::ymd_hm(paste0(YEAR,"-",MONTH,"-",DAY," ",HOUR,":",MINUTE)))
+  aip <- dplyr::mutate(aip, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, STATION_NUMBER, DATA_TYPE_EN, YEAR, PEAK_CODE, PRECISION_CODE, MONTH, DAY, HOUR, MINUTE, TIME_ZONE, PEAK, SYMBOL_EN) %>%
+  aip <- dplyr::select(aip, STATION_NUMBER, Date, HOUR, MINUTE, TIME_ZONE, PEAK, DATA_TYPE_EN, PEAK_CODE, PRECISION_CODE, SYMBOL_EN) %>%
     dplyr::rename(Parameter = DATA_TYPE_EN, Symbol = SYMBOL_EN, Value = PEAK)
 
   ## What stations were missed?
