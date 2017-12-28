@@ -7,7 +7,7 @@
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Date}{Observation date. Formatted as a Date class.}
-  \item{Parameter}{Parameter being measured. Only possible value is FLOW}
+  \item{Parameter}{Parameter being measured. Only possible value is Flow}
   \item{Value}{Discharge value. The units are m^3/s.}
   \item{Symbol}{Measurement/river conditions}
 }}

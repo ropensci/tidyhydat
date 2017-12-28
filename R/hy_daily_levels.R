@@ -24,7 +24,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is LEVEL}
+#'   \item{Parameter}{Parameter being measured. Only possible value is Level}
 #'   \item{Value}{Level value. The units are metres.}
 #'   \item{Symbol}{Measurement/river conditions}
 #' }
@@ -127,7 +127,7 @@ hy_daily_levels <- function(station_number = NULL,
       Date <= end_date)
   }
   dly_levels <- dplyr::left_join(dly_levels, tidyhydat::hy_data_symbols, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
-  dly_levels <- dplyr::mutate(dly_levels, Parameter = "LEVEL")
+  dly_levels <- dplyr::mutate(dly_levels, Parameter = "Level")
   
   ## Control for symbol ouput
   if(symbol_output == "code"){

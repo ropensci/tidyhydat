@@ -2,6 +2,7 @@
 output:
   github_document:
     html_preview: true
+    
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -120,7 +121,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
   
 ## Citation
 Get citation information for `tidyhydat` in R by running:
-```{r}
+```{r, eval=FALSE}
 citation("tidyhydat")
 ```
 

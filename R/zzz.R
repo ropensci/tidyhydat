@@ -97,6 +97,8 @@
           "temp2",
           "SYMBOL_FR",
           "SUSCON_SYMBOL",
+          "Flow",
+          "Level",
           "." # piping requires '.' at times
         )
       )
