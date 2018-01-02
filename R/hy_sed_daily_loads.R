@@ -26,7 +26,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is LOAD}
+#'   \item{Parameter}{Parameter being measured. Only possible value is Load}
 #'   \item{Value}{Discharge value. The units are tonnes.}
 #' }
 #'
@@ -123,7 +123,7 @@ hy_sed_daily_loads <- function(station_number = NULL,
       Date <= end_date)
   }
 
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Parameter = "LOAD")
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Parameter = "Load")
   sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, Date, Parameter, LOAD)
   sed_dly_loads <- dplyr::arrange(sed_dly_loads, Date)
 

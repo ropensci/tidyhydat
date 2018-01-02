@@ -29,11 +29,11 @@
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
 #'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
-#'   \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
-#'   \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the 
-#'   units are metres.}
-#'   \item{Grade}{future use}
-#'   \item{Symbol}{future use}
+#'   \item{Parameter}{Parameter being measured. Only possible values are Flow and Level}
+#'   \item{Value}{Value of the measurement. If Parameter equals Flow the units are m^3/s. 
+#'   If Parameter equals Level the units are metres.}
+#'   \item{Grade}{reserved for future use}
+#'   \item{Symbol}{reserved for future use}
 #'   \item{Code}{quality assurance/quality control flag for the discharge}
 #' }
 #'
@@ -48,7 +48,7 @@
 #' 
 #' @family realtime functions
 #' @export
-realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
+realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
   ## TODO: HAve a warning message if not internet connection exists
   if (!is.null(station_number) && station_number == "ALL") {
@@ -95,14 +95,14 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
       c(
         "STATION_NUMBER",
         "Date",
-        "LEVEL",
-        "LEVEL_GRADE",
-        "LEVEL_SYMBOL",
-        "LEVEL_CODE",
-        "FLOW",
-        "FLOW_GRADE",
-        "FLOW_SYMBOL",
-        "FLOW_CODE"
+        "Level",
+        "Level_GRADE",
+        "Level_SYMBOL",
+        "Level_CODE",
+        "Flow",
+        "Flow_GRADE",
+        "Flow_SYMBOL",
+        "Flow_CODE"
       )
     
     url_check <- httr::GET(infile[1])
@@ -124,14 +124,14 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
         col_types = readr::cols(
           STATION_NUMBER = readr::col_character(),
           Date = readr::col_datetime(),
-          LEVEL = readr::col_double(),
-          LEVEL_GRADE = readr::col_character(),
-          LEVEL_SYMBOL = readr::col_character(),
-          LEVEL_CODE = readr::col_integer(),
-          FLOW = readr::col_double(),
-          FLOW_GRADE = readr::col_character(),
-          FLOW_SYMBOL = readr::col_character(),
-          FLOW_CODE = readr::col_integer()
+          Level = readr::col_double(),
+          Level_GRADE = readr::col_character(),
+          Level_SYMBOL = readr::col_character(),
+          Level_CODE = readr::col_integer(),
+          Flow = readr::col_double(),
+          Flow_GRADE = readr::col_character(),
+          Flow_SYMBOL = readr::col_character(),
+          Flow_CODE = readr::col_integer()
         )
       )
     }
@@ -155,14 +155,14 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
         col_types = readr::cols(
           STATION_NUMBER = readr::col_character(),
           Date = readr::col_datetime(),
-          LEVEL = readr::col_double(),
-          LEVEL_GRADE = readr::col_character(),
-          LEVEL_SYMBOL = readr::col_character(),
-          LEVEL_CODE = readr::col_integer(),
-          FLOW = readr::col_double(),
-          FLOW_GRADE = readr::col_character(),
-          FLOW_SYMBOL = readr::col_character(),
-          FLOW_CODE = readr::col_integer()
+          Level = readr::col_double(),
+          Level_GRADE = readr::col_character(),
+          Level_SYMBOL = readr::col_character(),
+          Level_CODE = readr::col_integer(),
+          Flow = readr::col_double(),
+          Flow_GRADE = readr::col_character(),
+          Flow_SYMBOL = readr::col_character(),
+          Flow_CODE = readr::col_integer()
         )
       )
     }
@@ -179,7 +179,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc) {
 
     ## Now tidy the data
     ## TODO: Find a better way to do this
-    output <- dplyr::rename(output, `LEVEL_` = LEVEL, `FLOW_` = FLOW)
+    output <- dplyr::rename(output, `Level_` = Level, `Flow_` = Flow)
     output <- tidyr::gather(output, temp, val, -STATION_NUMBER, -Date)
     output <- tidyr::separate(output, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
     output <- dplyr::mutate(output, key = ifelse(key == "", "Value", key))

@@ -24,7 +24,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is SUSCON}
+#'   \item{Parameter}{Parameter being measured. Only possible value is Suscon}
 #'   \item{Value}{Discharge value. The units are mg/l.}
 #'   \item{Symbol}{Measurement/river conditions}
 #' }
@@ -124,7 +124,7 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   
   
   sed_dly_suscon <- dplyr::left_join(sed_dly_suscon, hy_data_symbols, by = c("SUSCON_SYMBOL" = "SYMBOL_ID"))
-  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, Parameter = "SUSCON")
+  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, Parameter = "Suscon")
   
   ## Control for symbol ouput
   if(symbol_output == "code"){

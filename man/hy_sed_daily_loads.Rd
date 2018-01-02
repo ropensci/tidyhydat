@@ -7,7 +7,7 @@
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Date}{Observation date. Formatted as a Date class.}
-  \item{Parameter}{Parameter being measured. Only possible value is LOAD}
+  \item{Parameter}{Parameter being measured. Only possible value is Load}
   \item{Value}{Discharge value. The units are tonnes.}
 }}
 \source{
