@@ -116,7 +116,7 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::collect(dly_flows)
   
   if(is.data.frame(dly_flows) && nrow(dly_flows)==0)
-    {stop("This station is not present in HYDAT")}
+    {stop("No flow data for this station in HYDAT")}
   
   dly_flows <- tidyr::gather(dly_flows, variable, temp, -(STATION_NUMBER:NO_DAYS))
   dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable)))
