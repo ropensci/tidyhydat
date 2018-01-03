@@ -122,18 +122,7 @@ hy_annual_stats <- function(station_number =NULL,
   
   
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+  differ_msg(unique(stns), unique(annual_statistics$STATION_NUMBER))
   
   annual_statistics
 }

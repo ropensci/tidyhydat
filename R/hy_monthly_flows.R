@@ -140,18 +140,7 @@ hy_monthly_flows <- function(station_number = NULL,
   monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = FULL_MONTH == 1)
 
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+  differ_msg(unique(stns), unique(monthly_flows$STATION_NUMBER))
 
 
   monthly_flows
