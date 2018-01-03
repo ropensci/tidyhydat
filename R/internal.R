@@ -49,3 +49,64 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   }
   stns
 }
+
+
+## Simple error handler
+handle_error <- function(code) {
+  tryCatch(code, error = function(c) {
+    msg <- conditionMessage(c)
+    invisible(structure(msg, class = "try-error"))
+  })
+}
+
+## Differ message for all the hy_* functions
+differ_msg <- function(stns_input, stns_output) {
+  differ <- setdiff(stns_input, stns_output)
+  if (length(differ) != 0) {
+    if (length(differ) <= 10) {
+      message("The following station(s) were not retrieved: ",
+              paste0(differ, sep = " "))
+      message("Check station number typos or if it is a valid station in the network")
+    }
+    else {
+      message(
+        "More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified."
+      )
+    }
+  } else {
+    message("All station successfully retrieved")
+  }
+  
+}
+
+
+## Multi parameter message
+multi_param_msg <- function(data_arg, stns, params) {
+  cli::cat_line(cli::rule(
+    left = crayon::bold(params)
+  ))
+  
+  flow_stns <- data_arg %>%
+    dplyr::filter(Parameter == params) %>%
+    dplyr::distinct(STATION_NUMBER) %>%
+    dplyr::arrange(STATION_NUMBER) %>%
+    dplyr::pull(STATION_NUMBER)
+  
+  good_stns <- c()
+  if(length(flow_stns) > 0L){
+    good_stns <- paste0(crayon::green(cli::symbol$tick)," ", flow_stns, collapse = "\n")
+  }
+  
+  ## Station not in output
+  not_in <- setdiff(stns,flow_stns)
+  
+  bad_stns <- c()
+  if(length(not_in) > 0L){
+    bad_stns <- paste0(crayon::red(cli::symbol$cross)," ", not_in, collapse = "\n")
+  }
+  
+  cli::cat_line(paste0(good_stns, "\n", bad_stns))
+  
+  
+  
+}
