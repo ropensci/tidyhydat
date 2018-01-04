@@ -228,3 +228,26 @@ hy_version <- function(hydat_path = NULL) {
   version
   
 }
+
+#' Calculate daily means from higher resolution realtime data
+#' 
+#' This function is meant to be used within a pipe as a means of easily moving from higher resolution 
+#' data to daily means.
+#' 
+#' @param .data A data argument that is designed to take only the output of realtime_dd
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' 
+#' @examples
+#' \dontrun{
+#' realtime_dd("08MF005") %>% realtime_daily_mean()
+#' }
+#' 
+#' @export
+realtime_daily_mean <- function(.data, na.rm = FALSE){
+  
+  .data <- dplyr::mutate(.data, Date = as.Date(Date))
+  
+  .data <- dplyr::group_by(.data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter)
+  
+  dplyr::summarise(.data, Value = mean(Value, na.rm = na.rm))
+}
