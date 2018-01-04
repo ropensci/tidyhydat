@@ -51,18 +51,38 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
-  flows <- suppressMessages(hy_daily_flows(stns, ...))
+  ## Query each parameter then check if it returned a tibble 
   
-  levels <- suppressMessages(hy_daily_levels(stns, ...))
+  ## flows
+  flows <- handle_error(
+    suppressMessages(hy_daily_flows(stns, ...))
+  )
   
-  loads <- suppressMessages(hy_sed_daily_loads(stns, ...))
+  if(any(class(flows) == "tbl_df")) daily <- flows
   
-  suscon <- suppressMessages(hy_sed_daily_suscon(stns, ...))
+  ## levels
+  levels <- handle_error(
+    suppressMessages(hy_daily_levels(stns, ...))
+  )
   
-  daily <- dplyr::bind_rows(flows, levels, loads, suscon)
+  if(any(class(levels) == "tbl_df")) daily <- dplyr::bind_rows(daily, levels)
+  
+  ##loads
+  loads <- handle_error(
+    suppressMessages(hy_sed_daily_loads(stns, ...))
+  )
+  
+  if(any(class(loads) == "tbl_df")) daily <- dplyr::bind_rows(daily, loads)
+  
+  ## suscon
+  suscon <- handle_error(
+    suppressMessages(hy_sed_daily_suscon(stns, ...))
+  )
+  
+  if(any(class(suscon) == "tbl_df")) daily <- dplyr::bind_rows(daily, suscon)
   
   if(quiet == FALSE){
-    multi_param_msg(daily, stns, "Flow")
+    multi_param_msg(flows, stns, "Flow")
     multi_param_msg(levels, stns,  "Level")
     multi_param_msg(loads, stns, "Load")
     multi_param_msg(suscon, stns, "Suscon")
