@@ -7,8 +7,7 @@
 realtime_plot(station_number = NULL, Parameter = c("Flow", "Level"))
 }
 \arguments{
-\item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
-is returned.}
+\item{station_number}{A (or several) seven digit Water Survey of Canada station number.}
 
 \item{Parameter}{Parameter of interest. Either "Flow" or "Level".}
 }
@@ -17,11 +16,16 @@ A plot of recent realtime values
 }
 \description{
 This is a quick and easy way to visualize a single station using base R graphics. 
-More complicated plotting needs should consider using \code{ggplot2}.
+More complicated plotting needs should consider using \code{ggplot2}. Inputting more 
+5 stations will result in very busy plots and longer load time.
 }
 \examples{
 \dontrun{
+## One station
 realtime_plot("08MF005")
+
+## Multiple stations
+realtime_plot(c("07EC002","01AD003"))
 }
 
 }
