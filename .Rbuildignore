@@ -13,4 +13,3 @@
 ^cran-comments.md$
 .github
 ^vignettes/tidyhydat_example_analysis.Rmd$
-hy_daily.R

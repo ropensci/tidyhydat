@@ -104,7 +104,7 @@ hy_sed_daily_loads <- function(station_number = NULL,
   sed_dly_loads <- dplyr::collect(sed_dly_loads)
   
   if(is.data.frame(sed_dly_loads) && nrow(sed_dly_loads)==0)
-  {stop("This station is not present in HYDAT")}
+  {stop("No sediment load data for this station in HYDAT")}
   
   sed_dly_loads <- tidyr::gather(sed_dly_loads, variable, temp, -(STATION_NUMBER:NO_DAYS))
   sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", variable)))
@@ -131,18 +131,7 @@ hy_sed_daily_loads <- function(station_number = NULL,
 
 
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+  differ_msg(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
 
   
   sed_dly_loads

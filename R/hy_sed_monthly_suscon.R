@@ -133,18 +133,7 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = FULL_MONTH == 1)
   
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+  differ_msg(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
   
 
   sed_monthly_suscon

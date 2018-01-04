@@ -116,7 +116,7 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::collect(dly_flows)
   
   if(is.data.frame(dly_flows) && nrow(dly_flows)==0)
-    {stop("This station is not present in HYDAT")}
+    {stop("No flow data for this station in HYDAT")}
   
   dly_flows <- tidyr::gather(dly_flows, variable, temp, -(STATION_NUMBER:NO_DAYS))
   dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable)))
@@ -158,19 +158,8 @@ hy_daily_flows <- function(station_number = NULL,
   
   
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
-
+  differ_msg(unique(stns), unique(dly_flows$STATION_NUMBER))
+  
 
   dly_flows
 }

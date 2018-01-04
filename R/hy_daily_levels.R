@@ -108,7 +108,7 @@ hy_daily_levels <- function(station_number = NULL,
   dly_levels <- dplyr::collect(dly_levels)
   
   if(is.data.frame(dly_levels) && nrow(dly_levels)==0)
-  {stop("This station is not present in HYDAT.")}
+  {stop("No level data for this station in HYDAT")}
   
   dly_levels <- tidyr::gather(dly_levels, variable, temp, -(STATION_NUMBER:NO_DAYS))
   dly_levels <- dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", variable)))
@@ -148,18 +148,8 @@ hy_daily_levels <- function(station_number = NULL,
   
   
   ## What stations were missed?
-  differ <- setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number typos or if it is a valid station in the network")
-    }
-    else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+  differ_msg(unique(stns), unique(dly_levels$STATION_NUMBER))
+
 
   dly_levels
 }

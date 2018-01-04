@@ -108,7 +108,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     url_check <- httr::GET(infile[1])
     ## check if a valid url
     if(httr::http_error(url_check) == TRUE){
-      message(paste0("No hourly data found for ",STATION_NUMBER_SEL))
+      info(paste0("No hourly data found for ",STATION_NUMBER_SEL))
       
       h <- tibble::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
                      F = NA, G = NA, H = NA, I = NA, J = NA)
@@ -140,7 +140,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     url_check_d <- httr::GET(infile[2])
     ## check if a valid url
     if(httr::http_error(url_check_d) == TRUE){
-      message(paste0("No daily data found for ",STATION_NUMBER_SEL))
+      info(paste0("No daily data found for ",STATION_NUMBER_SEL))
       
       d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
                           F = NA, G = NA, H = NA, I = NA, J = NA)
@@ -286,19 +286,20 @@ download_hydat <- function(dl_hydat_here = NULL) {
     dl_hydat_here <- hy_dir()
   }
   
-  
-  response <- readline(prompt = "Downloading HYDAT will take ~10 minutes and will remove any older versions of HYDAT. Do you want to continue? (Y/N) ")
+  question <- "Downloading HYDAT will take ~10 minutes and will remove any older versions of HYDAT. Do you want to continue? (Y/N)"
+  response <- readline(prompt = info(question))
 
   if (!response %in% c("Y", "Yes", "yes", "y")) {
-    stop("Maybe another day...")
+    handle_error(stop(not_done("Maybe another day...")))
   }
   
-  message(paste0("Downloading HYDAT.sqlite3 to ",dl_hydat_here))
+  done(paste0("Downloading HYDAT.sqlite3 to ", crayon::red(dl_hydat_here)))
 
 
   ## Create actual hydat_path
   hydat_path <- paste0(dl_hydat_here, "\\Hydat.sqlite3")
-
+  
+  ## temporary path to save
   temp <- tempfile()
 
 
@@ -317,19 +318,20 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
 
   ## Create the link to download HYDAT
-  base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
+  base_url <-
+    "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
   x <- httr::GET(base_url)
   httr::stop_for_status(x)
-  new_hydat <- substr(gsub(
-    "^.*\\Hydat_sqlite3_", "",
-    httr::content(x, "text")
-  ), 1, 8)
+  new_hydat <- substr(gsub("^.*\\Hydat_sqlite3_", "",
+                           httr::content(x, "text")), 1, 8)
 
   ## Do we need to download a new version?
   if (new_hydat == existing_hydat) {
-    stop(paste0("The existing local version of hydat, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available."))
+    handle_error(stop(not_done(paste0("The existing local version of hydat, published on ",
+                lubridate::ymd(existing_hydat),
+                ", is the most recent version available."))))
   } else {
-    message(paste0("Downloading version of hydat published on ", lubridate::ymd(new_hydat)))
+    done(paste0("Downloading version of HYDAT published on ", crayon::blue(lubridate::ymd(new_hydat))))
   }
 
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
@@ -340,8 +342,16 @@ download_hydat <- function(dl_hydat_here = NULL) {
   }
 
   utils::download.file(url, temp)
+  
+  if(file.exists(temp)) done("Extracting HYDAT")
 
-  utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), exdir = dl_hydat_here, overwrite = TRUE)
+  utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), 
+               exdir = dl_hydat_here, overwrite = TRUE)
+  
+  
+  if (file.exists(hydat_path)){
+    done(paste0("HYDAT successfully downloaded"))
+  } else(not_done("HYDAT not successfully downloaded"))
   
   invisible(TRUE)
 }

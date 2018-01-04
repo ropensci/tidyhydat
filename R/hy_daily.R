@@ -15,6 +15,10 @@
 #' A thin wrapper around \code{hy_daily_flows} and \code{hy_daily_levels} that returns a data frames that 
 #' contains both parameters. All arguments are passed directly to these functions. 
 #' 
+#' @inheritParams hy_stations 
+#' @param quiet Geneerate output of parameters successfully queried? Defaults to TRUE. 
+#' The output can be overly verbose when querying multiple stations but is useful when
+#' only querying a few stations.
 #' @param ... See \code{\link{hy_daily_flows}} arguments
 #' 
 #' @return A tibble of daily flows and levels
@@ -36,35 +40,35 @@
 #' hy_daily(station_number = c("02JE013","08MF005"))
 #' }
 
-hy_daily <- function(station_number = NULL, ...){
-  flows <- suppressMessages(hy_daily_flows(station_number = NULL, ...))
+hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE, ...){
   
-  levels <- suppressMessages(hy_daily_levels(station_number = NULL, ...))
+  hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  ## Read in database
+  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   
-  loads <- suppressMessages(hy_sed_daily_loads(station_number = NULL, ...))
+  on.exit(DBI::dbDisconnect(hydat_con))
   
-  suscon <- suppressMessages(hy_sed_daily_suscon(station_number = NULL, ...))
+  ## Determine which stations we are querying
+  stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  flows <- suppressMessages(hy_daily_flows(stns, ...))
+  
+  levels <- suppressMessages(hy_daily_levels(stns, ...))
+  
+  loads <- suppressMessages(hy_sed_daily_loads(stns, ...))
+  
+  suscon <- suppressMessages(hy_sed_daily_suscon(stns, ...))
   
   daily <- dplyr::bind_rows(flows, levels, loads, suscon)
   
-  
+  if(quiet == FALSE){
+    multi_param_msg(daily, stns, "Flow")
+    multi_param_msg(levels, stns,  "Level")
+    multi_param_msg(loads, stns, "Load")
+    multi_param_msg(suscon, stns, "Suscon")
+    
+  }
   
   dplyr::arrange(daily, STATION_NUMBER, Date)
 
 }
-
-
-#tryCatch(
-#  tidyhydat::realtime_dd(station_number = loop_stations[i]),
-#  error = function(e)
-#    data.frame(Status = e$message)
-#)
-#
-#hy_daily_flows()
-#
-#station_number_val <- "08MF005"
-#
-#flows <- tryCatch(
-#  suppressMessages(hy_daily_flows(station_number = station_number_val, ...)),
-#  error = function(e)
-#)

@@ -109,13 +109,17 @@
 .onAttach <- function(libname, pkgname) {
 
   if(!file.exists(file.path(hy_dir(),"Hydat.sqlite3"))){
-    packageStartupMessage("Tidyhydat requires HYDAT which has not yet been downloaded. Download using download_hydat()")
+    packageStartupMessage(
+      not_done("tidyhydat requires HYDAT which has not yet been downloaded. Run download_hydat() now.")
+      )
   }
   
   ## HYDAT is updated quarterly - should we go check if a new one is available for download?
   ## Only check when there is likely a new version i.e. about 3 months after last version
   if(file.exists(file.path(hy_dir(),"Hydat.sqlite3")) && Sys.Date() > (as.Date(hy_version()$Date) + 92)){
-    packageStartupMessage("Checking for a new version of HYDAT...")
+    
+    packageStartupMessage(info("Checking for a new version of HYDAT..."))
+    
     base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
     x <- httr::GET(base_url)
     httr::stop_for_status(x)
@@ -128,9 +132,12 @@
     
     ## Compare that to existing HYDAT
     if (new_hydat != as.Date(hy_version()$Date)){
-      packageStartupMessage(paste0("Your version of HYDAT is out of date. Use download_hydat() to get the new version."))
+      packageStartupMessage(
+        not_done(
+          paste0("Your version of HYDAT is out of date. Use download_hydat() to get the new version."))
+        )
     } else{
-      packageStartupMessage("No new version of HYDAT")
+      packageStartupMessage(done("You are using the most current version of HYDAT"))
     }
   }
 

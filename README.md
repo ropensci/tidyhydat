@@ -71,16 +71,16 @@ hy_daily_flows(station_number = "08LA001")
 #> # A tibble: 29,159 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
-#>  1 08LA001        1914-01-01 Flow        144 <NA>  
-#>  2 08LA001        1914-01-02 Flow        144 <NA>  
-#>  3 08LA001        1914-01-03 Flow        144 <NA>  
-#>  4 08LA001        1914-01-04 Flow        140 <NA>  
-#>  5 08LA001        1914-01-05 Flow        140 <NA>  
-#>  6 08LA001        1914-01-06 Flow        136 <NA>  
-#>  7 08LA001        1914-01-07 Flow        136 <NA>  
-#>  8 08LA001        1914-01-08 Flow        140 <NA>  
-#>  9 08LA001        1914-01-09 Flow        140 <NA>  
-#> 10 08LA001        1914-01-10 Flow        140 <NA>  
+#>  1 08LA001        1914-01-01 FLOW        144 <NA>  
+#>  2 08LA001        1914-01-02 FLOW        144 <NA>  
+#>  3 08LA001        1914-01-03 FLOW        144 <NA>  
+#>  4 08LA001        1914-01-04 FLOW        140 <NA>  
+#>  5 08LA001        1914-01-05 FLOW        140 <NA>  
+#>  6 08LA001        1914-01-06 FLOW        136 <NA>  
+#>  7 08LA001        1914-01-07 FLOW        136 <NA>  
+#>  8 08LA001        1914-01-08 FLOW        140 <NA>  
+#>  9 08LA001        1914-01-09 FLOW        140 <NA>  
+#> 10 08LA001        1914-01-10 FLOW        140 <NA>  
 #> # ... with 29,149 more rows
 ```
 
@@ -102,16 +102,16 @@ hy_daily_flows(station_number = PEI_stns)
 #> # A tibble: 98,562 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
-#>  1 01CA003        1961-08-01 Flow         NA <NA>  
-#>  2 01CB002        1961-08-01 Flow         NA <NA>  
-#>  3 01CA003        1961-08-02 Flow         NA <NA>  
-#>  4 01CB002        1961-08-02 Flow         NA <NA>  
-#>  5 01CA003        1961-08-03 Flow         NA <NA>  
-#>  6 01CB002        1961-08-03 Flow         NA <NA>  
-#>  7 01CA003        1961-08-04 Flow         NA <NA>  
-#>  8 01CB002        1961-08-04 Flow         NA <NA>  
-#>  9 01CA003        1961-08-05 Flow         NA <NA>  
-#> 10 01CB002        1961-08-05 Flow         NA <NA>  
+#>  1 01CA003        1961-08-01 FLOW         NA <NA>  
+#>  2 01CB002        1961-08-01 FLOW         NA <NA>  
+#>  3 01CA003        1961-08-02 FLOW         NA <NA>  
+#>  4 01CB002        1961-08-02 FLOW         NA <NA>  
+#>  5 01CA003        1961-08-03 FLOW         NA <NA>  
+#>  6 01CB002        1961-08-03 FLOW         NA <NA>  
+#>  7 01CA003        1961-08-04 FLOW         NA <NA>  
+#>  8 01CB002        1961-08-04 FLOW         NA <NA>  
+#>  9 01CA003        1961-08-05 FLOW         NA <NA>  
+#> 10 01CB002        1961-08-05 FLOW         NA <NA>  
 #> # ... with 98,552 more rows
 ```
 
@@ -126,16 +126,16 @@ search_stn_name("canada") %>%
 #> # A tibble: 76,679 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
-#>  1 01AK001        1918-08-01 Flow      NA    <NA>  
-#>  2 01AK001        1918-08-02 Flow      NA    <NA>  
-#>  3 01AK001        1918-08-03 Flow      NA    <NA>  
-#>  4 01AK001        1918-08-04 Flow      NA    <NA>  
-#>  5 01AK001        1918-08-05 Flow      NA    <NA>  
-#>  6 01AK001        1918-08-06 Flow      NA    <NA>  
-#>  7 01AK001        1918-08-07 Flow       1.78 <NA>  
-#>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
-#>  9 01AK001        1918-08-09 Flow       1.50 <NA>  
-#> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
+#>  1 01AK001        1918-08-01 FLOW      NA    <NA>  
+#>  2 01AK001        1918-08-02 FLOW      NA    <NA>  
+#>  3 01AK001        1918-08-03 FLOW      NA    <NA>  
+#>  4 01AK001        1918-08-04 FLOW      NA    <NA>  
+#>  5 01AK001        1918-08-05 FLOW      NA    <NA>  
+#>  6 01AK001        1918-08-06 FLOW      NA    <NA>  
+#>  7 01AK001        1918-08-07 FLOW       1.78 <NA>  
+#>  8 01AK001        1918-08-08 FLOW       1.78 <NA>  
+#>  9 01AK001        1918-08-09 FLOW       1.50 <NA>  
+#> 10 01AK001        1918-08-10 FLOW       1.78 <NA>  
 #> # ... with 76,669 more rows
 ```
 
