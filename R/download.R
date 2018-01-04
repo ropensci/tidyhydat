@@ -196,7 +196,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
   }
   
   ## What stations were missed?
-  differ_msg(unique(stns), unique(output_c$STATION_NUMBER))
+  #differ_msg(unique(stns), unique(output_c$STATION_NUMBER))
   
   output_c
 }
