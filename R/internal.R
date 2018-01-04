@@ -86,6 +86,13 @@ multi_param_msg <- function(data_arg, stns, params) {
     left = crayon::bold(params)
   ))
   
+  ## Is the data anything other than a tibble?
+  if(class(data_arg)[1] != "tbl_df"){
+    return(
+      cli::cat_line(paste0(crayon::red(cli::symbol$cross)," ", stns, collapse = "\n"))
+      )
+  }
+  
   flow_stns <- data_arg %>%
     dplyr::filter(Parameter == params) %>%
     dplyr::distinct(STATION_NUMBER) %>%
