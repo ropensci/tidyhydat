@@ -250,5 +250,5 @@ realtime_daily_mean <- function(.data, na.rm = FALSE){
   .data <- dplyr::group_by(.data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter)
   
   dplyr::summarise(.data, Value = mean(Value, na.rm = na.rm)) %>%
-    ungroup()
+    dplyr::ungroup()
 }
