@@ -301,7 +301,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
 
   ## Create actual hydat_path
-  hydat_path <- paste0(dl_hydat_here, "\\Hydat.sqlite3")
+  hydat_path <- file.path(dl_hydat_here, "Hydat.sqlite3")
   
   ## temporary path to save
   temp <- tempfile()
