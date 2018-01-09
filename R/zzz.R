@@ -99,6 +99,7 @@
           "SUSCON_SYMBOL",
           "Flow",
           "Level",
+          "STATION",
           "." # piping requires '.' at times
         )
       )
