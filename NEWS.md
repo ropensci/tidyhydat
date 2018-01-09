@@ -2,8 +2,9 @@ tidyhydat 0.3.2
 =========================
 ### NEW FEATURES
   * New `hy_daily()` function which combines all daily data into one dataframe.
-  * Add a quick base R plotting feature for quick visualization of realtime flows.
+  * Add a quick base R plotting feature for quick visualization of realtime and historical data.
   * Add `realtime_daily_mean` function that quickly converts higher resolution data into daily means.
+  * New vignette outlining some example usage.
   
 ### BUG FIXES
   * Fixed a bug on `download_hydat()` where by sometimes R had trouble overwriting an existing version of existing database. Now the old database is simply deleted before the new one is downloaded.
