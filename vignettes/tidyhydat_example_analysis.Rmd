@@ -135,8 +135,9 @@ library(dplyr)
 library(ggplot2)
 library(lubridate)
 ```
-The pipe below finds the active station that has realtime data in the [Reference Hydrometric Basin Network](https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/hydrometric-program-national-partnership/network.html) (RHBN) in the territory of Nunavut that has the longest record then grabs all the daily flow information:
 
+The pipe below finds the active station that has realtime data in the [Reference Hydrometric Basin Network](https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/hydrometric-program-national-partnership/network.html) (RHBN) in the territory of Nunavut that has the longest record then grabs all the daily flow information:
+  
 ```{r}
 nunavut_stn_flows <- hy_stations() %>%
   filter(HYD_STATUS == "ACTIVE") %>%
@@ -150,15 +151,17 @@ nunavut_stn_flows <- hy_stations() %>%
   pull(STATION_NUMBER) %>%
   hy_daily_flows()
 ``` 
+
 Armed with our data, we can now evaluate the historical distribution of data then to put some real time data into historical context. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
 ```{r}
 pct_flow <- nunavut_stn_flows %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
   filter(dayofyear %in% yday(seq.Date(from = (Sys.Date()-30), 
-                                     to = Sys.Date(), by = "day"))) %>%
+                                      to = Sys.Date(), by = "day"))) %>%
   group_by(dayofyear) %>%
   mutate(prctile = ecdf(Value)(Value)) %>%
-  mutate(Date_no_year = dmy(paste0(day(Date),"-",month(Date),"-",year(Sys.Date()))))
+  mutate(Date_no_year = dmy(paste0(day(Date),"-",month(Date),"-",year(Sys.Date())))) %>%
+  ungroup()
 ```
 
 To collect real time data, we can use the `realtime_dd()` function in `tidyhydat`. Because real time data is collected in hourly (or higher) intervals and we are operating on a daily basis, we first need to take a daily mean of discharge. Again this is accomplished in a pipe:
@@ -166,7 +169,8 @@ To collect real time data, we can use the `realtime_dd()` function in `tidyhydat
 nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
   mutate(Date_day = as.Date(Date)) %>%
   group_by(Date_day) %>%
-  summarise(Value = mean(Value, na.rm = TRUE))
+  summarise(Value = mean(Value, na.rm = TRUE)) %>%
+  ungroup()
 ```
 
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
@@ -185,4 +189,3 @@ ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
        caption = "Real time data is presents AS IS and represents unapproved data",
        x = "Date", y = "Discharge (m^3/s)")
 ```
-
