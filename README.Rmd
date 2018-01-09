@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "tools/readme/README-"
 )
 ```
 
@@ -64,7 +64,6 @@ To use many of the functions in the `tidyhydat` package you will need to downloa
 download_hydat()
 ```
 This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
-  
 
 Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this. 
 
@@ -73,7 +72,7 @@ The simplest case is if you would like to extract only station. You can supply t
 hy_daily_flows(station_number = "08LA001")
 ```
 
-Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector for `hy_daily_flows()`:
+Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector which is passed to the multi-parameter function `hy_daily()`. This function queries the flow, level, sediment load and suspended sediment concentration tables and combines them (if present) into one dataframe:
 
 ```{r example2, warning=FALSE}
 PEI_stns <- hy_stations() %>%
@@ -83,7 +82,7 @@ PEI_stns <- hy_stations() %>%
 
 PEI_stns
 
-hy_daily_flows(station_number = PEI_stns)
+hy_daily(station_number = PEI_stns)
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
@@ -105,6 +104,10 @@ Another option is to provide simply the province as an argument and download all
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
+A simple plotting tool is also provided to quickly visualize realtime data:
+```{r, eval = TRUE, fig.height=7, fig.width=7}
+realtime_plot("08LG006")
+```
 
 ## Getting Help or Reporting an Issue
 

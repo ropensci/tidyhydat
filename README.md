@@ -84,7 +84,7 @@ hy_daily_flows(station_number = "08LA001")
 #> # ... with 29,149 more rows
 ```
 
-Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector for `hy_daily_flows()`:
+Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector which is passed to the multi-parameter function `hy_daily()`. This function queries the flow, level, sediment load and suspended sediment concentration tables and combines them (if present) into one dataframe:
 
 ``` r
 PEI_stns <- hy_stations() %>%
@@ -96,23 +96,21 @@ PEI_stns <- hy_stations() %>%
 PEI_stns
 #> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CD005"
 
-hy_daily_flows(station_number = PEI_stns)
-#> No start and end dates specified. All dates available will be returned.
-#> All station successfully retrieved
-#> # A tibble: 98,562 x 5
+hy_daily(station_number = PEI_stns)
+#> # A tibble: 123,225 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01CA003        1961-08-01 Flow         NA <NA>  
-#>  2 01CB002        1961-08-01 Flow         NA <NA>  
-#>  3 01CA003        1961-08-02 Flow         NA <NA>  
-#>  4 01CB002        1961-08-02 Flow         NA <NA>  
-#>  5 01CA003        1961-08-03 Flow         NA <NA>  
-#>  6 01CB002        1961-08-03 Flow         NA <NA>  
-#>  7 01CA003        1961-08-04 Flow         NA <NA>  
-#>  8 01CB002        1961-08-04 Flow         NA <NA>  
-#>  9 01CA003        1961-08-05 Flow         NA <NA>  
-#> 10 01CB002        1961-08-05 Flow         NA <NA>  
-#> # ... with 98,552 more rows
+#>  2 01CA003        1961-08-02 Flow         NA <NA>  
+#>  3 01CA003        1961-08-03 Flow         NA <NA>  
+#>  4 01CA003        1961-08-04 Flow         NA <NA>  
+#>  5 01CA003        1961-08-05 Flow         NA <NA>  
+#>  6 01CA003        1961-08-06 Flow         NA <NA>  
+#>  7 01CA003        1961-08-07 Flow         NA <NA>  
+#>  8 01CA003        1961-08-08 Flow         NA <NA>  
+#>  9 01CA003        1961-08-09 Flow         NA <NA>  
+#> 10 01CA003        1961-08-10 Flow         NA <NA>  
+#> # ... with 123,215 more rows
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
@@ -154,6 +152,14 @@ Another option is to provide simply the province as an argument and download all
 ``` r
 realtime_dd(prov_terr_state_loc = "PE")
 ```
+
+A simple plotting tool is also provided to quickly visualize realtime data:
+
+``` r
+realtime_plot("08LG006")
+```
+
+![](tools/readme/README-unnamed-chunk-8-1.png)
 
 Getting Help or Reporting an Issue
 ----------------------------------
