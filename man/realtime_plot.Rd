@@ -9,15 +9,16 @@ realtime_plot(station_number = NULL, Parameter = c("Flow", "Level"))
 \arguments{
 \item{station_number}{A (or several) seven digit Water Survey of Canada station number.}
 
-\item{Parameter}{Parameter of interest. Either "Flow" or "Level".}
+\item{Parameter}{Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".}
 }
 \value{
 A plot of recent realtime values
 }
 \description{
-This is a quick and easy way to visualize a single station using base R graphics. 
+This is an easy way to visualize a single station using base R graphics. 
 More complicated plotting needs should consider using \code{ggplot2}. Inputting more 
-5 stations will result in very busy plots and longer load time.
+5 stations will result in very busy plots and longer load time. Legend position will
+sometimes overlap plotted points.
 }
 \examples{
 \dontrun{

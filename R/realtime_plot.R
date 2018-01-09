@@ -12,12 +12,13 @@
 
 #' Convenience function to plot realtime data
 #' 
-#' This is a quick and easy way to visualize a single station using base R graphics. 
+#' This is an easy way to visualize a single station using base R graphics. 
 #' More complicated plotting needs should consider using \code{ggplot2}. Inputting more 
-#' 5 stations will result in very busy plots and longer load time. 
+#' 5 stations will result in very busy plots and longer load time. Legend position will
+#' sometimes overlap plotted points.
 #' 
 #' @param station_number A (or several) seven digit Water Survey of Canada station number. 
-#' @param Parameter Parameter of interest. Either "Flow" or "Level".
+#' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
 #' 
 #' @return A plot of recent realtime values
 #' 
@@ -43,28 +44,34 @@ realtime_plot <- function(station_number = NULL, Parameter = c("Flow","Level")){
   if(is.null(rldf)) stop("Station(s) not present in the datamart")
   
   rldf <- rldf[rldf$Parameter == Parameter,]
-  rldf$STATION_NUMBER <- factor(rldf$STATION_NUMBER)
   
-  #stn_name <- search_stn_number(station_number)$STATION_NAME
+  ## Join with meta data to get station name
+  rldf <- dplyr::left_join(rldf, realtime_stations(), by = c("STATION_NUMBER","PROV_TERR_STATE_LOC"))
   
-  y_axis <- ifelse(Parameter == "Flow", "Discharge (m^3/s)", "Level (m)")
+  rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
   
+  rldf$STATION <- factor(rldf$STATION)
+  
+  
+  y_axis <- ifelse(Parameter == "Flow", expression(Discharge~(m^3/s)), "Level (m)")
   
   ## Set the palette
   #palette(rainbow(length(unique(rldf$STATION_NUMBER))))
   
   graphics::plot(Value ~ Date,
                  data = rldf,
-                 col = STATION_NUMBER,
+                 col = STATION,
                  main="Realtime Water Survey of Canada Gauges",
                  xlab="Date", 
-                 ylab=paste0(y_axis),
+                 ylab="",
                  bty= "L",
                  pch = 20, cex = 1)
+  
+  graphics::title(ylab=y_axis, line=2.25)
 
   graphics::legend(x = "topright",
-         legend = unique(rldf$STATION_NUMBER), 
-         fill = unique(rldf$STATION_NUMBER),
+         legend = unique(rldf$STATION), 
+         fill = unique(rldf$STATION),
          bty = "n",
          cex = 0.75)
   
