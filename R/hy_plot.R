@@ -35,7 +35,7 @@
 
 hy_plot <- function(station_number = NULL, Parameter = c("Flow","Level", "Suscon","Load")){
   
-  Parameter = match.arg(Parameter, several.ok = TRUE)
+  Parameter <- match.arg(Parameter, several.ok = TRUE)
   
   hydf <- hy_daily(station_number)
   

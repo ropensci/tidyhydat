@@ -7,6 +7,7 @@ tidyhydat 0.3.2
   * New vignette outlining some example usage.
   
 ### BUG FIXES
+  * Fixed bug in `download_hydat()` that create a path that wasn't OS-independent.
   * Fixed a bug on `download_hydat()` where by sometimes R had trouble overwriting an existing version of existing database. Now the old database is simply deleted before the new one is downloaded.
   * `hy_annual_instant_peaks()` now returns a date object with HOUR, MINUTE and TIME_ZONE returned as separed columns. (#10)
   * All variable values of LEVEL and FLOW have been changed to Level and Flow to match the output of `hy_data_types`. (#60)

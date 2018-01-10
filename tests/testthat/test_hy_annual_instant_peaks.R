@@ -66,8 +66,8 @@ test_that("hy_annual_instant_peaks can accept both arguments for backward compat
 
 
 test_that("hy_annual_instant_peaks respects year inputs", {
-  s_year = 1981
-  e_year = 2007
+  s_year <- 1981
+  e_year <- 2007
   df <-
     hy_annual_instant_peaks(
       station_number = c("08NM083", "08NE102"),

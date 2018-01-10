@@ -35,7 +35,7 @@
 
 realtime_plot <- function(station_number = NULL, Parameter = c("Flow","Level")){
   
-  Parameter = match.arg(Parameter)
+  Parameter <- match.arg(Parameter)
   
   #if(length(station_number) > 1L) stop("realtime_plot only accepts one station number")
   
