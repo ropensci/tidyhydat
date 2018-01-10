@@ -25,7 +25,7 @@ is returned.}
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
 is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 
-\item{quiet}{Geneerate output of parameters successfully queried? Defaults to TRUE. 
+\item{quiet}{Generate output of parameters successfully queried? Defaults to TRUE. 
 The output can be overly verbose when querying multiple stations but is useful when
 only querying a few stations.}
 

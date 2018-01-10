@@ -16,7 +16,7 @@
 #' contains both parameters. All arguments are passed directly to these functions. 
 #' 
 #' @inheritParams hy_stations 
-#' @param quiet Geneerate output of parameters successfully queried? Defaults to TRUE. 
+#' @param quiet Generate output of parameters successfully queried? Defaults to TRUE. 
 #' The output can be overly verbose when querying multiple stations but is useful when
 #' only querying a few stations.
 #' @param ... See \code{\link{hy_daily_flows}} arguments
