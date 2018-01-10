@@ -29,7 +29,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
+#'   \item{Date}{Observation date and time for last thirty days. Formatted as a POSIXct class as UTC for consistency.}
 #'   \item{Parameter}{Parameter being measured. Only possible values are Flow and Level}
 #'   \item{Value}{Value of the measurement. If Parameter equals Flow the units are m^3/s. 
 #'   If Parameter equals Level the units are metres.}
