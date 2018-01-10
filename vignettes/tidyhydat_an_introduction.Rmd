@@ -9,7 +9,7 @@ output:
   html_vignette:
      keep_md: true
 vignette: >
-  %\VignetteIndexEntry{tidyhydat}
+  %\VignetteIndexEntry{tidyhydat_an_introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
