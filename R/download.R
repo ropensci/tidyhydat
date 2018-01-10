@@ -11,11 +11,12 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' Download a tibble of realtime discharge data from the Meteorological Service of Canada datamart
+#' Download a tibble of realtime river data from the last 30 days from the Meteorological Service of Canada datamart
 #'
-#' Download realtime discharge data from the Meteorological Service of Canada (MSC) datamart. The function will prioritize
-#' downloading data collected at the highest resolution. In instances where data is not available at high (hourly or higher) resolution
-#' daily averages are used. Currently, if a station does not exist or is not found, no data is returned.
+#' Download realtime river data from the last 30 days from the Meteorological Service of Canada (MSC) datamart. 
+#' The function will prioritize downloading data collected at the highest resolution. In instances where data is 
+#' not available at high (hourly or higher) resolution daily averages are used. Currently, if a station does not 
+#' exist or is not found, no data is returned.
 #'
 #' @param station_number Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{prov_terr_state_loc}
 #' is returned.
