@@ -19,7 +19,7 @@
 #' contains daily, monthly and annual data on water flow, water levels and sediment data. Functions are also 
 #' provided to extract station metadata like position and record history.
 #' 
-#' In addition to historical data from HYDAT, tidhydat also provide functions to access realtime water flow and 
+#' In addition to historical data from HYDAT, tidyhydat also provide functions to access realtime water flow and 
 #' water level data. This data is raw and unapproved originating directly from the station. 
 #' 
 #' Regardless of the data source, tidyhydat organizes all this data in a consistent format that allows the user to 
