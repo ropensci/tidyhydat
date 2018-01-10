@@ -1,6 +1,7 @@
 library(dbplyr)
 library(devtools)
 library(tidyverse)
+##dont forget load_all()
 
 ##param_id
 
@@ -21,12 +22,14 @@ hydat_con <- DBI::dbConnect(RSQLite::SQLite(), file.path(hy_dir(),"Hydat.sqlite3
 
 ## DATA_TYPES
 hy_data_types <- tbl(hydat_con, "DATA_TYPES") %>%
-  collect()
+  collect() %>%
+  mutate(DATA_TYPE_FR = iconv(DATA_TYPE_FR,from = "UTF-8", to = "ASCII//TRANSLIT"))
 use_data(hy_data_types, overwrite = TRUE)
 
 ## DATA_SYMBOLS
 hy_data_symbols <- tbl(hydat_con, "DATA_SYMBOLS") %>%
-  collect()
+  collect() %>%
+  mutate(SYMBOL_FR = iconv(SYMBOL_FR, from = "UTF-8", to = "ASCII//TRANSLIT"))
 use_data(hy_data_symbols, overwrite = TRUE)
 
 DBI::dbDisconnect(hydat_con)
