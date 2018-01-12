@@ -6,7 +6,10 @@ test_that("hy_db returns the default location of the Hydat.sqlite3 database", {
 })
 
 test_that("hy_db fails when there is no hydat_path", {
-  expect_error(hy_db("not_a_file_anywhere.nope", check_exists = TRUE), "hydat_path does not exist")
+  expect_error(
+    hy_db("not_a_file_anywhere.nope", check_exists = TRUE), 
+    "Run download_hydat\\(\\) to download the database."
+  )
   expect_silent(hy_db("not_a_file_anywhere.nope", check_exists = FALSE))
   expect_equal(hy_db("not_a_file_anywhere.nope", check_exists = FALSE), "not_a_file_anywhere.nope")
 })
@@ -53,4 +56,18 @@ test_that("hy_src_disconnect errors when called on an unknown object", {
 
 test_that("the test database always exists", {
   expect_true(file.exists(hy_test_db()))
+})
+
+test_that("default place to look for Hydat database can be get/set internally", {
+  # get previous value so we can reset when done the test
+  prev_val <- tidyhydat:::hy_set_default_db(NULL)
+  
+  # NULL should set back to original default
+  expect_equal(tidyhydat:::hy_get_default_db(), file.path(hy_dir(), "Hydat.sqlite3"))
+  
+  # set_default_db should return previous value
+  expect_equal(tidyhydat:::hy_set_default_db(hy_test_db()), file.path(hy_dir(), "Hydat.sqlite3"))
+  
+  # set back to value when we started
+  tidyhydat:::hy_set_default_db(prev_val)
 })

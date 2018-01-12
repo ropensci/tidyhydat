@@ -72,19 +72,15 @@ hy_src_disconnect <- function(src) {
 hy_db <- function(hydat_path = NULL, check_exists = TRUE) {
   # the default location of the hydat database
   if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(), "Hydat.sqlite3")
-    
-    ## Check if default Hydat is present
-    if (check_exists && !file.exists(hydat_path)){
-      stop(paste0("No Hydat.sqlite3 found at ", hy_dir(), 
-                  ". Run download_hydat() to download the database."))
-    }
-    
-  } else {
-    ## Check if file is present
-    if (check_exists && !file.exists(hydat_path)){
-      stop(paste0("hydat_path does not exist or is not a file: ", hydat_path))
-    }
+    hydat_path <- hy_get_default_db()
+  }
+  
+  ## Check if default Hydat is present
+  if (check_exists && !file.exists(hydat_path)) {
+    stop(sprintf(
+      "No %s found at %s. Run download_hydat() to download the database.",
+      basename(hydat_path), dirname(hydat_path)
+    ))
   }
   
   hydat_path
@@ -109,5 +105,50 @@ hy_test_db <- function() {
   system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
 }
 
+#' Set the default database path
+#' 
+#' For testing purposes, it may be convenient to set the default
+#' database location to somewhere other than the global default. This is
+#' not exported and is only for internal use.
+#'
+#' @param hydat_path The new path to the default database (e.g., \link{hy_test_db()})
+#'
+#' @return hy_set_default_db() returns the previous value; 
+#'   hy_get_default_db() returns the current default database path.
+#' @noRd
+#'
+#' @examples
+#' # set default to the test database
+#' hy_set_default_db(hy_test_db())
+#' 
+#' # get the default value
+#' hy_get_default_db()
+#' 
+#' # set back to the default db location
+#' hy_set_default_db(NULL)
+#' 
+hy_set_default_db <- function(hydat_path = NULL) {
+  old_value <- hy_get_default_db()
+  
+  ## NULL means reset to the original default
+  if (is.null(hydat_path)) {
+    hydat_path <- file.path(hy_dir(), "Hydat.sqlite3")
+  }
 
+  assign("default_db", hydat_path, envir = hy_db_default_options)
+  invisible(old_value)
+}
 
+#' @rdname hy_set_default_db
+#' @noRd
+hy_get_default_db <- function() {
+  if ("default_db" %in% names(hy_db_default_options)) {
+    hy_db_default_options$default_db
+  } else {
+    file.path(hy_dir(), "Hydat.sqlite3")
+  }
+}
+
+#' @rdname hy_set_default_db
+#' @noRd
+hy_db_default_options <- new.env(parent = emptyenv())
