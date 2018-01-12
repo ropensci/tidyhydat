@@ -5,13 +5,13 @@ test_that("hy_daily_flows accepts single and multiple station arguments", {
   expect_identical(unique(
     hy_daily_flows(
       station_number = stns,
-      hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+      hydat_path = hy_test_db()
     )$STATION_NUMBER
   ), stns)
   expect_identical(length(unique(
     hy_daily_flows(
       station_number = c("08MF005", "05AA008"),
-      hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+      hydat_path = hy_test_db()
     )$STATION_NUMBER
   )), length(c("08NM083", "08NE102")))
 })
@@ -22,13 +22,13 @@ test_that("hy_daily_flows accepts single and multiple province arguments",
             expect_true(nrow(
               hy_daily_flows(
                 prov_terr_state_loc = "BC",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
             expect_true(nrow(
               hy_daily_flows(
                 prov_terr_state_loc = c("BC", "YT"),
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })
@@ -37,17 +37,17 @@ test_that("hy_daily_flows produces an error when a province is not specified cor
           {
             expect_error(hy_daily_flows(
               prov_terr_state_loc = "BCD",
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
             expect_error(hy_daily_flows(
               prov_terr_state_loc = c("YT", "BCD"),
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
           })
 
 ## Too much data
 # test_that("hy_daily_flows gather data when no arguments are supplied",{
-#  expect_true(nrow(hy_daily_flows(hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"))) >= 1)
+#  expect_true(nrow(hy_daily_flows(hydat_path = hy_test_db())) >= 1)
 # })
 
 test_that("hy_daily_flows can accept both arguments for backward compatability",
@@ -56,7 +56,7 @@ test_that("hy_daily_flows can accept both arguments for backward compatability",
               hy_daily_flows(
                 prov_terr_state_loc = "BC",
                 station_number = "08MF005",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })
@@ -67,7 +67,7 @@ test_that("hy_daily_flows respects Date specification", {
   temp_df <- hy_daily_flows(
     station_number = "08MF005",
     prov_terr_state_loc = "BC",
-    hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"),
+    hydat_path = hy_test_db(),
     start_date = date_vector[1],
     end_date = date_vector[2]
   )
@@ -78,7 +78,7 @@ test_that("hy_daily_flows correctly parses leaps year", {
   expect_warning(
     hy_daily_flows(
       prov_terr_state_loc = "BC",
-      hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"),
+      hydat_path = hy_test_db(),
       start_date = "1988-02-29",
       end_date = "1988-02-29"
     ),

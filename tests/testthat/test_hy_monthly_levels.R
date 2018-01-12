@@ -6,13 +6,13 @@ test_that("hy_monthly_levels accepts single and multiple province arguments",
             expect_identical(unique(
               hy_monthly_levels(
                 station_number = stns,
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )$STATION_NUMBER
             ), stns)
             expect_identical(length(unique(
               hy_monthly_levels(
                 station_number = c("08MF005", "05AA008"),
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )$STATION_NUMBER
             )), length(c("08NM083", "08NE102")))
           })
@@ -23,13 +23,13 @@ test_that("hy_monthly_levels accepts single and multiple province arguments",
             expect_true(nrow(
               hy_monthly_levels(
                 prov_terr_state_loc = "BC",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
             expect_true(nrow(
               hy_monthly_levels(
                 prov_terr_state_loc = c("YT", "BC"),
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })
@@ -38,11 +38,11 @@ test_that("hy_monthly_levels produces an error when a province is not specified 
           {
             expect_error(hy_monthly_levels(
               prov_terr_state_loc = "BCD",
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
             expect_error(hy_monthly_levels(
               prov_terr_state_loc = c("AB", "BCD"),
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
           })
 
@@ -52,7 +52,7 @@ test_that("hy_monthly_levels can accept both arguments for backward compatabilit
               hy_monthly_levels(
                 prov_terr_state_loc = "BC",
                 station_number = "08MF005",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })
@@ -63,7 +63,7 @@ test_that("hy_monthly_levels respects Year specification", {
   temp_df <- hy_monthly_levels(
     station_number = "08MF005",
     prov_terr_state_loc = "BC",
-    hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat"),
+    hydat_path = hy_test_db(),
     start_date = date_vector[1],
     end_date = date_vector[2]
   )
