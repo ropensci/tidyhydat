@@ -2,16 +2,23 @@
 % Please edit documentation in R/hy_db.R
 \name{hy_src}
 \alias{hy_src}
+\alias{hy_src_disconnect}
 \alias{hy_db}
 \title{Open a connection to the HYDAT database}
 \usage{
 hy_src(hydat_path = NULL)
 
+hy_src_disconnect(src)
+
 hy_db(hydat_path = NULL, check_exists = TRUE)
 }
 \arguments{
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}.}
+used by \link{download_hydat}. It is also possible to pass in an existing 
+\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+user-level call.}
+
+\item{src}{A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.}
 
 \item{check_exists}{Throw an error if hydat_path or the default database do not exist.}
 }
@@ -43,7 +50,7 @@ tbl(src, "STATIONS") \%>\%
   
 # close the connection to the database by removing the object
 # (and triggering garbage collection)
-DBI::dbDisconnect(src$con)
+hy_src_disconnect(src)
 
 }
 \seealso{

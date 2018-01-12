@@ -7,8 +7,11 @@
 #' \link[dplyr]{collect} to read them into memory.
 #'
 #' @param hydat_path The path to the hydat database or NULL to use the default location
-#'   used by \link{download_hydat}.
+#'   used by \link{download_hydat}. It is also possible to pass in an existing 
+#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+#'   user-level call.
 #' @param check_exists Throw an error if hydat_path or the default database do not exist.
+#' @param src A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.
 #'
 #' @return \code{hy_src} returns a dplyr \link[dplyr]{src_sqlite}; 
 #'   \code{hy_db} returns the file locations of the downloaded HYDAT database
@@ -35,12 +38,36 @@
 #'   
 #' # close the connection to the database by removing the object
 #' # (and triggering garbage collection)
-#' DBI::dbDisconnect(src$con)
+#' hy_src_disconnect(src)
 #' 
 hy_src <- function(hydat_path = NULL) {
-  # check that file exists using hy_db
-  hydat_path <- hy_db(hydat_path, check_exists = TRUE)
-  dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), hydat_path))
+  # hydat_path can also be an src to support one connection for
+  # nested calls
+  if (dplyr::is.src(hydat_path)) {
+    hydat_path
+  } else {
+    # check that file exists using hy_db
+    hydat_path <- hy_db(hydat_path, check_exists = TRUE)
+    dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), hydat_path))
+  }
+}
+
+#' @rdname hy_src
+#' @export
+hy_src_disconnect <- function(src) {
+  # src can technically be a database connection or an src
+  # so this function can be applied in 
+  if (dplyr::is.src(src)) {
+    con <- src$con
+  } else if (inherits(src, "SQLiteConnection")){
+    con <- src
+  } else {
+    stop("hy_src_disconnect doesn't know how to deal with object of class ",
+         paste(class(src), collapse = " / "))
+  }
+  
+  # close the connection (will throw warning if con is already connected)
+  invisible(DBI::dbDisconnect(con))
 }
 
 #' @rdname hy_src
