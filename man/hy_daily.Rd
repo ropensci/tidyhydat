@@ -16,7 +16,7 @@ HYDAT
 }
 \usage{
 hy_daily(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE,
-  ...)
+  hydat_path = NULL, ...)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
@@ -28,6 +28,10 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 \item{quiet}{Generate output of parameters successfully queried? Defaults to TRUE. 
 The output can be overly verbose when querying multiple stations but is useful when
 only querying a few stations.}
+
+\item{hydat_path}{The default for this argument is to look for hydat in the same location where it
+was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
+You can see where hydat was downloaded using \code{hy_dir()}}
 
 \item{...}{See \code{\link{hy_daily_flows}} arguments}
 }
