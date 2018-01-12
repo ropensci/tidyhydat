@@ -10,9 +10,10 @@ HYDAT
 hy_agency_list(hydat_path = NULL)
 }
 \arguments{
-\item{hydat_path}{The default for this argument is to look for hydat in the same location where it
-was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
-You can see where hydat was downloaded using \code{hy_dir()}}
+\item{hydat_path}{The path to the hydat database or NULL to use the default location
+used by \link{download_hydat}. It is also possible to pass in an existing 
+\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+user-level call.}
 }
 \value{
 A tibble of agencies

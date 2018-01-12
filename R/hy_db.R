@@ -6,12 +6,9 @@
 #' so it is best to use dplyr to \link[dplyr]{filter} them before using
 #' \link[dplyr]{collect} to read them into memory.
 #'
-#' @param hydat_path The path to the hydat database or NULL to use the default location
-#'   used by \link{download_hydat}. It is also possible to pass in an existing 
-#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
-#'   user-level call.
 #' @param check_exists Throw an error if hydat_path or the default database do not exist.
 #' @param src A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.
+#' @inheritParams hy_agency_list
 #'
 #' @return \code{hy_src} returns a dplyr \link[dplyr]{src_sqlite}; 
 #'   \code{hy_db} returns the file locations of the downloaded HYDAT database
