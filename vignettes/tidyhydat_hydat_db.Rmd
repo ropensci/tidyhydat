@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The HYDAT database is a massive hydrologic data resource. The functions in this package are designed to get the most out of the HYDAT database as quickly as possible, however in the process of reformatting the data to be more useful, some information is lost. This vignette is intended to demonstrate how to access tables within the database for your own custom HYDAT analysis, should additional information be needed.
+The HYDAT database is a massive hydrologic data resource. The functions in this package are designed to get the most out of the HYDAT database as quickly as possible, however in the process of reformatting the data to be more useful, the package modifies the original tables. This vignette is intended to demonstrate how to access tables within the database for your own custom HYDAT analysis, should additional information be needed. This should not be necessary for the vast majority of users, and is intended only for advanced R users.
 
 ## Downloading HYDAT
 
@@ -29,8 +29,10 @@ hydat_download()
 ```
 
 ```{r, include=FALSE}
-# unbeknownst to the reader, we are actually going to surreptitiously use the test database.
-prev_default <- tidyhydat:::hy_set_default_db(hy_test_db())
+# we are actually going to use the test database
+# so the vignette can be reproducibly rebuilt without
+# needing to call hydat_download
+prev_default <- hy_set_default_db(hy_test_db())
 ```
 
 ## Working with HYDAT tables
