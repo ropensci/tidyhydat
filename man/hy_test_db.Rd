@@ -2,22 +2,32 @@
 % Please edit documentation in R/hy_db.R
 \name{hy_test_db}
 \alias{hy_test_db}
-\title{Get the location of the test HYDAT database}
+\alias{hy_downloaded_db}
+\alias{hy_default_db}
+\title{Get the location of the HYDAT database}
 \usage{
 hy_test_db()
+
+hy_downloaded_db()
+
+hy_default_db()
 }
 \value{
-The file location of tinyhydat.sqlite3
+The file location of a HYDAT database.
 }
 \description{
 The full HYDAT database needs to be downloaded from \link{download_hydat}, but for testing
 purposes, a small test database is included in this package. Use
-\code{hydat_path = hy_test_db()} in hy_* functions to use the test database.
+\code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database; 
+use \code{hydat_path = hy_downloaded_db()} to explicitly use the full, most recent
+downloaded database (this is also the path returned by \code{hy_default_db()}).
 }
 \examples{
 hy_test_db()
+hy_downloaded_db()
+hy_default_db()
 
 }
 \seealso{
-\link{hy_db}
+\link{hy_src}, \link{hy_set_default_db}.
 }
