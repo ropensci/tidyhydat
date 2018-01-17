@@ -1,4 +1,4 @@
-tidyhydat 0.4.0
+tidyhydat 0.3.3
 =========================
 ### NEW FEATURES
   * Open a connection to the HYDAT database directly using `hy_src()` for advanced functionality.
