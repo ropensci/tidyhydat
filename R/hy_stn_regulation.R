@@ -48,20 +48,11 @@ hy_stn_regulation <- function(station_number = NULL,
                            hydat_path = NULL, 
                            prov_terr_state_loc = NULL) {
   
-  if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
-  }
-  
-  ## Check if hydat is present
-  if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
-  }
-
-
   ## Read in database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)

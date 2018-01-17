@@ -6,13 +6,13 @@ test_that("hy_stn_regulation accepts single and multiple province arguments",
             expect_identical(unique(
               hy_stn_regulation(
                 station_number = stns,
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )$STATION_NUMBER
             ), stns)
             expect_identical(length(unique(
               hy_stn_regulation(
                 station_number = c("08NM083", "08NE102"),
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )$STATION_NUMBER
             )), length(c("08NM083", "08NE102")))
           })
@@ -23,13 +23,13 @@ test_that("hy_stn_regulation accepts single and multiple province arguments",
             expect_true(nrow(
               hy_stn_regulation(
                 prov_terr_state_loc = "BC",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
             expect_true(nrow(
               hy_stn_regulation(
                 prov_terr_state_loc = c("BC", "YT"),
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })
@@ -38,17 +38,17 @@ test_that("hy_stn_regulation produces an error when a province is not specified 
           {
             expect_error(hy_stn_regulation(
               prov_terr_state_loc = "BCD",
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
             expect_error(hy_stn_regulation(
               prov_terr_state_loc = c("AB", "BCD"),
-              hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+              hydat_path = hy_test_db()
             ))
           })
 
 test_that("hy_stn_regulation gather data when no arguments are supplied", {
   expect_true(nrow(hy_stn_regulation(
-    hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+    hydat_path = hy_test_db()
   )) >= 1)
 })
 
@@ -58,7 +58,7 @@ test_that("hy_stn_regulation can accept both arguments for backward compatabilit
               hy_stn_regulation(
                 prov_terr_state_loc = "BC",
                 station_number = "08MF005",
-                hydat_path = system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
+                hydat_path = hy_test_db()
               )
             ) >= 1)
           })

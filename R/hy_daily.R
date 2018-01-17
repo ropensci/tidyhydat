@@ -40,13 +40,14 @@
 #' hy_daily(station_number = c("02JE013","08MF005"))
 #' }
 
-hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE, ...){
+hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE, 
+                     hydat_path = NULL, ...){
   
-  hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
   ## Read in database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
   
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
@@ -55,7 +56,7 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
   
   ## flows
   flows <- handle_error(
-    suppressMessages(hy_daily_flows(stns, ...))
+    suppressMessages(hy_daily_flows(stns, hydat_path = hydat_con, ...))
   )
   
   if(any(class(flows) == "tbl_df")) daily <- flows

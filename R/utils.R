@@ -3,6 +3,7 @@
 #' Use this search function when you only know the partial station name or want to search.
 #'
 #' @param search_term Only accepts one word.
+#' @inheritParams hy_agency_list
 #'
 #' @return A tibble of stations that match the \code{search_term}
 #' 
@@ -15,10 +16,16 @@
 #'
 #' @export
 
-search_stn_name <- function(search_term) {
+search_stn_name <- function(search_term, hydat_path = NULL) {
+  
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
   
   results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
     dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
     dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
   
@@ -34,10 +41,16 @@ search_stn_name <- function(search_term) {
 #' @rdname search_stn_name
 #' @export
 #' 
-search_stn_number <- function(search_term) {
+search_stn_number <- function(search_term, hydat_path = NULL) {
+  
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
   
   results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations())) %>%
+    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
     dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
     dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
   
@@ -70,9 +83,11 @@ hy_dir <- function(...){
 #' hy_agency_list function
 #'
 #' AGENCY look-up Table
-#' @param hydat_path The default for this argument is to look for hydat in the same location where it
-#' was saved by using \code{download_hydat}. Therefore this argument is almost always omitted from a function call. 
-#' You can see where hydat was downloaded using \code{hy_dir()}
+#' 
+#' @param hydat_path The path to the hydat database or NULL to use the default location
+#'   used by \link{download_hydat}. It is also possible to pass in an existing 
+#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+#'   user-level call.
 #'
 #' @return A tibble of agencies
 #'
@@ -86,20 +101,11 @@ hy_dir <- function(...){
 #'
 hy_agency_list <- function(hydat_path = NULL) {
   
-  if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
   }
-  
-  ## Check if hydat is present
-  if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
-  }
-  
-
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
 
   agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
     dplyr::collect()
@@ -125,22 +131,11 @@ hy_agency_list <- function(hydat_path = NULL) {
 #'
 hy_reg_office_list <- function(hydat_path = NULL) {
   
-  if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
   }
-  
-  ## Check if hydat is present
-  if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
-  }
-  
-
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
-
-
 
   regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
     dplyr::collect()
@@ -165,20 +160,11 @@ hy_reg_office_list <- function(hydat_path = NULL) {
 #' @export
 #'
 hy_datum_list <- function(hydat_path = NULL) {
-  if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
   }
-  
-  ## Check if hydat is present
-  if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
-  }
-  
-  
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
   
   datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
     dplyr::collect()
@@ -206,20 +192,11 @@ hy_datum_list <- function(hydat_path = NULL) {
 #'
 hy_version <- function(hydat_path = NULL) {
   
-  if(is.null(hydat_path)){
-    hydat_path <- file.path(hy_dir(),"Hydat.sqlite3")
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
   }
-  
-  ## Check if hydat is present
-  if (!file.exists(hydat_path)){
-    stop(paste0("No Hydat.sqlite3 found at ",hy_dir(),". Run download_hydat() to download the database."))
-  }
-  
-  
-  ## Read on database
-  hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
-  
-  on.exit(DBI::dbDisconnect(hydat_con))
   
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%

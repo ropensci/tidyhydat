@@ -5,12 +5,17 @@
 \alias{search_stn_number}
 \title{A search function for hydrometric station name or number}
 \usage{
-search_stn_name(search_term)
+search_stn_name(search_term, hydat_path = NULL)
 
-search_stn_number(search_term)
+search_stn_number(search_term, hydat_path = NULL)
 }
 \arguments{
 \item{search_term}{Only accepts one word.}
+
+\item{hydat_path}{The path to the hydat database or NULL to use the default location
+used by \link{download_hydat}. It is also possible to pass in an existing 
+\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+user-level call.}
 }
 \value{
 A tibble of stations that match the \code{search_term}
