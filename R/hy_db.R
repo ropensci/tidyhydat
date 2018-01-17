@@ -9,8 +9,7 @@
 #' @param src A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.
 #' @inheritParams hy_agency_list
 #'
-#' @return \code{hy_src} returns a dplyr \link[dplyr]{src_sqlite}; 
-#'   \code{hy_db} returns the file locations of the downloaded HYDAT database
+#' @return A dplyr \link[dplyr]{src_sqlite}
 #' @export
 #' 
 #' @seealso 
@@ -32,8 +31,7 @@
 #'   filter(PROV_TERR_STATE_LOC == "BC") %>%
 #'   collect()
 #'   
-#' # close the connection to the database by removing the object
-#' # (and triggering garbage collection)
+#' # close the connection to the database
 #' hy_src_disconnect(src)
 #' 
 hy_src <- function(hydat_path = NULL) {

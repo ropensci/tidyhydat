@@ -18,8 +18,7 @@ user-level call.}
 \item{src}{A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.}
 }
 \value{
-\code{hy_src} returns a dplyr \link[dplyr]{src_sqlite}; 
-  \code{hy_db} returns the file locations of the downloaded HYDAT database
+A dplyr \link[dplyr]{src_sqlite}
 }
 \description{
 This function gives low-level access to the underlying HYDAT database used by
@@ -43,8 +42,7 @@ tbl(src, "STATIONS") \%>\%
   filter(PROV_TERR_STATE_LOC == "BC") \%>\%
   collect()
   
-# close the connection to the database by removing the object
-# (and triggering garbage collection)
+# close the connection to the database
 hy_src_disconnect(src)
 
 }
