@@ -3,6 +3,9 @@ tidyhydat 0.3.3
 ### NEW FEATURES
   * Open a connection to the HYDAT database directly using `hy_src()` for advanced functionality.
   * Add some tools to improve the usability of the test database.
+  
+### MINOR IMPROVEMENTS
+  * Fixed package startup message so it can be supressed. (#79)
 
 
 tidyhydat 0.3.2

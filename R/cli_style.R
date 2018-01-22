@@ -14,19 +14,19 @@
 ## drawing heavily from the tidyverse package
 
 done <- function(msg){
-  cat(crayon::green(cli::symbol$tick), msg, "\n")
+  packageStartupMessage(crayon::green(cli::symbol$tick), " ", msg)
 }
 
 not_done <- function(msg){
-  cat(crayon::red(cli::symbol$cross), msg, "\n")
+  packageStartupMessage(crayon::red(cli::symbol$cross), " ", msg)
 }
 
 congrats <- function(msg){
-  cat(crayon::yellow(cli::symbol$star), msg, "\n")
+  packageStartupMessage(crayon::yellow(cli::symbol$star), " ", msg)
 }
 
 info <- function(msg){
-  cat(crayon::blue(cli::symbol$bullet), msg, "\n")
+  packageStartupMessage(crayon::blue(cli::symbol$bullet), " ", msg)
 }
 
 

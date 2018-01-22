@@ -138,7 +138,7 @@
           paste0("Your version of HYDAT is out of date. Use download_hydat() to get the new version."))
         )
     } else{
-      packageStartupMessage(done("You are using the most current version of HYDAT"))
+      packageStartupMessage(congrats("You are using the most current version of HYDAT"))
     }
   }
 
