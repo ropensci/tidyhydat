@@ -2,7 +2,7 @@
 title: "tidyhydat: Extract and Tidy Canadian Hydrometric Data"
 authors:
 - affiliation: 1
-  name: Sam Albers
+  name: Sam J. Albers
   orcid: 0000-0002-9270-7884
 date: "2017-12-14"
 output:
@@ -19,13 +19,12 @@ affiliations:
   name: Hydrology and Hydrometric Programs, Ministry of Environment and Climate Change Strategy, British Columbia Provincial Government
 ---
 
-> "Tidy datasets are all alike but every messy dataset is messy in its own way - "
-@wickham2014tidy
+> Tidy datasets are all alike but every messy dataset is messy in its own way - @wickham2014tidy
 
 # Introduction
-Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canadian national Water Data Archive, published quarterly by the Government of Canada's Department of Environment and Climate Change. It is relational database that contains daily, monthly and annual data on water flow, water levels and sediment.
+Environment and Climate Change Canada (ECCC) through the Water Survey of Canada (WSC) maintains several national hydrometric data sources. These data are partially funded by provincial partners and constitute the main data products of a national integrated hydrometric network. Historical data are stored in the [HYDAT database](http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/). HYDAT is the Canadian national Water Data Archive, published quarterly by the Government of Canada's Department of Environment and Climate Change. It is a relational database that contains daily, monthly and annual data on water flow, water levels and sediment.
 
-Real-time data are provided by ECCC over the web. Files are updated to a [datamart](http://dd.weather.gc.ca/hydrometric/) on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is approximately 2.5 hours. The objective of this document is the outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these hydrometric data sources and *tidies* them. `tidyhydat` is part of the [rOpenSci](https://ropensci.org/packages/) suite of packages and resides at  https://github.com/ropensci/tidyhydat. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
+Real-time data are provided by ECCC over the web. Files are updated to a [datamart](http://dd.weather.gc.ca/hydrometric/) on an hourly basis though the lag between actual hydrometric measurement and the availability of hydrometric data is approximately 2.5 hours. The objective of this document is to outline the usage of `tidyhydat` [@alberstidyhydat], an R package that accesses these hydrometric data sources and *tidies* them. `tidyhydat` is part of the [rOpenSci](https://ropensci.org/packages/) suite of packages and resides at  https://github.com/ropensci/tidyhydat. The objective of `tidyhydat` is to provide a standard method of accessing ECCC data sources using a consistent and easy to use interface that employs tidy data principles developed by @wickham2014tidy within the R project [@RCore]. 
 
 ## Why use R in hydrology?
 There are many statistical computing projects that offer great functionality for users. For `tidyhydat` I have chosen to use R. R is a mature open-source project that provides significant potential for advanced modelling, visualization and data manipulation. For hydrologists considering data analysis tools there are several commonly cited reasons to use R:
