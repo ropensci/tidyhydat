@@ -120,8 +120,8 @@ multi_param_msg <- function(data_arg, stns, params) {
 ## Ask for something
 ask <- function(...) {
     choices <- c("Yes", "No")
-    cat(crayon::red(paste0(...,"\n", collapse = "")))
-    cli::cat_rule(col = "red")
+    cat(crayon::green(paste0(...,"\n", collapse = "")))
+    cli::cat_rule(col = "green")
     utils::menu(choices) == which(choices == "Yes")
 }
 

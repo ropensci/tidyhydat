@@ -291,22 +291,22 @@ download_hydat <- function(dl_hydat_here = NULL) {
     dl_hydat_here <- hy_dir()
   }
   
+  ## Close all connections if function bonks halfway through
+  on.exit(closeAllConnections())
+  
 
   ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
                    "Is that okay?", sep = "\n"))
   if (!ans) stop("Maybe another day...", call. = FALSE)
   
 
-  done(paste0("Downloading HYDAT.sqlite3 to ", crayon::red(dl_hydat_here)))
+  info(paste0("Downloading HYDAT.sqlite3 to ", crayon::blue(dl_hydat_here)))
 
 
   ## Create actual hydat_path
   hydat_path <- file.path(dl_hydat_here, "Hydat.sqlite3")
   
-  ## temporary path to save
-  temp <- tempfile()
-
-
+ 
   ## If there is an existing hydat file get the date of release
   if (file.exists(hydat_path)) {
     hy_version(hydat_path) %>%
@@ -335,26 +335,33 @@ download_hydat <- function(dl_hydat_here = NULL) {
                 lubridate::ymd(existing_hydat),
                 ", is the most recent version available."))))
   } else {
-    done(paste0("Downloading version of HYDAT published on ", crayon::blue(lubridate::ymd(new_hydat))))
+    info(paste0("Downloading version of HYDAT created on ", crayon::blue(lubridate::ymd(new_hydat))))
   }
 
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
   
   ## Remove current version of HYDAT
-  if (file.exists(hydat_path)){
-    file.remove(hydat_path)
-  }
+  #if (file.exists(hydat_path)){
+  #  file.remove(hydat_path)
+  #}
 
-  utils::download.file(url, temp)
+  ## temporary path to save
+  tmp <- tempfile("hydat_")
+  ## Create the directory if it doesn't exist already.
+  #if(!dir.exists(dirname(tmp))) dir.create(dirname(tmp))
   
-  if(file.exists(temp)) done("Extracting HYDAT")
+  ## Download the zip file
+  res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"))
+  on.exit(file.remove(tmp))
+  httr::stop_for_status(res)
+  
+  if(file.exists(tmp)) info("Extracting HYDAT")
 
-  utils::unzip(temp, files = (utils::unzip(temp, list = TRUE)$Name[1]), 
-               exdir = dl_hydat_here, overwrite = TRUE)
+  utils::unzip(tmp, exdir = dl_hydat_here, overwrite = TRUE)
   
   
   if (file.exists(hydat_path)){
-    done(paste0("HYDAT successfully downloaded"))
+    congrats("HYDAT successfully downloaded")
   } else(not_done("HYDAT not successfully downloaded"))
   
   invisible(TRUE)
