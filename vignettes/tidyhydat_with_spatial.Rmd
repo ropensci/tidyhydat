@@ -1,0 +1,54 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Example with spatial data
+The `download_realtime()` functions allows us to directly query the Environment Canada and Climate Change datamart selecting by station. If we wanted to look at all the realtime stations in a particular hydrologic zone, we could easily do this using the `dplyr`,`sf` and `bcmaps` packages. To install those packages use these commands: 
+```{r, echo=TRUE, eval=FALSE}
+devtools::install_github("bcgov/bcmaps")
+install.packages("sf")
+```
+
+And then load these packages. `tidyhydat` and `dplyr` is already loaded above.
+```{r, eval = TRUE, echo=TRUE}
+library(bcmaps)
+library(sf)
+```
+Now to return the question. BC is divided into hydrologic zones. If use the hydrozones layer in `bcmaps` and convert it to `sf` format, determining which stations reside in which hydrologic zone is trivial. Using `st_join` allows to ask which hydrometric stations in the realtime network (called by `download_network`) are in which hydrologic zones. If we are interested in all realtime stations in the QUEEN CHARLOTTE ISLANDS hydrologic zone, we can generate that list by filtering by the relevant hydrologic zone:
+```{r, eval = TRUE, echo=TRUE}
+## Convert to sf format
+hydrozones_sf <- st_as_sf(bcmaps::hydrozones) %>%
+  select(HYDZN_NAME)
+
+
+qci_stations <- download_network(PROV_TERR_STATE_LOC = "BC") %>%
+  st_as_sf(., coords = c("LONGITUDE", "LATITUDE"), 
+              crs = 4326, 
+              agr = "constant") %>%
+  st_transform(crs = 3005) %>%
+  st_join(.,hydrozones_sf) %>%
+  filter(HYDZN_NAME == "QUEEN CHARLOTTE ISLANDS") %>%
+  pull(STATION_NUMBER)
+
+qci_stations
+```
+
+Now that vector (`qci_stations`) is useful to select which stations we are interested in. 
+```{r}
+qci_realtime <- download_realtime2(STATION_NUMBER = qci_stations, PROV_TERR_STATE_LOC = "BC")
+```
+
+Then using `ggplot2` we could plot these results to have look at the data
+```{r}
+library(ggplot2)
+
+ggplot(qci_realtime, aes(x = Date, y = FLOW)) +
+  geom_line(aes(colour = STATION_NUMBER))
+```
