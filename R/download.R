@@ -291,13 +291,12 @@ download_hydat <- function(dl_hydat_here = NULL) {
     dl_hydat_here <- hy_dir()
   }
   
-  question <- "Downloading HYDAT will take ~10 minutes and will remove any older versions of HYDAT. Do you want to continue? (Y/N)"
-  response <- readline(prompt = info(question))
 
-  if (!response %in% c("Y", "Yes", "yes", "y")) {
-    handle_error(stop(not_done("Maybe another day...")))
-  }
+  ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
+                   "Is that okay?", sep = "\n"))
+  if (!ans) stop("Maybe another day...", call. = FALSE)
   
+
   done(paste0("Downloading HYDAT.sqlite3 to ", crayon::red(dl_hydat_here)))
 
 
