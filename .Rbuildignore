@@ -12,4 +12,4 @@
 ^inst/JOSS$
 ^cran-comments.md$
 .github
-
+tidyhydat_with_spatial.Rmd
