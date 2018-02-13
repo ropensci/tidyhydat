@@ -12,6 +12,7 @@ tidyhydat 0.3.3
   * Fixed package startup message so it can be supressed. (#79)
   * Fixed bug that resulted in `download_hydat` choice wasn't respected.
   * `onAttach()` now checks 115 days after last HYDAT release to prevent slow package load times if HYDAT is a little late.
+  * Fixed margin error in `hy_plot()`
 
 
 tidyhydat 0.3.2
