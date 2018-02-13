@@ -78,7 +78,7 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow","Level", "Suscon
     graphics::layout(mat = m,heights = c(0.2,0.6,0.2))
   } 
 
-  
+  graphics::par(mar=c(1,1,1,1))
   graphics::plot.new()
   #graphics::plot(1, type = "n", axes=FALSE, xlab="", ylab="")
   graphics::text(0.5,0.5,"Historical Water Survey of Canada Gauges",cex=2,font=2)
