@@ -17,7 +17,7 @@
 #' 5 stations will result in very busy plots and longer load time. Legend position will
 #' sometimes overlap plotted points.
 #' 
-#' @param station_number A (or several) seven digit Water Survey of Canada station number. 
+#' @param station_number A seven digit Water Survey of Canada station number. Can only be one value.
 #' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
 #' 
 #' @return A plot of recent realtime values
@@ -37,13 +37,22 @@ realtime_plot <- function(station_number = NULL, Parameter = c("Flow","Level")){
   
   Parameter <- match.arg(Parameter)
   
-  #if(length(station_number) > 1L) stop("realtime_plot only accepts one station number")
+  if(length(station_number) > 1L) stop("realtime_plot only accepts one station number")
   
   rldf <- realtime_dd(station_number)
   
   if(is.null(rldf)) stop("Station(s) not present in the datamart")
   
-  rldf <- rldf[rldf$Parameter == Parameter,]
+  ## Is there any NA's in the flow data?
+  if(any(is.na(rldf[rldf$Parameter == "Flow",]$Value)) & Parameter == "Flow"){
+    rldf <- rldf[rldf$Parameter == "Level",]
+    message(paste0(station_number," is lake level station. Defaulting Parameter = 'Level'"))
+  } else{
+    rldf <- rldf[rldf$Parameter == Parameter,]
+  }
+  
+  
+  
   
   ## Join with meta data to get station name
   rldf <- dplyr::left_join(rldf, realtime_stations(), by = c("STATION_NUMBER","PROV_TERR_STATE_LOC"))

@@ -7,7 +7,7 @@
 realtime_plot(station_number = NULL, Parameter = c("Flow", "Level"))
 }
 \arguments{
-\item{station_number}{A (or several) seven digit Water Survey of Canada station number.}
+\item{station_number}{A seven digit Water Survey of Canada station number. Can only be one value.}
 
 \item{Parameter}{Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".}
 }
