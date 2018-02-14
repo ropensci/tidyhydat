@@ -13,6 +13,9 @@ tidyhydat 0.3.3
   * Fixed bug that resulted in `download_hydat` choice wasn't respected.
   * `onAttach()` now checks 115 days after last HYDAT release to prevent slow package load times if HYDAT is a little late.
   * Fixed margin error in `hy_plot()`
+  * Fixed a bug in `realtime_plot()` that prevented a lake level station from being called
+  * Fixed a bug in `hy_daily()` that threw an error when only a level station was called
+  * Added new tests for `hy_daily()` and `realtime_plot()`
 
 
 tidyhydat 0.3.2
