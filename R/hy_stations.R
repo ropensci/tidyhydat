@@ -34,6 +34,8 @@
 #'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
 #'   \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station. 
 #'   Links to \link[tidyhydat]{hy_reg_office_list}}
+#'   \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
+#'   \item{SED_STATUS}{Current status of sediment monitoring in the hydrometric network}
 #'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
 #'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
 #'   \item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
