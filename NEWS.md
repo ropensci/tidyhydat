@@ -16,6 +16,7 @@ tidyhydat 0.3.3
   * Fixed a bug in `realtime_plot()` that prevented a lake level station from being called
   * Fixed a bug in `hy_daily()` that threw an error when only a level station was called
   * Added new tests for `hy_daily()` and `realtime_plot()`
+  * Added `HYD_STATUS` and `REAL_TIME` columns to `allstations`. 
 
 
 tidyhydat 0.3.2

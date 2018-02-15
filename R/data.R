@@ -21,6 +21,9 @@
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{STATION_NAME}{Official name for station identification}
 #'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+#'   \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
+#'   \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in 
+#'   real-time or near real-time}
 #'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
 #'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
 #' }
