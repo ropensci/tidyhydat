@@ -1,3 +1,9 @@
+# 0.3.3
+  * Open a connection to the HYDAT database directly using `hy_src()` for advanced functionality (PR#77).
+  * New vignette outlining `hy_src()` (PR#77)
+  * Add some tools to improve the usability of the test database (PR#77).
+  * `download_hydat()` now uses `httr::GET()`
+
 # 0.3.2
 * 2nd submission same version: more comprehensive test via rhub and locally with --as-cran
 * Fixed UTF-8 strings causing NOTEs
@@ -32,15 +38,6 @@ Authors@R field gives persons with non-standard roles:
   Laura DeCicco [rev] (Reviewed for rOpenSci): rev
 
 * I am seeking to give reviewer credit to these folks
-
-
-One NOTE: 
-* Debian Linux, R-devel, GCC (debian-gcc-devel)
-* Ubuntu Linux 16.04 LTS, R-devel, GCC
-    * checking dependencies in R code ... NOTE
-    Failed to create bus connection: No such file or directory
-
-I think this is an r-hub issue rather than a tidyhydat issue
 
 
 ## Downstream dependencies
