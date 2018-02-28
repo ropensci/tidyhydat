@@ -39,3 +39,7 @@ R CMD check tidyhydat_0.3.2.9999.tar.gz --as-cran ## or whatever the package nam
 
 ## Actually release it
 devtools::release()
+
+## Once it is release create signed release on github
+git tag -s v0.3.3 -m "v0.3.3"
+git push --tags
