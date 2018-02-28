@@ -10,6 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+## Turn this into Rmd file
 
 # Steps/Commands to run before a CRAN release -----------------------------
 
@@ -23,10 +24,18 @@ devtools::check() ## build locally
 library(rhub)
 
 check_on_debian()
-check_on_debian()
 check_on_windows()
+check_on_ubuntu()
+check_on_macos()
 
 
 ## Run in console
 R CMD build tidyhydat
 R CMD check tidyhydat_0.3.2.9999.tar.gz --as-cran ## or whatever the package name is
+
+## Documentation
+# Update NEWS
+# Update cran-comments
+
+## Actually release it
+devtools::release()
