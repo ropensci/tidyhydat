@@ -23,9 +23,11 @@ use \code{hydat_path = hy_downloaded_db()} to explicitly use the full, most rece
 downloaded database (this is also the path returned by \code{hy_default_db()}).
 }
 \examples{
+\dontrun{
 hy_test_db()
 hy_downloaded_db()
 hy_default_db()
+}
 
 }
 \seealso{

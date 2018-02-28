@@ -20,6 +20,7 @@ users may wish to use a previously downloaded version of the database for
 reproducibility purposes.
 }
 \examples{
+\dontrun{
 # set default to the test database
 hy_set_default_db(hy_test_db())
 
@@ -28,5 +29,6 @@ hy_default_db()
 
 # set back to the default db location
 hy_set_default_db(NULL)
+}
 
 }

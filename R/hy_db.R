@@ -16,6 +16,7 @@
 #' \link{download_hydat}
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' 
 #' # src is a src_sqlite
@@ -33,7 +34,7 @@
 #'   
 #' # close the connection to the database
 #' hy_src_disconnect(src)
-#' 
+#' }
 hy_src <- function(hydat_path = NULL) {
   # hydat_path can also be an src to support one connection for
   # nested calls
@@ -87,9 +88,11 @@ hy_src_disconnect <- function(src) {
 #' \link{hy_src}, \link{hy_set_default_db}.
 #'
 #' @examples
+#' \dontrun{
 #' hy_test_db()
 #' hy_downloaded_db()
 #' hy_default_db()
+#' }
 #' 
 hy_test_db <- function() {
   system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
@@ -125,6 +128,7 @@ hy_default_db <- function() {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # set default to the test database
 #' hy_set_default_db(hy_test_db())
 #' 
@@ -133,6 +137,7 @@ hy_default_db <- function() {
 #' 
 #' # set back to the default db location
 #' hy_set_default_db(NULL)
+#' }
 #' 
 hy_set_default_db <- function(hydat_path = NULL) {
   

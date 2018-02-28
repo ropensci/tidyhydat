@@ -27,6 +27,7 @@ so it is best to use dplyr to \link[dplyr]{filter} them before using
 \link[dplyr]{collect} to read them into memory.
 }
 \examples{
+\dontrun{
 library(dplyr)
 
 # src is a src_sqlite
@@ -44,7 +45,7 @@ tbl(src, "STATIONS") \%>\%
   
 # close the connection to the database
 hy_src_disconnect(src)
-
+}
 }
 \seealso{
 \link{download_hydat}
