@@ -29,12 +29,33 @@
  
 ## R CMD check results
 
-There were no WARNINGs.
 
 ERROR on r-oldrel-osx-x86_64 for CRAN package checks
 * ERROR: this R is version 3.3.2, package 'tidyhydat' requires R >= 3.4.0
 
 * Fixed in this version by reducing required R version to 3.2.0
+
+WARNINGS
+* checking top-level files ... WARNING
+Conversion of 'README.md' failed:
+pandoc.exe: Could not fetch https://badges.ropensci.org/152_status.svg
+HttpExceptionRequest Request {
+  host                 = "badges.ropensci.org"
+  port                 = 443
+  secure               = True
+  requestHeaders       = []
+  path                 = "/152_status.svg"
+  queryString          = ""
+  method               = "GET"
+  proxy                = Nothing
+  rawBody              = False
+  redirectCount        = 10
+  responseTimeout      = ResponseTimeoutDefault
+  requestVersion       = HTTP/1.1
+}
+ (InternalException (HostCannotConnect "badges.ropensci.org" [connect: failed (Connection refused (WSAECONNREFUSED))]))
+ 
+* Version of pandoc does not process badges
 
 NOTE R CMD check --as-cran:
 * checking DESCRIPTION meta-information ... NOTE
