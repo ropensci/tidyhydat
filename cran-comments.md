@@ -29,7 +29,12 @@
  
 ## R CMD check results
 
-There were no ERRORs or WARNINGs.
+There were no WARNINGs.
+
+ERROR on r-oldrel-osx-x86_64 for CRAN package checks
+* ERROR: this R is version 3.3.2, package 'tidyhydat' requires R >= 3.4.0
+
+* Fixed in this version by reducing required R version to 3.2.0
 
 NOTE R CMD check --as-cran:
 * checking DESCRIPTION meta-information ... NOTE
