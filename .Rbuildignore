@@ -15,3 +15,11 @@
 tidyhydat_with_spatial.Rmd
 Rplots.pdf
 release_script.R
+
+^presentations$
+*.svg
+data/
+libs/
+recipe/
+tidyhydat_intro.html
+tidyhydat_intro_cache

@@ -1,0 +1,594 @@
+---
+title: "tidyhydat"
+subtitle: "Making the case for reproducible workflows in hydrology"
+author: "Sam Albers"
+date: 2018-03-01
+output:
+  xaringan::moon_reader:
+    keep_md: true
+    lib_dir: libs
+    css: ["default", "hygge_sam.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+
+# Copyright 2018 Province of British Columbia
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "graphics/README-"
+)
+
+options(scipen = 10)
+```
+
+```{r, pck-load, warning=FALSE, message=FALSE}
+library(tidyhydat)
+library(knitr)
+library(tidyverse)
+library(lubridate)
+library(corrr)
+library(leaflet)
+library(sf)
+library(mapview)
+
+```
+
+class: inverse
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/3/3e/Clearwater_River_Wells_Gray_Park.jpg)
+background-size: cover
+
+## Outline
+
+.VeryLarge[
+- Common Analysis Problems
+- What is R and why use it?
+- What is tidyhydat?
+- Some R basics
+- An example of how R can help
+- Leveraging R and what I'm not showing you
+- Where to get help
+- Questions
+]
+
+---
+class: inverse, center, middle
+# Common Analysis Problems
+---
+class: center, basic
+## Accessing Hydrometric Data
+```{r data-explorer, out.width = "85%"}
+include_graphics("graphics/ec_data_explorer2.gif")
+```
+
+### 11 clicks!
+
+---
+
+class: basic, center
+
+### Stakeholder/Manager: "Hey, this is a really cool analysis but we need to add five stations. Can you run it again?"
+<img src="https://media.giphy.com/media/l4FGuE8LtZg2wKmZi/giphy.gif"/>
+
+--
+### Make it reproducible!
+
+---
+class: basic, center
+
+### Get off the factory line
+### How much time do you spend copying and pasting?
+
+<img src="https://media.giphy.com/media/3ohhwmbdlEf9CtCgBG/giphy.gif"/>
+
+
+--
+### Automate!
+--
+
+### But how...
+---
+class: inverse, left, middle
+## ...Use R!
+.pull-left[
+(or more generally any programmatic code based analysis approach...)
+]
+<center><img src="https://www.r-project.org/logo/Rlogo.png" alt="Drawing" style="width: 450px;" /></center>
+---
+.pull-left[
+### What is R?
+.large[
+- Free and open source
+- Statistical programming language
+- Publication quality graphics
+- But definitely not intimidating...
+]
+]
+
+--
+.pull-right[
+### Why use R?
+
+.large[
+- Efficient
+- Reproducible
+- Scalable
+]
+]
+
+--
+### Not guaranteed to help with this...
+<center><img src="https://media.giphy.com/media/HteV6g0QTNxp6/giphy.gif" style="width: 450px;"/> </center>
+
+---
+
+## Questions worth asking...
+.large[
+- Are your methods <span style="color:#309688">reproducible</span>?
+- What is your analysis recipe? 
+- Can you share it?
+]
+
+<center><img src="graphics/data_recipe.png" alt="Drawing" style="width: 750px;" /></center>
+---
+
+## Excuse me,  do you have a  moment to talk about Excel?
+
+<img src="http://ichef.bbci.co.uk/news/976/cpsprodpb/CED0/production/_89744925_clippy.jpg"/>
+
+---
+class:basic
+
+| R                                         | Excel                                                  |
+|-------------------------------------------|--------------------------------------------------------|
+| Data and analysis are separate            | Data and analysis are usually stored in the same place |
+
+<br>
+
+<center><img src="https://i0.wp.com/civilengineerspk.com/wp-content/uploads/2016/04/excel2010_06.jpg" alt="Drawing" style="width: 450px;" /></center>
+
+.footnote[
+From: http://blog.yhat.com/posts/R-for-excel-users.html.
+]
+
+---
+class:basic
+
+| R                                         | Excel                                                  |
+|-------------------------------------------|--------------------------------------------------------|
+| Data and analysis are separate            | Data and analysis are usually stored in the same place |
+| Data structure is strict                  | Data structure is flexible                             |
+
+<br>
+
+<center><img src="https://static.filehorse.com/screenshots/office-and-business-tools/excel-viewer-screenshot-01.png" alt="Drawing" style="width: 450px;" /></center>
+
+
+.footnote[
+From: http://blog.yhat.com/posts/R-for-excel-users.html.
+]
+
+---
+class:basic
+
+| R                                         | Excel                                                  |
+|-------------------------------------------|--------------------------------------------------------|
+| Data and analysis are separate            | Data and analysis are usually stored in the same place |
+| Data structure is strict                  | Data structure is flexible                             |
+| Operations are achieved through scripting | Operations are achieved through pointing and clicking  |
+
+<br>
+
+<center><img src="https://media.giphy.com/media/UMbqRmfi03SQE/giphy.gif" alt="Drawing" style="width: 400px;" /></center>
+
+
+
+.footnote[
+From: http://blog.yhat.com/posts/R-for-excel-users.html.
+]
+
+---
+class:basic
+
+| R                                         | Excel                                                  |
+|-------------------------------------------|--------------------------------------------------------|
+| Data and analysis are separate            | Data and analysis are usually stored in the same place |
+| Data structure is strict                  | Data structure is flexible                             |
+| Operations are achieved through scripting | Operations are achieved through pointing and clicking  |
+| Iteration is automated                    | Iteration is usually done by hand                      |
+
+### R provides a clear pathway for <span style="color:#309688">efficiency</span> and <span style="color:#309688">reproducibility</span> through automation and code
+
+.footnote[
+From: http://blog.yhat.com/posts/R-for-excel-users.html.
+]
+
+---
+class:basic
+
+> The objective of tidyhydat is to provide a standard method of accessing ECCC hydrometric data sources (historical and real time) using a consistent and easy to use interface that employs tidy data principles within the R project.
+
+<center><img src="https://raw.githubusercontent.com/ropensci/tidyhydat/master/tools/readme/tidyhydat_large.png" alt="Drawing" style="width: 300px;" /></center>
+
+--
+
+# <center><span style="color:#309688">tidy</span><span style="color:red">|</span><span style="color:#234075">hydat</span></center>
+
+
+---
+
+## hydat::Water Survey of Canada Network
+
+```{r out.width='100%', fig.height=6, eval=TRUE, message=FALSE}
+stns <- hy_stations() %>% 
+  filter(HYD_STATUS == "ACTIVE")
+
+st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
+             crs = 4326,
+             agr= "constant") %>%
+mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery", cex = 4,
+        popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC")))
+
+#leaflet(data = stns) %>% 
+#  addTiles() %>% 
+#  addMarkers(~LONGITUDE, ~LATITUDE, label=~as.character(STATION_NAME), clusterOptions = markerClusterOptions()) %>% #
+#  setView(-96, 63, zoom = 3)
+```
+
+
+---
+
+## <span style="color:#309688">tidy</span>::tidy data
+> Tidy datasets are all alike but every messy dataset is messy in its own way<sup>1</sup>
+
+--
+
+### Each variable forms a column
+
+### Each observation forms a row
+
+<center><img src="https://media.giphy.com/media/kXBVtKjLxINji/giphy.gif" style="width: 450px;"/> </center>
+
+.footnote[
+[1] [Wickham, Hadley. 2014. Tidy Data. Journal of Statistical Software 59 (10). Foundation for Open Access Statistics: 1–23.](https://www.jstatsoft.org/article/view/v059i10)
+]
+---
+
+## <span style="color:#309688">tidy</span>::<span style="color:red">un</span>tidy data
+```{r, echo = FALSE}
+src <- hy_src()
+tbl(src, "DLY_FLOWS") %>%
+  filter(STATION_NUMBER == "08MF005") %>%
+  select(-contains("_SYMBOL"), )
+```
+
+---
+## <span style="color:#309688">tidy</span>::tidy data
+```{r, echo = FALSE, message=FALSE}
+hy_daily_flows(station_number = "08MF005")
+```
+
+<center><img src="https://media.giphy.com/media/kXBVtKjLxINji/giphy.gif" style="width: 450px;"/> </center>
+---
+
+## <span style="color:#309688">tidy</span>::tidyhydat
+<center><img src="graphics/data-science-wheel.png" alt="Drawing" style="width: 800px;" /></center>
+
+--
+
+<center><img src="https://cdn.onlinewebfonts.com/svg/img_411268.png" style="width: 200px;"/> </center>
+
+---
+class: inverse, center, middle
+# An Example 
+---
+
+class: basiclh
+
+## tidyhydat & some basic R
+```{r excel_ex, echo = TRUE, eval = FALSE, message=FALSE}
+=SUM(A1:A23)
+=AVERAGE(A1:A23)
+```
+
+
+---
+
+class: basiclh
+
+## tidyhydat & some basic R
+```{r flow_ex, echo = TRUE, eval = TRUE, message=FALSE}
+flows_data <- hy_daily_flows(station_number = c("08MF005","07EF001","08NE049"))
+```
+
+- `<-`: <span style="color:#309688">assignment operator</span>
+- `flows_data`: <span style="color:#309688">object</span>
+- `hy_daily_flows`: <span style="color:#309688">function</span>
+- `station_number`: <span style="color:#309688">argument</span>
+--
+
+```{r, echo = TRUE, eval = TRUE, message=FALSE}
+flows_data
+```
+
+
+---
+class: basiclh, center
+
+### Analyze the correlation between:
+```{r, eval=TRUE, echo=FALSE, message=FALSE}
+stns_tbl <- hy_stations(c("08MF005","07EF001","08NE049"))[,c("STATION_NUMBER", "STATION_NAME")]
+
+x <- stns_tbl %>%
+  rename(`Station Name`=STATION_NAME, `Station Number`=STATION_NUMBER) %>%
+  knitr::kable(format = 'html') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+gsub("<thead>.*</thead>", "", x)
+```
+
+```{r, message=FALSE, fig.width = 9, fig.height=5}
+stns <- hy_stations(stns_tbl$STATION_NUMBER) 
+
+
+st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
+             crs = 4326,
+             agr= "constant") %>%
+mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery", cex = 6,
+        popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC")))
+```
+
+
+---
+
+## Build the analysis
+```{r, echo = TRUE}
+flows_data
+```
+### `flows_data`: <span style="color:#309688">object</span>
+
+---
+
+## Build the analysis
+```{r, echo = TRUE}
+flows_data %>%
+  spread(key = STATION_NUMBER, value = Value) #<<
+```
+
+### `%>%`: <span style="color:#309688">"then"</span>
+### `spread`: <span style="color:#309688">function</span>
+---
+
+## Build the analysis
+```{r, echo = TRUE}
+flows_data %>%
+  spread(key = STATION_NUMBER, value = Value) %>%
+  select(-Date, -Symbol, -Parameter) #<<
+```
+
+### `select`: <span style="color:#309688">function</span>
+---
+
+## Build the analysis
+```{r, echo = TRUE}
+flows_data %>%
+  spread(key = STATION_NUMBER, value = Value) %>%
+  select(-Date, -Symbol, -Parameter) %>%
+  correlate() #<<
+```
+
+### `correlation`: <span style="color:#309688">function</span>
+---
+
+## Build the analysis
+```{r, echo = TRUE}
+flows_data %>%
+  spread(key = STATION_NUMBER, value = Value) %>%
+  select(-Date, -Symbol, -Parameter) %>%
+  correlate() %>%
+  stretch() #<<
+```
+
+### `stretch`: <span style="color:#309688">function</span>
+
+---
+
+## Scalable
+```{r scalable1, echo = FALSE, message=FALSE, fig.width = 10, fig.height=6}
+south_vi_stns <- c("08HA001", "08HA002", "08HA003", "08HA009", "08HA010", "08HA011", 
+"08HA016", "08HA068", "08HA069", "08HA070", "08HA072")
+
+stns <- hy_stations(south_vi_stns) 
+
+st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
+             crs = 4326,
+             agr= "constant") %>%
+mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery",
+        popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC", "HYD_STATUS")))
+```
+
+---
+
+## Scalable
+```{r scalable2, echo = TRUE, message=FALSE}
+south_vi_stns <- c("08HA001", "08HA002", "08HA003", "08HA009", "08HA010", "08HA011", 
+"08HA016", "08HA068", "08HA069", "08HA070", "08HA072")
+
+south_vi_flows <- hy_daily_flows(station_number = south_vi_stns)
+south_vi_flows
+```
+
+---
+
+## Scalable
+```{r scalable3, echo = TRUE, message=FALSE}
+south_vi_flows %>% #<<
+  spread(STATION_NUMBER, Value) %>%
+  select(-Date, -Symbol, -Parameter) %>%
+  correlate() %>% 
+  stretch() 
+```
+
+---
+
+## What else is available in `tidyhydat`?
+
+### All tables in HYDAT 
+.Large[
+- Instantaneous peaks
+- Daily, monthly and yearly temporal aggregations
+- Discharge, level, sediment, particle size
+- Data ranges
+- Station metadata
+]
+
+---
+
+## What else is available in `tidyhydat`?
+```{r, echo = TRUE, eval = TRUE}
+search_stn_name("fraser")
+```
+
+---
+
+## Pointing and clicking
+```{r water_office, out.width = "95%"}
+include_graphics("graphics/wateroffice.gif")
+```
+---
+## What else is available in `tidyhydat`?
+```{r, message=FALSE, warning=FALSE, fig.width=11, fig.height=5, echo = TRUE, eval = TRUE}
+realtime_plot("08MF005", Parameter = "Flow")
+```
+
+
+---
+## What else is available in R?
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+raw_stns <- hy_stations() %>%
+  select(STATION_NUMBER:PROV_TERR_STATE_LOC, DRAINAGE_AREA_GROSS)
+  
+mad_long_avg <- hy_annual_stats(raw_stns$STATION_NUMBER) %>%
+  filter(Sum_stat == "MEAN", Parameter == "Flow") %>%
+  group_by(STATION_NUMBER) %>%
+  summarise(Value = mean(Value, na.rm = TRUE)) %>%
+  right_join(raw_stns)
+mad_long_avg #<<
+```
+
+---
+## What else is available in R?
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE, fig.height=5, fig.width=11}
+library(ggplot2)
+ggplot(mad_long_avg,aes(x = Value, y = DRAINAGE_AREA_GROSS, colour = PROV_TERR_STATE_LOC)) +
+  geom_point() +
+  scale_y_continuous(trans = "log10") +
+  scale_x_continuous(trans = "log10") +
+  scale_colour_viridis_d(name = "Jurisdiction") +
+  labs(x = "Mean long term annual discharge (m^3)", y = "Gross drainage area (km^2)") +
+  theme_minimal()
+```
+
+---
+
+## It can be daunting!
+
+<center><img src="https://media.giphy.com/media/iKhphMBOk5ScE/giphy.gif" style="width: 650px;"/></center>
+
+---
+
+## Resources for R
+
+<img src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" alt="Drawing" style="width: 400px;" />
+
+
+<img src="https://www.rstudio.com/wp-content/uploads/2017/11/logoRStudioCommunity.svg" alt="Drawing" style="width: 400px;" />
+
+<center><img src="https://www.r-project.org/logo/Rlogo.png" alt="Drawing" style="width: 300px;" /></center>
+
+
+
+
+
+---
+## Contribute to `tidyhydat`
+
+### Openly developed on GitHub <img src = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style = "width: 35px; vertical-align: middle; margin-bottom: 3px;">
+<https://github.com/ropensci/tidyhydat>
+
+Any contribution helps. You don't have to be an R programmer!
+
+.pull-left[
+- Questions
+- Ideas / Feature-requests
+- Bugs
+- Bug-fixes
+- Development
+]
+.pull-right[
+<center><img src="https://raw.githubusercontent.com/ropensci/tidyhydat/master/tools/readme/tidyhydat_large.png" alt="Drawing" style="width: 150px;" /></center>
+]
+--
+
+### For example...
+```{r, eval=FALSE, echo = TRUE}
+Authors@R: c(person("Sam", "Albers",email = "sam.albers@gov.bc.ca", role = c("aut", "cre")),
+    person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"), #<<
+    person("Dewey", "Dunnington", email = "dewey@fishandwhistle.net", role = "ctb"), #<<
+    person("Province of British Columbia", role = "cph"))
+```
+---
+class: inverse, center
+## Some Helpful Links
+
+Installing R & RStudio on a BC Gov Computer
+
+    -https://github.com/bcgov/bcgov-data-science-resources/wiki/Installing-R-&-RStudio
+
+Installing tidyhydat
+
+    -https://cran.rstudio.com/web/packages/tidyhydat/README.html
+
+Getting started with `tidyhydat`
+
+    -https://cran.rstudio.com/web/packages/tidyhydat/vignettes/tidyhydat_an_introduction.html
+    -https://cran.rstudio.com/web/packages/tidyhydat/vignettes/tidyhydat_example_analysis.html
+
+BC Gov data science resource wiki
+
+    -https://github.com/bcgov/bcgov-data-science-resources/wiki
+    
+---
+
+class: basic
+background-image: url(https://media.giphy.com/media/TnDoEoXfT7YoE/giphy.gif)
+background-size: cover
+
+## Questions?
+.content-box-blue[
+Slides available from 
+
+    -https://github.com/ropensci/tidyhydat/presentations/tidyhydat_intro.Rmd
+ 
+Contact <sam.albers@gov.bc.ca>
+]
+
+
