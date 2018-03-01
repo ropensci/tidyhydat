@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   echo = FALSE,
   comment = "#>",
-  fig.path = "graphics/README-"
+  fig.path = "graphics/prod/figs"
 )
 
 options(scipen = 10)

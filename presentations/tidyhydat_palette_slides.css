@@ -1,0 +1,92 @@
+.title-slide {
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/3/3e/Clearwater_River_Wells_Gray_Park.jpg);
+  background-size: cover;
+}
+
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+
+
+.remark-code {
+  background-color: #e3a82b;
+  font-size: 70%;
+}
+
+a, a > code {
+  color: rgb(249, 38, 114);
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  color: #234075;
+}
+ 
+.govblue {
+  background-color: #234075;
+  color: #e3a82b;
+}
+.govblue h1, .govblue h2, .govblue h3 {
+  color: #e3a82b;
+  line-height: 0.8em
+}
+
+.basiclh {
+  background-color: #ffffff;
+  color: #234075;
+  line-height: 1.0em; 
+}
+
+.basic {
+  background-color: #ffffff;
+  color: #234075;
+  line-height: 1.8em; 
+}
+
+.inverse {
+  background-color: #234075;
+  color: #ffffff;
+}
+
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #ffffff;
+  line-height: 0.8em;
+}
+
+.h2yellow h2{
+  color: #e3a82b;
+}
+
+.left-column {
+  color: #000;
+  width: 45%;
+/*  height: 50%; */
+  float: left;
+  padding-top: 8em;
+}
+
+.left-column h2 {
+  color: #F09905;
+}
+
+.right-column {
+  background-color: #234075;
+  background-color: #234075;
+  color: #FFFFFF;
+  /* color: #FFD960; */
+  width: 45%;
+  float: right;
+  padding-top: 1em;
+}
+
+.imageTop {
+  vertical-align: top;
+}
+
+h4 {
+  font-family: 'Yanone Kaffeesatz';
+  font-weight: normal;
+}
+
+
