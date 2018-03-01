@@ -17,9 +17,5 @@ Rplots.pdf
 release_script.R
 
 ^presentations$
-*.svg
-data/
-libs/
-recipe/
-tidyhydat_intro.html
-tidyhydat_intro_cache
+tidyhydat_intro.Rmd
+
