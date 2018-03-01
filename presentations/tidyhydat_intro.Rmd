@@ -586,7 +586,7 @@ background-size: cover
 .content-box-blue[
 Slides available from 
 
-    -https://github.com/ropensci/tidyhydat/presentations/tidyhydat_intro.Rmd
+    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.Rmd
  
 Contact <sam.albers@gov.bc.ca>
 ]
