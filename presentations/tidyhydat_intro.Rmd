@@ -2,7 +2,7 @@
 title: "tidyhydat"
 subtitle: "Making the case for reproducible workflows in hydrology"
 author: "Sam Albers"
-date: 2018-03-01
+date: 2018-03-06
 output:
   xaringan::moon_reader:
     keep_md: true
@@ -179,7 +179,7 @@ class:basic
 
 <br>
 
-<center><img src="https://static.filehorse.com/screenshots/office-and-business-tools/excel-viewer-screenshot-01.png" alt="Drawing" style="width: 450px;" /></center>
+<center><img src="https://i.stack.imgur.com/d9cMS.jpg" alt="Drawing" style="width: 450px;" /></center>
 
 
 .footnote[
@@ -316,7 +316,7 @@ class: basiclh
 
 ## tidyhydat & some basic R
 ```{r flow_ex, echo = TRUE, eval = TRUE, message=FALSE}
-flows_data <- hy_daily_flows(station_number = c("08MF005","07EF001","08NE049"))
+flows_data <- hy_daily_flows(station_number = c("08MF005","09CD001","05KJ001","02KF005"))
 ```
 
 - `<-`: <span style="color:#309688">assignment operator</span>
@@ -335,7 +335,7 @@ class: basiclh, center
 
 ### Analyze the correlation between:
 ```{r, eval=TRUE, echo=FALSE, message=FALSE}
-stns_tbl <- hy_stations(c("08MF005","07EF001","08NE049"))[,c("STATION_NUMBER", "STATION_NAME")]
+stns_tbl <- hy_stations(c("08MF005","09CD001","05KJ001","02KF005"))[,c("STATION_NUMBER", "STATION_NAME")]
 
 x <- stns_tbl %>%
   rename(`Station Name`=STATION_NAME, `Station Number`=STATION_NUMBER) %>%
@@ -351,7 +351,7 @@ stns <- hy_stations(stns_tbl$STATION_NUMBER)
 st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
              crs = 4326,
              agr= "constant") %>%
-mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery", cex = 6,
+mapview(zcol = "STATION_NAME", legend = FALSE, cex = 6,
         popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC")))
 ```
 
@@ -412,15 +412,13 @@ flows_data %>%
 
 ## Scalable
 ```{r scalable1, echo = FALSE, message=FALSE, fig.width = 10, fig.height=6}
-south_vi_stns <- c("08HA001", "08HA002", "08HA003", "08HA009", "08HA010", "08HA011", 
-"08HA016", "08HA068", "08HA069", "08HA070", "08HA072")
-
-stns <- hy_stations(south_vi_stns) 
+stns <- hy_stations(prov_terr_state_loc = "NU") %>%
+  filter(HYD_STATUS == "ACTIVE")
 
 st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
              crs = 4326,
              agr= "constant") %>%
-mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery",
+mapview(zcol = "STATION_NAME", legend = FALSE, 
         popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC", "HYD_STATUS")))
 ```
 
@@ -428,18 +426,18 @@ mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery",
 
 ## Scalable
 ```{r scalable2, echo = TRUE, message=FALSE}
-south_vi_stns <- c("08HA001", "08HA002", "08HA003", "08HA009", "08HA010", "08HA011", 
-"08HA016", "08HA068", "08HA069", "08HA070", "08HA072")
+stns <- hy_stations(prov_terr_state_loc = "NU") %>%
+  filter(HYD_STATUS == "ACTIVE")
 
-south_vi_flows <- hy_daily_flows(station_number = south_vi_stns)
-south_vi_flows
+nu_flows <- hy_daily_flows(station_number = stns$STATION_NUMBER)
+nu_flows
 ```
 
 ---
 
 ## Scalable
 ```{r scalable3, echo = TRUE, message=FALSE}
-south_vi_flows %>% #<<
+nu_flows %>% #<<
   spread(STATION_NUMBER, Value) %>%
   select(-Date, -Symbol, -Parameter) %>%
   correlate() %>% 
@@ -448,12 +446,16 @@ south_vi_flows %>% #<<
 
 ---
 
+## Efficient, Reproducible and Scalable
+<center><img src="graphics/data-science-wheel.png" alt="Drawing" style="width: 800px;" /></center>
+---
+
 ## What else is available in `tidyhydat`?
 
 ### All tables in HYDAT 
 .Large[
 - Instantaneous peaks
-- Daily, monthly and yearly temporal aggregations
+- Daily, monthly and yearly temporal summaries
 - Discharge, level, sediment, particle size
 - Data ranges
 - Station metadata
@@ -559,7 +561,7 @@ Authors@R: c(person("Sam", "Albers",email = "sam.albers@gov.bc.ca", role = c("au
 class: inverse, center
 ## Some Helpful Links
 
-Installing R & RStudio on a BC Gov Computer
+Installing R & RStudio with local package libraries
 
     -https://github.com/bcgov/bcgov-data-science-resources/wiki/Installing-R-&-RStudio
 
@@ -586,6 +588,7 @@ background-size: cover
 .content-box-blue[
 Slides available from 
 
+    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.pdf
     -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.Rmd
  
 Contact <sam.albers@gov.bc.ca>
