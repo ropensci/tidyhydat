@@ -9,28 +9,8 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
-
-
-#' Extract tidy water data
-#'
-#' @description tidyhydat provides a series of functions to make downloading and importing data from HYDAT into R a 
-#' simple process for a user. HYDAT is the Canada national water data archive, published quarterly by 
-#' the Government of Canada's Department of Environment and Climate Change. It is relational database that 
-#' contains daily, monthly and annual data on water flow, water levels and sediment data. Functions are also 
-#' provided to extract station metadata like position and record history.
-#' 
-#' In addition to historical data from HYDAT, tidyhydat also provide functions to access realtime water flow and 
-#' water level data. This data is raw and unapproved originating directly from the station. 
-#' 
-#' Regardless of the data source, tidyhydat organizes all this data in a consistent format that allows the user to 
-#' quickly and efficient connect with Canadian hydrological data. 
-#'
-#'
-#' @docType package
-#' @name tidyhydat
-#' 
 #' @importFrom dplyr %>%
-#'
+
 #' @references 
 #' 
 #' To download the latest version of hydat please:
@@ -53,4 +33,8 @@
 #'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
 #'    }
 #'
-NULL
+#' @keywords internal
+"_PACKAGE"
+
+
+
