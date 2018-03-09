@@ -41,7 +41,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
       dplyr::collect() %>%
       dplyr::pull(STATION_NUMBER)
   }
-  
+
   if (stns[1] == "ALL") {
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
