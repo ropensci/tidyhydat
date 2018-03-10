@@ -58,8 +58,9 @@ hy_annual_instant_peaks <- function(station_number = NULL,
 
   ## Data manipulations
   aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%
-    dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect()
+  
+  aip <- dplyr::filter(aip, .data$STATION_NUMBER %in% stns) 
 
   ## Add in english data type
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
@@ -67,23 +68,24 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   ## Add in Symbol
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
-  ## If a yearis supplied...
+  ## If a year is supplied...
   if (start_year != "ALL" | end_year != "ALL") {
-    aip <- dplyr::filter(aip, YEAR >= start_year & YEAR <= end_year)
+    aip <- dplyr::filter(aip, .data$YEAR >= start_year & .data$YEAR <= end_year)
   }
 
   ## Parse PEAK_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(PEAK_CODE == "H", "MAX", "MIN"))
+  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(.data$PEAK_CODE == "H", "MAX", "MIN"))
 
   ## Parse PRECISION_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
+  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(.data$PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
 
   ## TODO: Convert to dttm
-  aip <- dplyr::mutate(aip, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))
+  aip <- dplyr::mutate(aip, Date = lubridate::ymd(paste0(.data$YEAR,"-",.data$MONTH,"-",.data$DAY)))
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, STATION_NUMBER, Date, HOUR, MINUTE, TIME_ZONE, PEAK, DATA_TYPE_EN, PEAK_CODE, PRECISION_CODE, SYMBOL_EN) %>%
-    dplyr::rename(Parameter = DATA_TYPE_EN, Symbol = SYMBOL_EN, Value = PEAK)
+  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, .data$HOUR, .data$MINUTE, .data$TIME_ZONE, 
+                       .data$PEAK, .data$DATA_TYPE_EN, .data$PEAK_CODE, .data$PRECISION_CODE, .data$SYMBOL_EN) %>%
+    dplyr::rename(Parameter = .data$DATA_TYPE_EN, Symbol = .data$SYMBOL_EN, Value = .data$PEAK)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(aip$STATION_NUMBER))

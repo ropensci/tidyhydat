@@ -61,7 +61,7 @@ hy_stn_regulation <- function(station_number = NULL,
   dplyr::tbl(hydat_con, "STN_REGULATION") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
-    dplyr::mutate(REGULATED = REGULATED == 1)
+    dplyr::mutate(REGULATED = .data$REGULATED == 1)
 
 
 }

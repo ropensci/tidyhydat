@@ -54,7 +54,7 @@ hy_annual_stats <- function(station_number =NULL,
                               start_year = "ALL", end_year = "ALL") {
   
   if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = 
+    stop("Deprecated behaviour. Omit the station_number = 
          \"ALL\" argument. See ?hy_annual_stats for examples.")
   }
   
@@ -80,34 +80,40 @@ hy_annual_stats <- function(station_number =NULL,
 
   ## TODO: Figure out how to do this in fewer steps
   ## Mean tibble
-  as_mean <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MEAN)
-  as_mean <- tidyr::gather(as_mean, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR)
+  as_mean <- dplyr::select(annual_statistics, .data$STATION_NUMBER, .data$DATA_TYPE, .data$YEAR, .data$MEAN)
+  as_mean <- tidyr::gather(as_mean, SUM_STAT, Value, -.data$STATION_NUMBER, -.data$DATA_TYPE, -.data$YEAR)
 
   ## Min tibble
-  as_min <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MIN_MONTH, MIN_DAY, MIN, MIN_SYMBOL)
-  as_min <- tidyr::gather(as_min, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR, -MIN_MONTH, -MIN_DAY, -MIN_SYMBOL)
+  as_min <- dplyr::select(annual_statistics, .data$STATION_NUMBER, .data$DATA_TYPE, .data$YEAR, .data$MIN_MONTH,
+                          .data$MIN_DAY, .data$MIN, .data$MIN_SYMBOL)
+  as_min <- tidyr::gather(as_min, SUM_STAT, Value, -.data$STATION_NUMBER, -.data$DATA_TYPE, -.data$YEAR,
+                          -.data$MIN_MONTH, -.data$MIN_DAY, -.data$MIN_SYMBOL)
   colnames(as_min) <- gsub("MIN_", "", names(as_min))
 
   ## Max tibble
-  as_max <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MAX_MONTH, MAX_DAY, MAX, MAX_SYMBOL)
-  as_max <- tidyr::gather(as_max, SUM_STAT, Value, -STATION_NUMBER, -DATA_TYPE, -YEAR, -MAX_MONTH, -MAX_DAY, -MAX_SYMBOL)
+  as_max <- dplyr::select(annual_statistics, .data$STATION_NUMBER, .data$DATA_TYPE, .data$YEAR, .data$MAX_MONTH,
+                          .data$MAX_DAY, .data$MAX, .data$MAX_SYMBOL)
+  as_max <- tidyr::gather(as_max, .data$SUM_STAT, .data$Value, -.data$STATION_NUMBER, -.data$DATA_TYPE, -YEAR, -.data$MAX_MONTH,
+                          -.data$MAX_DAY, -.data$MAX_SYMBOL)
   colnames(as_max) <- gsub("MAX_", "", names(as_max))
 
   ## bind into 1 dataframe and by year and join in the symbol
   annual_statistics <- as_mean %>%
     dplyr::bind_rows(as_min) %>%
     dplyr::bind_rows(as_max) %>%
-    dplyr::arrange(YEAR) %>%
+    dplyr::arrange(.data$YEAR) %>%
     dplyr::left_join(tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## Format date of occurence; SuppressWarnings are justified because NA's are valid for MEAN Sum_stat
-  annual_statistics <- dplyr::mutate(annual_statistics, Date = suppressWarnings(lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-"))))
+  annual_statistics <- dplyr::mutate(annual_statistics, Date = suppressWarnings(
+    lubridate::ymd(paste(.data$YEAR, .data$MONTH, .data$DAY, sep = "-"))))
 
   ## Format
   annual_statistics <- dplyr::left_join(annual_statistics, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
 
   ## Clean up the variables
-  annual_statistics <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value, Date, SYMBOL_EN)
+  annual_statistics <- dplyr::select(annual_statistics, .data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR:.data$Value,
+                                     .data$Date, .data$SYMBOL_EN)
   
   ## Rename to tidyhydat format
   colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")

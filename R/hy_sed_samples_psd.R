@@ -92,7 +92,7 @@ hy_sed_samples_psd <- function(station_number = NULL,
   if(is.data.frame(sed_samples_psd) && nrow(sed_samples_psd)==0)
   {stop("This station is not present in HYDAT")}
   
-  sed_samples_psd <- dplyr::mutate(sed_samples_psd, DATE = lubridate::ymd_hms(DATE))
+  sed_samples_psd <- dplyr::mutate(sed_samples_psd, DATE = lubridate::ymd_hms(.data$DATE))
 
   ## SUBSET by date
   if (start_date != "ALL" | end_date != "ALL") {
@@ -101,7 +101,8 @@ hy_sed_samples_psd <- function(station_number = NULL,
   }
   
   
-  sed_samples_psd <- dplyr::select(sed_samples_psd, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, PARTICLE_SIZE, PERCENT)
+  sed_samples_psd <- dplyr::select(sed_samples_psd, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, .data$DATE,
+                                   .data$PARTICLE_SIZE, .data$PERCENT)
   
   
   ## What stations were missed?

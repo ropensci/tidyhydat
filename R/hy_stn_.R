@@ -36,7 +36,7 @@ hy_stn_remarks <- function(station_number = NULL,
   stn_remarks <- dplyr::tbl(hydat_con, "STN_REMARKS") %>%
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "STN_REMARK_CODES"), by = c("REMARK_TYPE_CODE")) %>%
-    dplyr::select(STATION_NUMBER, REMARK_TYPE_EN, YEAR, REMARK_EN) %>%
+    dplyr::select(.data$STATION_NUMBER, .data$REMARK_TYPE_EN, .data$YEAR, .data$REMARK_EN) %>%
     dplyr::collect()
 
   stn_remarks
@@ -81,7 +81,7 @@ hy_stn_datum_conv <- function(station_number = NULL,
     dplyr::rename(DATUM_EN_FROM = DATUM_EN) %>%
     dplyr::left_join(dplyr::tbl(hydat_con, "DATUM_LIST"), by = c("DATUM_ID_TO" = "DATUM_ID")) %>%
     dplyr::rename(DATUM_EN_TO = DATUM_EN) %>%
-    dplyr::select(STATION_NUMBER, DATUM_EN_FROM, DATUM_EN_TO, CONVERSION_FACTOR) %>%
+    dplyr::select(.data$STATION_NUMBER, .data$DATUM_EN_FROM, .data$DATUM_EN_TO, .data$CONVERSION_FACTOR) %>%
     dplyr::collect()
 
   stn_datum_conversion
@@ -216,8 +216,9 @@ hy_stn_data_coll <- function(station_number = NULL,
     dplyr::left_join(dplyr::tbl(hydat_con, "OPERATION_CODES"), by = c("OPERATION_CODE")) %>%
     dplyr::collect() %>%
     dplyr::left_join(tidyhydat::hy_data_types, by = c("DATA_TYPE")) %>%
-    dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR_FROM, YEAR_TO, MEASUREMENT_EN, OPERATION_EN) %>%
-    dplyr::arrange(STATION_NUMBER, YEAR_FROM)
+    dplyr::select(.data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR_FROM, .data$YEAR_TO, 
+                  .data$MEASUREMENT_EN, .data$OPERATION_EN) %>%
+    dplyr::arrange(.data$STATION_NUMBER, .data$YEAR_FROM)
   
   
   stn_data_coll
@@ -265,7 +266,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
     dplyr::filter(STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
     dplyr::left_join(tidyhydat::hy_data_types, by = c("DATA_TYPE")) %>%
-    dplyr::select(STATION_NUMBER, DATA_TYPE_EN, YEAR, MONTH_FROM, MONTH_TO)
+    dplyr::select(.data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR, .data$MONTH_FROM, .data$MONTH_TO)
   
   stn_operation_schedule
 }

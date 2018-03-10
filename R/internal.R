@@ -39,13 +39,13 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (is.null(stns) == TRUE && is.null(prov_terr_state_loc) == TRUE) {
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::collect() %>%
-      dplyr::pull(STATION_NUMBER)
+      dplyr::pull(.data$STATION_NUMBER)
   }
 
   if (stns[1] == "ALL") {
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
-      dplyr::pull(STATION_NUMBER)
+      dplyr::pull(.data$STATION_NUMBER)
   }
   
   stns
@@ -96,9 +96,9 @@ multi_param_msg <- function(data_arg, stns, params) {
   
   flow_stns <- data_arg %>%
     dplyr::filter(Parameter == params) %>%
-    dplyr::distinct(STATION_NUMBER) %>%
-    dplyr::arrange(STATION_NUMBER) %>%
-    dplyr::pull(STATION_NUMBER)
+    dplyr::distinct(.data$STATION_NUMBER) %>%
+    dplyr::arrange(.data$STATION_NUMBER) %>%
+    dplyr::pull(.data$STATION_NUMBER)
   
   good_stns <- c()
   if(length(flow_stns) > 0L){

@@ -103,7 +103,7 @@ hy_sed_monthly_loads <- function(station_number = NULL,
     #                             MONTH <= end_month)
   }
   
-  sed_monthly_loads <- dplyr::select(sed_monthly_loads, STATION_NUMBER:MAX)
+  sed_monthly_loads <- dplyr::select(sed_monthly_loads, .data$STATION_NUMBER:.data$MAX)
   sed_monthly_loads <- dplyr::collect(sed_monthly_loads)
   
   if(is.data.frame(sed_monthly_loads) && nrow(sed_monthly_loads)==0)
@@ -115,16 +115,17 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   
   
 
-  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, variable, temp, -(STATION_NUMBER:NO_DAYS))
+  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   sed_monthly_loads <- tidyr::separate(sed_monthly_loads, variable, into = c("Sum_stat","temp2"), sep = "_")
 
   sed_monthly_loads <- tidyr::spread(sed_monthly_loads, temp2, temp)
 
   ## convert into R date for date of occurence.
-  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
+  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = lubridate::ymd(
+    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
 
-  sed_monthly_loads <- dplyr::select(sed_monthly_loads, -DAY)
-  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, FULL_MONTH = FULL_MONTH == 1)
+  sed_monthly_loads <- dplyr::select(sed_monthly_loads, -.data$DAY)
+  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, FULL_MONTH = .data$FULL_MONTH == 1)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(sed_monthly_loads$STATION_NUMBER))

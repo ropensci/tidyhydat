@@ -90,22 +90,24 @@ hy_sed_daily_loads <- function(station_number = NULL,
       YEAR <= end_year)
   }
 
-  sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LOAD"))
+  sed_dly_loads <- dplyr::select(sed_dly_loads, .data$STATION_NUMBER, .data$YEAR, .data$MONTH,
+                                 .data$NO_DAYS, dplyr::contains("LOAD"))
   sed_dly_loads <- dplyr::collect(sed_dly_loads)
   
   if(is.data.frame(sed_dly_loads) && nrow(sed_dly_loads)==0)
   {stop("No sediment load data for this station in HYDAT")}
   
-  sed_dly_loads <- tidyr::gather(sed_dly_loads, variable, temp, -(STATION_NUMBER:NO_DAYS))
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", variable)))
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, variable = gsub("[0-9]+", "", variable))
+  sed_dly_loads <- tidyr::gather(sed_dly_loads, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", .data$variable)))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, variable = gsub("[0-9]+", "", .data$variable))
   sed_dly_loads <- tidyr::spread(sed_dly_loads, variable, temp)
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, LOAD = as.numeric(LOAD))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, LOAD = as.numeric(.data$LOAD))
   ## No days that exceed actual number of days in the month
-  sed_dly_loads <- dplyr::filter(sed_dly_loads, DAY <= NO_DAYS)
+  sed_dly_loads <- dplyr::filter(sed_dly_loads, .data$DAY <= .data$NO_DAYS)
 
   ## convert into R date.
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Date = lubridate::ymd(
+    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
 
   ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
@@ -114,8 +116,8 @@ hy_sed_daily_loads <- function(station_number = NULL,
   }
 
   sed_dly_loads <- dplyr::mutate(sed_dly_loads, Parameter = "Load")
-  sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, Date, Parameter, LOAD)
-  sed_dly_loads <- dplyr::arrange(sed_dly_loads, Date)
+  sed_dly_loads <- dplyr::select(sed_dly_loads, .data$STATION_NUMBER, .data$Date, .data$Parameter, .data$LOAD)
+  sed_dly_loads <- dplyr::arrange(sed_dly_loads, .data$Date)
 
   colnames(sed_dly_loads) <- c("STATION_NUMBER", "Date", "Parameter", "Value")
 

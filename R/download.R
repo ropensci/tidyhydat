@@ -61,12 +61,12 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     stns <- station_number
     choose_df <- realtime_stations()
     choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
-    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
   }
 
   if (is.null(station_number)) {
     choose_df <- realtime_stations(prov_terr_state_loc = prov_terr_state_loc)
-    choose_df <- dplyr::select(choose_df, STATION_NUMBER, PROV_TERR_STATE_LOC)
+    choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
   }
 
   output_c <- c()
@@ -180,15 +180,16 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
     ## Now tidy the data
     ## TODO: Find a better way to do this
-    output <- dplyr::rename(output, `Level_` = Level, `Flow_` = Flow)
-    output <- tidyr::gather(output, temp, val, -STATION_NUMBER, -Date)
+    output <- dplyr::rename(output, `Level_` = .data$Level, `Flow_` = .data$Flow)
+    output <- tidyr::gather(output, temp, val, -.data$STATION_NUMBER, -.data$Date)
     output <- tidyr::separate(output, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
     output <- dplyr::mutate(output, key = ifelse(key == "", "Value", key))
     output <- tidyr::spread(output, key, val)
-    output <- dplyr::rename(output, Code = CODE, Grade = GRADE, Symbol = SYMBOL)
+    output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
     output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV_SEL)
-    output <- dplyr::select(output, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter, Value, Grade, Symbol, Code)
-    output <- dplyr::arrange(output, Parameter, STATION_NUMBER, Date)
+    output <- dplyr::select(output, STATION_NUMBER, PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
+                            .data$Grade, .data$Symbol, .data$Code)
+    output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
     output$Value <- as.numeric(output$Value)
 
 
@@ -311,11 +312,11 @@ download_hydat <- function(dl_hydat_here = NULL) {
   if (file.exists(hydat_path)) {
     hy_version(hydat_path) %>%
       dplyr::mutate(condensed_date = paste0(
-        substr(Date, 1, 4),
-        substr(Date, 6, 7),
-        substr(Date, 9, 10)
+        substr(.data$Date, 1, 4),
+        substr(.data$Date, 6, 7),
+        substr(.data$Date, 9, 10)
       )) %>%
-      dplyr::pull(condensed_date) -> existing_hydat
+      dplyr::pull(.data$condensed_date) -> existing_hydat
   } else {
     existing_hydat <- "HYDAT not present"
   }

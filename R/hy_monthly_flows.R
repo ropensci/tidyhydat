@@ -105,7 +105,7 @@ hy_monthly_flows <- function(station_number = NULL,
     #                             MONTH <= end_month)
   }
 
-  monthly_flows <- dplyr::select(monthly_flows, STATION_NUMBER:MAX)
+  monthly_flows <- dplyr::select(monthly_flows, .data$STATION_NUMBER:.data$MAX)
   monthly_flows <- dplyr::collect(monthly_flows)
   
   if(is.data.frame(monthly_flows) && nrow(monthly_flows)==0)
@@ -117,7 +117,7 @@ hy_monthly_flows <- function(station_number = NULL,
   
   
 
-  monthly_flows <- tidyr::gather(monthly_flows, variable, temp, -(STATION_NUMBER:NO_DAYS))
+  monthly_flows <- tidyr::gather(monthly_flows, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   monthly_flows <- tidyr::separate(monthly_flows, variable, into = c("Sum_stat","temp2"), sep = "_")
 
   monthly_flows <- tidyr::spread(monthly_flows, temp2, temp)
@@ -125,8 +125,8 @@ hy_monthly_flows <- function(station_number = NULL,
   ## convert into R date for date of occurence.
   monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
 
-  monthly_flows <- dplyr::select(monthly_flows, -DAY)
-  monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = FULL_MONTH == 1)
+  monthly_flows <- dplyr::select(monthly_flows, -.data$DAY)
+  monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = .data$FULL_MONTH == 1)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(monthly_flows$STATION_NUMBER))
