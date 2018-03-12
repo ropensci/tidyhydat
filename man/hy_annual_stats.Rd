@@ -8,10 +8,10 @@
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
   \item{Year}{Year of record.}
-  \item{Sum_stat}{Summary statistic being used.} 
-  \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the 
+  \item{Sum_stat}{Summary statistic being used.}
+  \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the
   units are metres.}
-  \item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+  \item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary
   and therefore has an NA value for Date.}
   \item{Symbol}{Measurement/river conditions}
 }}
@@ -42,14 +42,14 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of hy_annual_stats.
 }
 \description{
-Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame of annual statistics. 
+Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame of annual statistics.
 Statistics provided include MEAN, MAX and MIN on an annual basis.
 }
 \examples{
 \dontrun{
   ## Multiple stations province not specified
   hy_annual_stats(station_number = c("08NM083","05AE027"))
- 
+
   ## Multiple province, station number not specified
   hy_annual_stats(prov_terr_state_loc = c("AB","SK"))
 }

@@ -2,10 +2,14 @@ context("Testing hy_annual_stats")
 
 test_that("hy_annual_stats accepts single and multiple province arguments", {
   stns <- "08NM083"
-  expect_identical(unique(hy_annual_stats(station_number = stns, 
-                                          hydat_path = hy_test_db())$STATION_NUMBER), stns)
-  expect_identical(length(unique(hy_annual_stats(station_number = c("08NM083", "08NE102"), 
-                                                 hydat_path = hy_test_db())$STATION_NUMBER)), length(c("08NM083", "08NE102")))
+  expect_identical(unique(hy_annual_stats(
+    station_number = stns,
+    hydat_path = hy_test_db()
+  )$STATION_NUMBER), stns)
+  expect_identical(length(unique(hy_annual_stats(
+    station_number = c("08NM083", "08NE102"),
+    hydat_path = hy_test_db()
+  )$STATION_NUMBER)), length(c("08NM083", "08NE102")))
 })
 
 
