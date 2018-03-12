@@ -18,4 +18,4 @@ release_script.R
 
 ^presentations$
 tidyhydat_intro.Rmd
-
+^\.github$
