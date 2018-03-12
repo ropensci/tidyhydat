@@ -55,12 +55,14 @@ hy_annual_instant_peaks <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating STATION_NUMBER symbol
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## Data manipulations
   aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%
+    dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
     dplyr::collect()
-  
-  aip <- dplyr::filter(aip, .data$STATION_NUMBER %in% stns) 
 
   ## Add in english data type
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_types, by = c("DATA_TYPE"))

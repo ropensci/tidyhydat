@@ -92,15 +92,19 @@ hy_daily_flows <- function(station_number = NULL,
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
   
   ## Data manipulations to make it "tidy"
   dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-  dly_flows <- dplyr::filter(dly_flows, STATION_NUMBER %in% stns)
+  dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% stns)
   
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, YEAR >= start_year &
-                                 YEAR <= end_year)
+    dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= start_year & !!sym_YEAR <= end_year)
   }
   
   dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, 
@@ -110,7 +114,7 @@ hy_daily_flows <- function(station_number = NULL,
   if(is.data.frame(dly_flows) && nrow(dly_flows)==0)
     {stop("No flow data for this station in HYDAT")}
   
-  dly_flows <- tidyr::gather(dly_flows, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", .data$variable)))
   dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", "", .data$variable))
   dly_flows <- tidyr::spread(dly_flows, .data$variable, .data$temp)
