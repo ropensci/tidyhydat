@@ -1,3 +1,8 @@
+tidyhydat 0.3.4
+=========================
+### IMPROVEMENT
+* Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
+
 tidyhydat 0.3.3
 =========================
 ### NEW FEATURES
