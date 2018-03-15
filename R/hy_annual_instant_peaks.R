@@ -41,12 +41,6 @@ hy_annual_instant_peaks <- function(station_number = NULL,
                                  prov_terr_state_loc = NULL,
                                  start_year = "ALL", end_year = "ALL") {
   
-
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = 
-         \"ALL\" argument. See ?hy_annual_stats for examples.")
-  }
-  
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -55,10 +49,13 @@ hy_annual_instant_peaks <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating STATION_NUMBER symbol
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## Data manipulations
   aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%
-    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
     dplyr::collect()
 
   ## Add in english data type
@@ -67,23 +64,24 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   ## Add in Symbol
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
-  ## If a yearis supplied...
+  ## If a year is supplied...
   if (start_year != "ALL" | end_year != "ALL") {
-    aip <- dplyr::filter(aip, YEAR >= start_year & YEAR <= end_year)
+    aip <- dplyr::filter(aip, .data$YEAR >= start_year & .data$YEAR <= end_year)
   }
 
   ## Parse PEAK_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(PEAK_CODE == "H", "MAX", "MIN"))
+  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(.data$PEAK_CODE == "H", "MAX", "MIN"))
 
   ## Parse PRECISION_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
+  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(.data$PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
 
   ## TODO: Convert to dttm
-  aip <- dplyr::mutate(aip, Date = lubridate::ymd(paste0(YEAR,"-",MONTH,"-",DAY)))
+  aip <- dplyr::mutate(aip, Date = lubridate::ymd(paste0(.data$YEAR,"-",.data$MONTH,"-",.data$DAY)))
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, STATION_NUMBER, Date, HOUR, MINUTE, TIME_ZONE, PEAK, DATA_TYPE_EN, PEAK_CODE, PRECISION_CODE, SYMBOL_EN) %>%
-    dplyr::rename(Parameter = DATA_TYPE_EN, Symbol = SYMBOL_EN, Value = PEAK)
+  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, .data$HOUR, .data$MINUTE, .data$TIME_ZONE, 
+                       .data$PEAK, .data$DATA_TYPE_EN, .data$PEAK_CODE, .data$PRECISION_CODE, .data$SYMBOL_EN) %>%
+    dplyr::rename(Parameter = .data$DATA_TYPE_EN, Symbol = .data$SYMBOL_EN, Value = .data$PEAK)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(aip$STATION_NUMBER))

@@ -56,12 +56,15 @@ hy_stn_regulation <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## data manipulations to make it "tidy"
-  dplyr::tbl(hydat_con, "STN_REGULATION") %>%
-    dplyr::filter(STATION_NUMBER %in% stns) %>%
-    dplyr::collect() %>%
-    dplyr::mutate(REGULATED = REGULATED == 1)
+  stn_reg <- dplyr::tbl(hydat_con, "STN_REGULATION")
+  stn_reg <- dplyr::filter(stn_reg,!!sym_STATION_NUMBER %in% stns)
+  stn_reg <- dplyr::collect(stn_reg)
+  dplyr::mutate(stn_reg, REGULATED = .data$REGULATED == 1)
 
 
 }

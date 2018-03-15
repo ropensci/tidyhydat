@@ -92,10 +92,15 @@ hy_sed_samples <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_DATE <- sym("DATE")
+
 
   ## Data manipulations
   sed_samples <- dplyr::tbl(hydat_con, "SED_SAMPLES")
-  sed_samples <- dplyr::filter(sed_samples, STATION_NUMBER %in% stns)
+  sed_samples <- dplyr::filter(sed_samples, !!sym_STATION_NUMBER %in% stns)
   sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "SED_DATA_TYPES"), by = c("SED_DATA_TYPE"))
   sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "SAMPLE_REMARK_CODES"), by = c("SAMPLE_REMARK_CODE"))
   sed_samples <- dplyr::left_join(
@@ -111,19 +116,19 @@ hy_sed_samples <- function(station_number = NULL,
   {stop("This station is not present in HYDAT")}
   
   sed_samples <- dplyr::left_join(sed_samples, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(DATE))
+  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(.data$DATE))
 
   ## SUBSET by date
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_samples <- dplyr::filter(sed_samples, DATE >= start_date &
-                                   DATE <= end_date)
+    sed_samples <- dplyr::filter(sed_samples, !!sym_DATE >= start_date &
+                                   !!sym_DATE <= end_date)
   }
   
   
   sed_samples <- dplyr::select(
-    sed_samples, STATION_NUMBER, SED_DATA_TYPE_EN, DATE, SAMPLE_REMARK_EN, TIME_SYMBOL,
-    FLOW, SYMBOL_EN, SAMPLER_TYPE, SAMPLING_VERTICAL_LOCATION, SAMPLING_VERTICAL_EN,
-    TEMPERATURE, CONCENTRATION, CONCENTRATION_EN, SV_DEPTH2
+    sed_samples, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, .data$DATE, .data$SAMPLE_REMARK_EN, .data$TIME_SYMBOL,
+    .data$FLOW, .data$SYMBOL_EN, .data$SAMPLER_TYPE, .data$SAMPLING_VERTICAL_LOCATION, .data$SAMPLING_VERTICAL_EN,
+    .data$TEMPERATURE, .data$CONCENTRATION, .data$CONCENTRATION_EN, .data$SV_DEPTH2
   )
   
   

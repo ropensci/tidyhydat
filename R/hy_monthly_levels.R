@@ -89,22 +89,28 @@ hy_monthly_levels <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-
+  
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_temp2 <- sym("temp2")
 
   ## Data manipulations to make it "tidy"
   monthly_levels <- dplyr::tbl(hydat_con, "DLY_LEVELS")
-  monthly_levels <- dplyr::filter(monthly_levels, STATION_NUMBER %in% stns)
+  monthly_levels <- dplyr::filter(monthly_levels, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    monthly_levels <- dplyr::filter(monthly_levels, YEAR >= start_year &
-      YEAR <= end_year)
+    monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR >= start_year &
+                                      !!sym_YEAR <= end_year)
     
     #monthly_levels <- dplyr::filter(monthly_levels, MONTH >= start_month &
     #                             MONTH <= end_month)
   }
 
-  monthly_levels <- dplyr::select(monthly_levels, STATION_NUMBER:MAX)
+  monthly_levels <- dplyr::select(monthly_levels, .data$STATION_NUMBER:.data$MAX)
   monthly_levels <- dplyr::collect(monthly_levels)
   
   if(is.data.frame(monthly_levels) && nrow(monthly_levels)==0)
@@ -116,17 +122,18 @@ hy_monthly_levels <- function(station_number = NULL,
   
   
 
-  monthly_levels <- tidyr::gather(monthly_levels, variable, temp, -(STATION_NUMBER:NO_DAYS))
-  monthly_levels <- tidyr::separate(monthly_levels, variable, into = c("Sum_stat","temp2"), sep = "_")
+  monthly_levels <- tidyr::gather(monthly_levels, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  monthly_levels <- tidyr::separate(monthly_levels, !!sym_variable, into = c("Sum_stat","temp2"), sep = "_")
 
-  monthly_levels <- tidyr::spread(monthly_levels, temp2, temp)
+  monthly_levels <- tidyr::spread(monthly_levels, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
+  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(
+    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
   ## TODO: convert dates incorrectly. Make sure NA DAYs aren't converted into dates
 
-  monthly_levels <- dplyr::select(monthly_levels, -DAY)
-  monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = FULL_MONTH == 1)
+  monthly_levels <- dplyr::select(monthly_levels, -.data$DAY)
+  monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = .data$FULL_MONTH == 1)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(monthly_levels$STATION_NUMBER))

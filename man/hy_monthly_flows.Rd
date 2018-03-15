@@ -10,9 +10,9 @@
   \item{MONTH}{Numeric month value}
   \item{FULL_MONTH}{Logical value is there is full record from MONTH}
   \item{NO_DAYS}{Number of days in that month}
-  \item{Sum_stat}{Summary statistic being used.} 
+  \item{Sum_stat}{Summary statistic being used.}
   \item{Value}{Value of the measurement in m^3/s.}
-  \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+  \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
   and therefore has an NA value for Date.}
 }}
 \source{
@@ -48,12 +48,12 @@ That is a large vector for \code{hy_monthly_flows}.
 }
 \examples{
 \dontrun{
-hy_monthly_flows(station_number = c("02JE013","08MF005"), 
+hy_monthly_flows(station_number = c("02JE013","08MF005"),
   start_date = "1996-01-01", end_date = "2000-01-01")
 
 hy_monthly_flows(prov_terr_state_loc = "PE")
           }
-          
+
 }
 \seealso{
 Other HYDAT functions: \code{\link{hy_agency_list}},

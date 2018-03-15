@@ -26,8 +26,8 @@ search_stn_name <- function(search_term, hydat_path = NULL) {
   
   results <- realtime_stations() %>%
     dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
-    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+    dplyr::distinct(.data$STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(.data$STATION_NUMBER, .data$STATION_NAME, .data$PROV_TERR_STATE_LOC, .data$LATITUDE, .data$LONGITUDE)
   
   results <- results[grepl(toupper(search_term), results$STATION_NAME), ]
   
@@ -51,8 +51,8 @@ search_stn_number <- function(search_term, hydat_path = NULL) {
   
   results <- realtime_stations() %>%
     dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
-    dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
+    dplyr::distinct(.data$STATION_NUMBER, .keep_all = TRUE) %>%
+    dplyr::select(.data$STATION_NUMBER, .data$STATION_NAME, .data$PROV_TERR_STATE_LOC, .data$LATITUDE, .data$LONGITUDE)
   
   results <- results[grepl(toupper(search_term), results$STATION_NUMBER), ]
   
@@ -200,7 +200,7 @@ hy_version <- function(hydat_path = NULL) {
   
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%
-    dplyr::mutate(Date = lubridate::ymd_hms(Date))
+    dplyr::mutate(Date = lubridate::ymd_hms(.data$Date))
   
   version
   
@@ -211,7 +211,7 @@ hy_version <- function(hydat_path = NULL) {
 #' This function is meant to be used within a pipe as a means of easily moving from higher resolution 
 #' data to daily means.
 #' 
-#' @param .data A data argument that is designed to take only the output of realtime_dd
+#' @param data A data argument that is designed to take only the output of realtime_dd
 #' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
 #' 
 #' @examples
@@ -220,12 +220,12 @@ hy_version <- function(hydat_path = NULL) {
 #' }
 #' 
 #' @export
-realtime_daily_mean <- function(.data, na.rm = FALSE){
+realtime_daily_mean <- function(data, na.rm = FALSE){
   
-  .data <- dplyr::mutate(.data, Date = as.Date(Date))
+  df_mean <- dplyr::mutate(data, Date = as.Date(.data$Date))
   
-  .data <- dplyr::group_by(.data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter)
+  df_mean <- dplyr::group_by(df_mean, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter)
   
-  dplyr::summarise(.data, Value = mean(Value, na.rm = na.rm)) %>%
+  dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm)) %>%
     dplyr::ungroup()
 }

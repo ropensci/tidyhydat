@@ -69,7 +69,7 @@ realtime_plot <- function(station_number = NULL, Parameter = c("Flow","Level")){
   
   graphics::plot(Value ~ Date,
                  data = rldf,
-                 col = STATION,
+                 col = rldf$STATION,
                  main="Realtime Water Survey of Canada Gauges",
                  xlab="Date", 
                  ylab="",

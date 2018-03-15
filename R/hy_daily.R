@@ -94,6 +94,6 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
     
   }
   
-  dplyr::arrange(daily, STATION_NUMBER, Date)
+  dplyr::arrange(daily, .data$STATION_NUMBER, .data$Date)
 
 }

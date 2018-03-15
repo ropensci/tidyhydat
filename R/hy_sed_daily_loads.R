@@ -13,7 +13,7 @@
 #' Extract daily sediment load information from the HYDAT database
 #'
 #' Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame of daily sediment load information.
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the 
+#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the
 #' \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_daily_loads}.
 #'
 #' @inheritParams hy_stations
@@ -41,16 +41,16 @@
 
 
 
-hy_sed_daily_loads <- function(station_number = NULL, 
-                          hydat_path = NULL, 
-                          prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
-  
+hy_sed_daily_loads <- function(station_number = NULL,
+                               hydat_path = NULL,
+                               prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
+
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
     on.exit(hy_src_disconnect(hydat_con))
   }
-  
+
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
   } else {
@@ -80,42 +80,55 @@ hy_sed_daily_loads <- function(station_number = NULL,
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_Date <- sym("Date")
+
   ## Data manipulations
   sed_dly_loads <- dplyr::tbl(hydat_con, "SED_DLY_LOADS")
-  sed_dly_loads <- dplyr::filter(sed_dly_loads, STATION_NUMBER %in% stns)
+  sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_loads <- dplyr::filter(sed_dly_loads, YEAR >= start_year &
-      YEAR <= end_year)
+    sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_YEAR >= start_year &
+      !!sym_YEAR <= end_year)
   }
 
-  sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, YEAR, MONTH, NO_DAYS, dplyr::contains("LOAD"))
+  sed_dly_loads <- dplyr::select(
+    sed_dly_loads, .data$STATION_NUMBER, .data$YEAR, .data$MONTH,
+    .data$NO_DAYS, dplyr::contains("LOAD")
+  )
   sed_dly_loads <- dplyr::collect(sed_dly_loads)
-  
-  if(is.data.frame(sed_dly_loads) && nrow(sed_dly_loads)==0)
-  {stop("No sediment load data for this station in HYDAT")}
-  
-  sed_dly_loads <- tidyr::gather(sed_dly_loads, variable, temp, -(STATION_NUMBER:NO_DAYS))
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", variable)))
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, variable = gsub("[0-9]+", "", variable))
-  sed_dly_loads <- tidyr::spread(sed_dly_loads, variable, temp)
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, LOAD = as.numeric(LOAD))
+
+  if (is.data.frame(sed_dly_loads) && nrow(sed_dly_loads) == 0) {
+    stop("No sediment load data for this station in HYDAT")
+  }
+
+  sed_dly_loads <- tidyr::gather(sed_dly_loads, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, DAY = as.numeric(gsub("LOAD", "", .data$variable)))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, variable = gsub("[0-9]+", "", .data$variable))
+  sed_dly_loads <- tidyr::spread(sed_dly_loads, !!sym_variable, !!sym_temp)
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, LOAD = as.numeric(.data$LOAD))
   ## No days that exceed actual number of days in the month
-  sed_dly_loads <- dplyr::filter(sed_dly_loads, DAY <= NO_DAYS)
+  sed_dly_loads <- dplyr::filter(sed_dly_loads, .data$DAY <= .data$NO_DAYS)
 
   ## convert into R date.
-  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))
+  sed_dly_loads <- dplyr::mutate(sed_dly_loads, Date = lubridate::ymd(
+    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)
+  ))
 
   ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_loads <- dplyr::filter(sed_dly_loads, Date >= start_date &
-      Date <= end_date)
+    sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_Date >= start_date &
+                                     !!sym_Date <= end_date)
   }
 
   sed_dly_loads <- dplyr::mutate(sed_dly_loads, Parameter = "Load")
-  sed_dly_loads <- dplyr::select(sed_dly_loads, STATION_NUMBER, Date, Parameter, LOAD)
-  sed_dly_loads <- dplyr::arrange(sed_dly_loads, Date)
+  sed_dly_loads <- dplyr::select(sed_dly_loads, .data$STATION_NUMBER, .data$Date, .data$Parameter, .data$LOAD)
+  sed_dly_loads <- dplyr::arrange(sed_dly_loads, .data$Date)
 
   colnames(sed_dly_loads) <- c("STATION_NUMBER", "Date", "Parameter", "Value")
 
@@ -123,6 +136,6 @@ hy_sed_daily_loads <- function(station_number = NULL,
   ## What stations were missed?
   differ_msg(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
 
-  
+
   sed_dly_loads
 }
