@@ -9,6 +9,10 @@
 #'
 #'
 station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
+  
+  if (!is.null(station_number) && station_number == "ALL") {
+    stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument", call. = FALSE)
+  }
 
 
   ## Only possible values for prov_terr_state_loc

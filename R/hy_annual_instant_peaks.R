@@ -41,12 +41,6 @@ hy_annual_instant_peaks <- function(station_number = NULL,
                                  prov_terr_state_loc = NULL,
                                  start_year = "ALL", end_year = "ALL") {
   
-
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = 
-         \"ALL\" argument. See ?hy_annual_stats for examples.")
-  }
-  
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
