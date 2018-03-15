@@ -81,10 +81,14 @@ hy_sed_samples_psd <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_DATE <- sym("DATE")
 
   ## Data manipulations
   sed_samples_psd <- dplyr::tbl(hydat_con, "SED_SAMPLES_PSD")
-  sed_samples_psd <- dplyr::filter(sed_samples_psd, STATION_NUMBER %in% stns)
+  sed_samples_psd <- dplyr::filter(sed_samples_psd, !!sym_STATION_NUMBER %in% stns)
   sed_samples_psd <- dplyr::left_join(sed_samples_psd, dplyr::tbl(hydat_con, "SED_DATA_TYPES"), by = c("SED_DATA_TYPE"))
 
   sed_samples_psd <- dplyr::collect(sed_samples_psd)
@@ -96,8 +100,8 @@ hy_sed_samples_psd <- function(station_number = NULL,
 
   ## SUBSET by date
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_samples_psd <- dplyr::filter(sed_samples_psd, DATE >= start_date &
-      DATE <= end_date)
+    sed_samples_psd <- dplyr::filter(sed_samples_psd, !!sym_DATE >= start_date &
+      !!sym_DATE <= end_date)
   }
   
   

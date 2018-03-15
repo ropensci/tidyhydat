@@ -20,8 +20,8 @@
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #'
-#' @return A tibble of monthly flows. 
-#'   
+#' @return A tibble of monthly flows.
+#'
 #' @format A tibble with 8 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
@@ -29,20 +29,20 @@
 #'   \item{MONTH}{Numeric month value}
 #'   \item{FULL_MONTH}{Logical value is there is full record from MONTH}
 #'   \item{NO_DAYS}{Number of days in that month}
-#'   \item{Sum_stat}{Summary statistic being used.} 
+#'   \item{Sum_stat}{Summary statistic being used.}
 #'   \item{Value}{Value of the measurement in m^3/s.}
-#'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
+#'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
 #'   and therefore has an NA value for Date.}
 #' }
 #'
 #' @examples
 #' \dontrun{
-#' hy_monthly_flows(station_number = c("02JE013","08MF005"), 
+#' hy_monthly_flows(station_number = c("02JE013","08MF005"),
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
 #' hy_monthly_flows(prov_terr_state_loc = "PE")
 #'           }
-#'           
+#'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
@@ -50,12 +50,9 @@
 
 
 hy_monthly_flows <- function(station_number = NULL,
-                          hydat_path = NULL,
-                          prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_monthly_flows for examples.")
-  }
-  
+                             hydat_path = NULL,
+                             prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
+
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -91,39 +88,48 @@ hy_monthly_flows <- function(station_number = NULL,
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
 
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_temp2 <- sym("temp2")
 
   ## Data manipulations to make it "tidy"
   monthly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-  monthly_flows <- dplyr::filter(monthly_flows, STATION_NUMBER %in% stns)
+  monthly_flows <- dplyr::filter(monthly_flows, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    monthly_flows <- dplyr::filter(monthly_flows, YEAR >= start_year &
-      YEAR <= end_year)
-    
-    #monthly_flows <- dplyr::filter(monthly_flows, MONTH >= start_month &
+    monthly_flows <- dplyr::filter(monthly_flows, !!sym_YEAR >= start_year &
+      !!sym_YEAR <= end_year)
+
+    # monthly_flows <- dplyr::filter(monthly_flows, MONTH >= start_month &
     #                             MONTH <= end_month)
   }
 
   monthly_flows <- dplyr::select(monthly_flows, .data$STATION_NUMBER:.data$MAX)
   monthly_flows <- dplyr::collect(monthly_flows)
-  
-  if(is.data.frame(monthly_flows) && nrow(monthly_flows)==0)
-  {stop("This station is not present in HYDAT")}
-  
+
+  if (is.data.frame(monthly_flows) && nrow(monthly_flows) == 0) {
+    stop("This station is not present in HYDAT")
+  }
+
   ## Need to rename columns for gather
-  colnames(monthly_flows) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS", "MEAN_Value",
-                           "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
-  
-  
+  colnames(monthly_flows) <- c(
+    "STATION_NUMBER", "YEAR", "MONTH", "FULL_MONTH", "NO_DAYS", "MEAN_Value",
+    "TOTAL_Value", "MIN_DAY", "MIN_Value", "MAX_DAY", "MAX_Value"
+  )
 
-  monthly_flows <- tidyr::gather(monthly_flows, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
-  monthly_flows <- tidyr::separate(monthly_flows, variable, into = c("Sum_stat","temp2"), sep = "_")
 
-  monthly_flows <- tidyr::spread(monthly_flows, temp2, temp)
+
+  monthly_flows <- tidyr::gather(monthly_flows, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  monthly_flows <- tidyr::separate(monthly_flows, !!sym_variable, into = c("Sum_stat", "temp2"), sep = "_")
+
+  monthly_flows <- tidyr::spread(monthly_flows, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY), quiet = TRUE))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
 
   monthly_flows <- dplyr::select(monthly_flows, -.data$DAY)
   monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = .data$FULL_MONTH == 1)

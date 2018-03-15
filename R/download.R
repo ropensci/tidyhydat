@@ -58,9 +58,11 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
 
   if (!is.null(station_number)) {
+    sym_STATION_NUMBER <- sym("STATION_NUMBER")
+    
     stns <- station_number
     choose_df <- realtime_stations()
-    choose_df <- dplyr::filter(choose_df, STATION_NUMBER %in% stns)
+    choose_df <- dplyr::filter(choose_df, !!sym_STATION_NUMBER %in% stns)
     choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
   }
 
@@ -177,17 +179,22 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
       p <- which(d$Date < min(h$Date))
       output <- rbind(d[p, ], h)
     }
+    
+    ## Create symbols
+    sym_temp <- sym("temp")
+    sym_val <- sym("val")
+    sym_key <- sym("key")
 
     ## Now tidy the data
     ## TODO: Find a better way to do this
     output <- dplyr::rename(output, `Level_` = .data$Level, `Flow_` = .data$Flow)
-    output <- tidyr::gather(output, temp, val, -.data$STATION_NUMBER, -.data$Date)
-    output <- tidyr::separate(output, temp, c("Parameter", "key"), sep = "_", remove = TRUE)
-    output <- dplyr::mutate(output, key = ifelse(key == "", "Value", key))
-    output <- tidyr::spread(output, key, val)
+    output <- tidyr::gather(output, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
+    output <- tidyr::separate(output, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+    output <- dplyr::mutate(output, key = ifelse(.data$key == "", "Value", .data$key))
+    output <- tidyr::spread(output, !!sym_key, !!sym_val)
     output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
     output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV_SEL)
-    output <- dplyr::select(output, STATION_NUMBER, PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
+    output <- dplyr::select(output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
                             .data$Grade, .data$Symbol, .data$Code)
     output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
     output$Value <- as.numeric(output$Value)
@@ -265,8 +272,9 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   if (is.null(prov)) {
     return(net_tibble)
   }
+  
 
-  net_tibble <- dplyr::filter(net_tibble, PROV_TERR_STATE_LOC %in% prov)
+  net_tibble <- dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov)
   net_tibble
 }
 

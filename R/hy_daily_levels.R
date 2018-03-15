@@ -47,9 +47,6 @@ hy_daily_levels <- function(station_number = NULL,
                        hydat_path = NULL,
                        prov_terr_state_loc = NULL, 
                        start_date ="ALL", end_date = "ALL", symbol_output = "code") {
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_daily_levels for examples.")
-  }
 
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
@@ -85,15 +82,22 @@ hy_daily_levels <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_Date <- sym("Date")
 
   ## Data manipulations
   dly_levels <- dplyr::tbl(hydat_con, "DLY_LEVELS")
-  dly_levels <- dplyr::filter(dly_levels, STATION_NUMBER %in% stns)
+  dly_levels <- dplyr::filter(dly_levels, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    dly_levels <- dplyr::filter(dly_levels, YEAR >= start_year &
-      YEAR <= end_year)
+    dly_levels <- dplyr::filter(dly_levels, !!sym_YEAR >= start_year &
+      !!sym_YEAR <= end_year)
   }
 
   dly_levels <- dplyr::select(dly_levels, .data$STATION_NUMBER, .data$YEAR, .data$MONTH,
@@ -103,7 +107,7 @@ hy_daily_levels <- function(station_number = NULL,
   if(is.data.frame(dly_levels) && nrow(dly_levels)==0)
   {stop("No level data for this station in HYDAT")}
   
-  dly_levels <- tidyr::gather(dly_levels, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  dly_levels <- tidyr::gather(dly_levels, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   dly_levels <- dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", .data$variable)))
   dly_levels <- dplyr::mutate(dly_levels, variable = gsub("[0-9]+", "", .data$variable))
   dly_levels <- tidyr::spread(dly_levels, .data$variable, .data$temp)
@@ -116,8 +120,8 @@ hy_daily_levels <- function(station_number = NULL,
 
   ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
-    dly_levels <- dplyr::filter(dly_levels, Date >= start_date &
-      Date <= end_date)
+    dly_levels <- dplyr::filter(dly_levels, !!sym_Date >= start_date &
+                                  !!sym_Date <= end_date)
   }
   dly_levels <- dplyr::left_join(dly_levels, tidyhydat::hy_data_symbols, by = c("LEVEL_SYMBOL" = "SYMBOL_ID"))
   dly_levels <- dplyr::mutate(dly_levels, Parameter = "Level")

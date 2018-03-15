@@ -79,15 +79,22 @@ hy_sed_daily_suscon <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_Date <- sym("Date")
 
   ## Data manipulations
   sed_dly_suscon <- dplyr::tbl(hydat_con, "SED_DLY_SUSCON")
-  sed_dly_suscon <- dplyr::filter(sed_dly_suscon, STATION_NUMBER %in% stns)
+  sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, YEAR >= start_year &
-      YEAR <= end_year)
+    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR >= start_year &
+                                      !!sym_YEAR <= end_year)
   }
 
   sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, .data$NO_DAYS,
@@ -97,10 +104,10 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   if(is.data.frame(sed_dly_suscon) && nrow(sed_dly_suscon)==0)
   {stop("No suspended sediment data for this station in HYDAT")}
   
-  sed_dly_suscon <- tidyr::gather(sed_dly_suscon, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_dly_suscon <- tidyr::gather(sed_dly_suscon, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, DAY = as.numeric(gsub("SUSCON|SUSCON_SYMBOL", "", .data$variable)))
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, variable = gsub("[0-9]+", "", .data$variable))
-  sed_dly_suscon <- tidyr::spread(sed_dly_suscon, variable, temp)
+  sed_dly_suscon <- tidyr::spread(sed_dly_suscon, !!sym_variable, !!sym_temp)
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, SUSCON = as.numeric(.data$SUSCON))
   ## No days that exceed actual number of days in the month
   sed_dly_suscon <- dplyr::filter(sed_dly_suscon, .data$DAY <= .data$NO_DAYS)
@@ -111,8 +118,8 @@ hy_sed_daily_suscon <- function(station_number = NULL,
 
   ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, Date >= start_date &
-      Date <= end_date)
+    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_Date >= start_date &
+                                      !!sym_Date <= end_date)
   }
   
   

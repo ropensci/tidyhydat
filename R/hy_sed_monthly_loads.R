@@ -89,15 +89,21 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_temp2 <- sym("temp2")
   
   ## Data manipulations to make it "tidy"
   sed_monthly_loads <- dplyr::tbl(hydat_con, "SED_DLY_LOADS")
-  sed_monthly_loads <- dplyr::filter(sed_monthly_loads, STATION_NUMBER %in% stns)
+  sed_monthly_loads <- dplyr::filter(sed_monthly_loads, !!sym_STATION_NUMBER %in% stns)
   
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_monthly_loads <- dplyr::filter(sed_monthly_loads, YEAR >= start_year &
-                                         YEAR <= end_year)
+    sed_monthly_loads <- dplyr::filter(sed_monthly_loads, !!sym_YEAR >= start_year &
+                                         !!sym_YEAR <= end_year)
     
     #sed_monthly_loads <- dplyr::filter(sed_monthly_loads, MONTH >= start_month &
     #                             MONTH <= end_month)
@@ -115,10 +121,10 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   
   
 
-  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
-  sed_monthly_loads <- tidyr::separate(sed_monthly_loads, variable, into = c("Sum_stat","temp2"), sep = "_")
+  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_monthly_loads <- tidyr::separate(sed_monthly_loads, !!sym_variable, into = c("Sum_stat","temp2"), sep = "_")
 
-  sed_monthly_loads <- tidyr::spread(sed_monthly_loads, temp2, temp)
+  sed_monthly_loads <- tidyr::spread(sed_monthly_loads, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
   sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = lubridate::ymd(

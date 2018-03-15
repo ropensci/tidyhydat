@@ -53,9 +53,6 @@ hy_daily_flows <- function(station_number = NULL,
                       prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL",
                       symbol_output = "code") {
   
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_daily_flows for examples.")
-  }
   
   if (start_date == "ALL" & end_date == "ALL") {
     message("No start and end dates specified. All dates available will be returned.")
@@ -97,6 +94,7 @@ hy_daily_flows <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
   sym_variable <- sym("variable")
   sym_temp <- sym("temp")
+  sym_Date <- sym("Date")
   
   ## Data manipulations to make it "tidy"
   dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
@@ -127,8 +125,8 @@ hy_daily_flows <- function(station_number = NULL,
   
   ## Then when a date column exist fine tune the subset
   if (start_date != "ALL" | end_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, .data$Date >= start_date &
-                                 .data$Date <= end_date)
+    dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date &
+                                 !!sym_Date <= end_date)
   }
   
   dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))

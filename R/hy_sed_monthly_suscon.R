@@ -86,16 +86,22 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-
+  
+  ## Creating rlang symbols
+  sym_YEAR <- sym("YEAR")
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_variable <- sym("variable")
+  sym_temp <- sym("temp")
+  sym_temp2 <- sym("temp2")
 
   ## Data manipulations to make it "tidy"
   sed_monthly_suscon <- dplyr::tbl(hydat_con, "SED_DLY_SUSCON")
-  sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, STATION_NUMBER %in% stns)
+  sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   if (start_date != "ALL" | end_date != "ALL") {
-    sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, YEAR >= start_year &
-      YEAR <= end_year)
+    sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR >= start_year &
+                                          !!sym_YEAR <= end_year)
     
     #sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, MONTH >= start_month &
     #                             MONTH <= end_month)
@@ -113,10 +119,10 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   
   
   
-  sed_monthly_suscon <- tidyr::gather(sed_monthly_suscon, variable, temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
-  sed_monthly_suscon <- tidyr::separate(sed_monthly_suscon, variable, into = c("Sum_stat","temp2"), sep = "_")
+  sed_monthly_suscon <- tidyr::gather(sed_monthly_suscon, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_monthly_suscon <- tidyr::separate(sed_monthly_suscon, !!sym_variable, into = c("Sum_stat","temp2"), sep = "_")
   
-  sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, temp2, temp)
+  sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, !!sym_temp2, !!sym_temp)
   
   ## convert into R date for date of occurence.
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(

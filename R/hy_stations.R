@@ -82,10 +82,13 @@ hy_stations <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
+  
+  ## Creating rlang symbols
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## Create the dataframe to return
   df <- dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::filter(STATION_NUMBER %in% stns) %>%
+    dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
     dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(.data$REGIONAL_OFFICE_ID)) %>%
     dplyr::mutate(

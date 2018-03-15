@@ -13,12 +13,14 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(station_number) && station_number == "ALL") {
     stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument", call. = FALSE)
   }
+  
+  sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
 
 
   ## Only possible values for prov_terr_state_loc
   stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::distinct(PROV_TERR_STATE_LOC) %>%
-    dplyr::pull(PROV_TERR_STATE_LOC)
+    dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
+    dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
 
   ## If not station_number arg is supplied then this controls how to handle the PROV arg
   if ((is.null(station_number) & !is.null(prov_terr_state_loc))) {
@@ -47,8 +49,9 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   }
 
   if (stns[1] == "ALL") {
+    
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(PROV_TERR_STATE_LOC %in% prov) %>%
+      dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov) %>%
       dplyr::pull(.data$STATION_NUMBER)
   }
   
@@ -98,8 +101,10 @@ multi_param_msg <- function(data_arg, stns, params) {
       )
   }
   
+  sym_Parameter <- sym("Parameter")
+  
   flow_stns <- data_arg %>%
-    dplyr::filter(Parameter == params) %>%
+    dplyr::filter(!!sym_Parameter == params) %>%
     dplyr::distinct(.data$STATION_NUMBER) %>%
     dplyr::arrange(.data$STATION_NUMBER) %>%
     dplyr::pull(.data$STATION_NUMBER)

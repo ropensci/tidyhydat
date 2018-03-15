@@ -87,7 +87,7 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow","Level", "Suscon
     graphics::par(mar = c(2,2,1,1))
     graphics::plot(Value ~ Date,
                  data = hydf[hydf$Parameter == params[i],],
-                 col = STATION,
+                 col = hydf$STATION,
                  xlab="Date", 
                  ylab = paste0(params[i]),
                  bty= "L",
