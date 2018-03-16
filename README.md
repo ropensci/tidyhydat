@@ -25,7 +25,7 @@ Here is a summary of what `tidyhydat` does:
 Installation
 ------------
 
-You can installed `tidyhydat` from CRAN:
+You can install `tidyhydat` from CRAN:
 
 ``` r
 install.packages("tidyhydat")
