@@ -1,0 +1,12 @@
+
+bibentry(bibtype = "Article",
+         title = "tidyhydat: Extract and Tidy Canadian Hydrometric Data",
+         author = c(person("Sam", "Albers")),
+         doi = "10.21105/joss.00511",
+         url = "http://dx.doi.org/10.21105/joss.00511",
+         year = 2017,
+         publisher = "The Open Journal",
+         volume = 2,
+         number = 20,
+         journal = "The Journal of Open Source Software"
+)
