@@ -36,7 +36,7 @@ Here is a summary of what `tidyhydat` does:
 - Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](http://tibble.tidyverse.org/) of daily flows.
 
 ## Installation
-You can installed `tidyhydat` from CRAN:
+You can install `tidyhydat` from CRAN:
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("tidyhydat")
 ```
