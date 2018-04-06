@@ -53,7 +53,7 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   ## Create an empty tibble
-  daily <- tibble::tibble()
+  daily <- dplyr::tibble()
   
   
   ## Query each parameter then check if it returned a tibble 

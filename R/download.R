@@ -113,7 +113,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     if(httr::http_error(url_check) == TRUE){
       info(paste0("No hourly data found for ",STATION_NUMBER_SEL))
       
-      h <- tibble::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
+      h <- dplyr::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
                      F = NA, G = NA, H = NA, I = NA, J = NA)
       
       colnames(h) <- colHeaders
@@ -145,7 +145,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     if(httr::http_error(url_check_d) == TRUE){
       info(paste0("No daily data found for ",STATION_NUMBER_SEL))
       
-      d <- tibble::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
+      d <- dplyr::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
                           F = NA, G = NA, H = NA, I = NA, J = NA)
       colnames(d) <- colHeaders
     } else{
