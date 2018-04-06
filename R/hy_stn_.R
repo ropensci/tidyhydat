@@ -129,8 +129,13 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   
   stn_datum_unrelated <- dplyr::tbl(hydat_con, "STN_DATUM_UNRELATED")
   stn_datum_unrelated <- dplyr::filter(stn_datum_unrelated, !!sym_STATION_NUMBER %in% stns)
-    
-  dplyr::collect(stn_datum_unrelated) 
+  stn_datum_unrelated <- dplyr::collect(stn_datum_unrelated) 
+  
+  stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
+  stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
+  
+  stn_datum_unrelated  
+  
   
 }
 
