@@ -142,8 +142,8 @@ single_realtime_station <- function(station_number){
   if (!is.null(station_number)) {
     sym_STATION_NUMBER <- sym("STATION_NUMBER")
     
-    if(any(allstations$STATION_NUMBER %in% station_number)){ ## first check internal dataframe for station info
-      choose_df <- dplyr::filter(allstations, !!sym_STATION_NUMBER %in% station_number)
+    if(any(tidyhydat::allstations$STATION_NUMBER %in% station_number)){ ## first check internal dataframe for station info
+      choose_df <- dplyr::filter(tidyhydat::allstations, !!sym_STATION_NUMBER %in% station_number)
       choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
     } else{
       choose_df <- realtime_stations()
