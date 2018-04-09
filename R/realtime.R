@@ -145,31 +145,26 @@ single_realtime_station <- function(station_number){
   if (!is.null(station_number)) {
     sym_STATION_NUMBER <- sym("STATION_NUMBER")
     
-    if(any(tidyhydat::allstations$STATION_NUMBER %in% station_number)){ ## first check internal dataframe for station info
+    ## first check internal dataframe for station info
+    if(any(tidyhydat::allstations$STATION_NUMBER %in% station_number)){ 
       choose_df <- dplyr::filter(tidyhydat::allstations, !!sym_STATION_NUMBER %in% station_number)
-      choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
+      STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
+      PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
     } else{
-      choose_df <- realtime_stations()
-      choose_df <- dplyr::filter(choose_df, !!sym_STATION_NUMBER %in% station_number)
-      choose_df <- dplyr::select(choose_df, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC)
+      choose_df <- dplyr::filter(realtime_stations(), !!sym_STATION_NUMBER %in% station_number)
+      STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
+      PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
     }
     
   }
-  
-  ## Specify from choose_df
-  STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
-  PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
-  
+
   
   base_url <- "http://dd.weather.gc.ca/hydrometric"
   
   # build URL
   type <- c("hourly", "daily")
-  url <-
-    sprintf("%s/csv/%s/%s", base_url, PROV_SEL, type)
-  infile <-
-    sprintf(
-      "%s/%s_%s_%s_hydrometric.csv",
+  url <- sprintf("%s/csv/%s/%s", base_url, PROV_SEL, type)
+  infile <-  sprintf("%s/%s_%s_%s_hydrometric.csv",
       url,
       PROV_SEL,
       STATION_NUMBER_SEL,
@@ -256,12 +251,9 @@ single_realtime_station <- function(station_number){
   
   
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-  if(NROW(stats::na.omit(h)) == 0){
-    output <- d
-  } else{
-    p <- which(d$Date < min(h$Date))
-    output <- rbind(d[p, ], h)
-  }
+  p <- dplyr::filter(d, Date < min(h$Date))
+  output <- dplyr::bind_rows(p, h)
+  
   
   ## Create symbols
   sym_temp <- sym("temp")
