@@ -36,7 +36,8 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    covr
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
