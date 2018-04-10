@@ -58,12 +58,12 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
   
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
-    station_number <- realtime_stations(prov_terr_state_loc = prov_terr_state_loc)$STATION_NUMBER
+    all_prov_stations <- lapply(prov_terr_state_loc, all_realtime_station)
+    dplyr::bind_rows(all_prov_stations)
+  } else{
+    list_o_stations <- lapply(station_number, single_realtime_station)
+    dplyr::bind_rows(list_o_stations)
   }
-  
-  list_o_stations <- lapply(station_number, single_realtime_station)
-  
-  dplyr::bind_rows(list_o_stations)
 
 
 
@@ -139,38 +139,38 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 
 ###############################################
 ## Get realtime station data - single station
-single_realtime_station <- function(station_number){
-  
+single_realtime_station <- function(station_number) {
+
   ## If station is provided
   if (!is.null(station_number)) {
     sym_STATION_NUMBER <- sym("STATION_NUMBER")
-    
+
     ## first check internal dataframe for station info
-    if(any(tidyhydat::allstations$STATION_NUMBER %in% station_number)){ 
+    if (any(tidyhydat::allstations$STATION_NUMBER %in% station_number)) {
       choose_df <- dplyr::filter(tidyhydat::allstations, !!sym_STATION_NUMBER %in% station_number)
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
       PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
-    } else{
+    } else {
       choose_df <- dplyr::filter(realtime_stations(), !!sym_STATION_NUMBER %in% station_number)
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
       PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
     }
-    
   }
 
-  
+
   base_url <- "http://dd.weather.gc.ca/hydrometric"
-  
+
   # build URL
   type <- c("hourly", "daily")
   url <- sprintf("%s/csv/%s/%s", base_url, PROV_SEL, type)
-  infile <-  sprintf("%s/%s_%s_%s_hydrometric.csv",
-      url,
-      PROV_SEL,
-      STATION_NUMBER_SEL,
-      type
-    )
-  
+  infile <- sprintf(
+    "%s/%s_%s_%s_hydrometric.csv",
+    url,
+    PROV_SEL,
+    STATION_NUMBER_SEL,
+    type
+  )
+
   # Define column names as the same as HYDAT
   colHeaders <-
     c(
@@ -185,17 +185,19 @@ single_realtime_station <- function(station_number){
       "Flow_SYMBOL",
       "Flow_CODE"
     )
-  
+
   url_check <- httr::GET(infile[1])
   ## check if a valid url
-  if(httr::http_error(url_check) == TRUE){
-    info(paste0("No hourly data found for ",STATION_NUMBER_SEL))
-    
-    h <- dplyr::tibble(A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
-                       F = NA, G = NA, H = NA, I = NA, J = NA)
-    
+  if (httr::http_error(url_check) == TRUE) {
+    info(paste0("No hourly data found for ", STATION_NUMBER_SEL))
+
+    h <- dplyr::tibble(
+      A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
+      F = NA, G = NA, H = NA, I = NA, J = NA
+    )
+
     colnames(h) <- colHeaders
-  } else{
+  } else {
     h <- httr::content(
       url_check,
       type = "text/csv",
@@ -216,17 +218,19 @@ single_realtime_station <- function(station_number){
       )
     )
   }
-  
+
   # download daily file
   url_check_d <- httr::GET(infile[2])
   ## check if a valid url
-  if(httr::http_error(url_check_d) == TRUE){
-    info(paste0("No daily data found for ",STATION_NUMBER_SEL))
-    
-    d <- dplyr::tibble(A = NA, B = NA, C = NA, D = NA, E = NA,
-                       F = NA, G = NA, H = NA, I = NA, J = NA)
+  if (httr::http_error(url_check_d) == TRUE) {
+    info(paste0("No daily data found for ", STATION_NUMBER_SEL))
+
+    d <- dplyr::tibble(
+      A = NA, B = NA, C = NA, D = NA, E = NA,
+      F = NA, G = NA, H = NA, I = NA, J = NA
+    )
     colnames(d) <- colHeaders
-  } else{
+  } else {
     d <- httr::content(
       url_check_d,
       type = "text/csv",
@@ -247,13 +251,78 @@ single_realtime_station <- function(station_number){
       )
     )
   }
-  
-  
-  
+
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- dplyr::filter(d, Date < min(h$Date))
   output <- dplyr::bind_rows(p, h)
+
+
+  ## Create symbols
+  sym_temp <- sym("temp")
+  sym_val <- sym("val")
+  sym_key <- sym("key")
+
+  ## Now tidy the data
+  ## TODO: Find a better way to do this
+  output <- dplyr::rename(output, `Level_` = .data$Level, `Flow_` = .data$Flow)
+  output <- tidyr::gather(output, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
+  output <- tidyr::separate(output, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  output <- dplyr::mutate(output, key = ifelse(.data$key == "", "Value", .data$key))
+  output <- tidyr::spread(output, !!sym_key, !!sym_val)
+  output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
+  output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV_SEL)
+  output <- dplyr::select(
+    output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
+    .data$Grade, .data$Symbol, .data$Code
+  )
+  output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
+  output$Value <- as.numeric(output$Value)
+
+  output
+}
+
+all_realtime_station <- function(PROV){
+  base_url <- "http://dd.weather.gc.ca/hydrometric/csv/"
+  prov_url <- paste0(base_url, PROV,"/daily/",PROV,"_daily_hydrometric.csv")
   
+  res <- httr::GET(prov_url, httr::progress("down"))
+  
+  httr::stop_for_status(res)
+  
+  # Define column names as the same as HYDAT
+  colHeaders <-
+    c(
+      "STATION_NUMBER",
+      "Date",
+      "Level",
+      "Level_GRADE",
+      "Level_SYMBOL",
+      "Level_CODE",
+      "Flow",
+      "Flow_GRADE",
+      "Flow_SYMBOL",
+      "Flow_CODE"
+    )
+  
+  output <- httr::content(
+    res,
+    type = "text/csv",
+    encoding = "UTF-8",
+    skip = 1,
+    col_names = colHeaders,
+    col_types = readr::cols(
+      STATION_NUMBER = readr::col_character(),
+      Date = readr::col_datetime(),
+      Level = readr::col_double(),
+      Level_GRADE = readr::col_character(),
+      Level_SYMBOL = readr::col_character(),
+      Level_CODE = readr::col_integer(),
+      Flow = readr::col_double(),
+      Flow_GRADE = readr::col_character(),
+      Flow_SYMBOL = readr::col_character(),
+      Flow_CODE = readr::col_integer()
+    )
+  )
   
   ## Create symbols
   sym_temp <- sym("temp")
@@ -268,13 +337,14 @@ single_realtime_station <- function(station_number){
   output <- dplyr::mutate(output, key = ifelse(.data$key == "", "Value", .data$key))
   output <- tidyr::spread(output, !!sym_key, !!sym_val)
   output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
-  output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV_SEL)
-  output <- dplyr::select(output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
-                          .data$Grade, .data$Symbol, .data$Code)
+  output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV)
+  output <- dplyr::select(
+    output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
+    .data$Grade, .data$Symbol, .data$Code
+  )
   output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
   output$Value <- as.numeric(output$Value)
   
   output
-  
   
 }

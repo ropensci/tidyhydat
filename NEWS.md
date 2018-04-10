@@ -3,6 +3,7 @@ tidyhydat 0.3.4
 ### IMPROVEMENT
 * Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
 * 15% speed improvement in `realtime_dd` by elimating loop (#91)
+* 40% speed improvement when querying full provinces (#89)
 
 tidyhydat 0.3.3
 =========================
