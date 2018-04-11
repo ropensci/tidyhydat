@@ -22,11 +22,11 @@ single_realtime_station <- function(station_number) {
     if (any(tidyhydat::allstations$STATION_NUMBER %in% station_number)) {
       choose_df <- dplyr::filter(tidyhydat::allstations, !!sym_STATION_NUMBER %in% station_number)
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
-      PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
+      PROV <- choose_df$PROV_TERR_STATE_LOC
     } else {
       choose_df <- dplyr::filter(realtime_stations(), !!sym_STATION_NUMBER %in% station_number)
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
-      PROV_SEL <- choose_df$PROV_TERR_STATE_LOC
+      PROV <- choose_df$PROV_TERR_STATE_LOC
     }
   }
   
@@ -35,11 +35,11 @@ single_realtime_station <- function(station_number) {
   
   # build URL
   type <- c("hourly", "daily")
-  url <- sprintf("%s/csv/%s/%s", base_url, PROV_SEL, type)
+  url <- sprintf("%s/csv/%s/%s", base_url, PROV, type)
   infile <- sprintf(
     "%s/%s_%s_%s_hydrometric.csv",
     url,
-    PROV_SEL,
+    PROV,
     STATION_NUMBER_SEL,
     type
   )
@@ -129,29 +129,9 @@ single_realtime_station <- function(station_number) {
   p <- dplyr::filter(d, Date < min(h$Date))
   output <- dplyr::bind_rows(p, h)
   
-  
-  ## Create symbols
-  sym_temp <- sym("temp")
-  sym_val <- sym("val")
-  sym_key <- sym("key")
-  
-  ## Now tidy the data
-  ## TODO: Find a better way to do this
-  output <- dplyr::rename(output, `Level_` = .data$Level, `Flow_` = .data$Flow)
-  output <- tidyr::gather(output, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
-  output <- tidyr::separate(output, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
-  output <- dplyr::mutate(output, key = ifelse(.data$key == "", "Value", .data$key))
-  output <- tidyr::spread(output, !!sym_key, !!sym_val)
-  output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
-  output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV_SEL)
-  output <- dplyr::select(
-    output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
-    .data$Grade, .data$Symbol, .data$Code
-  )
-  output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
-  output$Value <- as.numeric(output$Value)
-  
-  output
+  ## Offloading tidying to another function
+  realtime_tidy_data(output, PROV)
+
 }
 
 all_realtime_station <- function(PROV){
@@ -197,6 +177,14 @@ all_realtime_station <- function(PROV){
     )
   )
   
+  ## Offloading tidying to another function
+  realtime_tidy_data(output, PROV)
+  
+}
+
+
+realtime_tidy_data <- function(data, prov){
+  
   ## Create symbols
   sym_temp <- sym("temp")
   sym_val <- sym("val")
@@ -204,20 +192,19 @@ all_realtime_station <- function(PROV){
   
   ## Now tidy the data
   ## TODO: Find a better way to do this
-  output <- dplyr::rename(output, `Level_` = .data$Level, `Flow_` = .data$Flow)
-  output <- tidyr::gather(output, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
-  output <- tidyr::separate(output, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
-  output <- dplyr::mutate(output, key = ifelse(.data$key == "", "Value", .data$key))
-  output <- tidyr::spread(output, !!sym_key, !!sym_val)
-  output <- dplyr::rename(output, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
-  output <- dplyr::mutate(output, PROV_TERR_STATE_LOC = PROV)
-  output <- dplyr::select(
-    output, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
+  data <- dplyr::rename(data, `Level_` = .data$Level, `Flow_` = .data$Flow)
+  data <- tidyr::gather(data, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
+  data <- tidyr::separate(data, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  data <- dplyr::mutate(data, key = ifelse(.data$key == "", "Value", .data$key))
+  data <- tidyr::spread(data, !!sym_key, !!sym_val)
+  data <- dplyr::rename(data, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
+  data <- dplyr::mutate(data, PROV_TERR_STATE_LOC = prov)
+  data <- dplyr::select(
+    data, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
     .data$Grade, .data$Symbol, .data$Code
   )
-  output <- dplyr::arrange(output, .data$Parameter, .data$STATION_NUMBER, .data$Date)
-  output$Value <- as.numeric(output$Value)
+  data <- dplyr::arrange(data, .data$Parameter, .data$STATION_NUMBER, .data$Date)
+  data$Value <- as.numeric(data$Value)
   
-  output
-  
+  data
 }
