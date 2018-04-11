@@ -94,6 +94,10 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
     
   }
   
+  if(nrow(daily) == 0){
+    info(paste0("No data for ", station_number,". Did you correctly input station name or province?"))
+  }
+  
   dplyr::arrange(daily, .data$STATION_NUMBER, .data$Date)
 
 }

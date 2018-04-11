@@ -14,6 +14,11 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument", call. = FALSE)
   }
   
+  ## Is station_number 7 characters?
+  
+  station_number <- toupper(station_number)
+  prov_terr_state_loc <- toupper(station_number)
+  
   sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
 
 
