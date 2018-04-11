@@ -126,7 +126,7 @@ single_realtime_station <- function(station_number) {
   }
   
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-  p <- dplyr::filter(d, Date < min(h$Date))
+  p <- dplyr::filter(d, .data$Date < min(h$Date))
   output <- dplyr::bind_rows(p, h)
   
   ## Offloading tidying to another function
