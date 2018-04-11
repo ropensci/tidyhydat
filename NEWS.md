@@ -5,6 +5,9 @@ tidyhydat 0.3.4
 * 15% speed improvement in `realtime_dd` by elimating loop (#91)
 * 40% speed improvement when querying full provinces (#89)
 
+### MINOR IMPROVEMENT
+* realtime tidying now not duplicated and is handled by a function
+
 tidyhydat 0.3.3
 =========================
 ### NEW FEATURES
