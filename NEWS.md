@@ -5,8 +5,11 @@ tidyhydat 0.3.4
 * 15% speed improvement in `realtime_dd` by elimating loop (#91)
 * 40% speed improvement when querying full provinces (#89)
 
+
 ### MINOR IMPROVEMENT
 * realtime tidying now not duplicated and is handled by a function
+* simplified `tidyhydat:::station_choice` and added more unit testing
+* no longer outputting a message when `station_number = "ALL"`.
 
 tidyhydat 0.3.3
 =========================
