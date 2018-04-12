@@ -54,7 +54,6 @@ test_that("hy_daily_flows respects Date specification", {
   date_vector <- c("2013-01-01", "2014-01-01")
   temp_df <- hy_daily_flows(
     station_number = "08MF005",
-    prov_terr_state_loc = "BC",
     hydat_path = hy_test_db(),
     start_date = date_vector[1],
     end_date = date_vector[2]
