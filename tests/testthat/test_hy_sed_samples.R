@@ -51,17 +51,6 @@ test_that("hy_sed_samples produces an error when a province is not specified cor
 #  expect_true(nrow(hy_sed_samples(hydat_path = hy_test_db())) >= 1)
 # })
 
-test_that("hy_sed_samples can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_sed_samples(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("hy_sed_samples respects Date specification", {
   date_vector <- c("1965-06-01", "1966-03-01")

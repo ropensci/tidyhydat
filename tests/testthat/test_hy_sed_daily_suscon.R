@@ -34,33 +34,10 @@ test_that("hy_sed_daily_suscon accepts single and multiple province arguments",
             ) >= 1)
           })
 
-test_that("hy_sed_daily_suscon produces an error when a province is not specified correctly",
-          {
-            expect_error(hy_sed_daily_suscon(
-              prov_terr_state_loc = "BCD",
-              hydat_path = hy_test_db()
-            ))
-            expect_error(hy_sed_daily_suscon(
-              prov_terr_state_loc = c("AB", "BCD"),
-              hydat_path = hy_test_db()
-            ))
-          })
-
 ## Too much data
 # test_that("hy_sed_daily_suscon gather data when no arguments are supplied",{
 #  expect_true(nrow(hy_sed_daily_suscon(hydat_path = hy_test_db())) >= 1)
 # })
-
-test_that("hy_sed_daily_suscon can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_sed_daily_suscon(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
 
 
 test_that("hy_sed_daily_suscon respects Date specification", {

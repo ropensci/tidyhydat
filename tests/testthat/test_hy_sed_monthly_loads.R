@@ -46,17 +46,6 @@ test_that("hy_sed_monthly_loads produces an error when a province is not specifi
             ))
           })
 
-test_that("hy_sed_monthly_loads can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_sed_monthly_loads(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("When hy_sed_monthly_loads is ALL there is an error", {
   expect_error(hy_sed_monthly_loads(station_number = "ALL"))

@@ -46,17 +46,6 @@ test_that("hy_monthly_flows produces an error when a province is not specified c
             ))
           })
 
-test_that("hy_monthly_flows can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_monthly_flows(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("hy_monthly_flows respects Year specification", {
   date_vector <- c("2013-01-01", "2014-01-01")
