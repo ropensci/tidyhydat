@@ -10,57 +10,55 @@
 #'
 station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument", call. = FALSE)
+  if (!is.null(station_number) && !is.null(prov_terr_state_loc)) {
+    stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
   }
+
   
-  ## Is station_number 7 characters?
+  ### Is station_number 7 characters?
+  #if(!is.null(station_number) & (nchar(station_number) != 7)) {
+  #  stop("")
+  #}
+
   
-  station_number <- toupper(station_number)
-  prov_terr_state_loc <- toupper(station_number)
-  
+  ## Prov symbol
   sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
 
-
-  ## Only possible values for prov_terr_state_loc
-  stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
-    dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
-
-  ## If not station_number arg is supplied then this controls how to handle the PROV arg
-  if ((is.null(station_number) & !is.null(prov_terr_state_loc))) {
-    station_number <- "ALL" ## All stations
-    prov <- prov_terr_state_loc ## Prov info
-
-    if (any(!prov %in% stn_option) == TRUE) {
-      stop("Invalid prov_terr_state_loc value")
-    }
-  }
-
-  ## If PROV arg is supplied then simply use the station_number independent of PROV
-  if (is.null(prov_terr_state_loc)) {
-    station_number <- station_number
-  }
-
-
-  ## Steps to create the station vector
-  stns <- station_number
-
+  
   ## Get all stations
-  if (is.null(stns) == TRUE && is.null(prov_terr_state_loc) == TRUE) {
+  if (is.null(station_number) && is.null(prov_terr_state_loc)) {
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::collect() %>%
       dplyr::pull(.data$STATION_NUMBER)
-  }
-
-  if (stns[1] == "ALL") {
-    
-    stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov) %>%
-      dplyr::pull(.data$STATION_NUMBER)
+    return(stns)
   }
   
-  stns
+  ## When a station number is supplied but no province
+  if (!is.null(station_number)){
+    ## Convert to upper case
+    stns <- toupper(station_number)
+    return(stns)
+  }
+  
+  ## When a province is supplied but no station number
+  if (!is.null(prov_terr_state_loc)){
+    prov_terr_state_loc <- toupper(prov_terr_state_loc)
+    ## Only possible values for prov_terr_state_loc
+    stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
+      dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
+    
+    if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
+    
+    stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) %>%
+      dplyr::collect() %>%
+      dplyr::pull(.data$STATION_NUMBER)
+    stns
+    
+  }
+
+
 }
 
 
