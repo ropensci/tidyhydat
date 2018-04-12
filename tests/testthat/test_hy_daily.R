@@ -2,6 +2,7 @@ context("Testing hy_daily")
 
 test_that("hy_daily accepts a level only station argument", {
   skip_on_cran()
+  skip_on_travis()
   stns <- "08NM083"
  expect_silent(hy_daily(stns,hydat_path = hy_test_db()))
 })
