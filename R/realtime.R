@@ -125,8 +125,15 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
                                 "LONGITUDE",
                                 "PROV_TERR_STATE_LOC",
                                 "TIMEZONE"
-                              ),			
-                              col_types = c("ccddcc")
+                              ),
+                              col_types = readr::cols(
+                                STATION_NUMBER = readr::col_character(),
+                                STATION_NAME = readr::col_character(),
+                                LATITUDE = readr::col_double(),
+                                LONGITUDE = readr::col_double(),
+                                PROV_TERR_STATE_LOC = readr::col_character(),
+                                TIMEZONE = readr::col_character()
+                              )
                           )
   
   if (is.null(prov)) {
