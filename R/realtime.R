@@ -138,3 +138,26 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 }
 
 
+#' Calculate daily means from higher resolution realtime data
+#' 
+#' This function is meant to be used within a pipe as a means of easily moving from higher resolution 
+#' data to daily means.
+#' 
+#' @param data A data argument that is designed to take only the output of realtime_dd
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' 
+#' @examples
+#' \dontrun{
+#' realtime_dd("08MF005") %>% realtime_daily_mean()
+#' }
+#' 
+#' @export
+realtime_daily_mean <- function(data, na.rm = FALSE){
+  
+  df_mean <- dplyr::mutate(data, Date = as.Date(.data$Date))
+  
+  df_mean <- dplyr::group_by(df_mean, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter)
+  
+  dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm)) %>%
+    dplyr::ungroup()
+}
