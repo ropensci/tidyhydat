@@ -77,18 +77,7 @@ single_realtime_station <- function(station_number) {
       encoding = "UTF-8",
       skip = 1,
       col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
+      col_types = c("cTdccidcci")
     )
   }
   
@@ -110,18 +99,7 @@ single_realtime_station <- function(station_number) {
       encoding = "UTF-8",
       skip = 1,
       col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
+      col_types = c("cTdccidcci")
     )
   }
   
@@ -163,19 +141,9 @@ all_realtime_station <- function(PROV){
     encoding = "UTF-8",
     skip = 1,
     col_names = colHeaders,
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      Date = readr::col_datetime(),
-      Level = readr::col_double(),
-      Level_GRADE = readr::col_character(),
-      Level_SYMBOL = readr::col_character(),
-      Level_CODE = readr::col_integer(),
-      Flow = readr::col_double(),
-      Flow_GRADE = readr::col_character(),
-      Flow_SYMBOL = readr::col_character(),
-      Flow_CODE = readr::col_integer()
-    )
+    col_types = c("cTdccidcci")
   )
+  
   
   ## Offloading tidying to another function
   realtime_tidy_data(output, PROV)

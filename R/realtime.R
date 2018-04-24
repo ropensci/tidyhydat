@@ -104,13 +104,14 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
 realtime_stations <- function(prov_terr_state_loc = NULL) {
   prov <- prov_terr_state_loc
+  
+  realtime_link <- "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
 
-  url_check <- httr::GET("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv")
+  url_check <- httr::GET(realtime_link)
   
   ## Checking to make sure the link is valid
   if(httr::http_error(url_check) == "TRUE"){
-    stop("http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv is not a valid url. Datamart may be
-         down or the url has changed.")
+    stop(paste0(realtime_link," is not a valid url. Datamart may be down or the url has changed."))
   }
   
   net_tibble <- httr::content(url_check,
@@ -124,8 +125,8 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
                                 "LONGITUDE",
                                 "PROV_TERR_STATE_LOC",
                                 "TIMEZONE"
-                              ),
-                              col_types = readr::cols()
+                              ),			
+                              col_types = c("ccddcc")
                           )
   
   if (is.null(prov)) {
