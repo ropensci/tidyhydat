@@ -2,6 +2,17 @@ tidyhydat 0.3.4
 =========================
 ### IMPROVEMENT
 * Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
+* 15% speed improvement in `realtime_dd` by elimating loop (#91)
+* 40% speed improvement when querying full provinces (#89)
+* reorganized file naming so that helper functions are placed in utils-* files
+
+### BUG FIXES
+* Fixed `hy_monthly_flows` and `hy_monthly_levels` date issue (#24)
+
+### MINOR IMPROVEMENT
+* realtime tidying now not duplicated and is handled by a function
+* simplified `tidyhydat:::station_choice` and added more unit testing
+* no longer outputting a message when `station_number = "ALL"`.
 
 tidyhydat 0.3.3
 =========================

@@ -129,8 +129,13 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   
   stn_datum_unrelated <- dplyr::tbl(hydat_con, "STN_DATUM_UNRELATED")
   stn_datum_unrelated <- dplyr::filter(stn_datum_unrelated, !!sym_STATION_NUMBER %in% stns)
-    
-  dplyr::collect(stn_datum_unrelated) 
+  stn_datum_unrelated <- dplyr::collect(stn_datum_unrelated) 
+  
+  stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
+  stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
+  
+  stn_datum_unrelated  
+  
   
 }
 
@@ -283,3 +288,148 @@ hy_stn_op_schedule <- function(station_number = NULL,
   
   dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR, .data$MONTH_FROM, .data$MONTH_TO)
 }
+
+#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
+#'
+#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+#' 
+#' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
+#' 
+#' @examples \dontrun{
+#' hy_dir()
+#' }
+#'
+#' @export
+#'
+#'
+hy_dir <- function(...){
+  rappdirs::user_data_dir("tidyhydat")
+}
+
+#' hy_agency_list function
+#'
+#' AGENCY look-up Table
+#' 
+#' @param hydat_path The path to the hydat database or NULL to use the default location
+#'   used by \link{download_hydat}. It is also possible to pass in an existing 
+#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+#'   user-level call.
+#'
+#' @return A tibble of agencies
+#'
+#' @family HYDAT functions
+#' @source HYDAT
+#' @export
+#' @examples
+#' \dontrun{
+#' hy_agency_list()
+#'}
+#'
+hy_agency_list <- function(hydat_path = NULL) {
+  
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
+  
+  agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
+    dplyr::collect()
+  
+  agency_list
+}
+
+
+#'  Extract regional office list from HYDAT database
+#'
+#'  OFFICE look-up Table
+#' @inheritParams hy_agency_list
+#' @return A tibble of offices
+#'
+#' @family HYDAT functions
+#' @source HYDAT
+#' @export
+#' @examples
+#' \dontrun{
+#' hy_reg_office_list()
+#'}
+#'
+#'
+hy_reg_office_list <- function(hydat_path = NULL) {
+  
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
+  
+  regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
+    dplyr::collect()
+  
+  regional_office_list
+}
+
+#'  Extract datum list from HYDAT database
+#'
+#'  DATUM look-up Table
+#' @inheritParams hy_agency_list
+#'
+#' @return A tibble of DATUMS
+#'
+#' @family HYDAT functions
+#' @source HYDAT
+#' @examples
+#' \dontrun{
+#' hy_datum_list()
+#'}
+#'
+#' @export
+#'
+hy_datum_list <- function(hydat_path = NULL) {
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
+  
+  datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
+    dplyr::collect()
+  
+  datum_list
+}
+
+
+#' Extract version number from HYDAT database
+#' 
+#' A function to get version number of hydat
+#'
+#' @inheritParams hy_agency_list
+#'
+#' @return version number and release date
+#'
+#' @family HYDAT functions
+#' @source HYDAT
+#' @export
+#' @examples
+#' \dontrun{
+#' hy_version()
+#'}
+#'
+#'
+hy_version <- function(hydat_path = NULL) {
+  
+  ## Read in database
+  hydat_con <- hy_src(hydat_path)
+  if (!dplyr::is.src(hydat_path)) {
+    on.exit(hy_src_disconnect(hydat_con))
+  }
+  
+  version <- dplyr::tbl(hydat_con, "VERSION") %>%
+    dplyr::collect() %>%
+    dplyr::mutate(Date = lubridate::ymd_hms(.data$Date))
+  
+  version
+  
+}
+
+

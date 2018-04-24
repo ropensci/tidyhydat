@@ -51,17 +51,6 @@ test_that("hy_sed_daily_loads produces an error when a province is not specified
 #  expect_true(nrow(hy_sed_daily_loads(hydat_path = hy_test_db())) >= 1)
 # })
 
-test_that("hy_sed_daily_loads can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_sed_daily_loads(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("hy_sed_daily_loads respects Date specification", {
   date_vector <- c("1965-06-01", "1966-03-01")

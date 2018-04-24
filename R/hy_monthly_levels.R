@@ -128,9 +128,11 @@ hy_monthly_levels <- function(station_number = NULL,
   monthly_levels <- tidyr::spread(monthly_levels, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(
-    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
-  ## TODO: convert dates incorrectly. Make sure NA DAYs aren't converted into dates
+  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY))
+  
+  ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
+  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
+  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(.data$Date_occurred, quiet = TRUE))
 
   monthly_levels <- dplyr::select(monthly_levels, -.data$DAY)
   monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = .data$FULL_MONTH == 1)

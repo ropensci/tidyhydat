@@ -40,7 +40,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sam Albers \email{sam.albers@gov.bc.ca}
+\strong{Maintainer}: Sam Albers \email{sam.albers@gov.bc.ca} (0000-0002-9270-7884)
 
 Other contributors:
 \itemize{

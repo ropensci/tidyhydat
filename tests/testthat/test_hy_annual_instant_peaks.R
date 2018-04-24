@@ -53,17 +53,6 @@ test_that("hy_annual_instant_peaks gather data when no arguments are supplied",
             )) >= 1)
           })
 
-test_that("hy_annual_instant_peaks can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_annual_instant_peaks(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("hy_annual_instant_peaks respects year inputs", {
   s_year <- 1981

@@ -51,14 +51,3 @@ test_that("hy_stn_regulation gather data when no arguments are supplied", {
     hydat_path = hy_test_db()
   )) >= 1)
 })
-
-test_that("hy_stn_regulation can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_stn_regulation(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })

@@ -51,23 +51,11 @@ test_that("hy_daily_levels produces an error when a province is not specified co
 #  expect_true(nrow(hy_daily_levels(hydat_path = hy_test_db())) >= 1)
 # })
 
-test_that("hy_daily_levels can accept both arguments for backward compatability",
-          {
-            expect_true(nrow(
-              hy_daily_levels(
-                prov_terr_state_loc = "BC",
-                station_number = "08MF005",
-                hydat_path = hy_test_db()
-              )
-            ) >= 1)
-          })
-
 
 test_that("hy_daily_levels respects Date specification", {
   date_vector <- c("2013-01-01", "2014-01-01")
   temp_df <- hy_daily_levels(
     station_number = "08MF005",
-    prov_terr_state_loc = "BC",
     hydat_path = hy_test_db(),
     start_date = date_vector[1],
     end_date = date_vector[2]

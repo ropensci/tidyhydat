@@ -27,6 +27,3 @@ test_that("hy_stations gather data when no arguments are supplied", {
   expect_true(nrow(hy_stations(hydat_path = hy_test_db())) >= 1)
 })
 
-test_that("hy_stations can accept both arguments for backward compatability", {
-  expect_true(nrow(hy_stations(prov_terr_state_loc = "BC", station_number = "08MF005", hydat_path = hy_test_db())) >= 1)
-})

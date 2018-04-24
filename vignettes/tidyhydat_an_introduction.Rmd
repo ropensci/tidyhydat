@@ -91,7 +91,7 @@ hy_stations(prov_terr_state_loc = "PE")
 
 This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.   
 
-## Meterological Service of Canada datamart - `realtime_dd()`
+### Meterological Service of Canada datamart - `realtime_dd()`
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r, eval=FALSE}
 realtime_dd(station_number = "08LG006")

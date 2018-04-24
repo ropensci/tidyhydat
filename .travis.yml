@@ -24,3 +24,9 @@ notifications:
   email:
     on_success: never
     on_failure: never
+    
+r_packages:
+  - covr
+    
+after_success:
+    - Rscript -e 'covr::codecov()

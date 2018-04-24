@@ -1,231 +1,140 @@
-#' A search function for hydrometric station name or number
+#' @title Function to chose a station based on consistent arguments for hydat functions.
 #'
-#' Use this search function when you only know the partial station name or want to search.
+#' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
 #'
-#' @param search_term Only accepts one word.
-#' @inheritParams hy_agency_list
+#' @inheritParams hy_stations
+#' @param hydat_con A database connection
 #'
-#' @return A tibble of stations that match the \code{search_term}
-#' 
-#' @examples 
-#' \dontrun{
-#' search_stn_name("Cowichan")
-#' 
-#' search_stn_number("08HF")
-#' }
+#' @keywords internal
 #'
-#' @export
-
-search_stn_name <- function(search_term, hydat_path = NULL) {
+#'
+station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+  if (!is.null(station_number) && !is.null(prov_terr_state_loc)) {
+    stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
+  }
+
+  
+  ### Is station_number 7 characters?
+  #if(!is.null(station_number) & (nchar(station_number) != 7)) {
+  #  stop("")
+  #}
+
+  
+  ## Prov symbol
+  sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
+
+  
+  ## Get all stations
+  if (is.null(station_number) && is.null(prov_terr_state_loc)) {
+    stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::collect() %>%
+      dplyr::pull(.data$STATION_NUMBER)
+    return(stns)
   }
   
-  results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(.data$STATION_NUMBER, .keep_all = TRUE) %>%
-    dplyr::select(.data$STATION_NUMBER, .data$STATION_NAME, .data$PROV_TERR_STATE_LOC, .data$LATITUDE, .data$LONGITUDE)
+  ## When a station number is supplied but no province
+  if (!is.null(station_number)){
+    ## Convert to upper case
+    stns <- toupper(station_number)
+    return(stns)
+  }
   
-  results <- results[grepl(toupper(search_term), results$STATION_NAME), ]
-  
-  if (nrow(results) == 0) {
-    message("No station names match this criteria!")
+  ## When a province is supplied but no station number
+  if (!is.null(prov_terr_state_loc)){
+    prov_terr_state_loc <- toupper(prov_terr_state_loc)
+    ## Only possible values for prov_terr_state_loc
+    stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
+      dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
+    
+    if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
+    
+    stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
+      dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) %>%
+      dplyr::collect() %>%
+      dplyr::pull(.data$STATION_NUMBER)
+    stns
+    
+  }
+
+
+}
+
+
+## Simple error handler
+handle_error <- function(code) {
+  tryCatch(code, error = function(c) {
+    msg <- conditionMessage(c)
+    invisible(structure(msg, class = "try-error"))
+  })
+}
+
+## Differ message for all the hy_* functions
+differ_msg <- function(stns_input, stns_output) {
+  differ <- setdiff(stns_input, stns_output)
+  if (length(differ) != 0) {
+    if (length(differ) <= 10) {
+      message("The following station(s) were not retrieved: ",
+              paste0(differ, sep = " "))
+      message("Check station number typos or if it is a valid station in the network")
+    }
+    else {
+      message(
+        "More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified."
+      )
+    }
   } else {
-    results
-  }
-}
-
-#' @rdname search_stn_name
-#' @export
-#' 
-search_stn_number <- function(search_term, hydat_path = NULL) {
-  
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    message("All station successfully retrieved")
   }
   
-  results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(.data$STATION_NUMBER, .keep_all = TRUE) %>%
-    dplyr::select(.data$STATION_NUMBER, .data$STATION_NAME, .data$PROV_TERR_STATE_LOC, .data$LATITUDE, .data$LONGITUDE)
-  
-  results <- results[grepl(toupper(search_term), results$STATION_NUMBER), ]
-  
-  if (nrow(results) == 0) {
-    message("No station number match this criteria!")
-  } else {
-    results
-  }
-}
-
-#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
-#'
-#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
-#' 
-#' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
-#' 
-#' @examples \dontrun{
-#' hy_dir()
-#' }
-#'
-#' @export
-#'
-#'
-hy_dir <- function(...){
-  rappdirs::user_data_dir("tidyhydat")
-}
-
-#' hy_agency_list function
-#'
-#' AGENCY look-up Table
-#' 
-#' @param hydat_path The path to the hydat database or NULL to use the default location
-#'   used by \link{download_hydat}. It is also possible to pass in an existing 
-#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
-#'   user-level call.
-#'
-#' @return A tibble of agencies
-#'
-#' @family HYDAT functions
-#' @source HYDAT
-#' @export
-#' @examples
-#' \dontrun{
-#' hy_agency_list()
-#'}
-#'
-hy_agency_list <- function(hydat_path = NULL) {
-  
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
-  }
-
-  agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
-    dplyr::collect()
-
-  agency_list
 }
 
 
-#'  Extract regional office list from HYDAT database
-#'
-#'  OFFICE look-up Table
-#' @inheritParams hy_agency_list
-#' @return A tibble of offices
-#'
-#' @family HYDAT functions
-#' @source HYDAT
-#' @export
-#' @examples
-#' \dontrun{
-#' hy_reg_office_list()
-#'}
-#'
-#'
-hy_reg_office_list <- function(hydat_path = NULL) {
+## Multi parameter message
+multi_param_msg <- function(data_arg, stns, params) {
+  cli::cat_line(cli::rule(
+    left = crayon::bold(params)
+  ))
   
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
-  }
-
-  regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
-    dplyr::collect()
-  
-  regional_office_list
-}
-
-#'  Extract datum list from HYDAT database
-#'
-#'  DATUM look-up Table
-#' @inheritParams hy_agency_list
-#'
-#' @return A tibble of DATUMS
-#'
-#' @family HYDAT functions
-#' @source HYDAT
-#' @examples
-#' \dontrun{
-#' hy_datum_list()
-#'}
-#'
-#' @export
-#'
-hy_datum_list <- function(hydat_path = NULL) {
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+  ## Is the data anything other than a tibble?
+  if(class(data_arg)[1] != "tbl_df"){
+    return(
+      cli::cat_line(paste0(crayon::red(cli::symbol$cross)," ", stns, collapse = "\n"))
+      )
   }
   
-  datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
-    dplyr::collect()
+  sym_Parameter <- sym("Parameter")
   
-  datum_list
-}
-
-
-#' Extract version number from HYDAT database
-#' 
-#' A function to get version number of hydat
-#'
-#' @inheritParams hy_agency_list
-#'
-#' @return version number and release date
-#'
-#' @family HYDAT functions
-#' @source HYDAT
-#' @export
-#' @examples
-#' \dontrun{
-#' hy_version()
-#'}
-#'
-#'
-hy_version <- function(hydat_path = NULL) {
+  flow_stns <- data_arg %>%
+    dplyr::filter(!!sym_Parameter == params) %>%
+    dplyr::distinct(.data$STATION_NUMBER) %>%
+    dplyr::arrange(.data$STATION_NUMBER) %>%
+    dplyr::pull(.data$STATION_NUMBER)
   
-  ## Read in database
-  hydat_con <- hy_src(hydat_path)
-  if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+  good_stns <- c()
+  if(length(flow_stns) > 0L){
+    good_stns <- paste0(crayon::green(cli::symbol$tick)," ", flow_stns, collapse = "\n")
   }
   
-  version <- dplyr::tbl(hydat_con, "VERSION") %>%
-    dplyr::collect() %>%
-    dplyr::mutate(Date = lubridate::ymd_hms(.data$Date))
+  ## Station not in output
+  not_in <- setdiff(stns,flow_stns)
   
-  version
+  bad_stns <- c()
+  if(length(not_in) > 0L){
+    bad_stns <- paste0(crayon::red(cli::symbol$cross)," ", not_in, collapse = "\n")
+  }
   
+  cli::cat_line(paste0(good_stns, "\n", bad_stns))
+  
+
 }
 
-#' Calculate daily means from higher resolution realtime data
-#' 
-#' This function is meant to be used within a pipe as a means of easily moving from higher resolution 
-#' data to daily means.
-#' 
-#' @param data A data argument that is designed to take only the output of realtime_dd
-#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
-#' 
-#' @examples
-#' \dontrun{
-#' realtime_dd("08MF005") %>% realtime_daily_mean()
-#' }
-#' 
-#' @export
-realtime_daily_mean <- function(data, na.rm = FALSE){
-  
-  df_mean <- dplyr::mutate(data, Date = as.Date(.data$Date))
-  
-  df_mean <- dplyr::group_by(df_mean, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter)
-  
-  dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm)) %>%
-    dplyr::ungroup()
+## Ask for something
+ask <- function(...) {
+    choices <- c("Yes", "No")
+    cat(crayon::green(paste0(...,"\n", collapse = "")))
+    cli::cat_rule(col = "green")
+    utils::menu(choices) == which(choices == "Yes")
 }
+

@@ -129,7 +129,11 @@ hy_monthly_flows <- function(station_number = NULL,
   monthly_flows <- tidyr::spread(monthly_flows, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY))
+  
+  ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(.data$Date_occurred, quiet = TRUE))
 
   monthly_flows <- dplyr::select(monthly_flows, -.data$DAY)
   monthly_flows <- dplyr::mutate(monthly_flows, FULL_MONTH = .data$FULL_MONTH == 1)
