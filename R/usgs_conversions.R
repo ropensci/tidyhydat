@@ -1,7 +1,7 @@
 usgs_to_wsc_streamflow <- function(.data){
   
   ## What is the variable we are dealing with?
-  variableCode <- attr(.data, "variableInfo")$unit
+  parameter_units <- attr(.data, "variableInfo")$unit
 
   if(!any(parameter_units %in% check_valid_usgs_param(parameter = "discharge"))){
     stop(paste0(parameter_units," is an unrecognized unit for this conversion"))
