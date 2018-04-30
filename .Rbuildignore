@@ -20,3 +20,4 @@ release_script.R
 tidyhydat_intro.Rmd
 ^\.github$
 ^codecov\.yml$
+^cross_border_shopping\.Rmd$
