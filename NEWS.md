@@ -5,6 +5,7 @@ tidyhydat 0.3.4
 * 15% speed improvement in `realtime_dd` by elimating loop (#91)
 * 40% speed improvement when querying full provinces (#89)
 * reorganized file naming so that helper functions are placed in utils-* files
+* using https for realtime data acquisition
 
 ### BUG FIXES
 * Fixed `hy_monthly_flows` and `hy_monthly_levels` date issue (#24)
