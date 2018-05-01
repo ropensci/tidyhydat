@@ -105,7 +105,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 realtime_stations <- function(prov_terr_state_loc = NULL) {
   prov <- prov_terr_state_loc
   
-  realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
+  realtime_link <- "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
 
   url_check <- httr::GET(realtime_link)
   
