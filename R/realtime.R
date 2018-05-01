@@ -160,12 +160,15 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #' }
 #' 
 #' @export
-realtime_daily_mean <- function(data, na.rm = FALSE){
+realtime_daily_mean <- function(.data, na.rm = FALSE){
   
-  df_mean <- dplyr::mutate(data, Date = as.Date(.data$Date))
+  df_mean <- dplyr::mutate(.data, Date = as.Date(.data$Date))
   
   df_mean <- dplyr::group_by(df_mean, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter)
   
-  dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm)) %>%
-    dplyr::ungroup()
+  df_mean <- dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm))
+  
+  df_mean <- dplyr::arrange(df_mean, .data$Parameter)
+  
+  dplyr::ungroup(df_mean)
 }

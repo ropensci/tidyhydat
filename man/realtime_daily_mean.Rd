@@ -4,12 +4,12 @@
 \alias{realtime_daily_mean}
 \title{Calculate daily means from higher resolution realtime data}
 \usage{
-realtime_daily_mean(data, na.rm = FALSE)
+realtime_daily_mean(.data, na.rm = FALSE)
 }
 \arguments{
-\item{data}{A data argument that is designed to take only the output of realtime_dd}
-
 \item{na.rm}{a logical value indicating whether NA values should be stripped before the computation proceeds.}
+
+\item{data}{A data argument that is designed to take only the output of realtime_dd}
 }
 \description{
 This function is meant to be used within a pipe as a means of easily moving from higher resolution 
