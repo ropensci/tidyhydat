@@ -3,7 +3,7 @@
 tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 ================================================================
 
-<a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="http://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat) [![Travis-CI Build Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![Coverage status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master) [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511) [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
+<a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="http://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a> [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat) [![Travis-CI Build Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![Coverage status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master) [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511) [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 </div>
  
 
@@ -71,16 +71,16 @@ hy_daily_flows(station_number = "08LA001")
 #> # A tibble: 29,159 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
-#>  1 08LA001        1914-01-01 Flow       144. <NA>  
-#>  2 08LA001        1914-01-02 Flow       144. <NA>  
-#>  3 08LA001        1914-01-03 Flow       144. <NA>  
-#>  4 08LA001        1914-01-04 Flow       140. <NA>  
-#>  5 08LA001        1914-01-05 Flow       140. <NA>  
-#>  6 08LA001        1914-01-06 Flow       136. <NA>  
-#>  7 08LA001        1914-01-07 Flow       136. <NA>  
-#>  8 08LA001        1914-01-08 Flow       140. <NA>  
-#>  9 08LA001        1914-01-09 Flow       140. <NA>  
-#> 10 08LA001        1914-01-10 Flow       140. <NA>  
+#>  1 08LA001        1914-01-01 Flow        144 <NA>  
+#>  2 08LA001        1914-01-02 Flow        144 <NA>  
+#>  3 08LA001        1914-01-03 Flow        144 <NA>  
+#>  4 08LA001        1914-01-04 Flow        140 <NA>  
+#>  5 08LA001        1914-01-05 Flow        140 <NA>  
+#>  6 08LA001        1914-01-06 Flow        136 <NA>  
+#>  7 08LA001        1914-01-07 Flow        136 <NA>  
+#>  8 08LA001        1914-01-08 Flow        140 <NA>  
+#>  9 08LA001        1914-01-09 Flow        140 <NA>  
+#> 10 08LA001        1914-01-10 Flow        140 <NA>  
 #> # ... with 29,149 more rows
 ```
 
@@ -133,7 +133,7 @@ search_stn_name("canada") %>%
 #>  6 01AK001        1918-08-06 Flow      NA    <NA>  
 #>  7 01AK001        1918-08-07 Flow       1.78 <NA>  
 #>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
-#>  9 01AK001        1918-08-09 Flow       1.50 <NA>  
+#>  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 #> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
 #> # ... with 76,669 more rows
 ```
@@ -158,7 +158,6 @@ A simple plotting tool is also provided to quickly visualize realtime data:
 
 ``` r
 realtime_plot("08LG006")
-#> 08LG006 is lake level station. Defaulting Parameter = 'Level'
 ```
 
 ![](tools/readme/README-unnamed-chunk-8-1.png)
