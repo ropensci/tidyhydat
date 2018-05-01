@@ -1,18 +1,19 @@
-# 0.3.3
-  * Open a connection to the HYDAT database directly using `hy_src()` for advanced functionality (PR#77).
-  * New vignette outlining `hy_src()` (PR#77)
-  * Add some tools to improve the usability of the test database (PR#77).
-  * `download_hydat()` now uses `httr::GET()`
+tidyhydat 0.3.4
+=========================
+### IMPROVEMENT
+* Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
+* 15% speed improvement in `realtime_dd` by elimating loop (#91)
+* 40% speed improvement when querying full provinces (#89)
+* reorganized file naming so that helper functions are placed in utils-* files
 
-# 0.3.2
-* 2nd submission same version: more comprehensive test via rhub and locally with --as-cran
-* Fixed UTF-8 strings causing NOTEs
-* Critical bug fixed where path in `download_hydat()` was constructed in a non-OS independent way
-    - Prevented non-windows users from downloading the database which is essential to most functions in the package.
-* Some minor improvments outlined in NEWS section
+### BUG FIXES
+* Fixed `hy_monthly_flows` and `hy_monthly_levels` date issue (#24)
 
-# 0.3.1
-* Initial release
+### MINOR IMPROVEMENT
+* realtime tidying now not duplicated and is handled by a function
+* simplified `tidyhydat:::station_choice` and added more unit testing
+* no longer outputting a message when `station_number = "ALL"`.
+* Exporting pipe (`%>%`)
 
 ## Test environments
 * win-builder (via `devtools::build_win()`)
@@ -29,41 +30,10 @@
  
 ## R CMD check results
 
+* No warnings
+* No notes
+* No errors
 
-ERROR on r-oldrel-osx-x86_64 for CRAN package checks
-* ERROR: this R is version 3.3.2, package 'tidyhydat' requires R >= 3.4.0
-
-* Fixed in this version by reducing required R version to 3.2.0
-
-WARNINGS
-* checking top-level files ... WARNING
-Conversion of 'README.md' failed:
-pandoc.exe: Could not fetch https://badges.ropensci.org/152_status.svg
-HttpExceptionRequest Request {
-  host                 = "badges.ropensci.org"
-  port                 = 443
-  secure               = True
-  requestHeaders       = []
-  path                 = "/152_status.svg"
-  queryString          = ""
-  method               = "GET"
-  proxy                = Nothing
-  rawBody              = False
-  redirectCount        = 10
-  responseTimeout      = ResponseTimeoutDefault
-  requestVersion       = HTTP/1.1
-}
- (InternalException (HostCannotConnect "badges.ropensci.org" [connect: failed (Connection refused (WSAECONNREFUSED))]))
- 
-* Version of pandoc does not process badges
-
-NOTE R CMD check --as-cran:
-* checking DESCRIPTION meta-information ... NOTE
-Authors@R field gives persons with non-standard roles:
-  Luke Winslow [rev] (Reviewed for rOpenSci): rev
-  Laura DeCicco [rev] (Reviewed for rOpenSci): rev
-
-* I am seeking to give reviewer credit to these folks
 
 
 ## Downstream dependencies
