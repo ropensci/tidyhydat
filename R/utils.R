@@ -67,6 +67,7 @@ dplyr::`%>%`
 
 
 ## Simple error handler
+#' @noRd
 handle_error <- function(code) {
   tryCatch(code, error = function(c) {
     msg <- conditionMessage(c)
@@ -75,6 +76,7 @@ handle_error <- function(code) {
 }
 
 ## Differ message for all the hy_* functions
+#' @noRd
 differ_msg <- function(stns_input, stns_output) {
   differ <- setdiff(stns_input, stns_output)
   if (length(differ) != 0) {
@@ -96,6 +98,7 @@ differ_msg <- function(stns_input, stns_output) {
 
 
 ## Multi parameter message
+#' @noRd
 multi_param_msg <- function(data_arg, stns, params) {
   cli::cat_line(cli::rule(
     left = crayon::bold(params)
@@ -135,6 +138,7 @@ multi_param_msg <- function(data_arg, stns, params) {
 }
 
 ## Ask for something
+#' @noRd
 ask <- function(...) {
     choices <- c("Yes", "No")
     cat(crayon::green(paste0(...,"\n", collapse = "")))
