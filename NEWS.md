@@ -13,6 +13,7 @@ tidyhydat 0.3.4
 * realtime tidying now not duplicated and is handled by a function
 * simplified `tidyhydat:::station_choice` and added more unit testing
 * no longer outputting a message when `station_number = "ALL"`.
+* Exporting pipe (`%>%`)
 
 tidyhydat 0.3.3
 =========================

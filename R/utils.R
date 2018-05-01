@@ -61,6 +61,10 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
 
 }
 
+#' @importFrom dplyr %>%
+#' @export
+dplyr::`%>%`
+
 
 ## Simple error handler
 handle_error <- function(code) {
