@@ -151,7 +151,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #' This function is meant to be used within a pipe as a means of easily moving from higher resolution 
 #' data to daily means.
 #' 
-#' @param data A data argument that is designed to take only the output of realtime_dd
+#' @param .data A data argument that is designed to take only the output of realtime_dd
 #' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
 #' 
 #' @examples
