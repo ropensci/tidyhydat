@@ -79,7 +79,7 @@ date_check <- function(start_date, end_date){
   
   if (start_date != "ALL" & end_date != "ALL" & (end_date < start_date)) stop("start_date is after end_date. Try swapping values.", call. = FALSE)
   
-  invisibles(TRUE)
+  invisible(TRUE)
 }
 
 #' @importFrom dplyr %>%
