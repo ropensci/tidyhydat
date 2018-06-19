@@ -16,6 +16,8 @@
 #' To download the latest version of hydat please:
 #'  \itemize{
 #'   \item use the \code{download_hydat()} function.
+#'   \item If that fails you can download directly from this link:
+#'   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/Hydat_sqlite3_20180417.zip}
 #'   }
 #' 
 #' For more information on tidy data please see
@@ -24,14 +26,18 @@
 #'  \item tidy data vignette: \url{https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html}
 #'  }
 #'
-#'  For more information on HYDAT 
+#'  For more information on HYDAT and ECCC data sources 
 #'  \itemize{
-#'    \item Please see this description of the database: goo.gl/H3NXJQ
+#'    \item Please see this description of the database: 
+#'    \url{https://ec.gc.ca/rhc-wsc/default.asp?n=9018B5EC-1}
 #'    \item This page is landing page for technical description of HYDAT:
 #'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'    \item This page links to a document that outlines database table definitions:
 #'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
+#'    \item This FAQ provides a helpful list of ECCC data source questions:
+#'    \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}
 #'    }
+#'    
 #'
 #' @keywords internal
 "_PACKAGE"
