@@ -50,7 +50,9 @@
 
 hy_daily_flows <- function(station_number = NULL,
                       hydat_path = NULL, 
-                      prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL",
+                      prov_terr_state_loc = NULL, 
+                      start_date = NULL, 
+                      end_date = NULL,
                       symbol_output = "code") {
   
   ## Determine which dates should be queried
@@ -77,22 +79,17 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% stns)
   
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  if (start_date != "ALL") {
-    start_year <- lubridate::year(start_date)
-    dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= start_year)
-  }
   
-  if (end_date != "ALL") {
-    end_year <- lubridate::year(end_date)
-    dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR <= end_year)
-  }
+  ## by year
+  if (!is.null(start_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= lubridate::year(start_date))
+  if (!is.null(end_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR <= lubridate::year(end_date))
+  
   
   dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, 
                              .data$NO_DAYS, dplyr::contains("FLOW"))
   dly_flows <- dplyr::collect(dly_flows)
   
-  if(is.data.frame(dly_flows) && nrow(dly_flows)==0)
-    {stop("No flow data for this station in HYDAT")}
+  if(is.data.frame(dly_flows) && nrow(dly_flows)==0) stop("No flow data for this station in HYDAT")
   
   dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
   dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", .data$variable)))
@@ -106,13 +103,8 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
   
   ## Then when a date column exist fine tune the subset
-  if (start_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
-  }
-  
-  if (end_date != "ALL") {
-    dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
-  }
+  if (!is.null(start_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
+  if (!is.null(end_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
   
   dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
