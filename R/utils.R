@@ -62,22 +62,25 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
 }
 
 
-## Deal with date choice
+## Deal with date choice and formatting
 #' @noRd
 #' 
-date_check <- function(start_date, end_date){
-  if (start_date == "ALL" & end_date == "ALL") message("No start and end dates specified. All dates available will be returned.")
+date_check <- function(start_date = NULL, end_date = NULL){
+  if (is.null(start_date) & is.null(end_date)) message("No start and end dates specified. All dates available will be returned.")
   
   ## Check date is in the right format TODO
-  if (start_date != "ALL" & is.na(lubridate::parse_date_time(start_date, orders = "ymd", quiet = TRUE))) {
-    stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
+  if (!is.null(start_date)) {
+    if(!grepl('[0-9]{4}-[0-1][0-2]-[0-3][0-9]', start_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
   }
   
-  if (end_date != "ALL" & is.na(lubridate::parse_date_time(end_date, orders = "ymd", quiet = TRUE))) {
-    stop("Invalid date format. end_date need to be in YYYY-MM-DD format", call. = FALSE)
+  if (!is.null(end_date)) {
+    if(!grepl('[0-9]{4}-[0-1][0-2]-[0-3][0-9]', end_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
   }
   
-  if (start_date != "ALL" & end_date != "ALL" & (end_date < start_date)) stop("start_date is after end_date. Try swapping values.", call. = FALSE)
+  if(!is.null(start_date) & !is.null(end_date)){
+    if (lubridate::ymd(end_date) < lubridate::ymd(start_date)) stop("start_date is after end_date. Try swapping values.", call. = FALSE)
+  }
+
   
   invisible(TRUE)
 }
