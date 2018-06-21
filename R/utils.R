@@ -66,7 +66,15 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
 #' @noRd
 #' 
 date_check <- function(start_date = NULL, end_date = NULL){
-  if (is.null(start_date) & is.null(end_date)) message("No start and end dates specified. All dates available will be returned.")
+  
+  start_is_null <- is.null(start_date) 
+  end_is_null <- is.null(end_date)
+  
+  
+  if (start_is_null & end_is_null) {
+    message("No start and end dates specified. All dates available will be returned.")
+    
+  }
   
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {
@@ -82,7 +90,7 @@ date_check <- function(start_date = NULL, end_date = NULL){
   }
 
   
-  invisible(TRUE)
+  invisible(list(start_is_null = start_is_null, end_is_null = end_is_null))
 }
 
 #' @importFrom dplyr %>%
