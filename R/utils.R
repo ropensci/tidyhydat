@@ -178,3 +178,14 @@ ask <- function(...) {
     utils::menu(choices) == which(choices == "Yes")
 }
 
+# Deal with proxy-related connection issues
+#' @noRd
+network_check <- function(url){
+  tryCatch(httr::GET(base_url),
+           error = function(e){
+             if(grepl("Timeout was reached:", e$message))
+               stop("Could not connect to HYDAT source. Check your connection settings.", 
+                    call. = FALSE
+               )}
+  )}
+
