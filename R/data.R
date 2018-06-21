@@ -31,6 +31,11 @@
 #' @source HYDAT, Meteorological Service of Canada datamart
 "allstations"
 
+#' Time zones and offsets of each station
+#' 
+#' Time zones and offsets of each station calculated using the lutz package
+#' 
+"station_timezones"
 
 #' DATA SYMBOLS look-up table
 #'

@@ -79,7 +79,8 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::left_join(aip, tidyhydat::station_timezones, by = c("STATION_NUMBER"))
 
   ## Convert to dttm
-  aip <- dplyr::mutate(aip, Date = lubridate::ymd_hm(paste0(YEAR,"-",MONTH,"-", DAY, " ",HOUR, ":", MINUTE)), quiet = TRUE)
+  aip <- dplyr::mutate(aip, Date = lubridate::ymd_hm(paste0(
+    .data$YEAR,"-",.data$MONTH,"-", .data$DAY, " ",.data$HOUR, ":", .data$MINUTE)), quiet = TRUE)
 
   ## Clean up and select only columns we need
   aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, Time_zone = .data$lutz_tz, 
