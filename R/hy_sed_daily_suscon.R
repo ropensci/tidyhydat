@@ -43,38 +43,17 @@
 hy_sed_daily_suscon <- function(station_number = NULL,
                            hydat_path = NULL, 
                            prov_terr_state_loc = NULL, 
-                           start_date ="ALL", end_date = "ALL", symbol_output = "code") {
+                           start_date = NULL, 
+                           end_date = NULL,
+                           symbol_output = "code") {
+  
+  ## Determine which dates should be queried
+  dates_null <- date_check(start_date, end_date)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
     on.exit(hy_src_disconnect(hydat_con))
-  }
-  
-  if (start_date == "ALL" & end_date == "ALL") {
-    message("No start and end dates specified. All dates available will be returned.")
-  } else {
-    ## When we want date contraints we need to break apart the dates because SQL has no native date format
-    ## Start
-    start_year <- lubridate::year(start_date)
-    start_month <- lubridate::month(start_date)
-    start_day <- lubridate::day(start_date)
-
-    ## End
-    end_year <- lubridate::year(end_date)
-    end_month <- lubridate::month(end_date)
-    end_day <- lubridate::day(end_date)
-  }
-
-  ## Check date is in the right format
-  if (start_date != "ALL" | end_date != "ALL") {
-    if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
-      stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-    }
-
-    if (start_date > end_date) {
-      stop("start_date is after end_date. Try swapping values.")
-    }
   }
 
   ## Determine which stations we are querying
@@ -92,10 +71,10 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR >= start_year &
-                                      !!sym_YEAR <= end_year)
-  }
+  
+  ## by year
+  if (!dates_null[["start_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR >= lubridate::year(start_date))
+  if (!dates_null[["end_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR <= lubridate::year(end_date))
 
   sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, .data$NO_DAYS,
                                   dplyr::contains("SUSCON"))
@@ -117,10 +96,8 @@ hy_sed_daily_suscon <- function(station_number = NULL,
     paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
 
   ## Then when a date column exist fine tune the subset
-  if (start_date != "ALL" | end_date != "ALL") {
-    sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_Date >= start_date &
-                                      !!sym_Date <= end_date)
-  }
+  if (!dates_null[["start_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_Date >= start_date)
+  if (!dates_null[["end_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_Date <= end_date)
   
   
   sed_dly_suscon <- dplyr::left_join(sed_dly_suscon, tidyhydat::hy_data_symbols, by = c("SUSCON_SYMBOL" = "SYMBOL_ID"))

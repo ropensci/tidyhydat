@@ -1,3 +1,12 @@
+tidyhydat 0.3.5
+=========================
+### IMPROVEMENT
+
+### BUG FIXES
+* Functions that have a `start_date` and `end_date` actually work with said argument (#98)
+
+### MINOR IMPROVEMENT
+
 tidyhydat 0.3.4
 =========================
 ### IMPROVEMENT

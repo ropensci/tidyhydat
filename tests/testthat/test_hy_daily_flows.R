@@ -61,6 +61,17 @@ test_that("hy_daily_flows respects Date specification", {
   expect_identical(c(min(temp_df$Date), max(temp_df$Date)), as.Date(date_vector))
 })
 
+test_that("functions that accept a date argument return data when specifying only the start date or end date",{
+  date_string <- "1961-01-01"
+  
+  open_date_start <- hy_daily_flows(station_number = "08MF005", hydat_path = hy_test_db(), start_date = date_string)
+  expect_identical(min(open_date_start$Date), as.Date(date_string))
+  
+  open_date_end <- hy_daily_flows(station_number = "08MF005", hydat_path = hy_test_db(), end_date = date_string)
+  expect_identical(max(open_date_end$Date), as.Date(date_string))
+})
+
+
 test_that("hy_daily_flows correctly parses leaps year", {
   expect_warning(
     hy_daily_flows(

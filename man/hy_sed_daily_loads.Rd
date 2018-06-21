@@ -15,7 +15,7 @@ HYDAT
 }
 \usage{
 hy_sed_daily_loads(station_number = NULL, hydat_path = NULL,
-  prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL")
+  prov_terr_state_loc = NULL, start_date = NULL, end_date = NULL)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}

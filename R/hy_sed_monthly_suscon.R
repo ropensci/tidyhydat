@@ -47,41 +47,18 @@
 
 hy_sed_monthly_suscon <- function(station_number = NULL, 
                                hydat_path = NULL, 
-                               prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_sed_monthly_suscon for examples.")
-  }
+                               prov_terr_state_loc = NULL, 
+                               start_date =NULL, 
+                               end_date = NULL) {
+
+  
+  ## Determine which dates should be queried
+  dates_null <- date_check(start_date, end_date)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
     on.exit(hy_src_disconnect(hydat_con))
-  }
-
-  if (start_date == "ALL" & end_date == "ALL") {
-    message("No start and end dates specified. All dates available will be returned.")
-  } else {
-    ## When we want date contraints we need to break apart the dates because SQL has no native date format
-    ## Start
-    start_year <- lubridate::year(start_date)
-    start_month <- lubridate::month(start_date)
-    start_day <- lubridate::day(start_date)
-
-    ## End
-    end_year <- lubridate::year(end_date)
-    end_month <- lubridate::month(end_date)
-    end_day <- lubridate::day(end_date)
-  }
-
-  ## Check date is in the right format
-  if (start_date != "ALL" | end_date != "ALL") {
-    if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
-      stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-    }
-
-    if (start_date > end_date) {
-      stop("start_date is after end_date. Try swapping values.")
-    }
   }
 
   ## Determine which stations we are querying
@@ -99,13 +76,11 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  if (start_date != "ALL" | end_date != "ALL") {
-    sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR >= start_year &
-                                          !!sym_YEAR <= end_year)
-    
-    #sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, MONTH >= start_month &
-    #                             MONTH <= end_month)
-  }
+  
+  ## by year
+  if (!dates_null[["start_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR >= lubridate::year(start_date))
+  if (!dates_null[["end_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR <= lubridate::year(end_date))
+  
   
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, .data$STATION_NUMBER:.data$MAX)
   sed_monthly_suscon <- dplyr::collect(sed_monthly_suscon)
@@ -125,11 +100,15 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, !!sym_temp2, !!sym_temp)
   
   ## convert into R date for date of occurence.
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(
-    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY), quiet = TRUE))
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY))
   
-  sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -.data$DAY)
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, FULL_MONTH = .data$FULL_MONTH == 1)
+  ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
+  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(.data$Date_occurred, quiet = TRUE))
+  
+  ## Then when a date column exist fine tune the subset
+  if (!dates_null[["start_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, .data$Date_occurred >= start_date)
+  if (!dates_null[["end_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, .data$Date_occurred <= end_date)
   
   ## What stations were missed?
   differ_msg(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))

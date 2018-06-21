@@ -56,7 +56,13 @@
 
 hy_sed_samples <- function(station_number = NULL, 
                         hydat_path = NULL, 
-                        prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
+                        prov_terr_state_loc = NULL, 
+                        start_date =NULL, 
+                        end_date = NULL) {
+  
+  ## Determine which dates should be queried
+  dates_null <- date_check(start_date, end_date)
+  
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
@@ -64,32 +70,6 @@ hy_sed_samples <- function(station_number = NULL,
     on.exit(hy_src_disconnect(hydat_con))
   }
   
-  if (start_date == "ALL" & end_date == "ALL") {
-    message("No start and end dates specified. All dates available will be returned.")
-  } else {
-    ## When we want date contraints we need to break apart the dates because SQL has no native date format
-    ## Start
-    start_year <- lubridate::year(start_date)
-    start_month <- lubridate::month(start_date)
-    start_day <- lubridate::day(start_date)
-
-    ## End
-    end_year <- lubridate::year(end_date)
-    end_month <- lubridate::month(end_date)
-    end_day <- lubridate::day(end_date)
-  }
-
-  ## Check date is in the right format
-  if (start_date != "ALL" | end_date != "ALL") {
-    if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
-      stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-    }
-
-    if (start_date > end_date) {
-      stop("start_date is after end_date. Try swapping values.")
-    }
-  }
-
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
@@ -112,17 +92,14 @@ hy_sed_samples <- function(station_number = NULL,
 
   sed_samples <- dplyr::collect(sed_samples)
   
-  if(is.data.frame(sed_samples) && nrow(sed_samples)==0)
-  {stop("This station is not present in HYDAT")}
+  if(is.data.frame(sed_samples) && nrow(sed_samples)==0) stop("This station is not present in HYDAT")
   
   sed_samples <- dplyr::left_join(sed_samples, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(.data$DATE))
+  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(.data$DATE), date_no_time = as.Date(.data$DATE))
 
   ## SUBSET by date
-  if (start_date != "ALL" | end_date != "ALL") {
-    sed_samples <- dplyr::filter(sed_samples, !!sym_DATE >= start_date &
-                                   !!sym_DATE <= end_date)
-  }
+  if (!dates_null[["start_is_null"]]) sed_samples <- dplyr::filter(sed_samples, !!sym("date_no_time") >= as.Date(start_date))
+  if (!dates_null[["end_is_null"]]) sed_samples <- dplyr::filter(sed_samples, !!sym("date_no_time") <= as.Date(end_date))
   
   
   sed_samples <- dplyr::select(

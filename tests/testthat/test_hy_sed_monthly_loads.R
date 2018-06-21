@@ -46,6 +46,28 @@ test_that("hy_sed_monthly_loads produces an error when a province is not specifi
             ))
           })
 
+test_that("hy_sed_monthly_loads respects Date specification", {
+  date_vector <- c("1965-05-31", "1965-07-12 ")
+  temp_df <- hy_sed_monthly_loads(
+    station_number = "08MF005",
+    hydat_path = hy_test_db(),
+    start_date = date_vector[1],
+    end_date = date_vector[2]
+  )
+  expect_true(min(temp_df$Date_occurred) >= as.Date(date_vector[1]))
+  expect_true(max(temp_df$Date_occurred) <= as.Date(date_vector[2]))
+})
+
+test_that("functions that accept a date argument return data when specifying only the start date or end date",{
+  date_string <- "1965-07-12"
+  
+  open_date_start <- hy_sed_monthly_loads(station_number = "08MF005", hydat_path = hy_test_db(), start_date = date_string)
+  expect_true(min(open_date_start$Date_occurred) >= as.Date(date_string))
+  
+  open_date_end <- hy_sed_monthly_loads(station_number = "08MF005", hydat_path = hy_test_db(), end_date = date_string)
+  expect_true(max(open_date_end$Date_occurred) <= as.Date(date_string))
+})
+
 
 test_that("When hy_sed_monthly_loads is ALL there is an error", {
   expect_error(hy_sed_monthly_loads(station_number = "ALL"))
