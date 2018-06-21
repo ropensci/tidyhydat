@@ -20,7 +20,7 @@ HYDAT
 }
 \usage{
 hy_monthly_flows(station_number = NULL, hydat_path = NULL,
-  prov_terr_state_loc = NULL, start_date = "ALL", end_date = "ALL")
+  prov_terr_state_loc = NULL, start_date = NULL, end_date = NULL)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
@@ -42,7 +42,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 A tibble of monthly flows.
 }
 \description{
-Tidy data of monthly flows information from the DLY_FLOWS HYDAT table. \code{station_number} and
+Tidy data of monthly flows information from the monthly_flows HYDAT table. \code{station_number} and
 \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
 That is a large vector for \code{hy_monthly_flows}.
 }

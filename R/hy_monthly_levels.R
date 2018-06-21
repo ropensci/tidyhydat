@@ -50,41 +50,17 @@
 
 hy_monthly_levels <- function(station_number = NULL,
                            hydat_path = NULL,
-                           prov_terr_state_loc = NULL, start_date ="ALL", end_date = "ALL") {
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?hy_monthly_levels for examples.")
-  }
+                           prov_terr_state_loc = NULL, 
+                           start_date =NULL, 
+                           end_date = NULL) {
+
+  ## Determine which dates should be queried
+  dates_null <- date_check(start_date, end_date)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
     on.exit(hy_src_disconnect(hydat_con))
-  }
-
-  if (start_date == "ALL" & end_date == "ALL") {
-    message("No start and end dates specified. All dates available will be returned.")
-  } else {
-    ## When we want date contraints we need to break apart the dates because SQL has no native date format
-    ## Start
-    start_year <- lubridate::year(start_date)
-    start_month <- lubridate::month(start_date)
-    start_day <- lubridate::day(start_date)
-
-    ## End
-    end_year <- lubridate::year(end_date)
-    end_month <- lubridate::month(end_date)
-    end_day <- lubridate::day(end_date)
-  }
-
-  ## Check date is in the right format
-  if (start_date != "ALL" | end_date != "ALL") {
-    if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
-      stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-    }
-
-    if (start_date > end_date) {
-      stop("start_date is after end_date. Try swapping values.")
-    }
   }
 
   ## Determine which stations we are querying
@@ -102,13 +78,10 @@ hy_monthly_levels <- function(station_number = NULL,
   monthly_levels <- dplyr::filter(monthly_levels, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  if (start_date != "ALL" | end_date != "ALL") {
-    monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR >= start_year &
-                                      !!sym_YEAR <= end_year)
-    
-    #monthly_levels <- dplyr::filter(monthly_levels, MONTH >= start_month &
-    #                             MONTH <= end_month)
-  }
+  
+  ## by year
+  if (!dates_null[["start_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR >= lubridate::year(start_date))
+  if (!dates_null[["end_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR <= lubridate::year(end_date))
 
   monthly_levels <- dplyr::select(monthly_levels, .data$STATION_NUMBER:.data$MAX)
   monthly_levels <- dplyr::collect(monthly_levels)
@@ -133,6 +106,10 @@ hy_monthly_levels <- function(station_number = NULL,
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
   monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
   monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(.data$Date_occurred, quiet = TRUE))
+  
+  ## Then when a date column exist fine tune the subset
+  if (!dates_null[["start_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, .data$Date_occurred >= start_date)
+  if (!dates_null[["end_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, .data$Date_occurred <= end_date)
 
   monthly_levels <- dplyr::select(monthly_levels, -.data$DAY)
   monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = .data$FULL_MONTH == 1)

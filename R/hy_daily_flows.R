@@ -36,7 +36,7 @@
 #' @examples
 #' \dontrun{
 #' #download_hydat()
-#' hy_daily_flows(station_number = c("02JE013","08MF005"), 
+#' hy_daily_flows(station_number = c("08MF005"), 
 #'   start_date = "1996-01-01", end_date = "2000-01-01")
 #'
 #' hy_daily_flows(prov_terr_state_loc = "PE")
@@ -56,7 +56,7 @@ hy_daily_flows <- function(station_number = NULL,
                       symbol_output = "code") {
   
   ## Determine which dates should be queried
-  date_check(start_date, end_date)
+  dates_null <- date_check(start_date, end_date)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
@@ -81,8 +81,8 @@ hy_daily_flows <- function(station_number = NULL,
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
   
   ## by year
-  if (!is.null(start_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= lubridate::year(start_date))
-  if (!is.null(end_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR <= lubridate::year(end_date))
+  if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= lubridate::year(start_date))
+  if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR <= lubridate::year(end_date))
   
   
   dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, 
@@ -103,8 +103,8 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
   
   ## Then when a date column exist fine tune the subset
-  if (!is.null(start_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
-  if (!is.null(end_date)) dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
+  if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
+  if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
   
   dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
   dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")

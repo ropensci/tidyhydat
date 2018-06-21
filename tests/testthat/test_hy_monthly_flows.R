@@ -47,7 +47,7 @@ test_that("hy_monthly_flows produces an error when a province is not specified c
           })
 
 
-test_that("hy_monthly_flows respects Year specification", {
+test_that("hy_monthly_flows respects Date specification", {
   date_vector <- c("2013-01-01", "2014-01-01")
   temp_df <- hy_monthly_flows(
     station_number = "08MF005",
@@ -55,7 +55,18 @@ test_that("hy_monthly_flows respects Year specification", {
     start_date = date_vector[1],
     end_date = date_vector[2]
   )
-  expect_equal(c(min(temp_df$YEAR), max(temp_df$YEAR)), c(2013, 2014))
+  expect_true(min(temp_df$Date_occurred) >= as.Date(date_vector[1]))
+  expect_true(max(temp_df$Date_occurred) <= as.Date(date_vector[2]))
+})
+
+test_that("functions that accept a date argument return data when specifying only the start date or end date",{
+  date_string <- "1961-01-01"
+  
+  open_date_start <- hy_monthly_flows(station_number = "08MF005", hydat_path = hy_test_db(), start_date = date_string)
+  expect_true(min(open_date_start$Date_occurred) >= as.Date(date_string))
+  
+  open_date_end <- hy_monthly_flows(station_number = "08MF005", hydat_path = hy_test_db(), end_date = date_string)
+  expect_true(max(open_date_end$Date_occurred) <= as.Date(date_string))
 })
 
 test_that("When hy_monthly_flows is ALL there is an error", {
