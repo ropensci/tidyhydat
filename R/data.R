@@ -33,7 +33,8 @@
 
 #' Time zones and offsets of each station
 #' 
-#' Time zones and offsets of each station calculated using the lutz package
+#' Time zones and offsets for only standard time of each station calculated using the lutz package.
+#' Daylight savings will causes issues here.
 #' 
 "station_timezones"
 
