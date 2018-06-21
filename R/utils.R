@@ -78,11 +78,11 @@ date_check <- function(start_date = NULL, end_date = NULL){
   
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {
-    if(!grepl('[0-9]{4}-[0-1][0-2]-[0-3][0-9]', start_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
+    if(!grepl('[0-9]{4}-[0-1][0-9]-[0-3][0-9]', start_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
   }
   
   if (!is.null(end_date)) {
-    if(!grepl('[0-9]{4}-[0-1][0-2]-[0-3][0-9]', end_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
+    if(!grepl('[0-9]{4}-[0-1][0-9]-[0-3][0-9]', end_date)) stop("Invalid date format. end_date need to be in YYYY-MM-DD format", call. = FALSE)
   }
   
   if(!is.null(start_date) & !is.null(end_date)){
