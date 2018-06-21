@@ -39,7 +39,8 @@
 hy_annual_instant_peaks <- function(station_number = NULL, 
                                  hydat_path = NULL, 
                                  prov_terr_state_loc = NULL,
-                                 start_year = "ALL", end_year = "ALL") {
+                                 start_year = NULL, 
+                                 end_year = NULL) {
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
@@ -65,9 +66,8 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## If a year is supplied...
-  if (start_year != "ALL" | end_year != "ALL") {
-    aip <- dplyr::filter(aip, .data$YEAR >= start_year & .data$YEAR <= end_year)
-  }
+  if (!is.null(start_year)) aip <- dplyr::filter(aip, .data$YEAR >= start_year)
+  if (!is.null(end_year)) aip <- dplyr::filter(aip, .data$YEAR <= end_year)
 
   ## Parse PEAK_CODE manually - there are only 2
   aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(.data$PEAK_CODE == "H", "MAX", "MIN"))
