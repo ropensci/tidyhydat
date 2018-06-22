@@ -181,10 +181,14 @@ ask <- function(...) {
 # Deal with proxy-related connection issues
 #' @noRd
 network_check <- function(url){
-  tryCatch(httr::GET(base_url),
+  tryCatch(httr::GET(url),
            error = function(e){
              if(grepl("Timeout was reached:", e$message))
-               stop("Could not connect to HYDAT source. Check your connection settings.", 
+               stop(paste0("Could not connect to HYDAT source. Check your connection settings.
+                           Try downloading HYDAT_sqlite3 from this url: 
+                           [http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/]
+                           and unzipping the saved file to this directory:",
+                           hy_dir()), 
                     call. = FALSE
                )}
   )}
