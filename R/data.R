@@ -26,17 +26,11 @@
 #'   real-time or near real-time}
 #'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
 #'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+#'   \item{tz}{Timezone of station calculate using the lutz package based on LAt/LONGS}
 #' }
 #'
 #' @source HYDAT, Meteorological Service of Canada datamart
 "allstations"
-
-#' Time zones and offsets of each station
-#' 
-#' Time zones and offsets for only standard time of each station calculated using the lutz package.
-#' Daylight savings will causes issues here.
-#' 
-"station_timezones"
 
 #' DATA SYMBOLS look-up table
 #'
