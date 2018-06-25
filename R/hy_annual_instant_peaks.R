@@ -76,7 +76,7 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(.data$PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
   
   ## Add in timezone information
-  aip <- dplyr::left_join(aip, tidyhydat::station_timezones, by = c("STATION_NUMBER"))
+  aip <- dplyr::left_join(aip, tidyhydat::allstations, by = c("STATION_NUMBER"))
 
   ## Convert to dttm
   aip <- dplyr::mutate(aip, Date = lubridate::ymd_hm(paste0(
