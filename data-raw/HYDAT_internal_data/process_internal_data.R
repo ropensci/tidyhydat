@@ -15,7 +15,12 @@ allstations <- realtime_stations() %>%
   bind_rows(hy_stations()) %>%
   distinct(STATION_NUMBER, .keep_all = TRUE) %>%
   select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, HYD_STATUS, REAL_TIME, LATITUDE, LONGITUDE) %>% 
-  mutate(tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate"))
+  mutate(tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate")) %>% 
+  mutate(standard_offset = map_dbl(tz, ~ {
+    gmt_offset = as.POSIXlt(as.POSIXct("2017-01-01 12:00:00", tz = .x))$gmtoff
+    if (is.null(gmt_offset)) gmt_offset <- 0
+    gmt_offset / 3600
+  }))
 
 use_data(allstations, overwrite = TRUE)
 
