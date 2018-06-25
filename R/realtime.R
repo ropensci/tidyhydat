@@ -29,7 +29,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-#'   \item{Date}{Observation date and time for last thirty days. Formatted as a POSIXct class as UTC for consistency.}
+#'   \item{Date}{Observation date and time for last thirty days. Formatted as a POSIXct class in UTC for consistency.}
 #'   \item{Parameter}{Parameter being measured. Only possible values are Flow and Level}
 #'   \item{Value}{Value of the measurement. If Parameter equals Flow the units are m^3/s. 
 #'   If Parameter equals Level the units are metres.}
@@ -58,12 +58,12 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
   
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
-    all_prov_stations <- lapply(prov_terr_state_loc, all_realtime_station)
-    dplyr::bind_rows(all_prov_stations)
-  } else{
-    list_o_stations <- lapply(station_number, single_realtime_station)
-    dplyr::bind_rows(list_o_stations)
-  }
+    realtime_data <- lapply(prov_terr_state_loc, all_realtime_station)
+      } else{
+    realtime_data <- lapply(station_number, single_realtime_station)
+      }
+  
+  dplyr::bind_rows(realtime_data)
 
 
 
