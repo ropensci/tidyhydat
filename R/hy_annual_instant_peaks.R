@@ -20,7 +20,7 @@
 #' @param start_year First year of the returned record
 #' @param end_year Last year of the returned record
 #'
-#' @return A tibble of hy_annual_instant_peaks
+#' @return A tibble of hy_annual_instant_peaks. 
 #' 
 #'
 #' @examples
@@ -83,7 +83,7 @@ hy_annual_instant_peaks <- function(station_number = NULL,
     .data$YEAR,"-",.data$MONTH,"-", .data$DAY, " ",.data$HOUR, ":", .data$MINUTE)), quiet = TRUE)
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, Time_zone = .data$lutz_tz, 
+  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, Time_zone = .data$tz, 
                        .data$PEAK, .data$DATA_TYPE_EN, .data$PEAK_CODE, .data$PRECISION_CODE, .data$SYMBOL_EN) %>%
     dplyr::rename(Parameter = .data$DATA_TYPE_EN, Symbol = .data$SYMBOL_EN, Value = .data$PEAK)
 

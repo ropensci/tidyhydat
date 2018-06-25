@@ -4,7 +4,7 @@
 \name{station_timezones}
 \alias{station_timezones}
 \title{Time zones and offsets of each station}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7796 rows and 3 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7796 rows and 2 columns.}
 \usage{
 station_timezones
 }

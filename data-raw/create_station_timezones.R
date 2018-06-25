@@ -13,9 +13,9 @@ offsets <- map_df(OlsonNames(), ~ {
 })
 
 station_timezones <- hy_stations() %>% 
-  mutate(lutz_tz = tz_lookup_coords2(LATITUDE, LONGITUDE)) %>% 
-  select(STATION_NUMBER, lutz_tz) %>% 
-  left_join(offsets, by = c("lutz_tz" = "tz"))
+  mutate(tz = tz_lookup_coords2(LATITUDE, LONGITUDE)) %>% 
+  select(STATION_NUMBER, tz) #%>% 
+  #left_join(offsets, by = c("tz" = "tz"))
 
-use_data(station_timezones)
+use_data(station_timezones, overwrite = TRUE)
 
