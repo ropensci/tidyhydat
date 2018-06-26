@@ -6,11 +6,15 @@ tidyhydat 0.3.6
 tidyhydat 0.3.5
 =========================
 ### IMPROVEMENT
+* New function: `realtime_add_local_datetime()` adds a local datetime column to `realtime_dd()` tibble (#64)
+* New function: `pull_station_number` wraps `pull(STATION_NUMBER)` for convenience
 
 ### BUG FIXES
 * Functions that have a `start_date` and `end_date` actually work with said argument (#98)
+* `hy_annual_instant_peaks()` now parses the date correctly into UTC and includes a datetime and time zone column.  (#64)
 
 ### MINOR IMPROVEMENT
+
 
 tidyhydat 0.3.4
 =========================

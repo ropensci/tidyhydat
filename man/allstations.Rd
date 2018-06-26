@@ -14,7 +14,7 @@
   real-time or near real-time}
   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-  \item{tz}{Timezone of station calculate using the lutz package based on LAt/LONGS}
+  \item{station_tz}{Timezone of station calculated using the lutz package based on LAT/LONG of stations}
   \item{standard_offset}{Offset from UTC of local standard time}
 }}
 \source{

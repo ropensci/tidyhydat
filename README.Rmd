@@ -78,7 +78,7 @@ Another method is to use `hy_stations()` to generate your vector which is then g
 PEI_stns <- hy_stations() %>%
   filter(HYD_STATUS == "ACTIVE") %>%
   filter(PROV_TERR_STATE_LOC == "PE") %>%
-  pull(STATION_NUMBER)
+  pull_station_number()
 
 PEI_stns
 
@@ -88,7 +88,7 @@ hy_daily(station_number = PEI_stns)
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
 ```{r, example3}
 search_stn_name("canada") %>%
-  pull(STATION_NUMBER) %>%
+  pull_station_number() %>%
   hy_daily_flows()
 ```
 

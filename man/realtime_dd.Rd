@@ -14,6 +14,7 @@
   \item{Grade}{reserved for future use}
   \item{Symbol}{reserved for future use}
   \item{Code}{quality assurance/quality control flag for the discharge}
+  \item{station_tz}{Station timezone based on tidyhydat::allstations$station_tz}
 }}
 \usage{
 realtime_dd(station_number = NULL, prov_terr_state_loc = NULL)

@@ -64,6 +64,6 @@ test_that("hy_annual_instant_peaks respects year inputs", {
       start_year = s_year,
       end_year = e_year
     )
-  expect_equal(e_year, as.numeric(substr(max(df$Date), 1, 4)))
-  expect_equal(s_year, as.numeric(substr(min(df$Date), 1, 4)))
+  expect_equal(s_year, min(lubridate::year(df$Datetime)))
+  expect_equal(e_year, max(lubridate::year(df$Datetime)))
 })

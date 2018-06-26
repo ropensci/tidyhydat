@@ -36,6 +36,7 @@
 #'   \item{Grade}{reserved for future use}
 #'   \item{Symbol}{reserved for future use}
 #'   \item{Code}{quality assurance/quality control flag for the discharge}
+#'   \item{station_tz}{Station timezone based on tidyhydat::allstations$station_tz}
 #' }
 #'
 #' @examples
@@ -64,6 +65,10 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
       }
   
   dplyr::bind_rows(realtime_data)
+  
+
+  
+  
 
 
 
@@ -143,6 +148,49 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 
   net_tibble <- dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov)
   net_tibble
+}
+
+#' Add local datetime column to realtime tibble
+#' 
+#' Adds \code{local_datetime} and \code{tz_used} columns based on either the first timezone specified into the tibble or
+#' a user supplied timezone. This function is meant to used in a pipe with the \code{realtime_dd()} function. 
+#' 
+#' @param .data Tibble created by \code{realtime_dd}
+#' @param set_tz A timezone string in the format of \code{OlsonNames()}
+#' 
+#' @details Date from realtime_dd is supplied in UTC which is the easiest format to work with across timezones. 
+#' \code{realtime_add_local_datetime} adjusts local_datetime to a common timezone. This is most useful when all stations exist
+#' within the same timezone though it is possible.
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' realtime_dd(c("08MF005","02LA004")) %>%
+#'  realtime_add_local_datetime()
+#' }
+#' 
+#' @export
+realtime_add_local_datetime <- function(.data, set_tz = NULL){
+  
+  timezone_data <- dplyr::left_join(.data, tidyhydat::allstations[,c("STATION_NUMBER", "station_tz")], by = c("STATION_NUMBER"))
+  
+  tz_used <- timezone_data$station_tz[1]
+  
+  if(dplyr::n_distinct(timezone_data$station_tz) > 1) {
+    warning(paste0("Multiple timezones detected. All times in local_time have been adjusted to ", tz_used), call. = FALSE)
+  }
+  
+  if(!is.null(set_tz)) {
+    message(paste0("Using ", set_tz," timezones"))
+    tz_used <- set_tz 
+  }
+  
+  timezone_data$local_datetime <- lubridate::with_tz(timezone_data$Date, tz = tz_used)
+  
+  timezone_data$tz_used <- tz_used
+  
+  dplyr::select(timezone_data, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, 
+                .data$station_tz, .data$local_datetime, .data$tz_used, dplyr::everything())
 }
 
 
