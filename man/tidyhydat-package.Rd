@@ -51,6 +51,7 @@ Other contributors:
 \itemize{
   \item David Hutchinson \email{david.hutchinson@canada.ca} [contributor]
   \item Dewey Dunnington \email{dewey@fishandwhistle.net} [contributor]
+  \item Ryan Whaley \email{rdgwhaley@gmail.com} [contributor]
   \item Province of British Columbia [copyright holder]
   \item Luke Winslow (Reviewed for rOpenSci) [NA]
   \item Laura DeCicco (Reviewed for rOpenSci) [NA]

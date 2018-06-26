@@ -1,3 +1,8 @@
+tidyhydat 0.3.6
+=========================
+### MINOR IMPROVEMENT
+* `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues. 
+
 tidyhydat 0.3.5
 =========================
 ### IMPROVEMENT
