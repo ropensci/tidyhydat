@@ -94,7 +94,7 @@ hy_annual_instant_peaks <- function(station_number = NULL,
 
   ## Clean up and select only columns we need
   aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Datetime, .data$Date, 
-                       Time_zone = .data$tz, Parameter = .data$DATA_TYPE_EN,
+                       station_tz = .data$station_tz, Parameter = .data$DATA_TYPE_EN,
                        Value = .data$PEAK,  .data$PEAK_CODE, 
                        .data$PRECISION_CODE, Symbol = .data$SYMBOL_EN) 
 

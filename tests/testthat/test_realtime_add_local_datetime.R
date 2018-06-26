@@ -3,7 +3,7 @@ context("Testing addition of local datetime column")
 test_that("realtime_add_local_datetime add applies correct timezone",{
   skip_on_cran()
   col_added <- realtime_dd("08MF005") %>% realtime_add_local_datetime()
-  expect_equal(lubridate::tz(col_added$local_datetime), unique(col_added$tz))
+  expect_equal(lubridate::tz(col_added$local_datetime), unique(col_added$station_tz))
 })
 
 

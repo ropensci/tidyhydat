@@ -36,7 +36,7 @@
 #'   \item{Grade}{reserved for future use}
 #'   \item{Symbol}{reserved for future use}
 #'   \item{Code}{quality assurance/quality control flag for the discharge}
-#'   \item{tz}{Station timezone reference by tidyhydat::allstations$tz}
+#'   \item{station_tz}{Station timezone based on tidyhydat::allstations$station_tz}
 #' }
 #'
 #' @examples
@@ -172,11 +172,11 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #' @export
 realtime_add_local_datetime <- function(.data, set_tz = NULL){
   
-  timezone_data <- dplyr::left_join(.data, tidyhydat::allstations[,c("STATION_NUMBER", "tz")], by = c("STATION_NUMBER"))
+  timezone_data <- dplyr::left_join(.data, tidyhydat::allstations[,c("STATION_NUMBER", "station_tz")], by = c("STATION_NUMBER"))
   
-  tz_used <- timezone_data$tz[1]
+  tz_used <- timezone_data$station_tz[1]
   
-  if(dplyr::n_distinct(timezone_data$tz) > 1) {
+  if(dplyr::n_distinct(timezone_data$station_tz) > 1) {
     warning(paste0("Multiple timezones detected. All times in local_time have been adjusted to ", tz_used), call. = FALSE)
   }
   
@@ -190,7 +190,7 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL){
   timezone_data$tz_used <- tz_used
   
   dplyr::select(timezone_data, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, 
-                .data$tz, .data$local_datetime, .data$tz_used, dplyr::everything())
+                .data$station_tz, .data$local_datetime, .data$tz_used, dplyr::everything())
 }
 
 
