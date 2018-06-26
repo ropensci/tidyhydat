@@ -5,6 +5,7 @@ Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("a
     comment = c(ORCID = "0000-0002-9270-7884")),
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
     person("Dewey", "Dunnington", email = "dewey@fishandwhistle.net", role = "ctb"),
+    person("Ryan", "Whaley", email = "rdgwhaley@gmail.com", role = "ctb"),
     person("Province of British Columbia", role = "cph"),
     person("Luke", "Winslow", role = "rev", 
             comment = "Reviewed for rOpenSci"),

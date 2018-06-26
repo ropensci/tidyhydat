@@ -65,6 +65,10 @@ download_hydat <- function(dl_hydat_here = NULL) {
   ## Create the link to download HYDAT
   base_url <-
     "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
+  
+  # Run network check
+  network_check(base_url)
+  
   x <- httr::GET(base_url)
   httr::stop_for_status(x)
   new_hydat <- substr(gsub("^.*\\Hydat_sqlite3_", "",

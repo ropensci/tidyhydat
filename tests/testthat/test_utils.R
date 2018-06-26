@@ -25,6 +25,19 @@ test_that("hy_version returns a dataframe and works",{
 })
 
 
+test_that("downloading hydat fails behind a proxy server with informative error message",{
+  httr::set_config(httr::use_proxy(url = "http://google.com", port = 1234), override = TRUE)
+  base_url <-
+    "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
+  expect_error(network_check(base_url), message = paste0("Error: Could not connect to HYDAT source.", 
+                                                          "Check your connection settings.",
+                                                    "Try downloading HYDAT_sqlite3 from this url: ",
+                                                    "[http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/]",
+                                                    "and unzipping the saved file to this directory: ",
+                                                          hy_dir()))
+  httr::reset_config()
+
+
 test_that("pull_station_number fails when a dataframe doesn't contain a STATION_NUMBER column",{
   data(iris)
   expect_error(iris %>% pull_station_number())
