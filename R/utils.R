@@ -178,3 +178,29 @@ ask <- function(...) {
     utils::menu(choices) == which(choices == "Yes")
 }
 
+#' Convenience function to pull station number from tidyhydat functions
+#' 
+#' This function is a thin wrapper of \code{dplyr::pull} to avoid having to always type
+#' dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete. This can be used 
+#' with \code{realtime_} and \code{hy_} functions.
+#' 
+#' @param .data A table of data
+#' 
+#' @return A vector of station_numbers
+#' 
+#' @export
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' hy_stations(prov_terr_state_loc = "PE") %>%
+#'  pull_station_number() %>%
+#'  hy_annual_instant_peaks()
+#' }
+#' 
+pull_station_number <- function(.data){
+  
+  if(!("STATION_NUMBER" %in% colnames(.data))) stop("No STATION_NUMBER column present", call. = FALSE)
+  
+  dplyr::pull(.data, !!sym("STATION_NUMBER"))
+}
