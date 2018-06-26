@@ -1,6 +1,7 @@
 tidyhydat 0.3.5
 =========================
 ### IMPROVEMENT
+* New function: `realtime_add_local_datetime()` adds a local datetime column to `realtime_dd()` tibble (#64)
 
 ### BUG FIXES
 * Functions that have a `start_date` and `end_date` actually work with said argument (#98)
