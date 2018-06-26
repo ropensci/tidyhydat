@@ -79,13 +79,24 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::left_join(aip, tidyhydat::allstations, by = c("STATION_NUMBER"))
 
   ## Convert to dttm
-  aip <- dplyr::mutate(aip, Date = lubridate::ymd_hm(paste0(
-    .data$YEAR,"-",.data$MONTH,"-", .data$DAY, " ",.data$HOUR, ":", .data$MINUTE)), quiet = TRUE)
+  ## Manually convert to UTC
+  aip <- dplyr::mutate(aip, Datetime = lubridate::make_datetime(year = .data$YEAR, 
+                                                            month = .data$MONTH, 
+                                                            day = .data$DAY, 
+                                                            hour = .data$HOUR, 
+                                                            min = .data$MINUTE) - lubridate::dhours(.data$standard_offset)) 
+  
+  aip <- dplyr::mutate(aip, Date = lubridate::make_date(year = .data$YEAR, 
+                                                                month = .data$MONTH, 
+                                                                day = .data$DAY)) 
+  
+  
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Date, Time_zone = .data$tz, 
-                       .data$PEAK, .data$DATA_TYPE_EN, .data$PEAK_CODE, .data$PRECISION_CODE, .data$SYMBOL_EN) %>%
-    dplyr::rename(Parameter = .data$DATA_TYPE_EN, Symbol = .data$SYMBOL_EN, Value = .data$PEAK)
+  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Datetime, .data$Date, 
+                       Time_zone = .data$tz, Parameter = .data$DATA_TYPE_EN,
+                       Value = .data$PEAK,  .data$PEAK_CODE, 
+                       .data$PRECISION_CODE, Symbol = .data$SYMBOL_EN) 
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(aip$STATION_NUMBER))

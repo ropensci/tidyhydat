@@ -4,8 +4,10 @@ tidyhydat 0.3.5
 
 ### BUG FIXES
 * Functions that have a `start_date` and `end_date` actually work with said argument (#98)
+* `hy_annual_instant_peaks()` now parses the date correctly into UTC and includes a datetime and time zone column.  (#64)
 
 ### MINOR IMPROVEMENT
+
 
 tidyhydat 0.3.4
 =========================
