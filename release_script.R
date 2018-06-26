@@ -12,6 +12,8 @@
 
 ## Turn this into Rmd file
 
+## Update `allstations` data and documentation
+
 # Steps/Commands to run before a CRAN release -----------------------------
 
 ## Check if version is appropriate

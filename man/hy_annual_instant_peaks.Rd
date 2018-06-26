@@ -27,7 +27,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}}
 \item{end_year}{Last year of the returned record}
 }
 \value{
-A tibble of hy_annual_instant_peaks
+A tibble of hy_annual_instant_peaks.
 }
 \description{
 Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels. 
