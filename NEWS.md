@@ -1,8 +1,3 @@
-tidyhydat 0.3.6
-=========================
-### MINOR IMPROVEMENT
-* `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues. 
-
 tidyhydat 0.3.5
 =========================
 ### IMPROVEMENT
@@ -14,7 +9,7 @@ tidyhydat 0.3.5
 * `hy_annual_instant_peaks()` now parses the date correctly into UTC and includes a datetime and time zone column.  (#64)
 
 ### MINOR IMPROVEMENT
-
+* `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues. 
 
 tidyhydat 0.3.4
 =========================

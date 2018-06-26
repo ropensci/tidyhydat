@@ -36,6 +36,7 @@ test_that("downloading hydat fails behind a proxy server with informative error 
                                                     "and unzipping the saved file to this directory: ",
                                                           hy_dir()))
   httr::reset_config()
+})
 
 
 test_that("pull_station_number fails when a dataframe doesn't contain a STATION_NUMBER column",{
