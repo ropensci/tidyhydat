@@ -112,7 +112,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   
   realtime_link <- "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
 
-  url_check <- httr::GET(realtime_link)
+  url_check <- httr::GET(realtime_link,httr::user_agent("https://github.com/ropensci/tidyhydat"))
   
   ## Checking to make sure the link is valid
   if(httr::http_error(url_check) == "TRUE"){

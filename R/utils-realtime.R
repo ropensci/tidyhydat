@@ -59,7 +59,7 @@ single_realtime_station <- function(station_number) {
       "Flow_CODE"
     )
   
-  url_check <- httr::GET(infile[1])
+  url_check <- httr::GET(infile[1], httr::user_agent("https://github.com/ropensci/tidyhydat"))
   ## check if a valid url
   if (httr::http_error(url_check) == TRUE) {
     info(paste0("No hourly data found for ", STATION_NUMBER_SEL))
@@ -93,7 +93,7 @@ single_realtime_station <- function(station_number) {
   }
   
   # download daily file
-  url_check_d <- httr::GET(infile[2])
+  url_check_d <- httr::GET(infile[2], httr::user_agent("https://github.com/ropensci/tidyhydat"))
   ## check if a valid url
   if (httr::http_error(url_check_d) == TRUE) {
     info(paste0("No daily data found for ", STATION_NUMBER_SEL))
@@ -138,7 +138,7 @@ all_realtime_station <- function(PROV){
   base_url <- "http://dd.weather.gc.ca/hydrometric/csv/"
   prov_url <- paste0(base_url, PROV,"/daily/",PROV,"_daily_hydrometric.csv")
   
-  res <- httr::GET(prov_url, httr::progress("down"))
+  res <- httr::GET(prov_url, httr::progress("down"), httr::user_agent("https://github.com/ropensci/tidyhydat"))
   
   httr::stop_for_status(res)
   

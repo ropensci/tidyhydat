@@ -96,7 +96,8 @@ download_hydat <- function(dl_hydat_here = NULL) {
   #if(!dir.exists(dirname(tmp))) dir.create(dirname(tmp))
   
   ## Download the zip file
-  res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"))
+  res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
+                   httr::user_agent("https://github.com/ropensci/tidyhydat"))
   on.exit(file.remove(tmp))
   httr::stop_for_status(res)
   
