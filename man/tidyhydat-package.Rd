@@ -7,8 +7,8 @@
 \title{tidyhydat: Extract and Tidy Canadian 'Hydrometric' Data}
 \description{
 Provides functions to access historical and real-time national 'hydrometric'
-data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
-<http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
+    data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
+    <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 }
 \references{
 To download the latest version of hydat please:
@@ -53,8 +53,8 @@ Other contributors:
   \item Dewey Dunnington \email{dewey@fishandwhistle.net} [contributor]
   \item Ryan Whaley \email{rdgwhaley@gmail.com} [contributor]
   \item Province of British Columbia [copyright holder]
-  \item Luke Winslow (Reviewed for rOpenSci) [NA]
-  \item Laura DeCicco (Reviewed for rOpenSci) [NA]
+  \item Luke Winslow (Reviewed for rOpenSci) [reviewer]
+  \item Laura DeCicco (Reviewed for rOpenSci) [reviewer]
 }
 
 }

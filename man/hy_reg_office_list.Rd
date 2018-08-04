@@ -49,3 +49,4 @@ Other HYDAT functions: \code{\link{hy_agency_list}},
   \code{\link{hy_stn_op_schedule}},
   \code{\link{hy_stn_regulation}}, \code{\link{hy_version}}
 }
+\concept{HYDAT functions}

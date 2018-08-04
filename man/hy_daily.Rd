@@ -15,8 +15,8 @@
 HYDAT
 }
 \usage{
-hy_daily(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE,
-  hydat_path = NULL, ...)
+hy_daily(station_number = NULL, prov_terr_state_loc = NULL,
+  quiet = TRUE, hydat_path = NULL, ...)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
@@ -70,3 +70,4 @@ Other HYDAT functions: \code{\link{hy_agency_list}},
   \code{\link{hy_stn_op_schedule}},
   \code{\link{hy_stn_regulation}}, \code{\link{hy_version}}
 }
+\concept{HYDAT functions}

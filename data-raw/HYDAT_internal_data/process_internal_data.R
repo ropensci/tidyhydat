@@ -2,12 +2,8 @@ library(dbplyr)
 library(devtools)
 library(tidyverse)
 library(lutz)
-##dont forget load_all()
 
-##param_id
-
-
-
+load_all()
 
 #' A tibble of all Canadian Stations stations and their names.
 allstations <- realtime_stations() %>%
