@@ -183,7 +183,12 @@ hy_stn_data_range <- function(station_number = NULL,
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_RANGE")
   stn_data_range <- dplyr::filter(stn_data_range, !!sym_STATION_NUMBER %in% stns)
     
-  dplyr::collect(stn_data_range)
+  stn_data_range <- dplyr::collect(stn_data_range)
+  
+  stn_data_range[stn_data_range$SED_DATA_TYPE == "NA",]$SED_DATA_TYPE <- NA_character_
+  
+  return(stn_data_range)
+
   }
 
 #' Extract station data collection from HYDAT database

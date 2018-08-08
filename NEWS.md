@@ -7,9 +7,10 @@ tidyhydat 0.3.5
 ### BUG FIXES
 * Functions that have a `start_date` and `end_date` actually work with said argument (#98)
 * `hy_annual_instant_peaks()` now parses the date correctly into UTC and includes a datetime and time zone column.  (#64)
+* `hy_stn_data_range()` now returns actual `NA`'s rather than string NA's (#97)
 
 ### MINOR IMPROVEMENT
-* `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues. 
+* `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues (@rywhale, #101). 
 
 tidyhydat 0.3.4
 =========================
