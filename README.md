@@ -3,21 +3,22 @@
 
 # tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
 
-<a id="devex-badge" rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="http://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a>
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat)
-[![CRAN
-Downloads](http://cranlogs.r-pkg.org/badges/grand-total/tidyhydat)](https://CRAN.R-project.org/package=tidyhydat)
+[![dev](https://assets.bcdevexchange.org/images/badges/delivery.svg)](https://github.com/BCDevExchange/assets/blob/master/README.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Travis-CI Build
 Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat)
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
+
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https://CRAN.R-project.org/package=tidyhydat)
+[![cran
+checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.rstudio.com/web/checks/check_results_tidyhydat.html)
+
 [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
 [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
-
-</div>
-
- 
 
 ## Project Status
 
@@ -25,9 +26,7 @@ This package is maintained by the Knowledge Management Branch of the
 [British Columbia Ministry of Environment and Climate Change
 Strategy](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/environment-climate-change).
 
-## What does it do?
-
-Here is a summary of what `tidyhydat` does:
+## What does `tidyhydat` do?
 
   - Provides functions (`hy_*`) that access hydrometric data from the
     HYDAT database, a national archive of Canadian hydrometric data and
@@ -54,8 +53,8 @@ To install the development version of the `tidyhydat` package, you need
 to install the `remotes` package then the `tidyhydat` package
 
 ``` r
-install.packages("remotes")
-remotes::install_github("ropensci/tidyhydat")
+if(!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("ropensci/tidyhydat")
 ```
 
 ## Usage
@@ -63,13 +62,10 @@ remotes::install_github("ropensci/tidyhydat")
 A more thorough vignette can be found on the `tidyhydat` [CRAN
 page](https://cran.r-project.org/web/packages/tidyhydat/vignettes/tidyhydat_an_introduction.html).
 
-To load the package you need to use the `library()` function. When you
-install `tidyhydat`, several other packages will be installed as well.
-One of those packages, `dplyr`, is useful for data manipulations and is
-used regularly here. Even though `dplyr` is installed alongside
-`tidyhydat`, it is helpful to load it by itself as there are many useful
-functions contained within `dplyr`. A helpful `dplyr` tutorial can be
-found
+When you install `tidyhydat`, several other packages will be installed
+as well. One of those packages, `dplyr`, is useful for data
+manipulations and is used regularly here. To use `dplyr`, it is required
+to be loaded by itself. A helpful `dplyr` tutorial can be found
 [here](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
 ``` r
@@ -88,19 +84,21 @@ find the database. Conveniently `tidyhydat` does all this for you via:
 download_hydat()
 ```
 
-This downloads the most recent version of HYDAT and then saves it in a
-location on your computer where `tidyhydat`’s function will look for it.
-Do be patient though as this takes a long time\! To see where HYDAT was
-saved you can run `hy_dir()`. Now that you have HYDAT downloaded and
-ready to go, you are all set to begin some hydrologic analysis.
+This downloads (with your permission) the most recent version of HYDAT
+and then saves it in a location on your computer where `tidyhydat`’s
+function will look for it. Do be patient though as this takes a long
+time\! To see where HYDAT was saved you can run `hy_dir()`. Now that you
+have HYDAT downloaded and ready to go, you are all set to begin looking
+at Canadian hydrometric data.
 
 Most functions in `tidyhydat` follow a common argument structure. We
 will use the `hy_daily_flows()` function for the following examples
 though the same approach applies to most functions in the package (See
-`ls("package:tidyhydat")` for a list of exported objects). Much of the
-functionality of `tidyhydat` originates with the choice of hydrometric
-stations that you are interested in. A user will often find themselves
-creating vectors of station numbers. There are several ways to do this.
+`help(package = "tidyhydat")` for a list of exported objects). Much of
+the functionality of `tidyhydat` originates with the choice of
+hydrometric stations that you are interested in. A user will often find
+themselves creating vectors of station numbers. There are several ways
+to do this.
 
 The simplest case is if you would like to extract only station. You can
 supply this directly to the `station_number` argument:
@@ -173,7 +171,7 @@ search_stn_name("canada") %>%
 #> No start and end dates specified. All dates available will be returned.
 #> The following station(s) were not retrieved: 07DB006
 #> Check station number typos or if it is a valid station in the network
-#> # A tibble: 76,679 x 5
+#> # A tibble: 77,044 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -186,7 +184,7 @@ search_stn_name("canada") %>%
 #>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 #>  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 #> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-#> # ... with 76,669 more rows
+#> # ... with 77,034 more rows
 ```
 
 These example illustrate a few ways that an vector can be generated and
@@ -243,7 +241,7 @@ running:
 citation("tidyhydat")
 ```
 
-[![ropensci\_footer](tools/readme/ropensci_footer.png)](https://ropensci.org)
+[![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
 
 ## License
 
