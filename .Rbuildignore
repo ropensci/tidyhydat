@@ -14,7 +14,7 @@
 .github
 tidyhydat_with_spatial.Rmd
 Rplots.pdf
-release_script.R
+release_process.md
 
 ^presentations$
 tidyhydat_intro.Rmd

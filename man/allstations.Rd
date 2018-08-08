@@ -24,7 +24,7 @@ HYDAT, Meteorological Service of Canada datamart
 allstations
 }
 \description{
-A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. Only up to date as of 2017-10-26. Populated by both 
-realtime and historical data from HYDAT.
+A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. 
+Populated by both realtime and historical data from HYDAT.
 }
 \keyword{datasets}
