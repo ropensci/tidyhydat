@@ -44,7 +44,7 @@ test_that("hy_stn_op_schedule returns a dataframe", {
 
 
 test_that("hy_stn_data_range contains properly coded NA's",{
-  expect_true(is.na(hy_stn_data_range()$SED_DATA_TYPE[1]))
+  expect_true(is.na(hy_stn_data_range(hydat_path = hy_test_db())$SED_DATA_TYPE[1]))
 })
 
 ##Not testing STN_DATUM_UNRELALTED because there are so few stations in the database
