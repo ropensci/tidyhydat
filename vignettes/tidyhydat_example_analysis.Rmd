@@ -136,7 +136,7 @@ library(ggplot2)
 library(lubridate)
 ```
 
-The pipe below finds the active station that has realtime data in the [Reference Hydrometric Basin Network](https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/hydrometric-program-national-partnership/network.html) (RHBN) in the territory of Nunavut that has the longest record then grabs all the daily flow information:
+The pipe below finds the active station that has realtime data in the [Reference Hydrometric Basin Network](http://www.ec.gc.ca/rhc-wsc/default.asp?lang%20=En&n=E228B6E8-1) (RHBN) in the territory of Nunavut that has the longest record then grabs all the daily flow information:
   
 ```{r}
 nunavut_stn_flows <- hy_stations() %>%

@@ -16,7 +16,7 @@
 #'  \itemize{
 #'   \item use the \code{download_hydat()} function.
 #'   \item If that fails you can download directly from this link:
-#'   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/Hydat_sqlite3_20180417.zip}
+#'   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
 #'   }
 #' 
 #' For more information on tidy data please see
