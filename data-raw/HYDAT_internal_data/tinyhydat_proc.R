@@ -32,9 +32,10 @@ table_vector <- c("ANNUAL_INSTANT_PEAKS", "ANNUAL_STATISTICS",
 list_of_small_tables <- table_vector %>%
   map(~tbl(src = hydat_con, .) %>%
         filter(STATION_NUMBER %in% c("08MF005","08NM083","08NE102","08AA003",
-                                     "05AA008")) %>%
+                                     "05AA008","01AP003")) %>%
         collect()
-      )
+      ) %>% 
+  set_names(table_vector)
 
 ## All tables without STATION_NUMBER
 no_stn_table_vector <- all_tables[!all_tables %in% table_vector]
@@ -43,7 +44,8 @@ list_of_no_stn_tables <- no_stn_table_vector %>%
   map(~tbl(src = hydat_con, .) %>%
         head(50) %>%
         collect()
-  )
+  ) %>% 
+  set_names(no_stn_table_vector)
 
 SED_DATA_TYPES <- dplyr::tbl(hydat_con, "SED_DATA_TYPES") %>% collect()
 
@@ -78,4 +80,6 @@ testdb <- DBI::dbConnect(RSQLite::SQLite(), db_path)
 
 ## Check to make sure all the tables from HYDAT are in the test db
 all(DBI::dbListTables(testdb) %in% all_tables) == TRUE
+
+DBI::dbDisconnect(con)
 
