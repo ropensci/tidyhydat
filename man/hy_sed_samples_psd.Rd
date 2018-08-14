@@ -7,7 +7,7 @@
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{SED_DATA_TYPE_EN}{Contains the type of sampling method used in collecting sediment for a station}
-  \item{DATE}{Contains the time to the nearest minute of when the sample was taken}
+  \item{Date}{Contains the time to the nearest minute of when the sample was taken}
   \item{PARTICLE_SIZE}{Particle size (mm)}
   \item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
 }}
