@@ -6,10 +6,10 @@
 \format{A tibble with 8 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{YEAR}{Year of record.}
-  \item{MONTH}{Numeric month value}
-  \item{FULL_MONTH}{Logical value is there is full record from MONTH}
-  \item{NO_DAYS}{Number of days in that month}
+  \item{Year}{Year of record.}
+  \item{Month}{Numeric month value}
+  \item{Full_Month}{Logical value is there is full record from Month}
+  \item{No_days}{Number of days in that month}
   \item{Sum_stat}{Summary statistic being used.} 
   \item{Value}{Value of the measurement in mg/l.}
   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 

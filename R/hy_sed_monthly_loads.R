@@ -25,10 +25,10 @@
 #' @format A tibble with 8 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{YEAR}{Year of record.}
-#'   \item{MONTH}{Numeric month value}
-#'   \item{FULL_MONTH}{Logical value is there is full record from MONTH}
-#'   \item{NO_DAYS}{Number of days in that month}
+#'   \item{Year}{Year of record.}
+#'   \item{Month}{Numeric month value}
+#'   \item{Full_Month}{Logical value is there is full record from Month}
+#'   \item{No_days}{Number of days in that month}
 #'   \item{Sum_stat}{Summary statistic being used.} 
 #'   \item{Value}{Value of the measurement in tonnes.}
 #'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
@@ -66,7 +66,7 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   ## Creating rlang symbols
-  sym_YEAR <- sym("YEAR")
+  sym_YEAR <- sym("Year")
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
   sym_variable <- sym("variable")
   sym_temp <- sym("temp")
@@ -89,18 +89,18 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   {stop("This station is not present in HYDAT")}
   
   ## Need to rename columns for gather
-  colnames(sed_monthly_loads) <- c("STATION_NUMBER","YEAR","MONTH", "FULL_MONTH", "NO_DAYS","MEAN_Value",
+  colnames(sed_monthly_loads) <- c("STATION_NUMBER","Year","Month", "Full_Month", "No_days","MEAN_Value",
                            "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
   
   
 
-  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  sed_monthly_loads <- tidyr::gather(sed_monthly_loads, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$No_days))
   sed_monthly_loads <- tidyr::separate(sed_monthly_loads, !!sym_variable, into = c("Sum_stat","temp2"), sep = "_")
 
   sed_monthly_loads <- tidyr::spread(sed_monthly_loads, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY))
+  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = paste0(.data$Year, "-", .data$Month, "-", .data$DAY))
   
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
   sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
@@ -111,7 +111,7 @@ hy_sed_monthly_loads <- function(station_number = NULL,
   if (!dates_null[["end_is_null"]]) sed_monthly_loads <- dplyr::filter(sed_monthly_loads, .data$Date_occurred <= end_date)
 
   sed_monthly_loads <- dplyr::select(sed_monthly_loads, -.data$DAY)
-  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, FULL_MONTH = .data$FULL_MONTH == 1)
+  sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Full_Month = .data$Full_Month == 1)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(sed_monthly_loads$STATION_NUMBER))
