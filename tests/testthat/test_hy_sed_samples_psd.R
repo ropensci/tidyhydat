@@ -50,10 +50,10 @@ test_that("functions that accept a date argument return data when specifying onl
   date_string <- "1969-04-17"
   
   open_date_start <- hy_sed_samples_psd(station_number = "08MF005", hydat_path = hy_test_db(), start_date = date_string)
-  expect_identical(min(as.Date(open_date_start$DATE)), as.Date(date_string))
+  expect_identical(min(as.Date(open_date_start$Date)), as.Date(date_string))
   
   open_date_end <- hy_sed_samples_psd(station_number = "08MF005", hydat_path = hy_test_db(), end_date = date_string)
-  expect_identical(max(as.Date(open_date_end$DATE)), as.Date(date_string))
+  expect_identical(max(as.Date(open_date_end$Date)), as.Date(date_string))
 })
 
 test_that("hy_sed_samples_psd produces an error when a province is not specified correctly",

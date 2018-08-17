@@ -190,7 +190,7 @@ hy_stn_data_range <- function(station_number = NULL,
   
   stn_data_range[stn_data_range$SED_DATA_TYPE == "NA",]$SED_DATA_TYPE <- NA_character_
   
-  dplyr::rename(stn_data_range, Year_from = YEAR_FROM, Year_to = YEAR_TO)
+  dplyr::rename(stn_data_range, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)
 
   }
 
