@@ -25,7 +25,7 @@
 #' @format A tibble with 5 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{SED_DATA_TYPE_EN}{Contains the type of sampling method used in collecting sediment for a station}
+#'   \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
 #'   \item{Date}{Contains the time to the nearest minute of when the sample was taken}
 #'   \item{PARTICLE_SIZE}{Particle size (mm)}
 #'   \item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
@@ -81,8 +81,9 @@ hy_sed_samples_psd <- function(station_number = NULL,
   if (!dates_null[["end_is_null"]]) sed_samples_psd <- dplyr::filter(sed_samples_psd, !!sym("date_no_time") <= as.Date(end_date))
   
   
-  sed_samples_psd <- dplyr::select(sed_samples_psd, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, .data$DATE,
-                                   .data$PARTICLE_SIZE, .data$PERCENT)
+  sed_samples_psd <- dplyr::select(sed_samples_psd, .data$STATION_NUMBER, 
+                                   SED_DATA_TYPE = .data$SED_DATA_TYPE_EN, 
+                                   Date = .data$DATE, .data$PARTICLE_SIZE, .data$PERCENT)
   
   
   ## What stations were missed?

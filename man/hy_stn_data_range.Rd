@@ -8,8 +8,8 @@
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{DATA_TYPE}{Code for the type of data}
   \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
-  \item{YEAR_FROM}{First year of use}
-  \item{YEAR_TO}{Last year of use}
+  \item{Year_from}{First year of use}
+  \item{Year_to}{Last year of use}
   \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
 }}
 \source{

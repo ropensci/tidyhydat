@@ -6,8 +6,8 @@
 \format{A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{YEAR_FROM}{First year of use}
-  \item{YEAR_TO}{Last year of use}
+  \item{Year_from}{First year of use}
+  \item{Year_to}{Last year of use}
   \item{REGULATED}{logical}
 }}
 \source{

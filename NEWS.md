@@ -1,12 +1,11 @@
 tidyhydat 0.3.5
 =========================
-### BREAKING CHANGES
-* In effort to standardize the column names of the data outputs, column names for `hy_monthly_flows`, `hy_monthly_levels`, `hy_sed_monthly_loads`, `hy_sed_monthly_suscon`, `hy_sed_samples`
-were changed to reflect other outputs. 
-
 ### IMPROVEMENT
 * New function: `realtime_add_local_datetime()` adds a local datetime column to `realtime_dd()` tibble (#64)
-* New function: `pull_station_number` wraps `pull(STATION_NUMBER)` for convenience
+* New function: `pull_station_number()` wraps `pull(STATION_NUMBER)` for convenience
+
+### MINOR BREAKING CHANGES
+* In effort to standardize, the case of column names for some rarely used function outputs were changed to reflect more commonly used function outputs. This may impact some workflows where columns are referenced by names (#99).   
 
 ### BUG FIXES
 * Functions that have a `start_date` and `end_date` actually work with said argument (#98)
