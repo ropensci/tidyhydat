@@ -2,7 +2,7 @@
 % Please edit documentation in R/hy.R
 \name{hy_dir}
 \alias{hy_dir}
-\title{Wrapped on rappdirs::user_data_dir("tidyhydat")}
+\title{Output OS-independent path to the HYDAT sqlite database}
 \usage{
 hy_dir(...)
 }
@@ -10,7 +10,7 @@ hy_dir(...)
 \item{...}{arguments potentially passed to \code{rappdirs::user_data_dir}}
 }
 \description{
-A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+Provides the download location for \link{download_hydat} in an OS independent manner.
 }
 \examples{
 \dontrun{

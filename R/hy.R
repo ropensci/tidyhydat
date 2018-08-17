@@ -300,9 +300,9 @@ hy_stn_op_schedule <- function(station_number = NULL,
                 Month_from = .data$MONTH_FROM, Month_to = .data$MONTH_TO)
 }
 
-#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
+#' @title Output OS-independent path to the HYDAT sqlite database
 #'
-#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+#' @description Provides the download location for \link{download_hydat} in an OS independent manner.
 #' 
 #' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
 #' 
