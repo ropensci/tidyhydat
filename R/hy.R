@@ -137,7 +137,7 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
   stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
   
-  dplyr::rename(stn_datum_unrelated, Year_from = YEAR_FROM, Year_to = YEAR_TO)  
+  dplyr::rename(stn_datum_unrelated, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)  
   
   
 }
