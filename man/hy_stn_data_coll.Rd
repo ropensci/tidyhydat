@@ -6,12 +6,12 @@
 \format{A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATA_TYPE_EN}{The type of data}
-  \item{YEAR_FROM}{First year of use}
-  \item{YEAR_TO}{Last year of use}
-  \item{MEASUREMENT_CODE_EN}{Either 1) the sampling method used in the collection of 
-  sediment data or 2) the type of the gauge used in the collection of the hydrometric data}
-  \item{OPERATION_CODE_EN}{The schedule of station operation 
+  \item{DATA_TYPE}{The type of data}
+  \item{Year_from}{First year of use}
+  \item{Year_to}{Last year of use}
+  \item{MEASUREMENT}{The sampling method used in the collection of 
+  sediment data or the type of the gauge used in the collection of the hydrometric data}
+  \item{OPERATION}{The schedule of station operation 
   for the collection of sediment or hydrometric data}
 }}
 \source{

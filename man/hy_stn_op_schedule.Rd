@@ -6,10 +6,10 @@
 \format{A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATA_TYPE_EN}{The type of data}
-  \item{YEAR}{Year of operation schedule}
-  \item{MONTH_FROM}{First month of use}
-  \item{MONTH_TO}{Last month of use}
+  \item{DATA_TYPE}{The type of data}
+  \item{Year}{Year of operation schedule}
+  \item{Month_from}{First month of use}
+  \item{Month_to}{Last month of use}
 }}
 \source{
 HYDAT

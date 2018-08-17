@@ -26,7 +26,7 @@
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
-#'   \item{DATE}{Contains the time to the nearest minute of when the sample was taken}
+#'   \item{Date}{Contains the time to the nearest minute of when the sample was taken}
 #'   \item{SAMPLE_REMARK_CODE}{Descriptive Sediment Sample Remark in English}
 #'   \item{TIME_SYMBOL}{An "E" symbol means the time is an estimate only}
 #'   \item{FLOW}{Contains the instantaneous discharge in cubic metres per second at the time the sample was taken}
@@ -103,11 +103,13 @@ hy_sed_samples <- function(station_number = NULL,
   
   
   sed_samples <- dplyr::select(
-    sed_samples, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, .data$DATE, .data$SAMPLE_REMARK_EN, .data$TIME_SYMBOL,
+    sed_samples, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, Date = .data$DATE, .data$SAMPLE_REMARK_EN, .data$TIME_SYMBOL,
     .data$FLOW, .data$SYMBOL_EN, .data$SAMPLER_TYPE, .data$SAMPLING_VERTICAL_LOCATION, .data$SAMPLING_VERTICAL_EN,
     .data$TEMPERATURE, .data$CONCENTRATION, .data$CONCENTRATION_EN, .data$SV_DEPTH2
   )
-  
+
+  ## Remove _EN from column names
+  colnames(sed_samples) <- gsub("_EN","", names(sed_samples))
   
   ## What stations were missed?
   differ_msg(unique(stns), unique(sed_samples$STATION_NUMBER))

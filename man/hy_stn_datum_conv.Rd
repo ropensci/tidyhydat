@@ -6,8 +6,8 @@
 \format{A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATUM_EN_FROM}{Identifying a datum from which water level is being converted}
-  \item{DATUM_EN_TO}{Identifying a datum to which water level is being converted}
+  \item{DATUM_FROM}{Identifying a datum from which water level is being converted}
+  \item{DATUM_TO}{Identifying a datum to which water level is being converted}
   \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to 
   one datum to obtain water levels referred to another datum}
 }}

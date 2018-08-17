@@ -25,10 +25,10 @@
 #' @format A tibble with 8 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{YEAR}{Year of record.}
-#'   \item{MONTH}{Numeric month value}
-#'   \item{FULL_MONTH}{Logical value is there is full record from MONTH}
-#'   \item{NO_DAYS}{Number of days in that month}
+#'   \item{Year}{Year of record.}
+#'   \item{Month}{Numeric month value}
+#'   \item{Full_month}{Logical value is there is full record from Month}
+#'   \item{No_days}{Number of days in that month}
 #'   \item{Sum_stat}{Summary statistic being used.} 
 #'   \item{Value}{Value of the measurement in metres.}
 #'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
@@ -67,7 +67,7 @@ hy_monthly_levels <- function(station_number = NULL,
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   ## Creating rlang symbols
-  sym_YEAR <- sym("YEAR")
+  sym_YEAR <- sym("Year")
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
   sym_variable <- sym("variable")
   sym_temp <- sym("temp")
@@ -90,18 +90,18 @@ hy_monthly_levels <- function(station_number = NULL,
   {stop("This station is not present in HYDAT")}
   
   ## Need to rename columns for gather
-  colnames(monthly_levels) <- c("STATION_NUMBER","YEAR","MONTH", "PRECISION_CODE", "FULL_MONTH", "NO_DAYS", "MEAN_Value",
+  colnames(monthly_levels) <- c("STATION_NUMBER","Year","Month", "PRECISION_CODE", "Full_month", "No_days", "MEAN_Value",
                            "TOTAL_Value", "MIN_DAY","MIN_Value", "MAX_DAY","MAX_Value")
   
   
 
-  monthly_levels <- tidyr::gather(monthly_levels, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
+  monthly_levels <- tidyr::gather(monthly_levels, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$No_days))
   monthly_levels <- tidyr::separate(monthly_levels, !!sym_variable, into = c("Sum_stat","temp2"), sep = "_")
 
   monthly_levels <- tidyr::spread(monthly_levels, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY))
+  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = paste0(.data$Year, "-", .data$Month, "-", .data$DAY))
   
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
   monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
@@ -112,7 +112,7 @@ hy_monthly_levels <- function(station_number = NULL,
   if (!dates_null[["end_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, .data$Date_occurred <= end_date)
 
   monthly_levels <- dplyr::select(monthly_levels, -.data$DAY)
-  monthly_levels <- dplyr::mutate(monthly_levels, FULL_MONTH = .data$FULL_MONTH == 1)
+  monthly_levels <- dplyr::mutate(monthly_levels, Full_month = .data$Full_month == 1)
 
   ## What stations were missed?
   differ_msg(unique(stns), unique(monthly_levels$STATION_NUMBER))

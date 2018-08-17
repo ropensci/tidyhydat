@@ -8,9 +8,9 @@
 #' @format A tibble with 4 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{REMARK_TYPE_EN}{Type of Remark}
-#'   \item{YEAR}{Year of the remark}
-#'   \item{REMARK_EN}{Remark}
+#'   \item{REMARK_TYPE}{Type of Remark}
+#'   \item{Year}{Year of the remark}
+#'   \item{REMARK}{Remark}
 #' }
 #'
 #' @export
@@ -39,7 +39,8 @@ hy_stn_remarks <- function(station_number = NULL,
   stn_remarks <- dplyr::tbl(hydat_con, "STN_REMARKS") 
   stn_remarks <- dplyr::filter(stn_remarks, !!sym_STATION_NUMBER %in% stns)
   stn_remarks <- dplyr::left_join(stn_remarks, dplyr::tbl(hydat_con, "STN_REMARK_CODES"), by = c("REMARK_TYPE_CODE"))
-  stn_remarks <- dplyr::select(stn_remarks, .data$STATION_NUMBER, .data$REMARK_TYPE_EN, .data$YEAR, .data$REMARK_EN)
+  stn_remarks <- dplyr::select(stn_remarks, .data$STATION_NUMBER, 
+                               REMARK_TYPE = .data$REMARK_TYPE_EN, Year = .data$YEAR, REMARK = .data$REMARK_EN)
   
   dplyr::collect(stn_remarks)
 }
@@ -54,8 +55,8 @@ hy_stn_remarks <- function(station_number = NULL,
 #' @format A tibble with 4 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATUM_EN_FROM}{Identifying a datum from which water level is being converted}
-#'   \item{DATUM_EN_TO}{Identifying a datum to which water level is being converted}
+#'   \item{DATUM_FROM}{Identifying a datum from which water level is being converted}
+#'   \item{DATUM_TO}{Identifying a datum to which water level is being converted}
 #'   \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to 
 #'   one datum to obtain water levels referred to another datum}
 #' }
@@ -87,7 +88,9 @@ hy_stn_datum_conv <- function(station_number = NULL,
   stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_FROM = !!sym_DATUM_EN)
   stn_datum_conversion <- dplyr::left_join(stn_datum_conversion, dplyr::tbl(hydat_con, "DATUM_LIST"), by = c("DATUM_ID_TO" = "DATUM_ID"))
   stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_TO = !!sym_DATUM_EN)
-  stn_datum_conversion <- dplyr::select(stn_datum_conversion, .data$STATION_NUMBER, .data$DATUM_EN_FROM, .data$DATUM_EN_TO, .data$CONVERSION_FACTOR)
+  stn_datum_conversion <- dplyr::select(stn_datum_conversion, .data$STATION_NUMBER, 
+                                        DATUM_FROM = .data$DATUM_EN_FROM, 
+                                        DATUM_TO = .data$DATUM_EN_TO, .data$CONVERSION_FACTOR)
   
   dplyr::collect(stn_datum_conversion)
 }
@@ -103,8 +106,8 @@ hy_stn_datum_conv <- function(station_number = NULL,
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{DATUM_ID}{Unique code identifying a datum}
-#'   \item{YEAR_FROM}{First year of use}
-#'   \item{YEAR_TO}{Last year of use}
+#'   \item{Year_from}{First year of use}
+#'   \item{Year_to}{Last year of use}
 #' } 
 #'
 #' @export
@@ -134,7 +137,7 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
   stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
   
-  stn_datum_unrelated  
+  dplyr::rename(stn_datum_unrelated, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)  
   
   
 }
@@ -151,8 +154,8 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{DATA_TYPE}{Code for the type of data}
 #'   \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
-#'   \item{YEAR_FROM}{First year of use}
-#'   \item{YEAR_TO}{Last year of use}
+#'   \item{Year_from}{First year of use}
+#'   \item{Year_to}{Last year of use}
 #'   \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
 #' }
 #'
@@ -187,7 +190,7 @@ hy_stn_data_range <- function(station_number = NULL,
   
   stn_data_range[stn_data_range$SED_DATA_TYPE == "NA",]$SED_DATA_TYPE <- NA_character_
   
-  return(stn_data_range)
+  dplyr::rename(stn_data_range, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)
 
   }
 
@@ -201,12 +204,12 @@ hy_stn_data_range <- function(station_number = NULL,
 #' @format A tibble with 6 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATA_TYPE_EN}{The type of data}
-#'   \item{YEAR_FROM}{First year of use}
-#'   \item{YEAR_TO}{Last year of use}
-#'   \item{MEASUREMENT_CODE_EN}{Either 1) the sampling method used in the collection of 
-#'   sediment data or 2) the type of the gauge used in the collection of the hydrometric data}
-#'   \item{OPERATION_CODE_EN}{The schedule of station operation 
+#'   \item{DATA_TYPE}{The type of data}
+#'   \item{Year_from}{First year of use}
+#'   \item{Year_to}{Last year of use}
+#'   \item{MEASUREMENT}{The sampling method used in the collection of 
+#'   sediment data or the type of the gauge used in the collection of the hydrometric data}
+#'   \item{OPERATION}{The schedule of station operation 
 #'   for the collection of sediment or hydrometric data}
 #' }
 #'
@@ -240,9 +243,10 @@ hy_stn_data_coll <- function(station_number = NULL,
   stn_data_coll <- dplyr::collect(stn_data_coll)
   
   stn_data_coll <- dplyr::left_join(stn_data_coll, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
-  stn_data_coll <- dplyr::select(stn_data_coll, .data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR_FROM, .data$YEAR_TO, 
-                  .data$MEASUREMENT_EN, .data$OPERATION_EN)
-  dplyr::arrange(stn_data_coll, .data$STATION_NUMBER, .data$YEAR_FROM)
+  stn_data_coll <- dplyr::select(stn_data_coll, .data$STATION_NUMBER, DATA_TYPE = .data$DATA_TYPE_EN, 
+                                 Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO, 
+                                 MEASUREMENT = .data$MEASUREMENT_EN, OPERATION = .data$OPERATION_EN)
+  dplyr::arrange(stn_data_coll, .data$STATION_NUMBER, .data$Year_from)
 }
 
 
@@ -256,10 +260,10 @@ hy_stn_data_coll <- function(station_number = NULL,
 #' @format A tibble with 6 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATA_TYPE_EN}{The type of data}
-#'   \item{YEAR}{Year of operation schedule}
-#'   \item{MONTH_FROM}{First month of use}
-#'   \item{MONTH_TO}{Last month of use}
+#'   \item{DATA_TYPE}{The type of data}
+#'   \item{Year}{Year of operation schedule}
+#'   \item{Month_from}{First month of use}
+#'   \item{Month_to}{Last month of use}
 #' }
 #'
 #' @family HYDAT functions
@@ -291,12 +295,14 @@ hy_stn_op_schedule <- function(station_number = NULL,
   stn_operation_schedule <- dplyr::collect(stn_operation_schedule)
   stn_operation_schedule <- dplyr::left_join(stn_operation_schedule, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
   
-  dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, .data$DATA_TYPE_EN, .data$YEAR, .data$MONTH_FROM, .data$MONTH_TO)
+  dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, 
+                DATA_TYPE = .data$DATA_TYPE_EN, Year =.data$YEAR, 
+                Month_from = .data$MONTH_FROM, Month_to = .data$MONTH_TO)
 }
 
-#' @title Wrapped on rappdirs::user_data_dir("tidyhydat")
+#' @title Output OS-independent path to the HYDAT sqlite database
 #'
-#' @description A function to avoid having to always type rappdirs::user_data_dir("tidyhydat")
+#' @description Provides the download location for \link{download_hydat} in an OS independent manner.
 #' 
 #' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
 #' 
