@@ -30,7 +30,7 @@ check_on_macos()
 ## Run this in the console
 ```
 R CMD build tidyhydat
-R CMD check tidyhydat_0.3.4.9000.tar.gz --as-cran ## or whatever the package name is
+R CMD check tidyhydat_0.3.5.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## Documentation

@@ -1,6 +1,6 @@
 tidyhydat 0.3.5
 =========================
-### IMPROVEMENT
+### IMPROVEMENTS
 * New function: `realtime_add_local_datetime()` adds a local datetime column to `realtime_dd()` tibble (#64)
 * New function: `pull_station_number()` wraps `pull(STATION_NUMBER)` for convenience
 
