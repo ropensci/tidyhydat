@@ -4,7 +4,7 @@
 #'
 #' @inheritParams hy_stations
 #' @param hydat_con A database connection
-#'
+#' @noRd
 #' @keywords internal
 #'
 #'
