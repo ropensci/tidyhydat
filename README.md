@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
+# tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
 
 [![dev](https://assets.bcdevexchange.org/images/badges/delivery.svg)](https://github.com/BCDevExchange/assets/blob/master/README.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -139,10 +139,11 @@ PEI_stns <- hy_stations() %>%
 #> All station successfully retrieved
 
 PEI_stns
-#> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CD005"
+#> [1] "01CA003" "01CB002" "01CB004" "01CC002" "01CC005" "01CC010" "01CC011"
+#> [8] "01CD005"
 
 hy_daily(station_number = PEI_stns)
-#> # A tibble: 123,225 x 5
+#> # A tibble: 132,975 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -155,7 +156,7 @@ hy_daily(station_number = PEI_stns)
 #>  8 01CA003        1961-08-08 Flow         NA <NA>  
 #>  9 01CA003        1961-08-09 Flow         NA <NA>  
 #> 10 01CA003        1961-08-10 Flow         NA <NA>  
-#> # ... with 123,215 more rows
+#> # ... with 132,965 more rows
 ```
 
 We can also merge our station choice and data extraction into one
@@ -169,9 +170,8 @@ search_stn_name("canada") %>%
   pull_station_number() %>%
   hy_daily_flows()
 #> No start and end dates specified. All dates available will be returned.
-#> The following station(s) were not retrieved: 07DB006
-#> Check station number typos or if it is a valid station in the network
-#> # A tibble: 77,044 x 5
+#> All station successfully retrieved
+#> # A tibble: 78,507 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -184,7 +184,7 @@ search_stn_name("canada") %>%
 #>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 #>  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 #> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-#> # ... with 77,034 more rows
+#> # ... with 78,497 more rows
 ```
 
 These example illustrate a few ways that an vector can be generated and
@@ -214,7 +214,7 @@ data:
 realtime_plot("08LG006")
 ```
 
-![](tools/readme/README-unnamed-chunk-8-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
 
 ## Getting Help or Reporting an Issue
 

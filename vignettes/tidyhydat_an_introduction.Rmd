@@ -6,8 +6,7 @@ date: "`r Sys.Date()`"
 #  md_document:
 #    variant: markdown_github
 output:
-  html_vignette:
-     keep_md: true
+  html_vignette
 vignette: >
   %\VignetteIndexEntry{tidyhydat_an_introduction}
   %\VignetteEngine{knitr::rmarkdown}

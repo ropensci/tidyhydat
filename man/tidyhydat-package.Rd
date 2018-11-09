@@ -6,6 +6,8 @@
 \alias{tidyhydat-package}
 \title{tidyhydat: Extract and Tidy Canadian 'Hydrometric' Data}
 \description{
+\if{html}{\figure{logo.png}{options: align='right'}}
+
 Provides functions to access historical and real-time national 'hydrometric'
     data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
     <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
