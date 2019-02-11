@@ -1,5 +1,8 @@
-tidyhydat 0.3.5.9000
+tidyhydat 0.4.0
 =========================
+
+### Bug Fixes
+* `pull_station_number` now only returns unique values (#109)
 
 tidyhydat 0.3.5
 =========================
