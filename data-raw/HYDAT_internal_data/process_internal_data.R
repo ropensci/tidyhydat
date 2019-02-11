@@ -10,7 +10,10 @@ load_all()
 tz_offset <- function(tz) {
   t <- as.numeric(difftime(as.POSIXct("2016-01-01 00:00:00", tz = "UTC"),
                            as.POSIXct("2016-01-01 00:00:00", tz = tz), units = "hours"))
-  
+  t
+}
+
+create_olson <- function(t){
   if(t > 0) t <- paste0("Etc/GMT-", t)
   if(t <= 0) t <- paste0("Etc/GMT+", abs(t))
   t
@@ -23,15 +26,18 @@ allstations <- realtime_stations() %>%
   distinct(STATION_NUMBER, .keep_all = TRUE) %>%
   select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, HYD_STATUS, REAL_TIME, LATITUDE, LONGITUDE) %>% 
   mutate(station_tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate")) %>% 
-  mutate(OlsonName = map_chr(station_tz, ~ tz_offset(.x))) %>% 
+  mutate(standard_offset = map_dbl(station_tz, ~ tz_offset(.x))) %>% 
+  mutate(OlsonName = map_chr(standard_offset, ~create_olson(.x))) %>% 
   write_csv("./data-raw/HYDAT_internal_data/allstations.csv")
 
 ## Manually adding NL for now
 if(!all(unique(allstations$OlsonName) %in% c(OlsonNames(), "Etc/GMT+3.5"))){
   stop("Invalid OlsonNames generated", call. = FALSE)
+} else{
+  use_data(allstations, overwrite = TRUE)
 }
 
-use_data(allstations, overwrite = TRUE)
+
 
 ## Load up hydat connection
 ## Read in database
