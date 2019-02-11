@@ -13,6 +13,11 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(station_number) && !is.null(prov_terr_state_loc)) {
     stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
   }
+  
+  if(!is.null(prov_terr_state_loc) && prov_terr_state_loc == "CA"){
+    prov_terr_state_loc <- c("QC", "NB", "PE", "NS", "ON", "NL", "MB", 
+                             "AB", "SK", "NU", "NT", "BC", "YT")
+  }
 
   
   ### Is station_number 7 characters?
@@ -44,9 +49,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(prov_terr_state_loc)){
     prov_terr_state_loc <- toupper(prov_terr_state_loc)
     ## Only possible values for prov_terr_state_loc
-    stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
-      dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
+    stn_option <- unique(allstations$PROV_TERR_STATE_LOC)
     
     if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
     

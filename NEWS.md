@@ -1,7 +1,10 @@
 tidyhydat 0.4.0
 =========================
 
-### Bug Fixes
+### IMPROVEMENTS
+* prov_terr_state_loc now accepts a "CA" value to specify only stations located in Canada (#112)
+
+### BUG FIXES
 * `pull_station_number` now only returns unique values (#109)
 * Adding a offset column that reflects OlsonNames() and is thus DST independent (#110)
 

@@ -32,7 +32,7 @@ table_vector <- c("ANNUAL_INSTANT_PEAKS", "ANNUAL_STATISTICS",
 list_of_small_tables <- table_vector %>%
   map(~tbl(src = hydat_con, .) %>%
         filter(STATION_NUMBER %in% c("08MF005","08NM083","08NE102","08AA003",
-                                     "05AA008","01AP003")) %>%
+                                     "05AA008","01AP003","08BB005")) %>%
         collect()
       ) %>% 
   set_names(table_vector)
@@ -58,20 +58,9 @@ db_path <- "./inst/test_db/tinyhydat.sqlite3"
 
 con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
 
-## Do this in a loop - uncertain how to do it purrr.
-## Because this isn't a regularly run item I'll leave it as is.
-## Loops for Stns
-for (i in 1:length(table_vector)) {
-  DBI::dbWriteTable(con, table_vector[i], list_of_small_tables[[i]], overwrite=TRUE)
-}
-
-## Tables without station info
-for (i in 1:length(no_stn_table_vector)) {
-  DBI::dbWriteTable(con, no_stn_table_vector[i], list_of_no_stn_tables[[i]], overwrite=TRUE)
-}
-
-
-#DBI::dbWriteTable(con, "SED_DATA_TYPES", SED_DATA_TYPES, overwrite=TRUE)
+## Add tables to mini database
+imap(table_vector, ~ {DBI::dbWriteTable(con, .x, list_of_small_tables[[.x]], overwrite=TRUE)})
+imap(no_stn_table_vector, ~ {DBI::dbWriteTable(con, .x, list_of_no_stn_tables[[.x]], overwrite=TRUE)})
 
 DBI::dbDisconnect(con)
 

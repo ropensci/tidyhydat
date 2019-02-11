@@ -20,7 +20,7 @@ used by \link{download_hydat}. It is also possible to pass in an existing
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
-is returned. See \code{unique(allstations$prov_terr_state_loc)}}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 
 \item{start_year}{First year of the returned record}
 
