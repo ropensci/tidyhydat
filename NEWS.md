@@ -3,6 +3,7 @@ tidyhydat 0.4.0
 
 ### Bug Fixes
 * `pull_station_number` now only returns unique values (#109)
+* Adding a offset column that reflects OlsonNames() and is thus DST independent (#110)
 
 tidyhydat 0.3.5
 =========================
