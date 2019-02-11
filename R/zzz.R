@@ -12,6 +12,8 @@ if (interactive()) {
   ## Only check when there is likely a new version i.e. about 3 months after last version
   if (file.exists(file.path(hy_dir(), "Hydat.sqlite3")) && Sys.Date() > (as.Date(hy_version()$Date) + 115)) {
     packageStartupMessage(info("Checking for a new version of HYDAT..."))
+    
+    if(!has_internet()) stop("No access to internet", call. = FALSE)
 
     base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
     x <- httr::GET(base_url)

@@ -17,6 +17,7 @@
 #' @export
 
 search_stn_name <- function(search_term, hydat_path = NULL) {
+  if(!has_internet()) stop("No access to internet", call. = FALSE)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)
@@ -42,6 +43,7 @@ search_stn_name <- function(search_term, hydat_path = NULL) {
 #' @export
 #' 
 search_stn_number <- function(search_term, hydat_path = NULL) {
+  if(!has_internet()) stop("No access to internet", call. = FALSE)
   
   ## Read in database
   hydat_con <- hy_src(hydat_path)

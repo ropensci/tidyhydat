@@ -20,11 +20,11 @@
 realtime_dd(station_number = NULL, prov_terr_state_loc = NULL)
 }
 \arguments{
-\item{station_number}{Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{prov_terr_state_loc}
+\item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
-\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted from the function call, the value of \code{station_number}
-is returned.}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \value{
 A tibble of water flow and level values.

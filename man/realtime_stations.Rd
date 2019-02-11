@@ -16,8 +16,8 @@
 realtime_stations(prov_terr_state_loc = NULL)
 }
 \arguments{
-\item{prov_terr_state_loc}{Province/State/Territory or Location. See examples for list of available options. 
-realtime_stations() for all stations.}
+\item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \description{
 An up to date dataframe of all stations in the Realtime Water Survey of Canada 

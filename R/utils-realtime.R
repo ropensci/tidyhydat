@@ -31,7 +31,7 @@ single_realtime_station <- function(station_number) {
   }
   
   
-  base_url <- "http://dd.weather.gc.ca/hydrometric"
+  base_url <- "https://dd.weather.gc.ca/hydrometric"
   
   # build URL
   type <- c("hourly", "daily")
@@ -135,7 +135,7 @@ single_realtime_station <- function(station_number) {
 }
 
 all_realtime_station <- function(PROV){
-  base_url <- "http://dd.weather.gc.ca/hydrometric/csv/"
+  base_url <- "https://dd.weather.gc.ca/hydrometric/csv/"
   prov_url <- paste0(base_url, PROV,"/daily/",PROV,"_daily_hydrometric.csv")
   
   res <- httr::GET(prov_url, httr::progress("down"), httr::user_agent("https://github.com/ropensci/tidyhydat"))
@@ -208,4 +208,10 @@ realtime_tidy_data <- function(data, prov){
   data$Value <- as.numeric(data$Value)
   
   data
+}
+
+has_internet <- function() {
+  z <- try(suppressWarnings(readLines('https://www.google.ca', n = 1)),
+           silent = TRUE)
+  !inherits(z, "try-error")
 }
