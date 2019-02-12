@@ -132,8 +132,13 @@ hy_daily_flows <- function(station_number = NULL,
   
   
   ## What stations were missed?
-  differ_msg(unique(stns), unique(dly_flows$STATION_NUMBER))
+  #browser()
+  #differ_msg(unique(stns), unique(dly_flows$STATION_NUMBER))
+  
+  attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
   
 
-  dly_flows
+  as.hy(dly_flows)
 }
+
+

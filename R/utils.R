@@ -1,3 +1,18 @@
+# Copyright 2019 Province of British Columbia
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
 #' @title Function to chose a station based on consistent arguments for hydat functions.
 #'
 #' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
@@ -72,12 +87,6 @@ date_check <- function(start_date = NULL, end_date = NULL){
   
   start_is_null <- is.null(start_date) 
   end_is_null <- is.null(end_date)
-  
-  
-  if (start_is_null & end_is_null) {
-    message("No start and end dates specified. All dates available will be returned.")
-    
-  }
   
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {

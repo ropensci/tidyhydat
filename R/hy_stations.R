@@ -106,8 +106,5 @@ hy_stations <- function(station_number = NULL,
       REAL_TIME = .data$REAL_TIME == 1
     )
 
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(df$STATION_NUMBER))
-
-  df
+  as.hy(df)
 }
