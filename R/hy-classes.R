@@ -25,33 +25,33 @@ print.hy <- function(x, ...){
 }
 
 summary_msg <- function(x){
-  cat(paste0("  Queried from HYDAT (released on ", as.Date(hy_version()$Date),"): \n"))
+  cat(paste0("  Queried from version of HYDAT released on ", as.Date(hy_version()$Date),"\n"))
   
-  n_stns = dplyr::n_distinct(x$STATION_NUMBER)
-  cat(paste0("   Station(s): ", n_stns, "\n"))
+  n_stns = format(dplyr::n_distinct(x$STATION_NUMBER), big.mark = ",")
+  cat(paste0("   Station(s):    ", n_stns, "\n"))
   
   n_records = format(nrow(x), big.mark = ",")
-  cat(paste0("   Observations: ", n_records, "\n"))
+  cat(paste0("   Observations:  ", n_records, "\n"))
   
   if("PROV_TERR_STATE_LOC" %in% names(x)){
     cat(paste0("   Jurisdictions: ",paste0(unique(x$PROV_TERR_STATE_LOC), collapse = ", "), "\n"))
   }
 }
 
+date_range_msg <- function(x){
+  date_range = paste0(range(x$Date, na.rm = TRUE), collapse = " to ")
+  cat(paste0("   Date range:    ", date_range, " \n"))
+}
+
 missed_station_msg <- function(x){
   differ = attributes(x)$missed_stns
   #browser()
+  cat("   Station(s) requested but not returned: \n")
   if (length(differ) != 0) {
-    cat("\tStation(s) not returned: \n")
     cat(crayon::cyan(paste0("\t", strwrap(paste0(differ, collapse = " "), width = 40), collapse = "\n")))
     cat("\n")
   } else {
-    cat("   Station(s) not returned: \n")
-    cat("\tAll station(s) returned")
+    cat(crayon::cyan("\tAll station(s) returned\n"))
   }
 }
 
-date_range_msg <- function(x){
-  date_range = paste0(range(x$Date, na.rm = TRUE), collapse = " to ")
-  cat(paste0("\tDate range: ", date_range, " \n"))
-}
