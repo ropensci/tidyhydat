@@ -68,7 +68,8 @@ hy_stn_regulation <- function(station_number = NULL,
   
   colnames(stn_reg) <- c("STATION_NUMBER","Year_from","Year_to","REGULATED")
   
-  return(stn_reg)
+  attr(stn_reg,'missed_stns') <- setdiff(unique(stns), unique(stn_reg$STATION_NUMBER))
+  as.hy(stn_reg)
 
 
 }

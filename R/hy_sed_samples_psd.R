@@ -85,9 +85,6 @@ hy_sed_samples_psd <- function(station_number = NULL,
                                    SED_DATA_TYPE = .data$SED_DATA_TYPE_EN, 
                                    Date = .data$DATE, .data$PARTICLE_SIZE, .data$PERCENT)
   
-  
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_samples_psd$STATION_NUMBER))
-  
-  sed_samples_psd
+  attr(sed_samples_psd,'missed_stns') <- setdiff(unique(stns), unique(sed_samples_psd$STATION_NUMBER))
+  as.hy(sed_samples_psd)
 }

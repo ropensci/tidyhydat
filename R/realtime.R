@@ -53,7 +53,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
   ## TODO: HAve a warning message if not internet connection exists
   if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
+    stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
   }
   
   ## If station number isn't and user wants the province
@@ -63,7 +63,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     realtime_data <- lapply(station_number, single_realtime_station)
       }
   
-  dplyr::bind_rows(realtime_data)
+  as.realtime(dplyr::bind_rows(realtime_data))
 
 }
 
@@ -140,7 +140,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   }
   
 
-  dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov)
+  as.realtime(dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov))
 
 }
 

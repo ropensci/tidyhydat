@@ -117,9 +117,6 @@ hy_monthly_flows <- function(station_number = NULL,
   monthly_flows <- dplyr::select(monthly_flows, -.data$DAY)
   monthly_flows <- dplyr::mutate(monthly_flows, Full_Month = .data$Full_Month == 1)
 
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(monthly_flows$STATION_NUMBER))
-
-
-  monthly_flows
+  attr(monthly_flows,'missed_stns') <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))
+  as.hy(monthly_flows)
 }

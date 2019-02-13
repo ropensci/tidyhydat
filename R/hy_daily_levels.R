@@ -124,6 +124,8 @@ hy_daily_levels <- function(station_number = NULL,
   dly_levels <- dplyr::arrange(dly_levels, .data$Date)
   
   colnames(dly_levels) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
+  
+  attr(dly_levels,'missed_stns') <- setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
 
   as.hy(dly_levels)
 }

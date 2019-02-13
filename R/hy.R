@@ -42,7 +42,10 @@ hy_stn_remarks <- function(station_number = NULL,
   stn_remarks <- dplyr::select(stn_remarks, .data$STATION_NUMBER, 
                                REMARK_TYPE = .data$REMARK_TYPE_EN, Year = .data$YEAR, REMARK = .data$REMARK_EN)
   
-  dplyr::collect(stn_remarks)
+  stn_remarks <- dplyr::collect(stn_remarks)  
+  
+  attr(stn_remarks,'missed_stns') <- setdiff(unique(stns), unique(stn_remarks$STATION_NUMBER))
+  as.hy(stn_remarks)
 }
 
 #' Extract station datum conversions from HYDAT database
@@ -92,7 +95,11 @@ hy_stn_datum_conv <- function(station_number = NULL,
                                         DATUM_FROM = .data$DATUM_EN_FROM, 
                                         DATUM_TO = .data$DATUM_EN_TO, .data$CONVERSION_FACTOR)
   
-  dplyr::collect(stn_datum_conversion)
+  stn_datum_conversion <- dplyr::collect(stn_datum_conversion)
+  
+  attr(stn_datum_conversion,'missed_stns') <- setdiff(unique(stns), unique(stn_datum_conversion$STATION_NUMBER))
+  as.hy(stn_datum_conversion)
+  
 }
 
 #' Extract station datum unrelated from HYDAT database
@@ -137,9 +144,10 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
   stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
   
-  dplyr::rename(stn_datum_unrelated, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)  
+  stn_datum_unrelated <- dplyr::rename(stn_datum_unrelated, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)  
   
-  
+  attr(stn_datum_unrelated,'missed_stns') <- setdiff(unique(stns), unique(stn_datum_unrelated$STATION_NUMBER))
+  as.hy(stn_datum_unrelated)
 }
 
 #' Extract station data range from HYDAT database
@@ -190,7 +198,10 @@ hy_stn_data_range <- function(station_number = NULL,
   
   stn_data_range[stn_data_range$SED_DATA_TYPE == "NA",]$SED_DATA_TYPE <- NA_character_
   
-  dplyr::rename(stn_data_range, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)
+  stn_data_range <- dplyr::rename(stn_data_range, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)
+  
+  attr(stn_data_range,'missed_stns') <- setdiff(unique(stns), unique(stn_data_range$STATION_NUMBER))
+  as.hy(stn_data_range)
 
   }
 
@@ -246,7 +257,10 @@ hy_stn_data_coll <- function(station_number = NULL,
   stn_data_coll <- dplyr::select(stn_data_coll, .data$STATION_NUMBER, DATA_TYPE = .data$DATA_TYPE_EN, 
                                  Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO, 
                                  MEASUREMENT = .data$MEASUREMENT_EN, OPERATION = .data$OPERATION_EN)
-  dplyr::arrange(stn_data_coll, .data$STATION_NUMBER, .data$Year_from)
+  stn_data_coll <- dplyr::arrange(stn_data_coll, .data$STATION_NUMBER, .data$Year_from)
+  
+  attr(stn_data_coll,'missed_stns') <- setdiff(unique(stns), unique(stn_data_coll$STATION_NUMBER))
+  as.hy(stn_data_coll)
 }
 
 
@@ -295,9 +309,12 @@ hy_stn_op_schedule <- function(station_number = NULL,
   stn_operation_schedule <- dplyr::collect(stn_operation_schedule)
   stn_operation_schedule <- dplyr::left_join(stn_operation_schedule, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
   
-  dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, 
+  stn_operation_schedule <- dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, 
                 DATA_TYPE = .data$DATA_TYPE_EN, Year =.data$YEAR, 
                 Month_from = .data$MONTH_FROM, Month_to = .data$MONTH_TO)
+  
+  attr(stn_operation_schedule,'missed_stns') <- setdiff(unique(stns), unique(stn_operation_schedule$STATION_NUMBER))
+  as.hy(stn_operation_schedule)
 }
 
 #' @title Output OS-independent path to the HYDAT sqlite database
@@ -347,7 +364,7 @@ hy_agency_list <- function(hydat_path = NULL) {
   agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
     dplyr::collect()
   
-  agency_list
+  as.hy(agency_list)
 }
 
 
@@ -377,7 +394,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
   regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
     dplyr::collect()
   
-  regional_office_list
+  as.hy(regional_office_list)
 }
 
 #'  Extract datum list from HYDAT database
@@ -406,7 +423,7 @@ hy_datum_list <- function(hydat_path = NULL) {
   datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
     dplyr::collect()
   
-  datum_list
+  as.hy(datum_list)
 }
 
 

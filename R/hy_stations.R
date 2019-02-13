@@ -105,6 +105,8 @@ hy_stations <- function(station_number = NULL,
       RHBN = .data$RHBN == 1,
       REAL_TIME = .data$REAL_TIME == 1
     )
-
+  
+  
+  attr(df,'missed_stns') <- setdiff(unique(stns), unique(df$STATION_NUMBER))
   as.hy(df)
 }
