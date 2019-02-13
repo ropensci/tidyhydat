@@ -35,12 +35,6 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   }
 
   
-  ### Is station_number 7 characters?
-  #if(!is.null(station_number) & (nchar(station_number) != 7)) {
-  #  stop("")
-  #}
-
-  
   ## Prov symbol
   sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
 
@@ -64,7 +58,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(prov_terr_state_loc)){
     prov_terr_state_loc <- toupper(prov_terr_state_loc)
     ## Only possible values for prov_terr_state_loc
-    stn_option <- unique(allstations$PROV_TERR_STATE_LOC)
+    stn_option <- unique(tidyhydat::allstations$PROV_TERR_STATE_LOC)
     
     if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
     

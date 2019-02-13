@@ -5,10 +5,10 @@
 \alias{plot.hy}
 \title{plot hy object}
 \usage{
-\method{plot}{hy}(hy_object = NULL, ...)
+\method{plot}{hy}(x = NULL, ...)
 }
 \arguments{
-\item{hy_object}{Object created by a daily data retrieval function}
+\item{x}{Object created by a daily data retrieval function}
 
 \item{...}{passed to \code{plot}}
 }

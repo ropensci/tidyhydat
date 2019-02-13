@@ -16,7 +16,7 @@
 #' This method plots daily time series data from HYDAT. Functionality is very basic
 #' and is intended for exploratory purposes only.
 #' 
-#' @param hy_object Object created by a daily data retrieval function
+#' @param x Object created by a daily data retrieval function
 #' @param ... passed to \code{plot}
 #' 
 #' @method plot hy
@@ -31,13 +31,13 @@
 #' 
 #' @export
 #' 
-plot.hy <- function(hy_object = NULL, ...){
-  if(!all(c("STATION_NUMBER", "Date", "Parameter", "Value") %in% names(hy_object))){
+plot.hy <- function(x = NULL, ...){
+  if(!all(c("STATION_NUMBER", "Date", "Parameter", "Value") %in% names(x))){
     stop("plot methods only currently accept daily values", call. = FALSE)
   }
   
   ### Join with meta data to get station name
-  hydf <- dplyr::left_join(hy_object, 
+  hydf <- dplyr::left_join(x, 
                            suppressMessages(hy_stations()), 
                            by = c("STATION_NUMBER"))
   
