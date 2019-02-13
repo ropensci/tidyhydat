@@ -15,5 +15,6 @@ test_that("plot fails with non daily value",{
 
 test_that("plot succeeds with daily values",{
   dd <- hy_daily_flows("05AA008", hydat_path = hy_test_db())
-  expect_true(plot(dd))
+  plot_dd <- plot(dd)
+  expect_true(plot_dd)
 })

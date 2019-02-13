@@ -16,11 +16,6 @@ test_that("hy_daily accepts multiple station arguments", {
   expect_identical(length(stns), length(unique(multi_stn_data$STATION_NUMBER)))
 })
 
-test_that("hy_daily generate an output",{
-  skip_on_cran()
-  expect_output(hy_daily("08MF005",hydat_path = hy_test_db(), quiet = FALSE))
-})
-
 test_that("hy_daily generates right column names",{
   skip_on_cran()
   hy_daily_out <- hy_daily("08MF005",hydat_path = hy_test_db())
