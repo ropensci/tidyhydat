@@ -14,6 +14,7 @@ test_that("plot fails with non daily value",{
 })
 
 test_that("plot succeeds with daily values",{
+  skip_on_travis()
   dd <- hy_daily_flows("05AA008", hydat_path = hy_test_db())
   plot_dd <- plot(dd)
   expect_true(plot_dd)
