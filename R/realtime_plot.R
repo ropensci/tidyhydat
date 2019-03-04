@@ -10,6 +10,79 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+#' plot realtime object
+#' 
+#' This method plots daily time series data from the ECCC datamart. Functionality is very basic
+#' and is intended for exploratory purposes only.
+#' 
+#' @param x Object created by a realtime data retrieval function
+#' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
+#' @param ... passed to \code{plot}
+#' 
+#' @method plot realtime
+#' @name plot
+#' 
+#' @examples 
+#' \dontrun{
+#' # One station
+#' fraser <- realtime_dd("08MF005")
+#' plot(fraser)
+#' }
+#' 
+#' @export
+
+plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
+  #browser()
+  rldf = x
+  
+  Parameter <- match.arg(Parameter)
+  
+  if(length(unique(rldf$STATION_NUMBER)) > 1L) {
+    stop("realtime plot methods only work with objects that contain one station", call. = FALSE)
+  }
+
+  if(is.null(rldf)) stop("Station(s) not present in the datamart")
+  
+  ## Is there any NA's in the flow data?
+  if(any(is.na(rldf[rldf$Parameter == "Flow",]$Value)) & Parameter == "Flow"){
+    rldf <- rldf[rldf$Parameter == "Level",]
+    message(paste0(station_number," is lake level station. Defaulting Parameter = 'Level'"))
+  } else{
+    rldf <- rldf[rldf$Parameter == Parameter,]
+  }
+  
+  
+  
+  
+  ## Join with meta data to get station name
+  rldf <- dplyr::left_join(rldf, allstations, by = c("STATION_NUMBER","PROV_TERR_STATE_LOC"))
+  
+  rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
+  
+  rldf$STATION <- factor(rldf$STATION)
+  
+  
+  y_axis <- ifelse(Parameter == "Flow", expression(Discharge~(m^3/s)), "Level (m)")
+  
+  ## Set the palette
+  #palette(rainbow(length(unique(rldf$STATION_NUMBER))))
+  
+  graphics::plot(Value ~ Date,
+                 data = rldf,
+                 main= unique(rldf$STATION),
+                 xlab="Date", 
+                 ylab="",
+                 bty= "L",
+                 pch = 20, cex = 1)
+  
+  graphics::title(ylab=y_axis, line=2.25)
+  
+  
+  
+}
+
+
+
 #' Convenience function to plot realtime data
 #' 
 #' This is an easy way to visualize a single station using base R graphics. 

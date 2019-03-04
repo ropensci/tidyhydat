@@ -18,7 +18,7 @@ as.realtime <- function(x) {
 
 #' @export
 print.realtime <- function(x, ...){
-  cat(paste("  Queried on", format(Sys.time(), tz = "UTC"), "(UTC)\n"))
+  cat(paste("  Queried on:", format(Sys.time(), tz = "UTC"), "(UTC)\n"))
   if(c("Date") %in% names(x)){
     date_range = paste0(range(as.Date(x$Date), na.rm = TRUE), collapse = " to ")
     cat(paste0("  Date range: ", date_range, " \n"))
