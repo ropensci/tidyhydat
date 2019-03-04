@@ -53,8 +53,8 @@ To install the development version of the `tidyhydat` package, you need
 to install the `remotes` package then the `tidyhydat` package
 
 ``` r
-if(!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("ropensci/tidyhydat")
+if(!requireNamespace("remotes")) install.packages("remotes")
+remotes::install_github("ropensci/tidyhydat")
 ```
 
 ## Usage
@@ -226,15 +226,28 @@ download all stations from that province:
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
-A simple plotting tool is also provided to quickly visualize realtime
-data:
+### Plotting
+
+Plot methods are also provided to quickly visualize realtime data:
 
 ``` r
-realtime_plot("08LG006")
-#> 08LG006 is lake level station. Defaulting Parameter = 'Level'
+realtime_ex <- realtime_dd(station_number = "08LG006")
+
+plot(realtime_ex)
 ```
 
 ![](tools/readme/README-unnamed-chunk-8-1.png)<!-- -->
+
+and also historical data:
+
+``` r
+hy_ex <- hy_daily_flows(station_number = c("08LA001", "08MF005"),
+                      start_date = "2013-01-01")
+
+plot(hy_ex)
+```
+
+![](tools/readme/README-unnamed-chunk-9-1.png)<!-- -->
 
 ## Getting Help or Reporting an Issue
 
