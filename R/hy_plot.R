@@ -16,7 +16,7 @@
 #' This method plots daily time series data from HYDAT. Functionality is very basic
 #' and is intended for exploratory purposes only.
 #' 
-#' @param x Object created by a hy_daily data retrieval function
+#' @param x Object created by either a hy_daily_* or realtime_dd data retrieval function
 #' @param ... passed to \code{plot}
 #' 
 #' @method plot hy

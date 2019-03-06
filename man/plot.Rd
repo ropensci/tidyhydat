@@ -11,15 +11,11 @@
 \method{plot}{realtime}(x = NULL, Parameter = c("Flow", "Level"), ...)
 }
 \arguments{
-\item{x}{Object created by a hy_daily data retrieval function}
+\item{x}{Object created by either a hy_daily_* or realtime_dd data retrieval function}
 
 \item{...}{passed to \code{plot}}
 
 \item{Parameter}{Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".}
-
-\item{x}{Object created by a realtime data retrieval function}
-
-\item{...}{passed to \code{plot}}
 }
 \description{
 This method plots daily time series data from HYDAT. Functionality is very basic

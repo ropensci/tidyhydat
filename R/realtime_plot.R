@@ -15,9 +15,9 @@
 #' This method plots daily time series data from the ECCC datamart. Functionality is very basic
 #' and is intended for exploratory purposes only.
 #' 
-#' @param x Object created by a realtime data retrieval function
+#' @inheritParams plot.hy
 #' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
-#' @param ... passed to \code{plot}
+
 #' 
 #' @method plot realtime
 #' @name plot
@@ -46,7 +46,7 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
   ## Is there any NA's in the flow data?
   if(any(is.na(rldf[rldf$Parameter == "Flow",]$Value)) & Parameter == "Flow"){
     rldf <- rldf[rldf$Parameter == "Level",]
-    message(paste0(station_number," is lake level station. Defaulting Parameter = 'Level'"))
+    message(paste0(rldf$STATION_NUMBER," is lake level station. Defaulting Parameter = 'Level'"))
   } else{
     rldf <- rldf[rldf$Parameter == Parameter,]
   }
