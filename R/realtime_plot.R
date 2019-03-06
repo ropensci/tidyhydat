@@ -55,7 +55,7 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
   
   
   ## Join with meta data to get station name
-  rldf <- dplyr::left_join(rldf, allstations, by = c("STATION_NUMBER","PROV_TERR_STATE_LOC"))
+  rldf <- dplyr::left_join(rldf, tidyhydat::allstations, by = c("STATION_NUMBER","PROV_TERR_STATE_LOC"))
   
   rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
   

@@ -118,8 +118,7 @@ plot(realtime_ex)
 
 and also historical data:
 ```{r, fig.height=7, fig.width=12}
-hy_ex <- hy_daily_flows(station_number = c("08LA001", "08MF005"),
-                      start_date = "2013-01-01")
+hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
 
 plot(hy_ex)
 ```

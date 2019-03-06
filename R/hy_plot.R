@@ -72,9 +72,7 @@ plot.hy <- function(x = NULL, ...){
     graphics::par(mar = c(2,2,1,1))
     graphics::plot(Value ~ Date,
                    data = hydf[hydf$STATION == unique(hydf$STATION)[i],],
-                   #col = hydf$STATION,
                    xlab="Date", 
-                   #ylab = paste0("params[i]"),
                    bty= "L",
                    pch = 20, 
                    cex = 1,

@@ -238,11 +238,11 @@ plot(realtime_ex)
 
 ![](tools/readme/README-unnamed-chunk-8-1.png)<!-- -->
 
-and also historical data:
+and also historical
+data:
 
 ``` r
-hy_ex <- hy_daily_flows(station_number = c("08LA001", "08MF005"),
-                      start_date = "2013-01-01")
+hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
 
 plot(hy_ex)
 ```
