@@ -38,7 +38,7 @@ plot.hy <- function(x = NULL, ...){
   
   ### Join with meta data to get station name
   hydf <- dplyr::left_join(x, 
-                           suppressMessages(hy_stations()), 
+                           suppressMessages(tidyhydat::allstations), 
                            by = c("STATION_NUMBER"))
   
   hydf$STATION <- paste(hydf$STATION_NAME, hydf$STATION_NUMBER, sep = " - ")
@@ -47,19 +47,19 @@ plot.hy <- function(x = NULL, ...){
   
   num_stns <- length(unique(hydf$STATION))
   
-  if(num_stns > 4) stop("You are trying to plot more than four stations at once.", call. = FALSE)
+  if(num_stns > 4L) stop("You are trying to plot more than four stations at once.", call. = FALSE)
   
-  if(num_stns > 2){
+  if(num_stns > 2L){
     m <- matrix(c(1,1,2,3,4,5,6,6),nrow = 4,ncol = 2,byrow = TRUE)
     graphics::layout(mat = m,heights = c(0.1,0.35,0.35,0.2))
   } 
   
-  if(num_stns == 2){
+  if(num_stns == 2L){
     m <- matrix(c(1,1,2,3,4,4),nrow = 3,ncol = 2,byrow = TRUE)
     graphics::layout(mat = m,heights = c(0.2,0.6,0.2))
   } 
   
-  if(num_stns == 1){
+  if(num_stns == 1L){
     m <- matrix(c(1,2,3),nrow = 3,ncol = 1,byrow = TRUE)
     graphics::layout(mat = m,heights = c(0.2,0.6,0.2))
   } 
@@ -84,12 +84,7 @@ plot.hy <- function(x = NULL, ...){
   
   
   graphics::plot(1, type = "n", axes=FALSE, xlab="", ylab="")
-  # graphics::legend(x = "top", inset = 0,
-  #                  legend = unique(hydf$STATION), 
-  #                  fill = unique(hydf$STATION),
-  #                  bty = "n",
-  #                  cex = 1, horiz = TRUE)
-  
+
   invisible(TRUE)
   
 }
