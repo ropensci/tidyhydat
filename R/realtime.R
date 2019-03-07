@@ -51,11 +51,6 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
   
   if(!has_internet()) stop("No access to internet", call. = FALSE)
 
-  ## TODO: HAve a warning message if not internet connection exists
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour. Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
-  }
-  
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
     realtime_data <- lapply(prov_terr_state_loc, all_realtime_station)
