@@ -217,6 +217,23 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
+#>   Queried on: 2019-03-07 22:16:41 (UTC)
+#>   Date range: 2019-02-05 to 2019-03-07 
+#> # A tibble: 17,484 x 8
+#>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value
+#>    <chr>          <chr>            <dttm>              <chr>     <dbl>
+#>  1 08LG006        BC               2019-02-05 08:00:00 Flow       4.65
+#>  2 08LG006        BC               2019-02-05 08:05:00 Flow       4.65
+#>  3 08LG006        BC               2019-02-05 08:10:00 Flow       4.65
+#>  4 08LG006        BC               2019-02-05 08:15:00 Flow       4.65
+#>  5 08LG006        BC               2019-02-05 08:20:00 Flow       4.65
+#>  6 08LG006        BC               2019-02-05 08:25:00 Flow       4.65
+#>  7 08LG006        BC               2019-02-05 08:30:00 Flow       4.65
+#>  8 08LG006        BC               2019-02-05 08:35:00 Flow       4.65
+#>  9 08LG006        BC               2019-02-05 08:40:00 Flow       4.65
+#> 10 08LG006        BC               2019-02-05 08:45:00 Flow       4.65
+#> # ... with 17,474 more rows, and 3 more variables: Grade <chr>,
+#> #   Symbol <chr>, Code <chr>
 ```
 
 Another option is to provide simply the province as an argument and

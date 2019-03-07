@@ -99,7 +99,7 @@ These example illustrate a few ways that an vector can be generated and supplied
 
 ### Real-time
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
-```{r, eval = FALSE}
+```{r}
 realtime_dd(station_number = "08LG006")
 ```
 Another option is to provide simply the province as an argument and download all stations from that province:
