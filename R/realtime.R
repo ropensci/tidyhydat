@@ -18,10 +18,7 @@
 #' not available at high (hourly or higher) resolution daily averages are used. Currently, if a station does not 
 #' exist or is not found, no data is returned.
 #'
-#' @param station_number Water Survey of Canada station number. If this argument is omitted from the function call, the value of \code{prov_terr_state_loc}
-#' is returned.
-#' @param prov_terr_state_loc Province, state or territory. If this argument is omitted from the function call, the value of \code{station_number}
-#' is returned.
+#' @inheritParams hy_stations
 #'
 #' @return A tibble of water flow and level values. 
 #' 
@@ -51,12 +48,9 @@
 #' @family realtime functions
 #' @export
 realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
-
-  ## TODO: HAve a warning message if not internet connection exists
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
-  }
   
+  if(!has_internet()) stop("No access to internet", call. = FALSE)
+
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
     realtime_data <- lapply(prov_terr_state_loc, all_realtime_station)
@@ -64,13 +58,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
     realtime_data <- lapply(station_number, single_realtime_station)
       }
   
-  dplyr::bind_rows(realtime_data)
-  
-
-  
-  
-
-
+  as.realtime(dplyr::bind_rows(realtime_data))
 
 }
 
@@ -80,8 +68,7 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 #' An up to date dataframe of all stations in the Realtime Water Survey of Canada 
 #'   hydrometric network operated by Environment and Climate Change Canada
 #'
-#' @param prov_terr_state_loc Province/State/Territory or Location. See examples for list of available options. 
-#'   realtime_stations() for all stations.
+#' @inheritParams hy_stations
 #'
 #' @family realtime functions
 #' 
@@ -108,9 +95,11 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 
 
 realtime_stations <- function(prov_terr_state_loc = NULL) {
-  prov <- prov_terr_state_loc
+  if(!has_internet()) stop("No access to internet", call. = FALSE)
   
-  realtime_link <- "http://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
+  prov <- prov_terr_state_loc
+
+  realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
 
   url_check <- httr::GET(realtime_link,httr::user_agent("https://github.com/ropensci/tidyhydat"))
   
@@ -146,8 +135,8 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   }
   
 
-  net_tibble <- dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov)
-  net_tibble
+  as.realtime(dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov))
+
 }
 
 #' Add local datetime column to realtime tibble

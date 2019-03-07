@@ -1,3 +1,18 @@
+# Copyright 2019 Province of British Columbia
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
 #' @title Function to chose a station based on consistent arguments for hydat functions.
 #'
 #' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
@@ -13,12 +28,11 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(station_number) && !is.null(prov_terr_state_loc)) {
     stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
   }
-
   
-  ### Is station_number 7 characters?
-  #if(!is.null(station_number) & (nchar(station_number) != 7)) {
-  #  stop("")
-  #}
+  if(!is.null(prov_terr_state_loc) && prov_terr_state_loc == "CA"){
+    prov_terr_state_loc <- c("QC", "NB", "PE", "NS", "ON", "NL", "MB", 
+                             "AB", "SK", "NU", "NT", "BC", "YT")
+  }
 
   
   ## Prov symbol
@@ -44,9 +58,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(prov_terr_state_loc)){
     prov_terr_state_loc <- toupper(prov_terr_state_loc)
     ## Only possible values for prov_terr_state_loc
-    stn_option <- dplyr::tbl(hydat_con, "STATIONS") %>%
-      dplyr::distinct(!!sym_PROV_TERR_STATE_LOC) %>%
-      dplyr::pull(!!sym_PROV_TERR_STATE_LOC)
+    stn_option <- unique(tidyhydat::allstations$PROV_TERR_STATE_LOC)
     
     if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
     
@@ -69,12 +81,6 @@ date_check <- function(start_date = NULL, end_date = NULL){
   
   start_is_null <- is.null(start_date) 
   end_is_null <- is.null(end_date)
-  
-  
-  if (start_is_null & end_is_null) {
-    message("No start and end dates specified. All dates available will be returned.")
-    
-  }
   
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {
@@ -199,9 +205,9 @@ network_check <- function(url){
 
 #' Convenience function to pull station number from tidyhydat functions
 #' 
-#' This function is a thin wrapper of \code{dplyr::pull} to avoid having to always type
-#' dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete. This can be used 
-#' with \code{realtime_} and \code{hy_} functions.
+#' This function mimics \code{dplyr::pull} to avoid having to always type
+#' dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete. 
+#' This can be used with \code{realtime_} and \code{hy_} functions.
 #' 
 #' @param .data A table of data
 #' 
@@ -221,6 +227,6 @@ pull_station_number <- function(.data){
   
   if(!("STATION_NUMBER" %in% colnames(.data))) stop("No STATION_NUMBER column present", call. = FALSE)
   
-  dplyr::pull(.data, !!sym("STATION_NUMBER"))
+  unique(.data$STATION_NUMBER)
 }
 

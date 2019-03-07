@@ -130,10 +130,6 @@ hy_annual_stats <- function(station_number =NULL,
 
   ## Rename to tidyhydat format
   colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")
-
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(annual_statistics$STATION_NUMBER))
-
-  annual_statistics
+  attr(annual_statistics,'missed_stns') <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
+  as.hy(annual_statistics)
 }

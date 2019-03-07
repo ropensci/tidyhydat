@@ -122,10 +122,7 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   sed_dly_suscon <- dplyr::arrange(sed_dly_suscon, .data$Date)
 
   colnames(sed_dly_suscon) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_dly_suscon$STATION_NUMBER))
-
-
-  sed_dly_suscon
+  
+  attr(sed_dly_suscon,'missed_stns') <- setdiff(unique(stns), unique(sed_dly_suscon$STATION_NUMBER))
+  as.hy(sed_dly_suscon)
 }

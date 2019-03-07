@@ -50,3 +50,8 @@ test_that("pull_station_number grabs station number successfully",{
   pulled_stns <- hy_annual_stats(stns, hydat_path = hy_test_db()) %>% pull_station_number()
   expect_identical(stns, unique(pulled_stns))
 })
+
+test_that("pull_station_number returns only unique values",{
+  many_repeats <- hy_sed_samples(hydat_path = hy_test_db()) 
+  expect_length(pull_station_number(many_repeats), 2)
+})

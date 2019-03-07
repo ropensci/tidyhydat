@@ -16,9 +16,6 @@
 #' contains both parameters. All arguments are passed directly to these functions. 
 #' 
 #' @inheritParams hy_stations 
-#' @param quiet Generate output of parameters successfully queried? Defaults to TRUE. 
-#' The output can be overly verbose when querying multiple stations but is useful when
-#' only querying a few stations.
 #' @param ... See \code{\link{hy_daily_flows}} arguments
 #' 
 #' @return A tibble of daily flows and levels
@@ -40,7 +37,7 @@
 #' hy_daily(station_number = c("02JE013","08MF005"))
 #' }
 
-hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = TRUE, 
+hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,  
                      hydat_path = NULL, ...){
   
   ## Read in database
@@ -86,18 +83,12 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL, quiet = 
   
   if(any(class(suscon) == "tbl_df")) daily <- dplyr::bind_rows(daily, suscon)
   
-  if(quiet == FALSE){
-    multi_param_msg(flows, stns, "Flow")
-    multi_param_msg(levels, stns,  "Level")
-    multi_param_msg(loads, stns, "Load")
-    multi_param_msg(suscon, stns, "Suscon")
-    
-  }
   
   if(nrow(daily) == 0){
     info(paste0("No data for ", station_number,". Did you correctly input station name or province?"))
   }
   
-  dplyr::arrange(daily, .data$STATION_NUMBER, .data$Date)
+  attr(daily,'missed_stns') <- setdiff(unique(stns), unique(daily$STATION_NUMBER))
+  as.hy(dplyr::arrange(daily, .data$STATION_NUMBER, .data$Date))
 
 }

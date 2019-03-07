@@ -23,7 +23,7 @@
 #' @param station_number A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 #' is returned.
 #' @param prov_terr_state_loc Province, state or territory. If this argument is omitted, the value of \code{station_number}
-#' is returned. See \code{unique(allstations$prov_terr_state_loc)}
+#' is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.
 #'
 #' @return A tibble of stations and associated metadata
 #'
@@ -105,9 +105,8 @@ hy_stations <- function(station_number = NULL,
       RHBN = .data$RHBN == 1,
       REAL_TIME = .data$REAL_TIME == 1
     )
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(df$STATION_NUMBER))
-
-  df
+  
+  
+  attr(df,'missed_stns') <- setdiff(unique(stns), unique(df$STATION_NUMBER))
+  as.hy(df)
 }

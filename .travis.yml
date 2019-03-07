@@ -5,10 +5,12 @@ matrix:
     - os: linux
       dist: trusty
       r: devel
+      env: _R_CHECK_LENGTH_1_LOGIC2_=TRUE
 
     - os: linux
       dist: trusty
       r: release
+      env: _R_CHECK_LENGTH_1_LOGIC2_=TRUE
 
   allow_failures:
     - os: linux

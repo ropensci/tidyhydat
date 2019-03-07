@@ -13,7 +13,7 @@ station_choice(hydat_con, station_number, prov_terr_state_loc)
 is returned.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
-is returned. See \code{unique(allstations$prov_terr_state_loc)}}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \description{
 A function to avoid duplication in HYDAT functions.  This function is not intended for external use.

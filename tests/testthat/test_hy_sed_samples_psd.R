@@ -42,8 +42,8 @@ test_that("hy_sed_samples_psd respects Date specification", {
     start_date = date_vector[1],
     end_date = date_vector[2]
   )
-  expect_true(min(temp_df$DATE) >= as.Date(date_vector[1]))
-  expect_true(max(temp_df$DATE) <= as.Date(date_vector[2]))
+  expect_true(min(temp_df$Date) >= as.Date(date_vector[1]))
+  expect_true(max(temp_df$Date) <= as.Date(date_vector[2]))
 })
 
 test_that("functions that accept a date argument return data when specifying only the start date or end date",{

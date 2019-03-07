@@ -108,11 +108,6 @@ hy_sed_samples <- function(station_number = NULL,
     .data$TEMPERATURE, .data$CONCENTRATION, .data$CONCENTRATION_EN, .data$SV_DEPTH2
   )
 
-  ## Remove _EN from column names
-  colnames(sed_samples) <- gsub("_EN","", names(sed_samples))
-  
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_samples$STATION_NUMBER))
-  
-  sed_samples
+  attr(sed_samples,'missed_stns') <- setdiff(unique(stns), unique(sed_samples$STATION_NUMBER))
+  as.hy(sed_samples)
 }

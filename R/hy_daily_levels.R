@@ -125,10 +125,7 @@ hy_daily_levels <- function(station_number = NULL,
   
   colnames(dly_levels) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
   
-  
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(dly_levels$STATION_NUMBER))
+  attr(dly_levels,'missed_stns') <- setdiff(unique(stns), unique(dly_levels$STATION_NUMBER))
 
-
-  dly_levels
+  as.hy(dly_levels)
 }

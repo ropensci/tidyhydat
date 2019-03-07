@@ -109,10 +109,6 @@ hy_sed_daily_loads <- function(station_number = NULL,
 
   colnames(sed_dly_loads) <- c("STATION_NUMBER", "Date", "Parameter", "Value")
 
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
-
-
-  sed_dly_loads
+  attr(sed_dly_loads,'missed_stns') <- setdiff(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
+  as.hy(sed_dly_loads)
 }

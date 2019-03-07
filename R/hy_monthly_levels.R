@@ -113,10 +113,8 @@ hy_monthly_levels <- function(station_number = NULL,
 
   monthly_levels <- dplyr::select(monthly_levels, -.data$DAY)
   monthly_levels <- dplyr::mutate(monthly_levels, Full_month = .data$Full_month == 1)
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(monthly_levels$STATION_NUMBER))
-
-
-  monthly_levels
+  
+  
+  attr(monthly_levels,'missed_stns') <- setdiff(unique(stns), unique(monthly_levels$STATION_NUMBER))
+  as.hy(monthly_levels)
 }

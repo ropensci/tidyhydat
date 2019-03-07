@@ -1,5 +1,16 @@
-tidyhydat 0.3.5.9000
+tidyhydat 0.4.0
 =========================
+
+### IMPROVEMENTS
+* All functions now return "hy" class with associated print methods (#119)
+* `hy_daily_*` and `realtime_dd` functions now have associated plot methods.
+* prov_terr_state_loc now accepts a "CA" value to specify only stations located in Canada (#112)
+* functions that access internet resources now fail with an informative error message (#116)
+* tests that require internet resources are skipped when internet is down 
+
+### BUG FIXES
+* `pull_station_number` now only returns unique values (#109)
+* Adding a offset column that reflects OlsonNames() and is thus DST independent (#110)
 
 tidyhydat 0.3.5
 =========================

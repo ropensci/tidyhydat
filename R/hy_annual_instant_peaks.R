@@ -98,9 +98,7 @@ hy_annual_instant_peaks <- function(station_number = NULL,
                        Value = .data$PEAK,  .data$PEAK_CODE, 
                        .data$PRECISION_CODE, Symbol = .data$SYMBOL_EN) 
 
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(aip$STATION_NUMBER))
 
-  
-  aip
+  attr(aip,'missed_stns') <- setdiff(unique(stns), unique(aip$STATION_NUMBER))
+  as.hy(aip)
 }

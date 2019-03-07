@@ -5,6 +5,20 @@ library(lutz)
 
 load_all()
 
+
+## Borrowed from @steffilazerte
+tz_offset <- function(tz) {
+  t <- as.numeric(difftime(as.POSIXct("2016-01-01 00:00:00", tz = "UTC"),
+                           as.POSIXct("2016-01-01 00:00:00", tz = tz), units = "hours"))
+  t
+}
+
+create_olson <- function(t){
+  if(t > 0) t <- paste0("Etc/GMT-", t)
+  if(t <= 0) t <- paste0("Etc/GMT+", abs(t))
+  t
+}
+
 #' A tibble of all Canadian Stations stations and their names.
 allstations <- realtime_stations() %>%
   mutate(HYD_STATUS = "ACTIVE", REAL_TIME = TRUE) %>%
@@ -12,14 +26,18 @@ allstations <- realtime_stations() %>%
   distinct(STATION_NUMBER, .keep_all = TRUE) %>%
   select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, HYD_STATUS, REAL_TIME, LATITUDE, LONGITUDE) %>% 
   mutate(station_tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate")) %>% 
-  mutate(standard_offset = map_dbl(station_tz, ~ {
-    gmt_offset = as.POSIXlt(as.POSIXct("2017-01-01 12:00:00", tz = .x))$gmtoff
-    if (is.null(gmt_offset)) gmt_offset <- 0
-    gmt_offset / 3600
-  })) %>% 
+  mutate(standard_offset = map_dbl(station_tz, ~ tz_offset(.x))) %>% 
+  mutate(OlsonName = map_chr(standard_offset, ~create_olson(.x))) %>% 
   write_csv("./data-raw/HYDAT_internal_data/allstations.csv")
 
-use_data(allstations, overwrite = TRUE)
+## Manually adding NL for now
+if(!all(unique(allstations$OlsonName) %in% c(OlsonNames(), "Etc/GMT+3.5"))){
+  stop("Invalid OlsonNames generated", call. = FALSE)
+} else{
+  use_data(allstations, overwrite = TRUE)
+}
+
+
 
 ## Load up hydat connection
 ## Read in database

@@ -113,9 +113,6 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -.data$DAY)
   sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Full_Month = .data$Full_Month == 1)
   
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
-  
-
-  sed_monthly_suscon
+  attr(sed_monthly_suscon,'missed_stns') <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
+  as.hy(sed_monthly_suscon)
 }

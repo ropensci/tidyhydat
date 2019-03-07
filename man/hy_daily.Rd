@@ -16,18 +16,14 @@ HYDAT
 }
 \usage{
 hy_daily(station_number = NULL, prov_terr_state_loc = NULL,
-  quiet = TRUE, hydat_path = NULL, ...)
+  hydat_path = NULL, ...)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
 is returned.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
-is returned. See \code{unique(allstations$prov_terr_state_loc)}}
-
-\item{quiet}{Generate output of parameters successfully queried? Defaults to TRUE. 
-The output can be overly verbose when querying multiple stations but is useful when
-only querying a few stations.}
+is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing 

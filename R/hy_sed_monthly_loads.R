@@ -112,10 +112,7 @@ hy_sed_monthly_loads <- function(station_number = NULL,
 
   sed_monthly_loads <- dplyr::select(sed_monthly_loads, -.data$DAY)
   sed_monthly_loads <- dplyr::mutate(sed_monthly_loads, Full_Month = .data$Full_Month == 1)
-
-  ## What stations were missed?
-  differ_msg(unique(stns), unique(sed_monthly_loads$STATION_NUMBER))
-
-
-  sed_monthly_loads
+  
+  attr(sed_monthly_loads,'missed_stns') <- setdiff(unique(stns), unique(sed_monthly_loads$STATION_NUMBER))
+  as.hy(sed_monthly_loads)
 }

@@ -13,9 +13,9 @@ pull_station_number(.data)
 A vector of station_numbers
 }
 \description{
-This function is a thin wrapper of \code{dplyr::pull} to avoid having to always type
-dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete. This can be used 
-with \code{realtime_} and \code{hy_} functions.
+This function mimics \code{dplyr::pull} to avoid having to always type
+dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete. 
+This can be used with \code{realtime_} and \code{hy_} functions.
 }
 \examples{
 \dontrun{

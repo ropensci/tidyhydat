@@ -47,8 +47,8 @@ install.packages("tidyhydat")
 
 To install the development version of the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
 ```{r, echo=TRUE, eval=FALSE}
-if(!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("ropensci/tidyhydat")
+if(!requireNamespace("remotes")) install.packages("remotes")
+remotes::install_github("ropensci/tidyhydat")
 ```
 
 ## Usage
@@ -107,9 +107,20 @@ Another option is to provide simply the province as an argument and download all
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
-A simple plotting tool is also provided to quickly visualize realtime data:
-```{r, eval = TRUE, fig.height=7, fig.width=7}
-realtime_plot("08LG006")
+### Plotting
+
+Plot methods are also provided to quickly visualize realtime data:
+```{r}
+realtime_ex <- realtime_dd(station_number = "08LG006")
+
+plot(realtime_ex)
+```
+
+and also historical data:
+```{r, fig.height=7, fig.width=12}
+hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
+
+plot(hy_ex)
 ```
 
 ## Getting Help or Reporting an Issue
