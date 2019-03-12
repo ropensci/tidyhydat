@@ -69,16 +69,32 @@ plot.hy <- function(x = NULL, ...){
   graphics::text(0.5,0.5,"Historical Water Survey of Canada Gauges",cex=2,font=2)
   
   for(i in seq_along(unique(hydf$STATION))){
-    graphics::par(mar = c(2,2,1,1))
+    graphics::par(mar = c(4, 5, 2, 1), 
+        mgp = c(3.1, 0.4, 0), 
+        las = 1, 
+        tck = -.01, 
+        xaxs = "i", yaxs = "i") 
+    
     graphics::plot(Value ~ Date,
                    data = hydf[hydf$STATION == unique(hydf$STATION)[i],],
-                   xlab="Date", 
-                   bty= "L",
-                   pch = 20, 
-                   cex = 1,
+                   xlab = "Date", 
+                   ylab = eval(parse(text = label_helper(unique(hydf$Parameter)))),
+                   axes = FALSE,
+                   bg = rgb(200, 79, 178, alpha = 150, maxColorValue = 255),
+                   pch = 21, 
+                   ylim = c(0, max(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value, na.rm = TRUE)),
+                   cex = 0.75,
+                   frame.plot = TRUE,
                    ...)
+    
+    at_y = head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value), -1)
+    mtext(side = 2, text = at_y, at = at_y, 
+          col = "grey20", line = 1, cex = 0.6)
+    
+    at_x = tail(head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Date), -1), -1)
+    mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.6)
 
-    graphics::title(main=paste0(unique(hydf$STATION)[i]), cex.main = 1.75)
+    graphics::title(main=paste0(unique(hydf$STATION)[i]), cex.main = 1.1)
     
   }
   
@@ -88,6 +104,19 @@ plot.hy <- function(x = NULL, ...){
   invisible(TRUE)
   
 }
+
+
+label_helper <- function(parameter){
+  x = dplyr::case_when(
+    parameter == "Flow" ~ 'expression(paste("Discharge (m" ^3/s, ")"))',
+    parameter == "Level" ~ 'expression("Water Level (m)")',
+    parameter == "Load" ~ 'expression("Sediment load (tonnes)")',
+    parameter == "Suscon" ~ 'expression("Suspended Sediment (mg/L)")'
+  )
+  
+  return(x)
+}
+
 
 #' This function is deprecated in favour of generic plot methods
 #' 

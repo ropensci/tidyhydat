@@ -60,22 +60,33 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
   rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
   
   rldf$STATION <- factor(rldf$STATION)
-  
-  
-  y_axis <- ifelse(Parameter == "Flow", expression(Discharge~(m^3/s)), "Level (m)")
-  
-  ## Set the palette
-  #palette(rainbow(length(unique(rldf$STATION_NUMBER))))
+
+  graphics::par(mar = c(4, 5, 2, 1), 
+                mgp = c(3.1, 0.4, 0), 
+                las = 1, 
+                tck = -.01, 
+                xaxs = "i", yaxs = "i") 
   
   graphics::plot(Value ~ Date,
                  data = rldf,
-                 main= unique(rldf$STATION),
-                 xlab="Date", 
-                 ylab="",
-                 bty= "L",
-                 pch = 20, cex = 1)
+                 xlab = "Date", 
+                 ylab = eval(parse(text = label_helper(unique(rldf$Parameter)))),
+                 axes = FALSE,
+                 bg = rgb(200, 79, 178, alpha = 150, maxColorValue = 255),
+                 ylim = range(rldf$Value),
+                 pch = 21, 
+                 cex = 0.75,
+                 frame.plot = TRUE,
+                 ...)
   
-  graphics::title(ylab=y_axis, line=2.25)
+  at_y = tail(head(pretty(rldf$Value), -1), -1)
+  mtext(side = 2, text = at_y, at = at_y, 
+        col = "grey20", line = 1, cex = 0.6)
+  
+  at_x = tail(head(pretty(rldf$Date), -1), -1)
+  mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 0.6)
+  
+  graphics::title(main=paste0(unique(rldf$STATION)), cex.main = 1.1)
   
   
   
