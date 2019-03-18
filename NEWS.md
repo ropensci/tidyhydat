@@ -2,11 +2,11 @@ tidyhydat 0.4.0
 =========================
 
 ### IMPROVEMENTS
-* All functions now return "hy" class with associated print methods (#119)
-* `hy_daily_*` and `realtime_dd` functions now have associated plot methods.
+* All functions now return either "hy" or "realtime" class with associated print and plot methods (#119)
 * prov_terr_state_loc now accepts a "CA" value to specify only stations located in Canada (#112)
 * functions that access internet resources now fail with an informative error message (#116)
 * tests that require internet resources are skipped when internet is down 
+* Add small join example to calculate runoff to introduction vignette (#120)
 
 ### BUG FIXES
 * `pull_station_number` now only returns unique values (#109)

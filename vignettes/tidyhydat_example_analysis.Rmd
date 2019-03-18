@@ -175,7 +175,7 @@ nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
 
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
-**CAUTION**: All real time data are presented AS IS and represent unapproved data.
+**CAUTION**: All real time data are presented AS IS and represents unapproved data.
 ```{r, pcrtile_plt}
 ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
   geom_point(aes(colour = prctile)) +
