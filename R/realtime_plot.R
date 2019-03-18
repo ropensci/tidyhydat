@@ -12,21 +12,16 @@
 
 #' plot realtime object
 #' 
-#' This method plots daily time series data from the ECCC datamart. Functionality is very basic
-#' and is intended for exploratory purposes only.
 #' 
-#' @inheritParams plot.hy
-#' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
-
-#' 
+#' @describeIn plot plot.realtime
+#'
 #' @method plot realtime
-#' @name plot
-#' 
+#'
 #' @examples 
 #' \dontrun{
 #' # One station
-#' fraser <- realtime_dd("08MF005")
-#' plot(fraser)
+#' fraser_realtime <- realtime_dd("08MF005")
+#' plot(fraser_realtime)
 #' }
 #' 
 #' @export
@@ -60,7 +55,7 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
   rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
   
   rldf$STATION <- factor(rldf$STATION)
-
+  
   graphics::par(mar = c(4, 5, 2, 1), 
                 mgp = c(3.1, 0.4, 0), 
                 las = 1, 
@@ -72,19 +67,19 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
                  xlab = "Date", 
                  ylab = eval(parse(text = label_helper(unique(rldf$Parameter)))),
                  axes = FALSE,
-                 bg = rgb(200, 79, 178, alpha = 150, maxColorValue = 255),
-                 ylim = range(rldf$Value),
-                 pch = 21, 
+                 col = rgb(130, 214, 255, alpha = 150, maxColorValue = 255),
+                 #ylim = c(min(rldf$Value, na.rm = TRUE), max(rldf$Value, na.rm = TRUE) + 2),
+                 pch = 20, 
                  cex = 0.75,
                  frame.plot = TRUE,
                  ...)
   
   at_y = tail(head(pretty(rldf$Value), -1), -1)
   mtext(side = 2, text = at_y, at = at_y, 
-        col = "grey20", line = 1, cex = 0.6)
+        col = "grey20", line = 1, cex = 1)
   
   at_x = tail(head(pretty(rldf$Date), -1), -1)
-  mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 0.6)
+  mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 1)
   
   graphics::title(main=paste0(unique(rldf$STATION)), cex.main = 1.1)
   

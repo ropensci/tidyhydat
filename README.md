@@ -217,22 +217,22 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-03-12 23:21:10 (UTC)
-#>   Date range: 2019-02-10 to 2019-03-12 
-#> # A tibble: 17,532 x 8
+#>   Queried on: 2019-03-18 16:31:34 (UTC)
+#>   Date range: 2019-02-16 to 2019-03-18 
+#> # A tibble: 17,364 x 8
 #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value
 #>    <chr>          <chr>            <dttm>              <chr>     <dbl>
-#>  1 08LG006        BC               2019-02-10 08:00:00 Flow       7.98
-#>  2 08LG006        BC               2019-02-10 08:05:00 Flow       7.98
-#>  3 08LG006        BC               2019-02-10 08:10:00 Flow       8.02
-#>  4 08LG006        BC               2019-02-10 08:15:00 Flow       8.02
-#>  5 08LG006        BC               2019-02-10 08:20:00 Flow       8.02
-#>  6 08LG006        BC               2019-02-10 08:25:00 Flow       8.02
-#>  7 08LG006        BC               2019-02-10 08:30:00 Flow       8.02
-#>  8 08LG006        BC               2019-02-10 08:35:00 Flow       8.02
-#>  9 08LG006        BC               2019-02-10 08:40:00 Flow       8.02
-#> 10 08LG006        BC               2019-02-10 08:45:00 Flow       8.02
-#> # ... with 17,522 more rows, and 3 more variables: Grade <chr>,
+#>  1 08LG006        BC               2019-02-16 08:00:00 Flow       13.5
+#>  2 08LG006        BC               2019-02-16 08:05:00 Flow       13.5
+#>  3 08LG006        BC               2019-02-16 08:10:00 Flow       13.5
+#>  4 08LG006        BC               2019-02-16 08:15:00 Flow       13.5
+#>  5 08LG006        BC               2019-02-16 08:20:00 Flow       13.5
+#>  6 08LG006        BC               2019-02-16 08:25:00 Flow       13.6
+#>  7 08LG006        BC               2019-02-16 08:30:00 Flow       13.6
+#>  8 08LG006        BC               2019-02-16 08:35:00 Flow       13.6
+#>  9 08LG006        BC               2019-02-16 08:40:00 Flow       13.6
+#> 10 08LG006        BC               2019-02-16 08:45:00 Flow       13.6
+#> # ... with 17,354 more rows, and 3 more variables: Grade <chr>,
 #> #   Symbol <chr>, Code <chr>
 ```
 

@@ -4,7 +4,7 @@
 \alias{plot}
 \alias{plot.hy}
 \alias{plot.realtime}
-\title{plot hy object}
+\title{Plot historical and realtime data}
 \usage{
 \method{plot}{hy}(x = NULL, ...)
 
@@ -18,12 +18,15 @@
 \item{Parameter}{Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".}
 }
 \description{
-This method plots daily time series data from HYDAT. Functionality is very basic
-and is intended for exploratory purposes only.
-
-This method plots daily time series data from the ECCC datamart. Functionality is very basic
-and is intended for exploratory purposes only.
+This method plots either daily time series data from HYDAT or realtime data from
+the datamart. These plots are intended to be convenient and quick methods to 
+visualize hydrometric data.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{realtime}: plot.realtime
+}}
+
 \examples{
 \dontrun{
 # One station
@@ -33,8 +36,8 @@ plot(fraser)
 
 \dontrun{
 # One station
-fraser <- realtime_dd("08MF005")
-plot(fraser)
+fraser_realtime <- realtime_dd("08MF005")
+plot(fraser_realtime)
 }
 
 }

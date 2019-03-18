@@ -11,12 +11,14 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-#' plot hy object
+#' Plot historical and realtime data
 #' 
-#' This method plots daily time series data from HYDAT. Functionality is very basic
-#' and is intended for exploratory purposes only.
+#' This method plots either daily time series data from HYDAT or realtime data from
+#' the datamart. These plots are intended to be convenient and quick methods to 
+#' visualize hydrometric data.
 #' 
 #' @param x Object created by either a hy_daily_* or realtime_dd data retrieval function
+#' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
 #' @param ... passed to \code{plot}
 #' 
 #' @method plot hy
@@ -80,8 +82,7 @@ plot.hy <- function(x = NULL, ...){
                    xlab = "Date", 
                    ylab = eval(parse(text = label_helper(unique(hydf$Parameter)))),
                    axes = FALSE,
-                   bg = rgb(200, 79, 178, alpha = 150, maxColorValue = 255),
-                   pch = 21, 
+                   pch = 20, 
                    ylim = c(0, max(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value, na.rm = TRUE)),
                    cex = 0.75,
                    frame.plot = TRUE,
@@ -89,10 +90,10 @@ plot.hy <- function(x = NULL, ...){
     
     at_y = head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value), -1)
     mtext(side = 2, text = at_y, at = at_y, 
-          col = "grey20", line = 1, cex = 0.6)
+          col = "grey20", line = 1, cex = 0.75)
     
     at_x = tail(head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Date), -1), -1)
-    mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.6)
+    mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.75)
 
     graphics::title(main=paste0(unique(hydf$STATION)[i]), cex.main = 1.1)
     
