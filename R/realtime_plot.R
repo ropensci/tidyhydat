@@ -67,19 +67,19 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow","Level"), ...){
                  xlab = "Date", 
                  ylab = eval(parse(text = label_helper(unique(rldf$Parameter)))),
                  axes = FALSE,
-                 col = rgb(130, 214, 255, alpha = 150, maxColorValue = 255),
+                 col = "#82D6FF96",
                  #ylim = c(min(rldf$Value, na.rm = TRUE), max(rldf$Value, na.rm = TRUE) + 2),
                  pch = 20, 
                  cex = 0.75,
                  frame.plot = TRUE,
                  ...)
   
-  at_y = tail(head(pretty(rldf$Value), -1), -1)
-  mtext(side = 2, text = at_y, at = at_y, 
+  at_y = utils::tail(utils::head(pretty(rldf$Value), -1), -1)
+  graphics::mtext(side = 2, text = at_y, at = at_y, 
         col = "grey20", line = 1, cex = 1)
   
-  at_x = tail(head(pretty(rldf$Date), -1), -1)
-  mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 1)
+  at_x = utils::tail(utils::head(pretty(rldf$Date), -1), -1)
+  graphics::mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 1)
   
   graphics::title(main=paste0(unique(rldf$STATION)), cex.main = 1.1)
   

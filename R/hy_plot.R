@@ -88,12 +88,12 @@ plot.hy <- function(x = NULL, ...){
                    frame.plot = TRUE,
                    ...)
     
-    at_y = head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value), -1)
-    mtext(side = 2, text = at_y, at = at_y, 
+    at_y = utils::head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Value), -1)
+    graphics::mtext(side = 2, text = at_y, at = at_y, 
           col = "grey20", line = 1, cex = 0.75)
     
-    at_x = tail(head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Date), -1), -1)
-    mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.75)
+    at_x = utils::tail(utils::head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i],]$Date), -1), -1)
+    graphics::mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.75)
 
     graphics::title(main=paste0(unique(hydf$STATION)[i]), cex.main = 1.1)
     
