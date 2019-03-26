@@ -29,7 +29,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
   }
   
-  if(!is.null(prov_terr_state_loc) && prov_terr_state_loc == "CA"){
+  if(!is.null(prov_terr_state_loc) && prov_terr_state_loc[1] == "CA"){
     prov_terr_state_loc <- c("QC", "NB", "PE", "NS", "ON", "NL", "MB", 
                              "AB", "SK", "NU", "NT", "BC", "YT")
   }
@@ -62,11 +62,10 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     
     if (any(!prov_terr_state_loc %in% stn_option) == TRUE)  stop("Invalid prov_terr_state_loc value")
     
-    stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
+    dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) %>%
       dplyr::collect() %>%
       dplyr::pull(.data$STATION_NUMBER)
-    stns
     
   }
 

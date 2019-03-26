@@ -70,9 +70,7 @@
 hy_stations <- function(station_number = NULL, 
                      hydat_path = NULL,
                      prov_terr_state_loc = NULL) {
-  if (!is.null(station_number) && station_number == "ALL") {
-    stop("Deprecated behaviour.Omit the station_number = \"ALL\" argument. See ?realtime_dd for examples.")
-  }
+
 
   ## Read in database
   hydat_con <- hy_src(hydat_path)

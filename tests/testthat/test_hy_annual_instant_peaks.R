@@ -46,6 +46,8 @@ test_that("hy_annual_instant_peaks produces an error when a province is not spec
             ))
           })
 
+## TODO add test for CA
+
 test_that("hy_annual_instant_peaks gather data when no arguments are supplied",
           {
             expect_true(nrow(hy_annual_instant_peaks(
