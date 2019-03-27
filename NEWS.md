@@ -11,6 +11,7 @@ tidyhydat 0.4.0
 ### BUG FIXES
 * `pull_station_number` now only returns unique values (#109)
 * Adding a offset column that reflects OlsonNames() and is thus DST independent (#110)
+* Caught all `R_CHECK_LENGTH_1_CONDITION` instances
 
 tidyhydat 0.3.5
 =========================
@@ -33,7 +34,7 @@ tidyhydat 0.3.4
 =========================
 ### IMPROVEMENT
 * Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
-* 15% speed improvement in `realtime_dd` by elimating loop (#91)
+* 15% speed improvement in `realtime_dd` by eliminating loop (#91)
 * 40% speed improvement when querying full provinces (#89)
 * reorganized file naming so that helper functions are placed in utils-* files
 

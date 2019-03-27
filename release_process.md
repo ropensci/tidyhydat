@@ -13,7 +13,8 @@ http://shiny.andyteucher.ca/shinyapps/rver-deps/
 
 ## Build and check within `R/devtools`
 ```
-devtools::build_win()
+devtools::check_win_devel()
+devtools::check_win_release()
 devtools::check() ## build locally
 ```
 
@@ -21,16 +22,16 @@ devtools::check() ## build locally
 ```
 library(rhub)
 
-check_on_debian()
+check_with_rdevel()
+check_for_cran()
 check_on_windows()
-check_on_ubuntu()
 check_on_macos()
 ```
 
 ## Run this in the console
 ```
 R CMD build tidyhydat
-R CMD check tidyhydat_0.3.5.tar.gz --as-cran ## or whatever the package name is
+R CMD check tidyhydat_0.4.0.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## Documentation
