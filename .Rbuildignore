@@ -16,6 +16,7 @@
 tidyhydat_with_spatial.Rmd
 Rplots.pdf
 release_process.md
+use_cases.md
 
 ^presentations$
 tidyhydat_intro.Rmd
