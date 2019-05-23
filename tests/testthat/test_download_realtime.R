@@ -9,15 +9,14 @@ context("Testing realtime functions")
   )
 })
 
-test_that("realtime_dd can download stations from multiple provinces using prov_terr_state_loc", {
+test_that("realtime_dd can download stations from a whole province using prov_terr_state_loc", {
   #skip_on_travis()
   skip_on_cran()
   expected_columns <- c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", 
                         "Value", "Grade", "Symbol", "Code")
-  rldf <- realtime_dd(prov_terr_state_loc = c("QC", "PE"))
+  rldf <- realtime_dd(prov_terr_state_loc = "PE")
   
   expect_true(identical(expected_columns,colnames(rldf)))
-  expect_equal(length(unique(rldf$PROV_TERR_STATE_LOC)),2)
 })
 
 
