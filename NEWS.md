@@ -1,11 +1,12 @@
-tidhydat 0.4.1
+# tidhydat 0.4.1
 
 ### MINOR FIXES
 - Revise multi prov test to realtime because of network load and prone to intermittent failure
+- Adding rOpenSci doc site to DESCRIPTION
 
 
-tidyhydat 0.4.0
-=========================
+# tidyhydat 0.4.0
+
 
 ### IMPROVEMENTS
 * All functions now return either "hy" or "realtime" class with associated print and plot methods (#119)
@@ -19,8 +20,8 @@ tidyhydat 0.4.0
 * Adding a offset column that reflects OlsonNames() and is thus DST independent (#110)
 * Caught all `R_CHECK_LENGTH_1_CONDITION` instances
 
-tidyhydat 0.3.5
-=========================
+# tidyhydat 0.3.5
+
 ### IMPROVEMENTS
 * New function: `realtime_add_local_datetime()` adds a local datetime column to `realtime_dd()` tibble (#64)
 * New function: `pull_station_number()` wraps `pull(STATION_NUMBER)` for convenience
@@ -36,8 +37,8 @@ tidyhydat 0.3.5
 ### MINOR IMPROVEMENT
 * `download_hydat()` now returns an informative error if the download fails due to proxy-related connection issues (@rywhale, #101). 
 
-tidyhydat 0.3.4
-=========================
+# tidyhydat 0.3.4
+
 ### IMPROVEMENT
 * Added rlang as a dependency and applied tidyeval idiom to more safety control variable environments
 * 15% speed improvement in `realtime_dd` by eliminating loop (#91)
@@ -53,8 +54,8 @@ tidyhydat 0.3.4
 * no longer outputting a message when `station_number = "ALL"`.
 * Exporting pipe (`%>%`)
 
-tidyhydat 0.3.3
-=========================
+# tidyhydat 0.3.3
+
 ### NEW FEATURES
   * Open a connection to the HYDAT database directly using `hy_src()` for advanced functionality (PR#77).
   * New vignette outlining `hy_src()` (PR#77)
@@ -75,8 +76,8 @@ tidyhydat 0.3.3
   * Added `HYD_STATUS` and `REAL_TIME` columns to `allstations`. 
 
 
-tidyhydat 0.3.2
-=========================
+# tidyhydat 0.3.2
+
 ### NEW FEATURES
   * New `hy_daily()` function which combines all daily data into one dataframe.
   * Add a quick base R plotting feature for quick visualization of realtime and historical data.
@@ -93,8 +94,8 @@ tidyhydat 0.3.2
   
 
 
-tidyhydat 0.3.1
-=========================
+# tidyhydat 0.3.1
+
 ### NEW FEATURES
 
   * When package is loaded, tidyhydat checks to see if HYDAT is even present
@@ -103,8 +104,7 @@ tidyhydat 0.3.1
   * Starting to use raw SQL for table queries
   * Removing 2nd vignette from build. Still available on github
 
-tidyhydat 0.3.0 
-=========================
+# tidyhydat 0.3.0 
 
 ### NEW FEATURES
 
@@ -168,8 +168,8 @@ tidyhydat 0.3.0
 
 
 
-tidyhydat 0.2.9
-=========================
+# tidyhydat 0.2.9
+
 * Explicitly state in docs that time is in UTC (#32)
 * Added test for realtime_network_meta and moved to httr to download.
 * download functions all use httr now
@@ -177,23 +177,23 @@ tidyhydat 0.2.9
 * Fixed error message when directly calling some tidyhydat function using :: (#31)
 * To reduce overhead, `output_symbol` has been added as an argument so code can be produced if desired (#33)
 
-tidyhydat 0.2.8
-=========================
+# tidyhydat 0.2.8
+
 * Added examples to every function
 * Completed test suite including `download_realtime_ws` (#27)
 * Fixed bugs in several `STN_*` functions
 * Added `STN_DATUM_RELATED`
 * Updated documentation
 
-tidyhydat 0.2.7
-=========================
+# tidyhydat 0.2.7
+
 * Updated documentation
 * Updated README
 * Created a small database so that unit testing occurs remotely (#1)
 * Fixed `STN_DATA_RANGE` bug (#26)
 
-tidyhydat 0.2.6
-=========================
+# tidyhydat 0.2.6
+
 * using `styler` package to format code to tidyverse style guide
 * added `PROV_TERR_STATE_LOC` to `allstations`
 * added `search_number` function
@@ -202,54 +202,54 @@ tidyhydat 0.2.6
 * added `on.exit()` to internal code; a better way to disconnect
 * Updated documentation
 
-tidyhydat 0.2.5
-=========================
+# tidyhydat 0.2.5
+
 * fixed minor bug in download_realtime_ws so that better error message is outputted when no data is returned
 
-tidyhydat 0.2.4
-=========================
+# tidyhydat 0.2.4
+
 * download_realtime_dd can now accept stations from multiple provinces or simply select multiple provinces
 * better error messages for get_ws_token and download_realtime_ws
 * All functions that previously accepted STATION_NUMBER == "ALL" now throw an error. 
 * Added function to download hydat
 
-tidyhydat 0.2.3
-=========================
+# tidyhydat 0.2.3
+
 * Remove significant redundancy in station selecting mechanism
 * Added package startup message when HYDAT is out of date  
 * Add internal allstations data
 * Added all the tables as functions or data from HYDAT
 * Made missing station ouput truncated at 10 missing stations
 
-tidyhdyat 0.2.2
-=========================
+# tidyhydat 0.2.2
+
 * Adding several new tables
 * removed need for both prov and stn args
 * reduced some repetition in code
 
-tidyhydat 0.2.1
-=========================
+# tidyhydat 0.2.1
+
 * added STN_REGULATION
 * tidied ANNUAL_STATISTICS
 * added a series of lookup tables (DATUM_LIST, AGENCY_LIST, REGIONAL_OFFICE_LIST)
 * cleared up output of STATIONS
 
-tidyhydat 0.2.0
-=========================
+# tidyhydat 0.2.0
+
 * standardize hydat outputs to consistent tibble structure
 * Adding search_name function
 * final names for download functions
 * functions output an information message about stations retrieved
 
-tidyhydat 0.1.1
-=========================
+# tidyhydat 0.1.1
+
 *Renamed real-time function as download_realtime and download_realtime2
 *Added more units tests
 *Wrote vignette for package utilization
 *Brought all data closer to a "tidy" state
 
-tidyhydat 0.1.0
-=========================
+# tidyhydat 0.1.0
+
 *Added ability for STATIONS to retrieve ALL stations in the HYDAT database
 *Added ability for STATIONS to retrieve ALL stations in the HYDAT database
 *Standardize documentation; remove hydat_path default
@@ -261,8 +261,8 @@ tidyhydat 0.1.0
 *download_ws and get_ws_token function and docs
 *UPDATE README
 
-tidyhydat 0.0.4
-=========================
+# tidyhydat 0.0.4
+
 *Added ability for STATIONS to retrieve ALL stations in the HYDAT database
 *Added ability for STATIONS to retrieve ALL stations in the HYDAT database
 *Standardize documentation; remove hydat_path default
@@ -274,21 +274,21 @@ tidyhydat 0.0.4
 *download_ws and get_ws_token function and docs
 *UPDATE README
 
-tidyhydat 0.0.3
-=========================
+# tidyhydat 0.0.3
+
 *fixed db connection problem; more clear documentation
 *better error handling; more complete realtime documentation
 *harmonized README with standardized arguments
 
-tidyhydat 0.0.2
-=========================
+# tidyhydat 0.0.2
+
 *Added example analysis to README
 *Added devex badge; license to all header; import whole readr package
 *Able to take other protidyhydat inces than BC now
 *Update documentation; README
 
-tidyhydat 0.0.1
-=========================
+# tidyhydat 0.0.1
+
 *Initial package commit
 *Add license and include bcgotidyhydat  files in RBuildIgnore
 *Two base working function; package level R file and associated documentation
