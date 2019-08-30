@@ -105,7 +105,7 @@ supply this directly to the `station_number` argument:
 
 ``` r
 hy_daily_flows(station_number = "08LA001")
-#>   Queried from version of HYDAT released on 2019-01-17
+#>   Queried from version of HYDAT released on 2019-07-17
 #>    Observations:                      29,890
 #>    Measurement flags:                 5,922
 #>    Parameter(s):                      Flow
@@ -148,15 +148,15 @@ PEI_stns
 #> [8] "01CD005"
 
 hy_daily(station_number = PEI_stns)
-#>   Queried from version of HYDAT released on 2019-01-17
-#>    Observations:                      132,975
-#>    Measurement flags:                 19,925
+#>   Queried from version of HYDAT released on 2019-07-17
+#>    Observations:                      138,085
+#>    Measurement flags:                 20,521
 #>    Parameter(s):                      Flow/Level/Load/Suscon
-#>    Date range:                        1961-08-01 to 2016-12-31 
+#>    Date range:                        1961-08-01 to 2017-12-31 
 #>    Station(s) returned:               8
 #>    Stations requested but not returned: 
 #>     All stations returned.
-#> # A tibble: 132,975 x 5
+#> # A tibble: 138,085 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -169,7 +169,7 @@ hy_daily(station_number = PEI_stns)
 #>  8 01CA003        1961-08-08 Flow         NA <NA>  
 #>  9 01CA003        1961-08-09 Flow         NA <NA>  
 #> 10 01CA003        1961-08-10 Flow         NA <NA>  
-#> # ... with 132,965 more rows
+#> # ... with 138,075 more rows
 ```
 
 We can also merge our station choice and data extraction into one
@@ -182,15 +182,15 @@ into a single pipe:
 search_stn_name("canada") %>%
   pull_station_number() %>%
   hy_daily_flows()
-#>   Queried from version of HYDAT released on 2019-01-17
-#>    Observations:                      78,507
-#>    Measurement flags:                 23,325
+#>   Queried from version of HYDAT released on 2019-07-17
+#>    Observations:                      80,455
+#>    Measurement flags:                 24,036
 #>    Parameter(s):                      Flow
-#>    Date range:                        1918-08-01 to 2017-12-31 
+#>    Date range:                        1918-08-01 to 2019-05-31 
 #>    Station(s) returned:               7
 #>    Stations requested but not returned: 
 #>     All stations returned.
-#> # A tibble: 78,507 x 5
+#> # A tibble: 80,455 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -203,7 +203,7 @@ search_stn_name("canada") %>%
 #>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 #>  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 #> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-#> # ... with 78,497 more rows
+#> # ... with 80,445 more rows
 ```
 
 These example illustrate a few ways that an vector can be generated and
@@ -217,22 +217,22 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-03-18 16:31:34 (UTC)
-#>   Date range: 2019-02-16 to 2019-03-18 
-#> # A tibble: 17,364 x 8
+#>   Queried on: 2019-08-30 18:50:14 (UTC)
+#>   Date range: 2019-07-31 to 2019-08-30 
+#> # A tibble: 17,460 x 8
 #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value
 #>    <chr>          <chr>            <dttm>              <chr>     <dbl>
-#>  1 08LG006        BC               2019-02-16 08:00:00 Flow       13.5
-#>  2 08LG006        BC               2019-02-16 08:05:00 Flow       13.5
-#>  3 08LG006        BC               2019-02-16 08:10:00 Flow       13.5
-#>  4 08LG006        BC               2019-02-16 08:15:00 Flow       13.5
-#>  5 08LG006        BC               2019-02-16 08:20:00 Flow       13.5
-#>  6 08LG006        BC               2019-02-16 08:25:00 Flow       13.6
-#>  7 08LG006        BC               2019-02-16 08:30:00 Flow       13.6
-#>  8 08LG006        BC               2019-02-16 08:35:00 Flow       13.6
-#>  9 08LG006        BC               2019-02-16 08:40:00 Flow       13.6
-#> 10 08LG006        BC               2019-02-16 08:45:00 Flow       13.6
-#> # ... with 17,354 more rows, and 3 more variables: Grade <chr>,
+#>  1 08LG006        BC               2019-07-31 08:00:00 Flow       9.87
+#>  2 08LG006        BC               2019-07-31 08:05:00 Flow       9.87
+#>  3 08LG006        BC               2019-07-31 08:10:00 Flow       9.87
+#>  4 08LG006        BC               2019-07-31 08:15:00 Flow       9.87
+#>  5 08LG006        BC               2019-07-31 08:20:00 Flow       9.87
+#>  6 08LG006        BC               2019-07-31 08:25:00 Flow       9.87
+#>  7 08LG006        BC               2019-07-31 08:30:00 Flow       9.87
+#>  8 08LG006        BC               2019-07-31 08:35:00 Flow       9.87
+#>  9 08LG006        BC               2019-07-31 08:40:00 Flow       9.87
+#> 10 08LG006        BC               2019-07-31 08:45:00 Flow       9.83
+#> # ... with 17,450 more rows, and 3 more variables: Grade <chr>,
 #> #   Symbol <chr>, Code <chr>
 ```
 
@@ -253,7 +253,7 @@ realtime_ex <- realtime_dd(station_number = "08LG006")
 plot(realtime_ex)
 ```
 
-![](tools/readme/README-unnamed-chunk-8-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
 
 and also historical
 data:
@@ -264,7 +264,7 @@ hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
 plot(hy_ex)
 ```
 
-![](tools/readme/README-unnamed-chunk-9-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
 
 ## Getting Help or Reporting an Issue
 
