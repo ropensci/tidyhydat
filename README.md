@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tidyhydat <img src="tools/readme/tidyhydat.png" align="right" />
+# tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
 
 [![dev](https://assets.bcdevexchange.org/images/badges/delivery.svg)](https://github.com/BCDevExchange/assets/blob/master/README.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -217,22 +217,22 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-08-30 18:50:14 (UTC)
-#>   Date range: 2019-07-31 to 2019-08-30 
-#> # A tibble: 17,460 x 8
+#>   Queried on: 2019-09-03 16:51:45 (UTC)
+#>   Date range: 2019-08-04 to 2019-09-03 
+#> # A tibble: 17,412 x 8
 #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value
 #>    <chr>          <chr>            <dttm>              <chr>     <dbl>
-#>  1 08LG006        BC               2019-07-31 08:00:00 Flow       9.87
-#>  2 08LG006        BC               2019-07-31 08:05:00 Flow       9.87
-#>  3 08LG006        BC               2019-07-31 08:10:00 Flow       9.87
-#>  4 08LG006        BC               2019-07-31 08:15:00 Flow       9.87
-#>  5 08LG006        BC               2019-07-31 08:20:00 Flow       9.87
-#>  6 08LG006        BC               2019-07-31 08:25:00 Flow       9.87
-#>  7 08LG006        BC               2019-07-31 08:30:00 Flow       9.87
-#>  8 08LG006        BC               2019-07-31 08:35:00 Flow       9.87
-#>  9 08LG006        BC               2019-07-31 08:40:00 Flow       9.87
-#> 10 08LG006        BC               2019-07-31 08:45:00 Flow       9.83
-#> # ... with 17,450 more rows, and 3 more variables: Grade <chr>,
+#>  1 08LG006        BC               2019-08-04 08:00:00 Flow       9.19
+#>  2 08LG006        BC               2019-08-04 08:05:00 Flow       9.19
+#>  3 08LG006        BC               2019-08-04 08:10:00 Flow       9.19
+#>  4 08LG006        BC               2019-08-04 08:15:00 Flow       9.19
+#>  5 08LG006        BC               2019-08-04 08:20:00 Flow       9.19
+#>  6 08LG006        BC               2019-08-04 08:25:00 Flow       9.19
+#>  7 08LG006        BC               2019-08-04 08:30:00 Flow       9.19
+#>  8 08LG006        BC               2019-08-04 08:35:00 Flow       9.19
+#>  9 08LG006        BC               2019-08-04 08:40:00 Flow       9.19
+#> 10 08LG006        BC               2019-08-04 08:45:00 Flow       9.19
+#> # ... with 17,402 more rows, and 3 more variables: Grade <chr>,
 #> #   Symbol <chr>, Code <chr>
 ```
 
