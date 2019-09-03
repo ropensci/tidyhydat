@@ -16,7 +16,7 @@ Description: Provides functions to access historical and real-time national 'hyd
     data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
     <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 License: Apache License (== 2.0) | file LICENSE
-URL: https://github.com/ropensci/tidyhydat
+URL: https://docs.ropensci.org/tidyhydat/
 BugReports: https://github.com/ropensci/tidyhydat/issues
 Depends: 
     R (>= 3.2.0)
