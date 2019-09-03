@@ -39,7 +39,7 @@ For more information on tidy data please see
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ropensci/tidyhydat}
+  \item \url{https://docs.ropensci.org/tidyhydat/}
   \item Report bugs at \url{https://github.com/ropensci/tidyhydat/issues}
 }
 
