@@ -56,9 +56,7 @@ library(knitr)
 library(tidyverse)
 library(lubridate)
 library(corrr)
-library(leaflet)
 library(sf)
-library(mapview)
 library(rnaturalearth)
 ```
 
@@ -87,14 +85,30 @@ scale_fill_discrete <- scale_fill_viridis_d
 ## Outline
 
 .VeryLarge[
+- Introduction to me
 - Common Analysis Problems
-- What is R and why use it?
-- What is tidyhydat?
-- Some R basics
-- An example of how R can help
-- Leveraging R and what I'm not showing you
+- What is R?
+- Why use R?
+- RStudio
+ - Cover RStudio configuration
+ - Provide link to Best Practices with Spreadsheets
+- Introduction to the tidyverse
+- Provide an interactive, introductory tutorial to access ECCC data from R
+ - Introduce tidyhydat
+  - Gush about HYDAT
+  - Replicated `nrow`, `str` etc
+  - Don't forget to introduce the print methods and the plot
+  - Make a call out for wo
+ - Introduce weathercan
+ - Provide an example of using them together (How do I use them together?)
+ - Ideas
+  - Catalogue is big storm in Canada
 - Where to get help
 - Questions
+
+- A review of how to ask for help in the R language
+- Show off time
+- Add in Hydrology task view
 ]
 
 ---
