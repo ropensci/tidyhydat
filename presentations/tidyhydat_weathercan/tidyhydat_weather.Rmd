@@ -520,10 +520,10 @@ ggplot(mad_long_avg,aes(x = Value, y = DRAINAGE_AREA_GROSS, colour = PROV_TERR_S
 zip_path <- tempfile()
 download.file("https://www.nhc.noaa.gov/gis/best_track/al052019_best_track.zip",
               destfile = zip_path)
-unzip(zip_path, exdir = "presentations/tidyhydat_weathercan/data/dorian")
+unzip(zip_path, exdir = "data/dorian")
 
 ## Read in
-dorian <- read_sf("presentations/tidyhydat_weathercan/data/dorian/AL052019_pts.shp")
+dorian <- read_sf("data/dorian/AL052019_pts.shp")
 north_america = ne_countries(continent = "North America", returnclass = "sf")
 
 ggplot() +
