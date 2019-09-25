@@ -1,0 +1,764 @@
+---
+title: "Introduction to working with Canadian Water Data in R"
+subtitle: "Using tidyhydat and weathercan"
+author: "Sam Albers <br> Digital Platforms and Data Division <br> Office of the Chief Information Officer <br> Ministry of Citizens' Services <br> Province of BC <br><br> CWRA Webinar <br>"
+date: 2019-09-25
+output:
+  xaringan::moon_reader:
+    keep_md: true
+    lib_dir: libs
+    css: ["default", "default-fonts", "hygge"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      ratio: '16:9'
+---
+
+layout: true
+
+---
+
+```{r, include=FALSE}
+# Copyright 2019 Province of British Columbia
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+```
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(width = 90)
+options(max_print = 5)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "graphics/prod/figs"
+)
+
+options(scipen = 10)
+```
+
+```{r, pck-load, warning=FALSE, message=FALSE}
+library(tidyhydat)
+library(weathercan)
+library(knitr)
+library(tidyverse)
+library(lubridate)
+library(corrr)
+library(sf)
+library(rnaturalearth)
+library(fontawesome)
+```
+
+
+```{r, theme, warning=FALSE, echo=FALSE}
+bg_black <- "#272822"
+
+theme_set(theme_void() %+replace%
+            theme(legend.text = element_text(colour = "white", size = 18),
+                  legend.title = element_text(colour = "white", size = 18),
+                  plot.background = element_rect(fill = bg_black, color = bg_black),
+                  axis.text = element_text(colour = "white", size = 16),
+                  axis.title = element_text(colour = "white", size = 18),
+                  axis.title.y = element_text(angle = 90, vjust = 1),
+                  plot.title = element_text(colour = "white", size = 22, hjust = 0)))
+
+
+scale_colour_continuous <- scale_colour_viridis_c
+scale_fill_continuous <- scale_fill_viridis_c
+scale_colour_discrete <- scale_colour_viridis_d
+scale_fill_discrete <- scale_fill_viridis_d
+```
+
+
+
+## Outline
+
+.VeryLarge[
+- Who am I?
+- Learning Outcomes
+- Review R and RStudio and rationale behind using them
+- Introduce packages:
+  - `dplyr`
+  - `tidyhydat`
+  - `weathercan`
+- Provide an example of using them together
+- `tidyhydat` and `weathercan` development
+- Where and how to get help in R
+- Questions
+]
+
+---
+## Sam Albers
+
+
+
+.pull-left[
+- Data Scientist with BC government
+- Environmental Scientist by training
+- Been using R for 10 years
+- Maintainer for `tidyhydat`, `rsoi`
+- Contributor on many other packages including `weathercan`
+- Maintainer of the Hydrology task view
+]
+.pull-right[
+<center><img src="graphics/intro_me.jpg" alt="Drawing" style="width: 350px;" /></center>
+
+[`r fa(name = "twitter")` @big_bad_sam](https://twitter.com/big_bad_sam)  
+[`r fa(name = "github")` @boshek](http://github.com/boshek)  
+[`r fa(name = "paper-plane")` sam.albers@gov.bc.ca](sam.albers@gov.bc.ca)
+]
+
+---
+## What are we hoping to learn?
+.pull-left[
+.VeryLarge[
+- Describe visual elements of RStudio
+- Define and assign data to variable
+- Manage your workspaces and projects
+- Call a function
+- Understand the six main `dplyr` verbs
+- Overview of tidyhydat and weathercan functions
+- Describe usage of `tidyhydat` and `weathercan`
+- How to ask for help in R
+]
+]
+
+.pull-right[
+<img src="https://i.imgflip.com/3b0y51.jpg"/>
+
+]
+
+---
+class: inverse, center, middle
+# Common Analysis Problems
+---
+class: center, basic
+## Accessing Environment and Climate Change Canada Data
+```{r data-explorer, out.width = "85%"}
+include_graphics("graphics/ec_data_explorer2.gif")
+```
+
+### 11 clicks!
+
+---
+
+class: basic, center
+
+### Stakeholder/Manager: "Hey, this is a really cool analysis but we need to add five stations. Can you run it again?"
+<img src="https://media.giphy.com/media/l4FGuE8LtZg2wKmZi/giphy.gif"/>
+
+--
+### Make it reproducible!
+
+---
+
+## Questions worth asking...
+.large[
+- Are your methods <span style="color:#309688">reproducible</span>?
+- What is your analysis recipe? 
+- Can you share it?
+]
+
+<center><img src="graphics/data_recipe.png" alt="Drawing" style="width: 750px;" /></center>
+
+
+---
+class: inverse, left, middle
+## ...Use R!
+.pull-left[
+(or more generally any programmatic code based analysis approach...)
+]
+<center><img src="https://www.r-project.org/logo/Rlogo.png" alt="Drawing" style="width: 450px;" /></center>
+---
+.pull-left[
+### What is R?
+.large[
+- Free and open source
+- Statistical programming language
+- Publication quality graphics
+- Much of the innovation occurs in contributed packages
+- But definitely not intimidating...
+]
+
+### Some example code
+```{r echo = TRUE, message=FALSE}
+all_time_greats <- c(99, 66, 4, 9)
+```
+
+- `<-`: <span style="color:#309688">assignment operator</span>
+- `all_time_greats`: <span style="color:#309688">object</span>
+- `c`: <span style="color:#309688">function</span>
+
+]
+
+--
+.pull-right[
+
+### What is RStudio?
+
+.large[
+- Provides a place to write and run code
+- A means to organize projects
+- Referred to as an IDE
+]
+--
+### Not guaranteed to help with this...
+<center><img src="https://media.giphy.com/media/HteV6g0QTNxp6/giphy.gif" style="width: 450px;"/> </center>
+
+]
+
+---
+class: inverse, left, middle
+# R and RStudio
+
+---
+
+.pull-left[
+## The Problem
+- Many tasks when analyzing environmental data are repetitive yet interactive
+- Typically hydrologists/water professionals aren't computer scientists
+- Helpful to abstract away unneeded complexity when possible
+- A clean and easy to remember syntax reduces your cognitive load when doing analysis
+
+
+
+<center><img src="https://www.herocollector.com/Content/ArticleImages/7a716739-72cb-40d5-acfc-dfc35783d8a5.jpg" style="width: 450px;"/></center>
+
+
+
+]
+
+--
+
+.pull-right[
+## Enter `dplyr`
+> a consistent set of verbs that help you solve the most common data manipulation challenges
+
+- Independent of the data source
+- Designed for data science
+
+<center><img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png" style="width: 300px;"/></center>
+
+]
+
+
+---
+
+##`dplyr` verbs
+
+Functions with English meanings that map directly to the action being taken when that function is called
+
+Installation: `install.packages("dplyr")`
+
+
+.pull-left[
+- `%>%` a special symbol to chain operations. Read it as "then"
+- `select()` picks variables based on their names.
+- `filter()` picks cases based on their values.
+- `summarise()` reduces multiple values down to a single summary.
+- `arrange()` changes the ordering of the rows.
+- `mutate()` adds new variables that are functions of existing variables
+
+For a offline tutorial: http://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html
+]
+
+
+.pull-right[
+<center><img src="https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/dplyr_wrangling.png" style="width: 450px;"/></center>
+
+Artwork by [@allison_horst](https://twitter.com/allison_horst)
+] 
+
+---
+class: inverse, left, middle
+# dplyr code break
+
+---
+class:basic
+
+> The objective of tidyhydat is to provide a standard method of accessing ECCC hydrometric data sources (historical and real time) using a consistent and easy to use interface that employs tidy data principles within the R project.
+
+<center><img src="https://github.com/ropensci/tidyhydat/raw/master/man/figures/tidyhydat_large.png" alt="Drawing" style="width: 300px;" /></center>
+
+
+Installation: `install.packages("tidyhydat")`
+
+---
+
+## hydat::Water Survey of Canada Network
+
+.pull-left[
+```{r eval=TRUE, message=FALSE, cache=TRUE, fig.width=6.9, fig.height=5.9, fig.align='center'}
+stns <- hy_stations() %>% 
+  filter(HYD_STATUS == "ACTIVE")
+
+stns_sf <- st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
+             crs = 4326,
+             agr= "constant") 
+
+can <- ne_countries(country = "Canada", returnclass = "sf")
+
+ggplot() +
+  geom_sf(data = can, fill = NA) +
+  geom_sf(data = stns_sf, size = 1, aes(colour = PROV_TERR_STATE_LOC)) +
+  guides(colour = FALSE) +
+  coord_sf(crs = 102009, datum = NA) +
+  theme_void()
+```
+]
+
+.pull-right[
+
+## `r round(fs::file_size(file.path(hy_dir(), "Hydat.sqlite3"))/1E9,2)` GB
+## `r nrow(hy_stations())` stations in database
+## SQLite database
+## Self contained
+]
+
+---
+class:basic
+
+> The objective of weathercan is to provide a standard method of accessing ECCC climate data sources using a consistent and easy to use interface that employs tidy data principles within the R project.
+
+<center><img src="https://raw.githubusercontent.com/ropensci/weathercan/master/inst/assets/weathercan_logo.png" alt="Drawing" style="width: 300px;" /></center>
+
+
+Installation: `install.packages("weathercan")`
+---
+
+## weathercan::Climate Data
+
+.pull-left[
+```{r eval=TRUE, message=FALSE, cache=TRUE, fig.width=6.9, fig.height=5.9, fig.align='center'}
+stations_unique <- stations %>% 
+  select(prov, station_name, lat, lon) %>% 
+  unique()
+
+
+
+weather_stns_sf <- stations_unique %>%
+  filter(!station_name == "POINT LEPREAU") %>% 
+  filter(!is.na(lat), !is.na(lon)) %>% 
+  st_as_sf(coords = c("lon","lat"),
+             crs = 4326,
+             agr= "constant") 
+
+can <- ne_countries(country = "Canada", returnclass = "sf")
+
+ggplot() +
+  geom_sf(data = can, fill = NA) +
+  geom_sf(data = weather_stns_sf, size = 1, aes(colour = prov)) +
+  guides(colour = FALSE) +
+  coord_sf(crs = 102009, datum = NA) +
+  theme_void()
+```
+]
+
+.pull-right[
+
+
+## `r length(unique(stations$station_name))` stations 
+## Available online
+]
+---
+
+class: inverse, center, middle
+# Looking closer at `tidyhydat` and `weathercan`
+
+---
+
+class: basiclh
+
+## tidyhydat
+
+Download the database:
+```{r download, echo = TRUE, eval = FALSE, message=FALSE}
+download_hydat()
+```
+
+Access some flow data
+```{r flow_ex, echo = TRUE, eval = TRUE, message=FALSE}
+flows_data <- hy_daily_flows(station_number = c("08MF005","09CD001","05KJ001","02KF005"))
+```
+
+- `<-`: <span style="color:#309688">assignment operator</span>
+- `flows_data`: <span style="color:#309688">object</span>
+- `hy_daily_flows`: <span style="color:#309688">function</span>
+- `station_number`: <span style="color:#309688">argument</span>
+
+---
+
+## What else is available in `tidyhydat`?
+
+### All tables in HYDAT 
+.Large[
+- See `help(package = "tidyhydat")`
+- Realtime data
+- Instantaneous peaks
+- Daily, monthly and yearly temporal summaries
+- Discharge, level, sediment, particle size
+- Data ranges
+- Station metadata
+]
+
+---
+## What else is available in `tidyhydat`?
+```{r, message=FALSE, warning=FALSE, fig.width=11, fig.height=5, echo = TRUE, eval = TRUE}
+plot(flows_data)
+```
+---
+
+## What else is available in `tidyhydat`?
+```{r, echo = TRUE, eval = TRUE}
+search_stn_name("fraser")
+```
+
+---
+class: inverse, left, middle
+# tidyhydat code break
+
+---
+## weathercan
+```{r, echo = TRUE, eval = TRUE}
+vic_gonzales <- weather_dl(station_ids = "114", interval = "day", start = "2019-01-01", end = "2019-01-31")
+vic_gonzales
+```
+---
+## What else is available in `weathercan`?
+.Large[
+- See `help(package = "weathercan")`
+- Normals
+- Climate normals measurements
+- Station metadata
+]
+
+---
+class: inverse, left, middle
+# weathercan code break
+
+---
+## Path of Hurricane Dorian
+```{r, cache=TRUE, echo=FALSE}
+## Download the data
+zip_path <- tempfile()
+
+download.file("https://www.nhc.noaa.gov/gis/best_track/al052019_best_track.zip",
+              destfile = zip_path)
+unzip(zip_path, exdir = "data/dorian")
+
+## Read in
+dorian <- read_sf("data/dorian/AL052019_pts.shp") %>% 
+  st_transform(3347)
+north_america = ne_countries(continent = "North America", returnclass = "sf") %>% 
+  st_transform(3347)
+```
+
+```{r, fig.width=13}
+ggplot() +
+  geom_sf(data = north_america, aes(fill = sovereignt), alpha = 0.3) +
+  geom_sf(data = dorian, colour = "black") +
+  guides(fill = FALSE) +
+  theme_void()
+```
+
+---
+## Point where Dorian is over Canadian land
+```{r, warning=FALSE, fig.width=13}
+canada = ne_states(country = "Canada", returnclass = "sf") %>% 
+  st_transform(3347)
+
+dorian_canada <- st_intersection(dorian, canada)
+
+
+ggplot() +
+  geom_sf(data = canada, aes(fill = name), alpha = 0.3) +
+  geom_sf(data = dorian_canada, colour = "purple", size = 3) +
+  guides(fill = FALSE) +
+  theme_void()
+```
+
+---
+## Nova Scotia with buffer
+
+```{r, fig.width=13}
+
+dorian_buffer <- st_buffer(dorian_canada, dist = 7E4)
+
+maritimes <- canada %>% 
+  filter(name %in% c("New Brunswick", "Nova Scotia", "Prince Edward Island"))
+
+
+ggplot() +
+  geom_sf(data = maritimes, aes(fill = name), alpha = 0.3) +
+  geom_sf(data = dorian_canada, colour = "purple", size = 3) +
+  geom_sf(data = dorian_buffer, colour = "orange", alpha = 0.5) +
+  guides(fill = FALSE) +
+  theme_void()
+```
+
+---
+
+## Hydrometric Stations
+```{r, warning=FALSE, fig.width=13}
+hydro_stations <- realtime_stations() %>% 
+  st_as_sf(coords = c("LONGITUDE", "LATITUDE"),
+           crs = 4326,
+           agr = "constant") %>% 
+  st_transform(3347)
+
+climate_stations <- stations %>% 
+  filter(end == 2019) %>% 
+  filter(interval == "hour") %>% 
+  filter(!is.na(lon), !is.na(lat)) %>% 
+  st_as_sf(coords = c("lon", "lat"),
+           crs = 4326,
+           agr = "constant") %>% 
+  st_transform(3347)
+
+hydro_dorian <- st_intersection(hydro_stations, dorian_buffer)
+
+climate_dorian <- st_intersection(climate_stations, dorian_buffer)
+
+ggplot() +
+  geom_sf(data = maritimes, aes(fill = name), alpha = 0.3) +
+  geom_sf(data = dorian_canada, colour = "purple", size = 3) +
+  geom_sf(data = dorian_buffer, colour = "orange", alpha = 0.5) +
+  geom_sf(data = hydro_dorian, aes(colour = STATION_NUMBER)) +
+  guides(fill = FALSE) +
+  theme_void()
+```
+
+---
+## Hydro Data
+```{r, fig.width=13, echo = TRUE}
+hydro_dorian$STATION_NUMBER
+hydro_data <- realtime_dd(station_number = hydro_dorian$STATION_NUMBER) %>% 
+  filter(Parameter == "Level") 
+
+hydro_data
+```
+
+---
+## Hydro Data
+```{r, fig.width=15}
+dorian_date <- as.POSIXct(paste0(dorian_canada$YEAR, dorian_canada$MONTH, dorian_canada$DAY, " 00:00:01"), "%Y%m%d %H:%M:%S", tz = "GMT")
+
+hydro_data %>% 
+  ggplot(aes(x = Date, y = Value, colour = STATION_NUMBER)) +
+  geom_line() +
+  geom_vline(xintercept = dorian_date, colour = "black", linetype = 2) +
+  facet_wrap(~STATION_NUMBER, scales = "free_y") +
+  labs(y = "Level (m)") +
+  theme_minimal()
+```
+
+---
+## Climate Stations
+```{r, fig.width=13}
+ggplot() +
+  geom_sf(data = maritimes, aes(fill = name), alpha = 0.3) +
+  geom_sf(data = dorian_canada, colour = "purple", size = 3) +
+  geom_sf(data = dorian_buffer, colour = "orange", alpha = 0.5) +
+  geom_sf(data = climate_dorian, aes(colour = station_name)) +
+  guides(fill = FALSE) +
+  theme_void()
+```
+
+---
+## Climate Data
+```{r, echo=TRUE, message=FALSE}
+climate_dorian$station_id
+climate_data <- weather_dl(station_ids = climate_dorian$station_id, 
+                           start = "2019-09-01", interval = "hour", quiet = TRUE)
+
+climate_data
+```
+---
+
+## Climate Data
+```{r, fig.width=15, warning=FALSE}
+ggplot(climate_data) +
+  geom_line(aes(x = time, y = wind_spd, colour = station_name)) +
+  geom_vline(xintercept = dorian_date, colour = "black", linetype = 2) +
+  facet_wrap(~station_name) +
+  labs(y = "Wind Speed (km/h)") +
+  theme_minimal()
+```
+
+
+---
+## What else is available in R - ggplot2
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE, eval = FALSE, fig.height=5, fig.width=11}
+library(ggplot2)
+
+canada_stations <- hy_stations(prov_terr_state_loc = "CA") %>% 
+  filter(DRAINAGE_AREA_GROSS < 10000)
+
+ggplot(canada_stations, aes(x = DRAINAGE_AREA_GROSS, fill = HYD_STATUS)) +
+  geom_density(alpha = 0.5) +
+  labs(x = "Mean long term annual discharge (m^3)", y = "Gross drainage area (km^2)") +
+  theme_minimal() +
+  facet_wrap(~PROV_TERR_STATE_LOC, scales = "free_y")
+```
+---
+
+## What else is available in R - ggplot2
+```{r, warning=FALSE, message=FALSE, echo=FALSE, eval = TRUE, fig.width=13}
+library(ggplot2)
+
+canada_stations <- hy_stations(prov_terr_state_loc = "CA") %>% 
+  filter(DRAINAGE_AREA_GROSS < 10000)
+
+ggplot(canada_stations, aes(x = DRAINAGE_AREA_GROSS, fill = HYD_STATUS)) +
+  geom_density(alpha = 0.5) +
+  labs(x = "Gross drainage area (km^2)") +
+  facet_wrap(~PROV_TERR_STATE_LOC, scales = "free_y") +
+  theme_minimal()
+```
+
+
+---
+
+## It can be hard!
+
+<center><img src="https://media.giphy.com/media/iKhphMBOk5ScE/giphy.gif" style="width: 650px;"/></center>
+
+---
+
+## Resources for R
+
+<a href = "https://stackoverflow.com/"><img src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" alt="Drawing" style="width: 400px;" />
+
+
+<img src="https://www.rstudio.com/wp-content/uploads/2017/11/logoRStudioCommunity.svg" alt="Drawing" style="width: 400px;" />
+
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="Drawing" style="width: 300px;" />
+
+---
+class: inverse, left, middle
+## Reprex
+
+> Prepare Reproducible Example Code via the Clipboard
+
+<center><img src="https://raw.githubusercontent.com/tidyverse/reprex/master/man/figures/logo.png" alt="Drawing" style="width: 400px;" /></center>
+
+
+
+---
+## Contribute to `tidyhydat` and `weathercan`
+
+### Openly developed on GitHub <img src = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style = "width: 35px; vertical-align: middle; margin-bottom: 3px;">
+
+<https://github.com/ropensci/tidyhydat>
+
+<https://github.com/ropensci/weathercan>
+
+
+.pull-left[
+Any contribution helps. You don't have to be an R programmer!
+- Questions
+- Ideas / Feature requests
+- Bugs
+- Bug-fixes
+- Development
+]
+.pull-right[
+<center><img src="https://github.com/ropensci/tidyhydat/raw/master/man/figures/tidyhydat_large.png" alt="Drawing" style="width: 150px;" /></center>
+<center><img src="https://raw.githubusercontent.com/ropensci/weathercan/master/inst/assets/weathercan_logo.png" alt="Drawing" style="width: 150px;" /></center>
+]
+
+---
+## Ways to contribute
+
+- Cite as you would with a paper
+- Documentation - write a vignette!
+- Use the package - find bugs
+
+### tidyhydat
+- SQL code embedded to efficiently do analysis - leverage the database
+
+### weathercan
+- Print and plot methods
+
+---
+
+## Ways to cite
+<p>📝Albers S (2017).
+&ldquo;tidyhydat: Extract and Tidy Canadian Hydrometric Data.&rdquo;
+<em>The Journal of Open Source Software</em>, <b>2</b>(20).
+doi: <a href="https://doi.org/10.21105/joss.00511">10.21105/joss.00511</a>, <a href="http://dx.doi.org/10.21105/joss.00511">http://dx.doi.org/10.21105/joss.00511</a>. 
+</p>
+
+
+<p>📝LaZerte S, Albers S (2018).
+&ldquo;weathercan: Download and format weather data from Environment and Climate Change Canada.&rdquo;
+<em>The Journal of Open Source Software</em>, <b>3</b>(22), 571.
+<a href="http://joss.theoj.org/papers/10.21105/joss.00571">http://joss.theoj.org/papers/10.21105/joss.00571</a>. 
+</p>
+
+
+```{r, eval=FALSE}
+th <- citation("tidyhydat")
+print(th, style = "html")
+```
+
+```{r, eval=FALSE}
+wc <- citation("weathercan")
+print(wc, style = "html")
+```
+
+
+<center><img src="https://camo.githubusercontent.com/3e3b4c621878afddfe80f1e22d718ef947292f29/68747470733a2f2f7261776769742e636f6d2f726f70656e7363692f6c6f676f732f6d61737465722f69636f6e5f6c6574746572696e675f636f6c6f722e737667" alt="Drawing" style="width: 600px;" /></center>
+---
+
+class: center
+## Some Helpful Links
+
+Intro R & RStudio: <https://r4ds.had.co.nz>
+
+Getting started with `tidyhydat`: <https://docs.ropensci.org/tidyhydat>
+    
+Getting started with `weathercan`: <https://ropensci.github.io/weathercan>
+
+Hydrology CRAN task view: <https://CRAN.R-project.org/view=Hydrology>
+
+rOpenSci: <https://ropensci.org>
+
+
+    
+📝 But we all have to work in excel so read this: 
+<https://www.tandfonline.com/doi/full/10.1080/00031305.2017.1375989>
+
+<center><img src="https://cache.desktopnexus.com/cropped-wallpapers/589/589090-1536x864-[DesktopNexus.com].jpg?st=OwEAPaoek3cQGSZM3J0L0w&e=1569384966" style="width: 450px;"/></center>
+    
+---
+
+class: basic
+background-image: url(https://media.giphy.com/media/TnDoEoXfT7YoE/giphy.gif)
+background-size: cover
+
+## Questions?
+.content-box-blue[
+Slides available from 
+
+    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.pdf
+    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.Rmd
+ 
+Contact <sam.albers@gov.bc.ca>
+]
+
+

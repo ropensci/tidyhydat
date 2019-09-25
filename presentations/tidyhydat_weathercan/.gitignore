@@ -1,0 +1,10 @@
+libs/
+*.html
+*.RData
+*.rdb
+*.rdx
+tidyhydat_weather_cache
+data/
+scratch/
+prod/
+outline_notes.md
