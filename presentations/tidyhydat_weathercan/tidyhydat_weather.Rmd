@@ -755,9 +755,10 @@ background-size: cover
 .content-box-blue[
 Slides available from 
 
-    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.pdf
-    -https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_intro.Rmd
- 
+.small[
+https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_weathercan/tidyhydat_weather.pdf
+https://github.com/ropensci/tidyhydat/blob/master/presentations/tidyhydat_weathercan/tidyhydat_weather.Rmd
+ ]
 Contact <sam.albers@gov.bc.ca>
 ]
 
