@@ -4,7 +4,7 @@ libs/
 *.rdb
 *.rdx
 tidyhydat_weather_cache
-data/ 
+data/
 scratch/
 prod/
 outline_notes.md
