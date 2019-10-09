@@ -60,7 +60,7 @@ missed_station_msg <- function(x){
   if (length(differ) != 0) {
     if(length(differ) > 50){
       cat(crayon::cyan("     More than 50 stations requested but not returned. \n"))
-      cat(crayon::cyan(paste0("     See object attributes for complete list of stations.\n")))
+      cat(crayon::cyan(paste0("     See object attributes for complete list of missing stations.\n")))
     } else{
       cat(
         crayon::cyan(
