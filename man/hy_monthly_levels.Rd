@@ -19,8 +19,13 @@
 HYDAT
 }
 \usage{
-hy_monthly_levels(station_number = NULL, hydat_path = NULL,
-  prov_terr_state_loc = NULL, start_date = NULL, end_date = NULL)
+hy_monthly_levels(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_date = NULL,
+  end_date = NULL
+)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
@@ -55,24 +60,29 @@ hy_monthly_levels(prov_terr_state_loc = "PE")
           }
 }
 \seealso{
-Other HYDAT functions: \code{\link{hy_agency_list}},
-  \code{\link{hy_annual_instant_peaks}},
-  \code{\link{hy_annual_stats}},
-  \code{\link{hy_daily_flows}},
-  \code{\link{hy_daily_levels}}, \code{\link{hy_daily}},
-  \code{\link{hy_data_symbols}},
-  \code{\link{hy_data_types}}, \code{\link{hy_datum_list}},
-  \code{\link{hy_monthly_flows}},
-  \code{\link{hy_reg_office_list}},
-  \code{\link{hy_sed_daily_loads}},
-  \code{\link{hy_sed_daily_suscon}},
-  \code{\link{hy_sed_monthly_loads}},
-  \code{\link{hy_sed_monthly_suscon}},
-  \code{\link{hy_sed_samples_psd}},
-  \code{\link{hy_sed_samples}}, \code{\link{hy_stations}},
-  \code{\link{hy_stn_data_coll}},
-  \code{\link{hy_stn_data_range}},
-  \code{\link{hy_stn_op_schedule}},
-  \code{\link{hy_stn_regulation}}, \code{\link{hy_version}}
+Other HYDAT functions: 
+\code{\link{hy_agency_list}()},
+\code{\link{hy_annual_instant_peaks}()},
+\code{\link{hy_annual_stats}()},
+\code{\link{hy_daily_flows}()},
+\code{\link{hy_daily_levels}()},
+\code{\link{hy_daily}()},
+\code{\link{hy_data_symbols}},
+\code{\link{hy_data_types}},
+\code{\link{hy_datum_list}()},
+\code{\link{hy_monthly_flows}()},
+\code{\link{hy_reg_office_list}()},
+\code{\link{hy_sed_daily_loads}()},
+\code{\link{hy_sed_daily_suscon}()},
+\code{\link{hy_sed_monthly_loads}()},
+\code{\link{hy_sed_monthly_suscon}()},
+\code{\link{hy_sed_samples_psd}()},
+\code{\link{hy_sed_samples}()},
+\code{\link{hy_stations}()},
+\code{\link{hy_stn_data_coll}()},
+\code{\link{hy_stn_data_range}()},
+\code{\link{hy_stn_op_schedule}()},
+\code{\link{hy_stn_regulation}()},
+\code{\link{hy_version}()}
 }
 \concept{HYDAT functions}
