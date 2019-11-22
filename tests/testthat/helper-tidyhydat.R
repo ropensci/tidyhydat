@@ -6,7 +6,7 @@ skip_if_net_down <- function() {
 }
 
 skip_on_actions <- function() {
-  if (!nzchar(Sys.getenv("GITHUB_WORKSPACE"))) {
+  if (!Sys.getenv("GITHUB_ACTIONS")) {
     return(invisible(TRUE))
   }
   skip("On GitHub Actions")
