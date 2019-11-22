@@ -12,8 +12,11 @@
   one datum to obtain water levels referred to another datum}
 }}
 \usage{
-hy_stn_datum_conv(station_number = NULL, hydat_path = NULL,
-  prov_terr_state_loc = NULL)
+hy_stn_datum_conv(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+)
 }
 \arguments{
 \item{station_number}{A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}

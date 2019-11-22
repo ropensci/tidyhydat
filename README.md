@@ -9,6 +9,8 @@
 Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat)
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
+[![R build
+status](https://github.com/bcgov/bcdata/workflows/R-CMD-check/badge.svg)](https://github.com/bcgov/bcdata/actions?workflow=R-CMD-check)
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat)
 [![CRAN
@@ -105,7 +107,7 @@ supply this directly to the `station_number` argument:
 
 ``` r
 hy_daily_flows(station_number = "08LA001")
-#>   Queried from version of HYDAT released on 2019-07-17
+#>   Queried from version of HYDAT released on 2019-10-16
 #>    Observations:                      29,890
 #>    Measurement flags:                 5,922
 #>    Parameter(s):                      Flow
@@ -148,15 +150,15 @@ PEI_stns
 #> [8] "01CD005"
 
 hy_daily(station_number = PEI_stns)
-#>   Queried from version of HYDAT released on 2019-07-17
-#>    Observations:                      138,085
-#>    Measurement flags:                 20,521
+#>   Queried from version of HYDAT released on 2019-10-16
+#>    Observations:                      138,784
+#>    Measurement flags:                 20,654
 #>    Parameter(s):                      Flow/Level/Load/Suscon
 #>    Date range:                        1961-08-01 to 2017-12-31 
 #>    Station(s) returned:               8
 #>    Stations requested but not returned: 
 #>     All stations returned.
-#> # A tibble: 138,085 x 5
+#> # A tibble: 138,784 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -169,7 +171,7 @@ hy_daily(station_number = PEI_stns)
 #>  8 01CA003        1961-08-08 Flow         NA <NA>  
 #>  9 01CA003        1961-08-09 Flow         NA <NA>  
 #> 10 01CA003        1961-08-10 Flow         NA <NA>  
-#> # ... with 138,075 more rows
+#> # ... with 138,774 more rows
 ```
 
 We can also merge our station choice and data extraction into one
@@ -182,15 +184,15 @@ into a single pipe:
 search_stn_name("canada") %>%
   pull_station_number() %>%
   hy_daily_flows()
-#>   Queried from version of HYDAT released on 2019-07-17
-#>    Observations:                      80,455
-#>    Measurement flags:                 24,036
+#>   Queried from version of HYDAT released on 2019-10-16
+#>    Observations:                      81,915
+#>    Measurement flags:                 24,622
 #>    Parameter(s):                      Flow
 #>    Date range:                        1918-08-01 to 2019-05-31 
 #>    Station(s) returned:               7
 #>    Stations requested but not returned: 
 #>     All stations returned.
-#> # A tibble: 80,455 x 5
+#> # A tibble: 81,915 x 5
 #>    STATION_NUMBER Date       Parameter Value Symbol
 #>    <chr>          <date>     <chr>     <dbl> <chr> 
 #>  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -203,7 +205,7 @@ search_stn_name("canada") %>%
 #>  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 #>  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 #> 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-#> # ... with 80,445 more rows
+#> # ... with 81,905 more rows
 ```
 
 These example illustrate a few ways that an vector can be generated and
@@ -217,23 +219,22 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-09-03 16:51:45 (UTC)
-#>   Date range: 2019-08-04 to 2019-09-03 
-#> # A tibble: 17,412 x 8
-#>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value
-#>    <chr>          <chr>            <dttm>              <chr>     <dbl>
-#>  1 08LG006        BC               2019-08-04 08:00:00 Flow       9.19
-#>  2 08LG006        BC               2019-08-04 08:05:00 Flow       9.19
-#>  3 08LG006        BC               2019-08-04 08:10:00 Flow       9.19
-#>  4 08LG006        BC               2019-08-04 08:15:00 Flow       9.19
-#>  5 08LG006        BC               2019-08-04 08:20:00 Flow       9.19
-#>  6 08LG006        BC               2019-08-04 08:25:00 Flow       9.19
-#>  7 08LG006        BC               2019-08-04 08:30:00 Flow       9.19
-#>  8 08LG006        BC               2019-08-04 08:35:00 Flow       9.19
-#>  9 08LG006        BC               2019-08-04 08:40:00 Flow       9.19
-#> 10 08LG006        BC               2019-08-04 08:45:00 Flow       9.19
-#> # ... with 17,402 more rows, and 3 more variables: Grade <chr>,
-#> #   Symbol <chr>, Code <chr>
+#>   Queried on: 2019-11-22 23:58:07 (UTC)
+#>   Date range: 2019-10-23 to 2019-11-22 
+#> # A tibble: 17,592 x 8
+#>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
+#>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
+#>  1 08LG006        BC               2019-10-23 08:00:00 Flow         17 <NA> 
+#>  2 08LG006        BC               2019-10-23 08:05:00 Flow         17 <NA> 
+#>  3 08LG006        BC               2019-10-23 08:10:00 Flow         17 <NA> 
+#>  4 08LG006        BC               2019-10-23 08:15:00 Flow         17 <NA> 
+#>  5 08LG006        BC               2019-10-23 08:20:00 Flow         17 <NA> 
+#>  6 08LG006        BC               2019-10-23 08:25:00 Flow         17 <NA> 
+#>  7 08LG006        BC               2019-10-23 08:30:00 Flow         17 <NA> 
+#>  8 08LG006        BC               2019-10-23 08:35:00 Flow         17 <NA> 
+#>  9 08LG006        BC               2019-10-23 08:40:00 Flow         17 <NA> 
+#> 10 08LG006        BC               2019-10-23 08:45:00 Flow         17 <NA> 
+#> # ... with 17,582 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 ```
 
 Another option is to provide simply the province as an argument and
@@ -255,8 +256,7 @@ plot(realtime_ex)
 
 ![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
 
-and also historical
-data:
+and also historical data:
 
 ``` r
 hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
@@ -284,8 +284,7 @@ to abide by its terms.
 
 ## Citation
 
-Get citation information for `tidyhydat` in R by
-running:
+Get citation information for `tidyhydat` in R by running:
 
 ``` r
 citation("tidyhydat")

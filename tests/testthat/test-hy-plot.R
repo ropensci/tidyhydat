@@ -3,6 +3,7 @@ context("testing plot methods for tidyhydat")
 test_that("plot fails with more than four stations",{
   skip_on_cran()
   skip_on_travis()
+  skip_on_actions()
   stns <-  c("01AA002", "01AD001", "01AD002", "01AD003", "01AD004")
   four_stns <- hy_daily_flows(stns)
   expect_error(plot(four_stns))

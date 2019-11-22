@@ -46,6 +46,7 @@ realtime_dd(prov_terr_state_loc = "PE")
 
 }
 \seealso{
-Other realtime functions: \code{\link{realtime_stations}}
+Other realtime functions: 
+\code{\link{realtime_stations}()}
 }
 \concept{realtime functions}

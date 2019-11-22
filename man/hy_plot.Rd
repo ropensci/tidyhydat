@@ -4,8 +4,10 @@
 \alias{hy_plot}
 \title{This function is deprecated in favour of generic plot methods}
 \usage{
-hy_plot(station_number = NULL, Parameter = c("Flow", "Level", "Suscon",
-  "Load"))
+hy_plot(
+  station_number = NULL,
+  Parameter = c("Flow", "Level", "Suscon", "Load")
+)
 }
 \arguments{
 \item{station_number}{A (or several) seven digit Water Survey of Canada station number.}
