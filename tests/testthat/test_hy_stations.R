@@ -27,3 +27,9 @@ test_that("hy_stations gather data when no arguments are supplied", {
   expect_true(nrow(hy_stations(hydat_path = hy_test_db())) >= 1)
 })
 
+test_that("hy_stations outputs actual NA's", {
+  stns <- hy_stations(prov_terr_state_loc = "BC")
+  expect_gt(nrow(stns[is.na(stns$SED_STATUS),]), 0L)
+  expect_gt(nrow(stns[is.na(stns$HYD_STATUS),]), 0L)
+})
+
