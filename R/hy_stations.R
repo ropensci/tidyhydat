@@ -93,12 +93,12 @@ hy_stations <- function(station_number = NULL,
       HYD_STATUS = dplyr::case_when(
         .data$HYD_STATUS == "D" ~ "DISCONTINUED",
         .data$HYD_STATUS == "A" ~ "ACTIVE",
-        TRUE ~ "NA"
+        TRUE ~ NA_character_
       ),
       SED_STATUS = dplyr::case_when(
         .data$SED_STATUS == "D" ~ "DISCONTINUED",
         .data$SED_STATUS == "A" ~ "ACTIVE",
-        TRUE ~ "NA"
+        TRUE ~ NA_character_
       ),
       RHBN = .data$RHBN == 1,
       REAL_TIME = .data$REAL_TIME == 1
