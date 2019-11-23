@@ -3,7 +3,7 @@
 ### MINOR FIXES
 - Revise multi prov test to realtime because of network load and prone to intermittent failure
 - Adding rOpenSci doc site to DESCRIPTION
-
+- Fix character NA's in `hy_stations` (#125)
 
 # tidyhydat 0.4.0
 
