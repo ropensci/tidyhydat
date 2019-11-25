@@ -331,7 +331,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
 #'
 #'
 hy_dir <- function(...){
-  rappdirs::user_data_dir("tidyhydat")
+  rappdirs::user_data_dir(appname = "tidyhydat", ...)
 }
 
 #' hy_agency_list function
