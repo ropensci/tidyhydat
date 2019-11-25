@@ -17,7 +17,7 @@ returns the previous value of \link{hy_default_db}.
 For many reasons, it may be convenient to set the default
 database location to somewhere other than the global default. Users 
 may wish to use a previously downloaded version of the database for
-reproducibility purposes, store hydat somewhere other than \link{hy_dir()}.
+reproducibility purposes, store hydat somewhere other than hy_dir().
 }
 \examples{
 \dontrun{
