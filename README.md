@@ -24,9 +24,9 @@ checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.rstudio.co
 
 ## Project Status
 
-This package is maintained by the Knowledge Management Branch of the
-[British Columbia Ministry of Environment and Climate Change
-Strategy](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/environment-climate-change).
+This package is maintained by the Data Science and Analytics Branch of
+the [British Columbia Ministry of Citizens’
+Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
 
 ## What does `tidyhydat` do?
 
@@ -219,21 +219,21 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-11-22 23:58:07 (UTC)
-#>   Date range: 2019-10-23 to 2019-11-22 
+#>   Queried on: 2019-11-25 23:44:34 (UTC)
+#>   Date range: 2019-10-26 to 2019-11-25 
 #> # A tibble: 17,592 x 8
 #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
 #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
-#>  1 08LG006        BC               2019-10-23 08:00:00 Flow         17 <NA> 
-#>  2 08LG006        BC               2019-10-23 08:05:00 Flow         17 <NA> 
-#>  3 08LG006        BC               2019-10-23 08:10:00 Flow         17 <NA> 
-#>  4 08LG006        BC               2019-10-23 08:15:00 Flow         17 <NA> 
-#>  5 08LG006        BC               2019-10-23 08:20:00 Flow         17 <NA> 
-#>  6 08LG006        BC               2019-10-23 08:25:00 Flow         17 <NA> 
-#>  7 08LG006        BC               2019-10-23 08:30:00 Flow         17 <NA> 
-#>  8 08LG006        BC               2019-10-23 08:35:00 Flow         17 <NA> 
-#>  9 08LG006        BC               2019-10-23 08:40:00 Flow         17 <NA> 
-#> 10 08LG006        BC               2019-10-23 08:45:00 Flow         17 <NA> 
+#>  1 08LG006        BC               2019-10-26 08:00:00 Flow       20.6 <NA> 
+#>  2 08LG006        BC               2019-10-26 08:05:00 Flow       20.7 <NA> 
+#>  3 08LG006        BC               2019-10-26 08:10:00 Flow       20.8 <NA> 
+#>  4 08LG006        BC               2019-10-26 08:15:00 Flow       20.8 <NA> 
+#>  5 08LG006        BC               2019-10-26 08:20:00 Flow       20.9 <NA> 
+#>  6 08LG006        BC               2019-10-26 08:25:00 Flow       21   <NA> 
+#>  7 08LG006        BC               2019-10-26 08:30:00 Flow       21   <NA> 
+#>  8 08LG006        BC               2019-10-26 08:35:00 Flow       21.1 <NA> 
+#>  9 08LG006        BC               2019-10-26 08:40:00 Flow       21.1 <NA> 
+#> 10 08LG006        BC               2019-10-26 08:45:00 Flow       21.2 <NA> 
 #> # ... with 17,582 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 ```
 

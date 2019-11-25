@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 ## Project Status
 
-This package is maintained by the Knowledge Management Branch of the [British Columbia Ministry of Environment and Climate Change Strategy](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/environment-climate-change).
+This package is maintained by the Data Science and Analytics Branch of the [British Columbia Ministry of Citizens' Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
 
 
 ## What does `tidyhydat` do?
