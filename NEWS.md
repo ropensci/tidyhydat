@@ -4,6 +4,8 @@
 - Revise multi prov test to realtime because of network load and prone to intermittent failure
 - Adding rOpenSci doc site to DESCRIPTION
 - Fix character NA's in `hy_stations` (#125)
+- Allow downloading HYDAT to alternative locations (#129)
+- Provide better documentation of how change default db location in `hy_set_default_db()`
 
 # tidyhydat 0.4.0
 
