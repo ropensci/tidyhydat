@@ -116,10 +116,10 @@ hy_default_db <- function() {
 
 #' Set the default database path
 #' 
-#' For testing purposes, it may be convenient to set the default
-#' database location to somewhere other than the global default. Additionally,
-#' users may wish to use a previously downloaded version of the database for
-#' reproducibility purposes. 
+#' For many reasons, it may be convenient to set the default
+#' database location to somewhere other than the global default. Users 
+#' may wish to use a previously downloaded version of the database for
+#' reproducibility purposes, store hydat somewhere other than hy_dir().
 #'
 #' @param hydat_path The path to the a HYDAT sqlite3 database file
 #'   (e.g., \link{hy_test_db})

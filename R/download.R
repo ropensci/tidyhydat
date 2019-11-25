@@ -30,6 +30,12 @@ download_hydat <- function(dl_hydat_here = NULL) {
   
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
+  } else {
+    if (!dir.exists(dl_hydat_here)) {
+      dir.create(dl_hydat_here)
+      message(crayon::blue("You have downloaded hydat to", dl_hydat_here))
+      message(crayon::blue("See ?hy_set_default_db to change where tidyhydat looks for HYDAT"))
+    }
   }
   
   ## Close all connections if function bonks halfway through
@@ -102,7 +108,8 @@ download_hydat <- function(dl_hydat_here = NULL) {
   httr::stop_for_status(res)
   
   if(file.exists(tmp)) info("Extracting HYDAT")
-
+  
+  
   utils::unzip(tmp, exdir = dl_hydat_here, overwrite = TRUE)
   
   
