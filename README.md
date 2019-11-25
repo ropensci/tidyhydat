@@ -10,7 +10,7 @@ Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://trav
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
 [![R build
-status](https://github.com/bcgov/bcdata/workflows/R-CMD-check/badge.svg)](https://github.com/bcgov/bcdata/actions?workflow=R-CMD-check)
+status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions?workflow=R-CMD-check)
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat)
 [![CRAN
@@ -219,7 +219,7 @@ easily select specific stations by supplying a station of interest:
 
 ``` r
 realtime_dd(station_number = "08LG006")
-#>   Queried on: 2019-11-25 23:44:34 (UTC)
+#>   Queried on: 2019-11-25 23:57:35 (UTC)
 #>   Date range: 2019-10-26 to 2019-11-25 
 #> # A tibble: 17,592 x 8
 #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
