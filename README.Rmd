@@ -44,7 +44,7 @@ install.packages("tidyhydat")
 ```
 
 
-To install the development version of the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package
+To install the development version of the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package:
 ```{r, echo=TRUE, eval=FALSE}
 if(!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("ropensci/tidyhydat")
@@ -53,7 +53,7 @@ remotes::install_github("ropensci/tidyhydat")
 ## Usage
 A more thorough vignette can be found on the `tidyhydat` [CRAN page](https://cran.r-project.org/package=tidyhydat/vignettes/tidyhydat_an_introduction.html).
 
-When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. To use `dplyr`, it is required to be loaded by itself. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/package=dplyr/vignettes/dplyr.html).
+When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. To use actually use `dplyr` in a session you must explicitly load it. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/package=dplyr/vignettes/dplyr.html).
   
 ```{r, eval = TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 library(tidyhydat)
@@ -65,45 +65,12 @@ To use many of the functions in the `tidyhydat` package you will need to downloa
 ```{r, eval=FALSE}
 download_hydat()
 ```
-This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
-
-Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `help(package = "tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this. 
-
-The simplest case is if you would like to extract only station. You can supply this directly to the `station_number` argument:
-```{r example1, warning=FALSE}
-hy_daily_flows(station_number = "08LA001")
-```
-
-Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code: `PE`) and then create vector which is passed to the multi-parameter function `hy_daily()`. This function queries the flow, level, sediment load and suspended sediment concentration tables and combines them (if present) into one dataframe:
-
-```{r example2, warning=FALSE}
-PEI_stns <- hy_stations() %>%
-  filter(HYD_STATUS == "ACTIVE") %>%
-  filter(PROV_TERR_STATE_LOC == "PE") %>%
-  pull_station_number()
-
-PEI_stns
-
-hy_daily(station_number = PEI_stns)
-```
-
-We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example, if for some reason we wanted all the stations in Canada that had the name "Canada" in them we could unify those selection and data extraction processes into a single pipe:
-```{r, example3}
-search_stn_name("canada") %>%
-  pull_station_number() %>%
-  hy_daily_flows()
-```
-
-These example illustrate a few ways that an vector can be generated and supplied to functions within `tidyhydat`.
+This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this can take a long time! To see where HYDAT was saved you can run `hy_default_db()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
 
 ### Real-time
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r}
 realtime_dd(station_number = "08LG006")
-```
-Another option is to provide simply the province as an argument and download all stations from that province:
-```{r, eval = FALSE}
-realtime_dd(prov_terr_state_loc = "PE")
 ```
 
 ### Plotting
