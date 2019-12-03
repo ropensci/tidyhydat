@@ -1,3 +1,27 @@
+tidhydat 0.5.0
+=========================
+## Re-submission note
+* Vignette linked changed to canonical form. 
+* GitHub actions badge link now points only to GitHub repo.
+* `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` now link directly to GitHub repo.
+* CRAN checks link changed to `CRAN.R-project.org` link
+* Add title to README and fixed bug in realtime `plot` method and reduce size of README as per Uwe comments
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local Windows 10, R 3.6.1 (via R CMD check --as-cran)
+* ubuntu, R 3.6.1 (travis-ci) (release)
+* ubuntu, (travis-ci) (devel)
+* ubuntu-16.04, r: '3.3' (github actions)
+* ubuntu-16.04, r: '3.4' (github actions)
+* ubuntu-16.04, r: '3.5' (github actions)
+* ubuntu-16.04, r: '3.6' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+* macOS 10.11 El Capitan, R-release (experimental) - r-hub
+
+
 tidhydat 0.4.0
 =========================
 ## Test environments

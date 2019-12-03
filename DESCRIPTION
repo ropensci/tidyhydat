@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 0.4.0.9000
+Version: 0.5.0
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0002-9270-7884")),
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
@@ -42,4 +42,4 @@ Suggests:
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.1

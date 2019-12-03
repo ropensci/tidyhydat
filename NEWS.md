@@ -1,4 +1,4 @@
-# tidhydat 0.4.1
+# tidhydat 0.5.0
 
 ### MINOR FIXES
 - Revise multi prov test to realtime because of network load and prone to intermittent failure
