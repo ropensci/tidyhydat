@@ -1,3 +1,6 @@
+# tidyhydat 0.5.0.9000
+- Replace `class(x) ==` with `inherits`
+
 # tidyhydat 0.5.0
 
 ### MINOR FIXES

@@ -60,28 +60,30 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,
     suppressMessages(hy_daily_flows(stns, hydat_path = hydat_con, ...))
   )
   
-  if(any(class(flows) == "tbl_df")) daily <- flows
+  
+  
+  if (inherits(flows, "tbl_df")) daily <- flows
   
   ## levels
   levels <- handle_error(
     suppressMessages(hy_daily_levels(stns, ...))
   )
   
-  if(any(class(levels) == "tbl_df")) daily <- dplyr::bind_rows(daily, levels)
+  if (inherits(levels, "tbl_df")) daily <- dplyr::bind_rows(daily, levels)
   
   ##loads
   loads <- handle_error(
     suppressMessages(hy_sed_daily_loads(stns, ...))
   )
   
-  if(any(class(loads) == "tbl_df")) daily <- dplyr::bind_rows(daily, loads)
+  if (inherits(loads, "tbl_df")) daily <- dplyr::bind_rows(daily, loads)
   
   ## suscon
   suscon <- handle_error(
     suppressMessages(hy_sed_daily_suscon(stns, ...))
   )
   
-  if(any(class(suscon) == "tbl_df")) daily <- dplyr::bind_rows(daily, suscon)
+  if (inherits(suscon, "tbl_df")) daily <- dplyr::bind_rows(daily, suscon)
   
   
   if(nrow(daily) == 0){
