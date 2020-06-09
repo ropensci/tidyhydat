@@ -6,7 +6,7 @@ output:
   html_vignette:
      keep_md: true
 vignette: >
-  %\VignetteIndexEntry{tidyhydat_an_introduction}
+  %\VignetteIndexEntry{tidyhydat: An Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

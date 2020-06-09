@@ -6,7 +6,7 @@ output:
   html_vignette:
      keep_md: true
 vignette: >
-  %\VignetteIndexEntry{tidyhydat_example_analysis}
+  %\VignetteIndexEntry{Two examples of using tidyhydat}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
