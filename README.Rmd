@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
 
 [![dev](https://assets.bcdevexchange.org/images/badges/delivery.svg)](https://github.com/BCDevExchange/assets/blob/master/README.md) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Travis-CI Build Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat) [![Coverage status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master) 
-[![R build status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat)
+[![R build status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions)
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https://CRAN.R-project.org/package=tidyhydat) [![cran checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)
 

@@ -10,7 +10,7 @@ Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://trav
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
 [![R build
-status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat)
+status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions)
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat)
 [![CRAN
@@ -97,22 +97,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2019-12-02 18:59:32 (UTC)
-    #>   Date range: 2019-11-02 to 2019-12-02 
-    #> # A tibble: 17,482 x 8
+    #>   Queried on: 2020-06-09 20:45:38 (UTC)
+    #>   Date range: 2020-05-10 to 2020-06-09 
+    #> # A tibble: 17,436 x 8
     #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
     #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC               2019-11-02 08:00:00 Flow       13.6 <NA> 
-    #>  2 08LG006        BC               2019-11-02 08:05:00 Flow       13.6 <NA> 
-    #>  3 08LG006        BC               2019-11-02 08:10:00 Flow       13.6 <NA> 
-    #>  4 08LG006        BC               2019-11-02 08:15:00 Flow       13.6 <NA> 
-    #>  5 08LG006        BC               2019-11-02 08:20:00 Flow       13.6 <NA> 
-    #>  6 08LG006        BC               2019-11-02 08:25:00 Flow       13.6 <NA> 
-    #>  7 08LG006        BC               2019-11-02 08:30:00 Flow       13.6 <NA> 
-    #>  8 08LG006        BC               2019-11-02 08:35:00 Flow       13.6 <NA> 
-    #>  9 08LG006        BC               2019-11-02 08:40:00 Flow       13.6 <NA> 
-    #> 10 08LG006        BC               2019-11-02 08:45:00 Flow       13.6 <NA> 
-    #> # ... with 17,472 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC               2020-05-10 08:00:00 Flow        122 <NA> 
+    #>  2 08LG006        BC               2020-05-10 08:05:00 Flow        122 <NA> 
+    #>  3 08LG006        BC               2020-05-10 08:10:00 Flow        122 <NA> 
+    #>  4 08LG006        BC               2020-05-10 08:15:00 Flow        123 <NA> 
+    #>  5 08LG006        BC               2020-05-10 08:20:00 Flow        123 <NA> 
+    #>  6 08LG006        BC               2020-05-10 08:25:00 Flow        123 <NA> 
+    #>  7 08LG006        BC               2020-05-10 08:30:00 Flow        123 <NA> 
+    #>  8 08LG006        BC               2020-05-10 08:35:00 Flow        123 <NA> 
+    #>  9 08LG006        BC               2020-05-10 08:40:00 Flow        123 <NA> 
+    #> 10 08LG006        BC               2020-05-10 08:45:00 Flow        124 <NA> 
+    #> # ... with 17,426 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
