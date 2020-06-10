@@ -69,6 +69,8 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          # Install dev rmarkdown (https://github.com/rstudio/rmarkdown/pull/1832) for R < 3.6
+          if (getRversion() < 3.6) remotes::install_github("rstudio/rmarkdown")
         shell: Rscript {0}
 
       - name: Session info
