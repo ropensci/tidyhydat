@@ -2,7 +2,7 @@ on:
   schedule:
     - cron: '0 22 * * *'
 
-name: layerupdate
+name: checkcran
 
 
 jobs:
