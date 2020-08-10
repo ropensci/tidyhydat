@@ -1,0 +1,39 @@
+on:
+  schedule:
+    - cron: '00 22 * * 5'
+
+name: layerupdate
+
+
+jobs:
+  layerupdate:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: Install packages
+        run: |
+          install.packages(c("curl","httr", "projmgr", "remotes"))
+          remotes::install_github("ropenscilabs/cchecks")
+        shell: Rscript {0}
+        
+      - name: Check CRAN and create issue
+        run: |
+          chk <- cchecks::cch_pkgs(x = "tidyhydat")$data$checks
+          errors <- cchecks::chk[chk$status %in% "ERROR",]
+          if(nrow(errors) > 0) {
+             repo_ref <- projmgr::create_repo_ref("ropensci", "tidyhydat")
+             projmgr::post_issue(repo_ref,
+                        title = "CRAN CHECK ERROR",
+                        body = paste0("Errors on ", paste0("`", errors$flavor, "`", collapse = " & ")),
+                        labels = 'cran-error',
+                        assignees = "boshek")
+          }
+        shell: Rscript {0}
