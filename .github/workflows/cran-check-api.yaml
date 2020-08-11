@@ -28,8 +28,7 @@ jobs:
         run: |
           library(cchecks)
           library(projmgr)
-          print(Sys.getenv('GITHUB_REPOSITORY'))
-          chk <- cchecks::cch_pkgs(x = "tidyhydat")$data$checks
+          chk <- cchecks::cch_pkgs(x = gsub(".*/","",Sys.getenv('GITHUB_REPOSITORY')))$data$checks
           problems <- chk[chk$status != "OK", ]
           if (nrow(problems) > 0) {
             repo_ref <- create_repo_ref("ropensci", "tidyhydat")
