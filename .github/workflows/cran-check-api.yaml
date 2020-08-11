@@ -20,7 +20,7 @@ jobs:
 
       - name: Install packages
         run: |
-          install.packages(c("curl","httr", "projmgr", "remotes"))
+          install.packages(c("projmgr", "remotes"))
           remotes::install_github("ropenscilabs/cchecks")
         shell: Rscript {0}
         
