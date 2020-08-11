@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 4 * * *'
 
 name: checkcran
 
@@ -27,7 +27,7 @@ jobs:
       - name: Check CRAN and create issue
         run: |
           chk <- cchecks::cch_pkgs(x = "tidyhydat")$data$checks
-          errors <- cchecks::chk[chk$status %in% "ERROR",]
+          errors <- chk[chk$status %in% "ERROR",]
           if(nrow(errors) > 0) {
              repo_ref <- projmgr::create_repo_ref("ropensci", "tidyhydat")
              projmgr::post_issue(repo_ref,
