@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '5 * * * *'
 
 name: checkcran
 
@@ -20,20 +20,27 @@ jobs:
 
       - name: Install packages
         run: |
-          install.packages(c("projmgr", "remotes"))
+          install.packages(c("projmgr", "remotes", "knitr"))
           remotes::install_github("ropenscilabs/cchecks")
         shell: Rscript {0}
         
       - name: Check CRAN and create issue
         run: |
+          library(cchecks)
+          library(projmgr)
+          print(Sys.getenv('GITHUB_REPOSITORY'))
           chk <- cchecks::cch_pkgs(x = "tidyhydat")$data$checks
-          errors <- chk[chk$status %in% "ERROR",]
-          if(nrow(errors) > 0) {
-             repo_ref <- projmgr::create_repo_ref("ropensci", "tidyhydat")
-             projmgr::post_issue(repo_ref,
-                        title = "CRAN CHECK ERROR",
-                        body = paste0("Errors on ", paste0("`", errors$flavor, "`", collapse = " & ")),
-                        labels = 'cran-error',
-                        assignees = "boshek")
+          problems <- chk[chk$status != "OK", ]
+          if (nrow(problems) > 0) {
+            repo_ref <- create_repo_ref("ropensci", "tidyhydat")
+            existing_issue_titles <- parse_issues(get_issues(repo_ref))$title
+            if (!any(existing_issue_titles %in% "CRAN CHECK PROBLEMS")) {
+              post_issue(repo_ref,
+                title = "CRAN CHECK PROBLEMS",
+                body = paste0(knitr::kable(chk), collapse = "\n"),
+                labels = "cran-error",
+                assignees = "boshek"
+              )
+            }
           }
         shell: Rscript {0}
