@@ -52,11 +52,10 @@ You can install `tidyhydat` from CRAN:
 
     install.packages("tidyhydat")
 
-To install the development version of the `tidyhydat` package, you need
-to install the `remotes` package then the `tidyhydat` package:
+To install the development version of the `tidyhydat` package, you can
+install directly from the rOpenSci development server:
 
-    if(!requireNamespace("remotes")) install.packages("remotes")
-    remotes::install_github("ropensci/tidyhydat")
+    install.packages("tidyhydat", repos = "https://dev.ropensci.org")
 
 Usage
 -----
@@ -97,21 +96,21 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2020-06-09 20:45:38 (UTC)
-    #>   Date range: 2020-05-10 to 2020-06-09 
+    #>   Queried on: 2020-08-17 16:32:42 (UTC)
+    #>   Date range: 2020-07-18 to 2020-08-17 
     #> # A tibble: 17,436 x 8
     #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
     #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC               2020-05-10 08:00:00 Flow        122 <NA> 
-    #>  2 08LG006        BC               2020-05-10 08:05:00 Flow        122 <NA> 
-    #>  3 08LG006        BC               2020-05-10 08:10:00 Flow        122 <NA> 
-    #>  4 08LG006        BC               2020-05-10 08:15:00 Flow        123 <NA> 
-    #>  5 08LG006        BC               2020-05-10 08:20:00 Flow        123 <NA> 
-    #>  6 08LG006        BC               2020-05-10 08:25:00 Flow        123 <NA> 
-    #>  7 08LG006        BC               2020-05-10 08:30:00 Flow        123 <NA> 
-    #>  8 08LG006        BC               2020-05-10 08:35:00 Flow        123 <NA> 
-    #>  9 08LG006        BC               2020-05-10 08:40:00 Flow        123 <NA> 
-    #> 10 08LG006        BC               2020-05-10 08:45:00 Flow        124 <NA> 
+    #>  1 08LG006        BC               2020-07-18 08:00:00 Flow       34.1 <NA> 
+    #>  2 08LG006        BC               2020-07-18 08:05:00 Flow       34   <NA> 
+    #>  3 08LG006        BC               2020-07-18 08:10:00 Flow       34   <NA> 
+    #>  4 08LG006        BC               2020-07-18 08:15:00 Flow       34   <NA> 
+    #>  5 08LG006        BC               2020-07-18 08:20:00 Flow       34   <NA> 
+    #>  6 08LG006        BC               2020-07-18 08:25:00 Flow       33.9 <NA> 
+    #>  7 08LG006        BC               2020-07-18 08:30:00 Flow       33.9 <NA> 
+    #>  8 08LG006        BC               2020-07-18 08:35:00 Flow       33.8 <NA> 
+    #>  9 08LG006        BC               2020-07-18 08:40:00 Flow       33.8 <NA> 
+    #> 10 08LG006        BC               2020-07-18 08:45:00 Flow       33.7 <NA> 
     #> # ... with 17,426 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting

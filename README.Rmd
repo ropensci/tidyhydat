@@ -44,10 +44,9 @@ install.packages("tidyhydat")
 ```
 
 
-To install the development version of the `tidyhydat` package, you need to install the `remotes` package then the `tidyhydat` package:
+To install the development version of the `tidyhydat` package, you can install directly from the rOpenSci development server:
 ```{r, echo=TRUE, eval=FALSE}
-if(!requireNamespace("remotes")) install.packages("remotes")
-remotes::install_github("ropensci/tidyhydat")
+install.packages("tidyhydat", repos = "https://dev.ropensci.org")
 ```
 
 ## Usage
