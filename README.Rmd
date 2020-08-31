@@ -50,7 +50,7 @@ install.packages("tidyhydat", repos = "https://dev.ropensci.org")
 ```
 
 ## Usage
-A more thorough vignette can be found on the `tidyhydat` [CRAN page](https://cran.r-project.org/package=tidyhydat/vignettes/tidyhydat_an_introduction.html).
+More documentation on `tidyhydat` can found at the rOpenSci doc page: https://docs.ropensci.org/tidyhydat/
 
 When you install `tidyhydat`, several other packages will be installed as well. One of those packages, `dplyr`, is useful for data manipulations and is used regularly here. To use actually use `dplyr` in a session you must explicitly load it. A helpful `dplyr` tutorial can be found [here](https://cran.r-project.org/package=dplyr/vignettes/dplyr.html).
   
