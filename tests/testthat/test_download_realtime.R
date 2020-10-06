@@ -34,7 +34,7 @@ test_that("When station_number is ALL there is an error", {
 
 test_that("realtime_dd works when station is not realtime",{
   skip_on_cran()
-  stns <- hy_stations()
+  stns <- hy_stations(hydat_path = hy_test_db())
   stn <- sample(stns$STATION_NUMBER[!stns$REAL_TIME & stns$HYD_STATUS == "DISCONTINUED"], 1)
   expect_s3_class(realtime_dd(stn), "realtime")
 })
