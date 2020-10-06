@@ -11,3 +11,15 @@
   publisher={Elsevier}
 }
 ```
+
+```
+@article{moore2020detecting,
+  title={Detecting the Effects of Sustained Glacier Wastage on Streamflow in Variably Glacierized Catchments},
+  author={Moore, Robert Daniel and Pelto, Ben and Menounos, Brian and Hutchinson, David},
+  journal={Frontiers in Earth Science},
+  volume={8},
+  pages={136},
+  year={2020},
+  publisher={Frontiers}
+}
+```
