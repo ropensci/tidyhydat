@@ -19,9 +19,11 @@ as.realtime <- function(x) {
 #' @export
 print.realtime <- function(x, ...){
   cat(paste("  Queried on:", format(Sys.time(), tz = "UTC"), "(UTC)\n"))
-  if(c("Date") %in% names(x)){
+  if(c("Date") %in% names(x) && !all(is.na(x$Date))){
     date_range = paste0(range(as.Date(x$Date), na.rm = TRUE), collapse = " to ")
     cat(paste0("  Date range: ", date_range, " \n"))
+  } else {
+    cat("  Date range: not available \n")
   }
   print(dplyr::as_tibble(x))
 }
