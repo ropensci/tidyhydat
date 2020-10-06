@@ -3,13 +3,15 @@
 \name{hy_stn_regulation}
 \alias{hy_stn_regulation}
 \title{Extract station regulation from the HYDAT database}
-\format{A tibble with 4 variables:
+\format{
+A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Year_from}{First year of use}
   \item{Year_to}{Last year of use}
   \item{REGULATED}{logical}
-}}
+}
+}
 \source{
 HYDAT
 }

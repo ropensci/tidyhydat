@@ -3,7 +3,8 @@
 \name{hy_sed_samples}
 \alias{hy_sed_samples}
 \title{Extract instantaneous sediment sample information from the HYDAT database}
-\format{A tibble with 19 variables:
+\format{
+A tibble with 19 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
@@ -22,7 +23,8 @@
         in Celsius at the time the sample was taken}
   \item{CONCENTRATION_EN}{Contains the instantaneous concentration sampled in milligrams per litre}
   \item{SV_DEPTH2}{Depth 2 for split vertical depth integrating (m)}
-}}
+}
+}
 \source{
 HYDAT
 }

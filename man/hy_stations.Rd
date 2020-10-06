@@ -3,7 +3,8 @@
 \name{hy_stations}
 \alias{hy_stations}
 \title{Extract station information from the HYDAT database}
-\format{A tibble with 15 variables:
+\format{
+A tibble with 15 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{STATION_NAME}{Official name for station identification}
@@ -27,7 +28,8 @@
   HYDAT database. The agency is non-WSC and non WSC funded}
   \item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
   \item{DATUM_ID}{Unique ID for a datum}
-}}
+}
+}
 \source{
 HYDAT
 }

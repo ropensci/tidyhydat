@@ -4,7 +4,8 @@
 \name{allstations}
 \alias{allstations}
 \title{All Canadian stations}
-\format{A tibble with 5 variables:
+\format{
+A tibble with 5 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{STATION_NAME}{Official name for station identification}
@@ -16,7 +17,8 @@
   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
   \item{station_tz}{Timezone of station calculated using the lutz package based on LAT/LONG of stations}
   \item{standard_offset}{Offset from UTC of local standard time}
-}}
+}
+}
 \source{
 HYDAT, Meteorological Service of Canada datamart
 }

@@ -3,13 +3,15 @@
 \name{hy_sed_daily_loads}
 \alias{hy_sed_daily_loads}
 \title{Extract daily sediment load information from the HYDAT database}
-\format{A tibble with 4 variables:
+\format{
+A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Date}{Observation date. Formatted as a Date class.}
   \item{Parameter}{Parameter being measured. Only possible value is Load}
   \item{Value}{Discharge value. The units are tonnes.}
-}}
+}
+}
 \source{
 HYDAT
 }

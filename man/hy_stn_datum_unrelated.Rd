@@ -3,13 +3,15 @@
 \name{hy_stn_datum_unrelated}
 \alias{hy_stn_datum_unrelated}
 \title{Extract station datum unrelated from HYDAT database}
-\format{A tibble with 4 variables:
+\format{
+A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{DATUM_ID}{Unique code identifying a datum}
   \item{Year_from}{First year of use}
   \item{Year_to}{Last year of use}
-}}
+}
+}
 \usage{
 hy_stn_datum_unrelated(
   station_number = NULL,

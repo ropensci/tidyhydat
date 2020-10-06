@@ -3,7 +3,8 @@
 \name{hy_stn_data_coll}
 \alias{hy_stn_data_coll}
 \title{Extract station data collection from HYDAT database}
-\format{A tibble with 6 variables:
+\format{
+A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{DATA_TYPE}{The type of data}
@@ -13,7 +14,8 @@
   sediment data or the type of the gauge used in the collection of the hydrometric data}
   \item{OPERATION}{The schedule of station operation 
   for the collection of sediment or hydrometric data}
-}}
+}
+}
 \source{
 HYDAT
 }

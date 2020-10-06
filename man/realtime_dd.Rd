@@ -3,7 +3,8 @@
 \name{realtime_dd}
 \alias{realtime_dd}
 \title{Download a tibble of realtime river data from the last 30 days from the Meteorological Service of Canada datamart}
-\format{A tibble with 8 variables:
+\format{
+A tibble with 8 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
@@ -15,7 +16,8 @@
   \item{Symbol}{reserved for future use}
   \item{Code}{quality assurance/quality control flag for the discharge}
   \item{station_tz}{Station timezone based on tidyhydat::allstations$station_tz}
-}}
+}
+}
 \usage{
 realtime_dd(station_number = NULL, prov_terr_state_loc = NULL)
 }

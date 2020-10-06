@@ -3,7 +3,8 @@
 \name{hy_annual_stats}
 \alias{hy_annual_stats}
 \title{Extract annual statistics information from the HYDAT database}
-\format{A tibble with 8 variables:
+\format{
+A tibble with 8 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
@@ -14,7 +15,8 @@
   \item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary
   and therefore has an NA value for Date.}
   \item{Symbol}{Measurement/river conditions}
-}}
+}
+}
 \source{
 HYDAT
 }

@@ -3,13 +3,15 @@
 \name{hy_stn_remarks}
 \alias{hy_stn_remarks}
 \title{Extract station remarks from HYDAT database}
-\format{A tibble with 4 variables:
+\format{
+A tibble with 4 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{REMARK_TYPE}{Type of Remark}
   \item{Year}{Year of the remark}
   \item{REMARK}{Remark}
-}}
+}
+}
 \usage{
 hy_stn_remarks(
   station_number = NULL,

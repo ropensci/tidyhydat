@@ -3,7 +3,8 @@
 \name{hy_monthly_levels}
 \alias{hy_monthly_levels}
 \title{Extract monthly levels information from the HYDAT database}
-\format{A tibble with 8 variables:
+\format{
+A tibble with 8 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Year}{Year of record.}
@@ -14,7 +15,8 @@
   \item{Value}{Value of the measurement in metres.}
   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary 
   and therefore has an NA value for Date.}
-}}
+}
+}
 \source{
 HYDAT
 }

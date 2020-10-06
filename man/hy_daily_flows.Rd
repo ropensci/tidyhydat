@@ -3,14 +3,16 @@
 \name{hy_daily_flows}
 \alias{hy_daily_flows}
 \title{Extract daily flows information from the HYDAT database}
-\format{A tibble with 5 variables:
+\format{
+A tibble with 5 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{Date}{Observation date. Formatted as a Date class.}
   \item{Parameter}{Parameter being measured. Only possible value is Flow}
   \item{Value}{Discharge value. The units are m^3/s.}
   \item{Symbol}{Measurement/river conditions}
-}}
+}
+}
 \source{
 HYDAT
 }

@@ -23,7 +23,7 @@ within the same timezone though it is possible.
 \examples{
 \dontrun{
 
-realtime_dd(c("08MF005","02LA004")) %>%
+realtime_dd(c("08MF005","02LA004")) \%>\%
  realtime_add_local_datetime()
 }
 

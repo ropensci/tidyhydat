@@ -3,7 +3,8 @@
 \name{hy_stn_data_range}
 \alias{hy_stn_data_range}
 \title{Extract station data range from HYDAT database}
-\format{A tibble with 6 variables:
+\format{
+A tibble with 6 variables:
 \describe{
   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
   \item{DATA_TYPE}{Code for the type of data}
@@ -11,7 +12,8 @@
   \item{Year_from}{First year of use}
   \item{Year_to}{Last year of use}
   \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
-}}
+}
+}
 \source{
 HYDAT
 }
