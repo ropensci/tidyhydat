@@ -37,7 +37,7 @@ prev_default <- hy_set_default_db(hy_test_db())
 
 ## Working with HYDAT tables
 
-The HYDAT database is a SQLite database, which can be accessed in R using the [dplyr](http://dplyr.tidyverse.org/) and [dbplyr](http://dbplyr.tidyverse.org/) packages. This package has simplified the connection process, so all you have to do to connect to the database is use `hy_src()`.
+The HYDAT database is a SQLite database, which can be accessed in R using the [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/) packages. This package has simplified the connection process, so all you have to do to connect to the database is use `hy_src()`.
 
 ```{r}
 src <- hy_src()

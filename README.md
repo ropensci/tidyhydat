@@ -15,7 +15,7 @@ Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https
 [![cran
 checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)
 
-[![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/onboarding/issues/152)
+[![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/software-review/issues/152)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
 [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 
@@ -39,7 +39,7 @@ What does `tidyhydat` do?
     station vectors
 -   Keep functions as simple as possible. For example, for daily flows,
     the `hy_daily_flows()` function queries the database, *tidies* the
-    data and returns a [tibble](http://tibble.tidyverse.org/) of daily
+    data and returns a [tibble](https://tibble.tidyverse.org/) of daily
     flows.
 
 Installation
@@ -93,9 +93,9 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2020-10-06 18:30:48 (UTC)
+    #>   Queried on: 2020-10-06 20:15:00 (UTC)
     #>   Date range: 2020-09-06 to 2020-10-06 
-    #> # A tibble: 17,508 x 8
+    #> # A tibble: 17,532 x 8
     #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
     #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
     #>  1 08LG006        BC               2020-09-06 08:00:00 Flow       4.01 <NA> 
@@ -108,7 +108,7 @@ easily select specific stations by supplying a station of interest:
     #>  8 08LG006        BC               2020-09-06 08:35:00 Flow       3.98 <NA> 
     #>  9 08LG006        BC               2020-09-06 08:40:00 Flow       3.98 <NA> 
     #> 10 08LG006        BC               2020-09-06 08:45:00 Flow       3.98 <NA> 
-    #> # ... with 17,498 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #> # ... with 17,522 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 

@@ -28,7 +28,7 @@
 #'  For more information on HYDAT and ECCC data sources 
 #'  \itemize{
 #'    \item Please see this description of the database: 
-#'    \url{https://ec.gc.ca/rhc-wsc/default.asp?n=9018B5EC-1}
+#'    \url{https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html}
 #'    \item This page is landing page for technical description of HYDAT:
 #'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'    \item This page links to a document that outlines database table definitions:
