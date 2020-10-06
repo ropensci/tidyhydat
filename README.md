@@ -3,10 +3,7 @@
 tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
 ===============================================================
 
-[![dev](https://assets.bcdevexchange.org/images/badges/delivery.svg)](https://github.com/BCDevExchange/assets/blob/master/README.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Travis-CI Build
-Status](http://travis-ci.org/ropensci/tidyhydat.svg?branch=master)](https://travis-ci.org/ropensci/tidyhydat)
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
 [![R build
@@ -96,22 +93,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2020-08-28 22:34:06 (UTC)
-    #>   Date range: 2020-07-29 to 2020-08-28 
-    #> # A tibble: 17,580 x 8
+    #>   Queried on: 2020-10-06 18:30:48 (UTC)
+    #>   Date range: 2020-09-06 to 2020-10-06 
+    #> # A tibble: 17,508 x 8
     #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
     #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC               2020-07-29 08:00:00 Flow       19.3 <NA> 
-    #>  2 08LG006        BC               2020-07-29 08:05:00 Flow       19.2 <NA> 
-    #>  3 08LG006        BC               2020-07-29 08:10:00 Flow       19.2 <NA> 
-    #>  4 08LG006        BC               2020-07-29 08:15:00 Flow       19.2 <NA> 
-    #>  5 08LG006        BC               2020-07-29 08:20:00 Flow       19.2 <NA> 
-    #>  6 08LG006        BC               2020-07-29 08:25:00 Flow       19.2 <NA> 
-    #>  7 08LG006        BC               2020-07-29 08:30:00 Flow       19.2 <NA> 
-    #>  8 08LG006        BC               2020-07-29 08:35:00 Flow       19.2 <NA> 
-    #>  9 08LG006        BC               2020-07-29 08:40:00 Flow       19.2 <NA> 
-    #> 10 08LG006        BC               2020-07-29 08:45:00 Flow       19.2 <NA> 
-    #> # ... with 17,570 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC               2020-09-06 08:00:00 Flow       4.01 <NA> 
+    #>  2 08LG006        BC               2020-09-06 08:05:00 Flow       4.01 <NA> 
+    #>  3 08LG006        BC               2020-09-06 08:10:00 Flow       3.98 <NA> 
+    #>  4 08LG006        BC               2020-09-06 08:15:00 Flow       3.98 <NA> 
+    #>  5 08LG006        BC               2020-09-06 08:20:00 Flow       3.98 <NA> 
+    #>  6 08LG006        BC               2020-09-06 08:25:00 Flow       3.98 <NA> 
+    #>  7 08LG006        BC               2020-09-06 08:30:00 Flow       3.98 <NA> 
+    #>  8 08LG006        BC               2020-09-06 08:35:00 Flow       3.98 <NA> 
+    #>  9 08LG006        BC               2020-09-06 08:40:00 Flow       3.98 <NA> 
+    #> 10 08LG006        BC               2020-09-06 08:45:00 Flow       3.98 <NA> 
+    #> # ... with 17,498 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
