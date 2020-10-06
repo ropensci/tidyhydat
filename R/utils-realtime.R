@@ -99,7 +99,7 @@ single_realtime_station <- function(station_number) {
     info(paste0("No daily data found for ", STATION_NUMBER_SEL))
     
     d <- dplyr::tibble(
-      A = NA, B = NA, C = NA, D = NA, E = NA,
+      A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
       F = NA, G = NA, H = NA, I = NA, J = NA
     )
     colnames(d) <- colHeaders
