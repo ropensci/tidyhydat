@@ -1,4 +1,22 @@
-tidhydat 0.5.0
+tidhydat 0.5.1
+=========================
+- Replace `class(x) ==` with `inherits`
+- Fix bug and added corresponding tests where a request for multiple stations to `realtime_dd` would fail if any data was missing
+- Update internal data
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local Windows 10, R 4.0.2 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
+
+tidyhydat 0.5.0
 =========================
 ## Re-submission note
 * Vignette linked changed to canonical form. 

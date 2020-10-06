@@ -25,13 +25,12 @@ library(rhub)
 check_with_rdevel()
 check_for_cran()
 check_on_windows()
-check_on_macos()
 ```
 
 ## Run this in the console
 ```
 R CMD build tidyhydat
-R CMD check tidyhydat_0.5.0.tar.gz --as-cran ## or whatever the package name is
+R CMD check tidyhydat_0.5.1.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## Documentation
