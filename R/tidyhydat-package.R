@@ -16,7 +16,7 @@
 #'  \itemize{
 #'   \item use the \code{download_hydat()} function.
 #'   \item If that fails you can download directly from this link:
-#'   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
+#'   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
 #'   }
 #' 
 #' For more information on tidy data please see
@@ -30,9 +30,9 @@
 #'    \item Please see this description of the database: 
 #'    \url{https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html}
 #'    \item This page is landing page for technical description of HYDAT:
-#'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
+#'    \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'    \item This page links to a document that outlines database table definitions:
-#'    \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
+#'    \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
 #'    \item This FAQ provides a helpful list of ECCC data source questions:
 #'    \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}
 #'    }

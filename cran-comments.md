@@ -1,5 +1,9 @@
 tidhydat 0.5.1
 =========================
+## Re-submission note
+- Fix all non-secure or borken links
+
+## NEWS
 - Replace `class(x) ==` with `inherits`
 - Fix bug and added corresponding tests where a request for multiple stations to `realtime_dd` would fail if any data was missing
 - Update internal data
