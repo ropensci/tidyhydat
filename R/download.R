@@ -70,7 +70,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
   ## Create the link to download HYDAT
   base_url <-
-    "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
+    "https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
   
   # Run network check
   network_check(base_url)

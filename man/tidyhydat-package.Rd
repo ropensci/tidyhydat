@@ -7,15 +7,15 @@
 \title{tidyhydat: Extract and Tidy Canadian 'Hydrometric' Data}
 \description{
 Provides functions to access historical and real-time national 'hydrometric'
-    data from Water Survey of Canada data sources (<http://dd.weather.gc.ca/hydrometric/csv/> and
-    <http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
+    data from Water Survey of Canada data sources (<https://dd.weather.gc.ca/hydrometric/csv/> and
+    <https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 }
 \references{
 To download the latest version of hydat please:
  \itemize{
   \item use the \code{download_hydat()} function.
   \item If that fails you can download directly from this link:
-  \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
+  \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
   }
 
 For more information on tidy data please see
@@ -29,9 +29,9 @@ For more information on tidy data please see
    \item Please see this description of the database: 
    \url{https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html}
    \item This page is landing page for technical description of HYDAT:
-   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
+   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
    \item This page links to a document that outlines database table definitions:
-   \url{http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
+   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
    \item This FAQ provides a helpful list of ECCC data source questions:
    \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}
    }

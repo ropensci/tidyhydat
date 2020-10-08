@@ -1,5 +1,8 @@
-# tidyhydat 0.5.0.9000
+# tidyhydat 0.5.1
 - Replace `class(x) ==` with `inherits`
+- Fix bug and added corresponding tests where a request for multiple stations to `realtime_dd` would fail if any data was missing
+- Update internal data
+- Fix all non-secure or borken links
 
 # tidyhydat 0.5.0
 
