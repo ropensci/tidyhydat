@@ -122,8 +122,8 @@ download_hydat <- function(dl_hydat_here = NULL) {
   invisible(TRUE)
 }
 
-hy_check <- function() {
-  con <- hy_src()
+hy_check <- function(hydat_path = NULL) {
+  con <- hy_src(hydat_path)
   on.exit(hy_src_disconnect(con))
   
   have_tbls <- dplyr::src_tbls(con)
