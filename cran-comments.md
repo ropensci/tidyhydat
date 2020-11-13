@@ -1,7 +1,25 @@
-tidhydat 0.5.1
+tidyhydat 0.5.2
+=========================
+## NEWS
+- add internal function `hy_check` to verify that HYDAT contains all the right tables and that those tables contain data. 
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local Windows 10, R 4.0.2 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
+
+
+tidyhydat 0.5.1
 =========================
 ## Re-submission note
-- Fix all non-secure or borken links
+- Fix all non-secure or broken links
 
 ## NEWS
 - Replace `class(x) ==` with `inherits`
