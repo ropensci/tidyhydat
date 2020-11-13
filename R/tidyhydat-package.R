@@ -16,7 +16,7 @@
 #'  \itemize{
 #'   \item use the \code{download_hydat()} function.
 #'   \item If that fails you can download directly from this link:
-#'   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www}
+#'   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
 #'   }
 #' 
 #' For more information on tidy data please see
