@@ -30,3 +30,11 @@ info <- function(msg){
 }
 
 
+red_message <- function(msg) {
+  message(crayon::red(cli::symbol$cross), " ", msg)
+}
+
+green_message <- function(msg){
+  message(crayon::green(cli::symbol$tick), " ", msg)
+}
+

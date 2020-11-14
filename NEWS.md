@@ -1,3 +1,6 @@
+# tidyhydat 0.5.2
+- add internal function `hy_check` to verify that HYDAT contains all the right tables and that those tables contain data. 
+
 # tidyhydat 0.5.1
 - Replace `class(x) ==` with `inherits`
 - Fix bug and added corresponding tests where a request for multiple stations to `realtime_dd` would fail if any data was missing

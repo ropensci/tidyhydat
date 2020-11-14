@@ -117,5 +117,34 @@ download_hydat <- function(dl_hydat_here = NULL) {
     congrats("HYDAT successfully downloaded")
   } else(not_done("HYDAT not successfully downloaded"))
   
+  hy_check()
+  
   invisible(TRUE)
 }
+
+hy_check <- function(hydat_path = NULL) {
+  con <- hy_src(hydat_path)
+  on.exit(hy_src_disconnect(con))
+  
+  have_tbls <- dplyr::src_tbls(con)
+  
+  tbl_diff <- setdiff(hy_expected_tbls(), have_tbls)
+  if (!rlang::is_empty(tbl_diff)) {
+    red_message("The following tables are missing from HYDAT")
+    red_message(paste0(tbl_diff, "\n"))
+  }
+  
+  
+  invisible(lapply(have_tbls, function(x) {
+    tbl_rows <- dplyr::tbl(con, x) %>% 
+      utils::head(1) %>% 
+      dplyr::collect() %>% 
+      nrow()
+    
+    if(tbl_rows == 0) {
+      red_message(paste0(x, " table has no data."))
+    } 
+  }))
+  
+}
+
