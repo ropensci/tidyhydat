@@ -5,7 +5,7 @@ tidyhydat 0.5.2
 
 ## Test environments
 * win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
-* local Windows 10, R 4.0.2 (via R CMD check --as-cran)
+* local Windows 10, R 4.0.3 (via R CMD check --as-cran)
 * ubuntu-20.04, r: 'release' (github actions)
 * ubuntu-20.04, r: 'devel' (github actions)
 * macOS,        r: 'release' (github actions)
