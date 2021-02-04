@@ -1,3 +1,6 @@
+# tidyhydat 0.5.2.90000
+- Allow pkg to loaded without internet and rather just issue an message when it is not. (#149)
+
 # tidyhydat 0.5.2
 - add internal function `hy_check` to verify that HYDAT contains all the right tables and that those tables contain data. 
 
