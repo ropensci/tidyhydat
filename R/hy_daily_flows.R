@@ -74,6 +74,7 @@ hy_daily_flows <- function(station_number = NULL,
   sym_temp <- sym("temp")
   sym_Date <- sym("Date")
   
+  ## SQL
   ## Data manipulations to make it "tidy"
   dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
   dly_flows <- dplyr::filter(dly_flows, STATION_NUMBER %in% stns)
@@ -93,41 +94,34 @@ hy_daily_flows <- function(station_number = NULL,
                             names_to = c(".value", "DAY"),
                             names_pattern = "(\\D+)(\\d+)")
   
+  ## Control for symbol output
+  data_symbols <- dplyr::tbl(hydat_con, "DATA_SYMBOLS")
+  data_symbols <- switch(symbol_output,
+                      code = dplyr::select(data_symbols,  .data$SYMBOL_ID),
+                      english = dplyr::select(data_symbols, .data$SYMBOL_ID, .data$SYMBOL_EN),
+                      french = dplyr::select(data_symbols, .data$SYMBOL_ID, .data$SYMBOL_FR))
+  
+  
   
   ## No days that exceed actual number of days in the month
   dly_flows <- dplyr::filter(dly_flows, .data$DAY <= .data$NO_DAYS)
   dly_flows <- dplyr::arrange(dly_flows, .data$YEAR, .data$MONTH, .data$DAY)
+  dly_flows <- dplyr::left_join(dly_flows, data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  
+  dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
+  
+  ## Bring it into R
   dly_flows <- dplyr::collect(dly_flows)
   
   if(is.data.frame(dly_flows) && nrow(dly_flows)==0) stop("No flow data for this station in HYDAT")
   
-  
   ## convert into R date.
   dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
+  dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, FLOW, FLOW_SYMBOL)
   
   ## Then when a date column exist fine tune the subset
   if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
   if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
-  
-  dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
-  
-  ## Control for symbol ouput
-  if(symbol_output == "code"){
-    dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$Date, .data$Parameter, .data$FLOW,
-                               .data$FLOW_SYMBOL)
-  }
-  
-  if(symbol_output == "english"){
-    dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$Date, 
-                               .data$Parameter, .data$FLOW, .data$SYMBOL_EN)
-  }
-  
-  if(symbol_output == "french"){
-    dly_flows <- dplyr::select(dly_flows, .data$STATION_NUMBER, .data$Date, 
-                               .data$Parameter, .data$FLOW, .data$SYMBOL_FR)
-  }
-  
   
   colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
   
