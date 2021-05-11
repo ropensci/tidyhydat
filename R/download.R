@@ -37,10 +37,6 @@ download_hydat <- function(dl_hydat_here = NULL) {
       message(crayon::blue("See ?hy_set_default_db to change where tidyhydat looks for HYDAT"))
     }
   }
-  
-  ## Close all connections if function bonks halfway through
-  on.exit(closeAllConnections(), add = TRUE)
-  
 
   ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
                    "Is that okay?", sep = "\n"))
@@ -91,16 +87,10 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
   
-  ## Remove current version of HYDAT
-  #if (file.exists(hydat_path)){
-  #  file.remove(hydat_path)
-  #}
 
   ## temporary path to save
   tmp <- tempfile("hydat_")
-  ## Create the directory if it doesn't exist already.
-  #if(!dir.exists(dirname(tmp))) dir.create(dirname(tmp))
-  
+
   ## Download the zip file
   res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
                    httr::user_agent("https://github.com/ropensci/tidyhydat"))
