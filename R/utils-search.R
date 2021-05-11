@@ -22,7 +22,7 @@ search_stn_name <- function(search_term, hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   results <- realtime_stations() %>%
@@ -48,7 +48,7 @@ search_stn_number <- function(search_term, hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   results <- realtime_stations() %>%

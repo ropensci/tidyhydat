@@ -39,7 +39,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
   }
   
   ## Close all connections if function bonks halfway through
-  on.exit(closeAllConnections())
+  on.exit(closeAllConnections(), add = TRUE)
   
 
   ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
@@ -104,7 +104,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
   ## Download the zip file
   res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
                    httr::user_agent("https://github.com/ropensci/tidyhydat"))
-  on.exit(file.remove(tmp))
+  on.exit(file.remove(tmp), add = TRUE)
   httr::stop_for_status(res)
   
   if(file.exists(tmp)) info("Extracting HYDAT")
@@ -124,7 +124,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
 hy_check <- function(hydat_path = NULL) {
   con <- hy_src(hydat_path)
-  on.exit(hy_src_disconnect(con))
+  on.exit(hy_src_disconnect(con), add = TRUE)
   
   have_tbls <- dplyr::src_tbls(con)
   
