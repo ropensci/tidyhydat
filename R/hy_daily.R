@@ -12,11 +12,11 @@
 
 #' Extract all daily water level and flow measurements
 #' 
-#' A thin wrapper around \code{hy_daily_flows} and \code{hy_daily_levels} that returns a data frames that 
+#' A thin wrapper around `hy_daily_flows` and `hy_daily_levels`` that returns a data frames that 
 #' contains both parameters. All arguments are passed directly to these functions. 
 #' 
 #' @inheritParams hy_stations 
-#' @param ... See \code{\link{hy_daily_flows}} arguments
+#' @param ... See [hy_daily_flows()] arguments
 #' 
 #' @return A tibble of daily flows and levels
 #' 

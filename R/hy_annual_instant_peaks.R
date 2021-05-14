@@ -14,7 +14,7 @@
 #' Extract annual max/min instantaneous flows and water levels from HYDAT database
 #'
 #' Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels. 
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. 
+#' `station_number` and `prov_terr_state_loc` can both be supplied. 
 #' 
 #' @inheritParams hy_stations
 #' @param start_year First year of the returned record

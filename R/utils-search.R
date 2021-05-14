@@ -5,7 +5,7 @@
 #' @param search_term Only accepts one word.
 #' @inheritParams hy_agency_list
 #'
-#' @return A tibble of stations that match the \code{search_term}
+#' @return A tibble of stations that match the `search_term`
 #' 
 #' @examples 
 #' \dontrun{

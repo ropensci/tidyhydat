@@ -16,7 +16,7 @@ Adds \code{local_datetime} and \code{tz_used} columns based on either the first 
 a user supplied timezone. This function is meant to used in a pipe with the \code{realtime_dd()} function.
 }
 \details{
-Date from realtime_dd is supplied in UTC which is the easiest format to work with across timezones. 
+Date from realtime_dd is supplied in UTC which is the easiest format to work with across timezones.
 \code{realtime_add_local_datetime} adjusts local_datetime to a common timezone. This is most useful when all stations exist
 within the same timezone though it is possible.
 }

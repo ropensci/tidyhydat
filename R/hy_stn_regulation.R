@@ -15,8 +15,8 @@
 #' Extract station regulation from the HYDAT database
 #'
 #' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation. 
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values 
-#' from the \code{hy_stations} table are returned.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all values 
+#' from the `hy_stations` table are returned.
 #'
 #' @inheritParams hy_stations
 #'

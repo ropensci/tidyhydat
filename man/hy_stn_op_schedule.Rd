@@ -6,11 +6,11 @@
 \format{
 A tibble with 6 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATA_TYPE}{The type of data}
-  \item{Year}{Year of operation schedule}
-  \item{Month_from}{First month of use}
-  \item{Month_to}{Last month of use}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{DATA_TYPE}{The type of data}
+\item{Year}{Year of operation schedule}
+\item{Month_from}{First month of use}
+\item{Month_to}{Last month of use}
 }
 }
 \source{
@@ -28,7 +28,7 @@ hy_stn_op_schedule(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

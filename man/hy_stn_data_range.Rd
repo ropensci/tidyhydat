@@ -6,12 +6,12 @@
 \format{
 A tibble with 6 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATA_TYPE}{Code for the type of data}
-  \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
-  \item{Year_from}{First year of use}
-  \item{Year_to}{Last year of use}
-  \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{DATA_TYPE}{Code for the type of data}
+\item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
+\item{Year_from}{First year of use}
+\item{Year_to}{Last year of use}
+\item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
 }
 }
 \source{
@@ -29,7 +29,7 @@ hy_stn_data_range(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

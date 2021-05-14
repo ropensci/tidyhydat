@@ -11,7 +11,7 @@ hy_datum_list(hydat_path = NULL)
 }
 \arguments{
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 }

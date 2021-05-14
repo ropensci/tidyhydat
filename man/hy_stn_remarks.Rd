@@ -6,10 +6,10 @@
 \format{
 A tibble with 4 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{REMARK_TYPE}{Type of Remark}
-  \item{Year}{Year of the remark}
-  \item{REMARK}{Remark}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{REMARK_TYPE}{Type of Remark}
+\item{Year}{Year of the remark}
+\item{REMARK}{Remark}
 }
 }
 \usage{
@@ -24,7 +24,7 @@ hy_stn_remarks(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

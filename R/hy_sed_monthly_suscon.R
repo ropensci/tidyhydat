@@ -12,9 +12,9 @@
 
 #' Extract monthly flows information from the HYDAT database
 #'
-#' Tidy data of monthly suspended sediment concentration information from the SED_DLY_SUSCON HYDAT table.  \code{station_number} and
-#'   \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned.
-#'   That is a large vector for \code{hy_sed_monthly_suscon}.
+#' Tidy data of monthly suspended sediment concentration information from the SED_DLY_SUSCON HYDAT table.  `station_number` and
+#'   `prov_terr_state_loc` can both be supplied. If both are omitted all values from the `hy_stations` table are returned.
+#'   That is a large vector for `hy_sed_monthly_suscon`.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.

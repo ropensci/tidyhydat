@@ -11,20 +11,20 @@ hy_src_disconnect(src)
 }
 \arguments{
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
-\item{src}{A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.}
+\item{src}{A  as returned by \code{\link[=hy_src]{hy_src()}}.}
 }
 \value{
-A dplyr \link[dplyr]{src_sqlite}
+A SQLite DBIConnection
 }
 \description{
 This function gives low-level access to the underlying HYDAT database used by
 other functions. Many of these tables are too large to load into memory,
-so it is best to use dplyr to \link[dplyr]{filter} them before using
-\link[dplyr]{collect} to read them into memory.
+so it is best to use dplyr to \code{\link[dplyr:filter]{dplyr::filter()}} them before using
+\code{\link[dplyr:compute]{dplyr::collect()}} to read them into memory.
 }
 \examples{
 \dontrun{
@@ -48,5 +48,5 @@ hy_src_disconnect(src)
 }
 }
 \seealso{
-\link{download_hydat}
+\code{\link[=download_hydat]{download_hydat()}}
 }

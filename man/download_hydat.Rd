@@ -7,9 +7,9 @@
 download_hydat(dl_hydat_here = NULL)
 }
 \arguments{
-\item{dl_hydat_here}{Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{hy_dir}. 
-This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
-It also downloads the database to a directory specified by \code{hy_dir}.}
+\item{dl_hydat_here}{Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{\link[=hy_dir]{hy_dir()}}.
+This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach.
+It also downloads the database to a directory specified by \code{\link[=hy_dir]{hy_dir()}}.}
 }
 \description{
 Download the HYDAT sqlite database. This database contains all the historical hydrometric data for Canada's integrated hydrometric network.

@@ -6,11 +6,11 @@
 \format{
 A tibble with 5 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{Date}{Observation date. Formatted as a Date class.}
-  \item{Parameter}{Parameter being measured. Only possible value is Level}
-  \item{Value}{Level value. The units are metres.}
-  \item{Symbol}{Measurement/river conditions}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{Date}{Observation date. Formatted as a Date class.}
+\item{Parameter}{Parameter being measured. Only possible value is Level}
+\item{Value}{Level value. The units are metres.}
+\item{Symbol}{Measurement/river conditions}
 }
 }
 \source{
@@ -31,7 +31,7 @@ hy_daily_levels(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
@@ -42,15 +42,15 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 
 \item{end_date}{Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.}
 
-\item{symbol_output}{Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default 
+\item{symbol_output}{Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default
 value is \code{code}.}
 }
 \value{
 A tibble of daily levels
 }
 \description{
-Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame.  The primary value returned by this 
-function is discharge. \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all 
+Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame.  The primary value returned by this
+function is discharge. \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all
 values from the \code{hy_stations} table are returned. That is a large vector for \code{hy_daily_levels}.
 }
 \examples{

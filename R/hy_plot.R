@@ -19,7 +19,7 @@
 #' 
 #' @param x Object created by either a hy_daily_* or realtime_dd data retrieval function
 #' @param Parameter Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".
-#' @param ... passed to \code{plot}
+#' @param ... passed to [plot()]
 #' 
 #' @method plot hy
 #' @name plot
