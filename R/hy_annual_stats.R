@@ -57,7 +57,7 @@ hy_annual_stats <- function(station_number =NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
   ## Determine which stations we are querying

@@ -6,15 +6,15 @@
 \format{
 A tibble with 8 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{Year}{Year of record.}
-  \item{Month}{Numeric month value}
-  \item{Full_Month}{Logical value is there is full record from Month}
-  \item{No_days}{Number of days in that month}
-  \item{Sum_stat}{Summary statistic being used.}
-  \item{Value}{Value of the measurement in m^3/s.}
-  \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
-  and therefore has an NA value for Date.}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{Year}{Year of record.}
+\item{Month}{Numeric month value}
+\item{Full_Month}{Logical value is there is full record from Month}
+\item{No_days}{Number of days in that month}
+\item{Sum_stat}{Summary statistic being used.}
+\item{Value}{Value of the measurement in m^3/s.}
+\item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
+and therefore has an NA value for Date.}
 }
 }
 \source{
@@ -34,7 +34,7 @@ hy_monthly_flows(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

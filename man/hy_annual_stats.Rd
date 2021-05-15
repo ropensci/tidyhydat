@@ -6,15 +6,15 @@
 \format{
 A tibble with 8 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
-  \item{Year}{Year of record.}
-  \item{Sum_stat}{Summary statistic being used.}
-  \item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the
-  units are metres.}
-  \item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary
-  and therefore has an NA value for Date.}
-  \item{Symbol}{Measurement/river conditions}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
+\item{Year}{Year of record.}
+\item{Sum_stat}{Summary statistic being used.}
+\item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the
+units are metres.}
+\item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary
+and therefore has an NA value for Date.}
+\item{Symbol}{Measurement/river conditions}
 }
 }
 \source{
@@ -34,7 +34,7 @@ hy_annual_stats(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

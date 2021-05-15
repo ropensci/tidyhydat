@@ -6,11 +6,11 @@
 \format{
 A tibble with 5 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
-  \item{Date}{Contains the time to the nearest minute of when the sample was taken}
-  \item{PARTICLE_SIZE}{Particle size (mm)}
-  \item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
+\item{Date}{Contains the time to the nearest minute of when the sample was taken}
+\item{PARTICLE_SIZE}{Particle size (mm)}
+\item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
 }
 }
 \source{
@@ -30,7 +30,7 @@ hy_sed_samples_psd(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
@@ -45,9 +45,9 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 A tibble of sediment sample particle size data
 }
 \description{
-Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame of instantaneous sediment sample 
-particle size distribution.  \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both 
-are omitted all values from the \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_samples_psd}.
+Provides wrapper to turn the hy_sed_samples_psd table in HYDAT into a tidy data frame of instantaneous sediment sample
+particle size distribution.  \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both
+are omitted all values from the \code{\link[=hy_stations]{hy_stations()}} table are returned. That is a large vector for \code{hy_sed_samples_psd}.
 }
 \examples{
 \dontrun{

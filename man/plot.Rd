@@ -13,13 +13,13 @@
 \arguments{
 \item{x}{Object created by either a hy_daily_* or realtime_dd data retrieval function}
 
-\item{...}{passed to \code{plot}}
+\item{...}{passed to \code{\link[=plot]{plot()}}}
 
 \item{Parameter}{Parameter of interest. Either "Flow" or "Level". Defaults to "Flow".}
 }
 \description{
 This method plots either daily time series data from HYDAT or realtime data from
-the datamart. These plots are intended to be convenient and quick methods to 
+the datamart. These plots are intended to be convenient and quick methods to
 visualize hydrometric data.
 }
 \section{Methods (by class)}{

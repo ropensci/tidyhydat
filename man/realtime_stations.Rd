@@ -6,12 +6,12 @@
 \format{
 A tibble with 6 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{STATION_NAME}{Official name for station identification}
-  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-  \item{TIMEZONE}{Timezone of the station}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{STATION_NAME}{Official name for station identification}
+\item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+\item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+\item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+\item{TIMEZONE}{Timezone of the station}
 }
 }
 \usage{
@@ -22,8 +22,8 @@ realtime_stations(prov_terr_state_loc = NULL)
 is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \description{
-An up to date dataframe of all stations in the Realtime Water Survey of Canada 
-  hydrometric network operated by Environment and Climate Change Canada
+An up to date dataframe of all stations in the Realtime Water Survey of Canada
+hydrometric network operated by Environment and Climate Change Canada
 }
 \examples{
 \dontrun{

@@ -13,29 +13,20 @@
 #' @references 
 #' 
 #' To download the latest version of hydat please:
-#'  \itemize{
-#'   \item use the \code{download_hydat()} function.
-#'   \item If that fails you can download directly from this link:
-#'   \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
-#'   }
+#'   - use the [download_hydat()] function.
+#'   - If that fails you can download directly from this link: [https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/](https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/)
 #' 
 #' For more information on tidy data please see
-#' \itemize{
-#'  \item Wickham, Hadley. 2014. Tidy Data. The Journal of Statistical Software. 59. \url{https://www.jstatsoft.org/article/view/v059i10}
-#'  \item tidy data vignette: \url{https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html}
-#'  }
+#' 
+#'  - Wickham, Hadley. 2014. Tidy Data. The Journal of Statistical Software. 59. \url{https://www.jstatsoft.org/article/view/v059i10}
+#'  - tidy data vignette: [https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html](https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html)
 #'
 #'  For more information on HYDAT and ECCC data sources 
-#'  \itemize{
-#'    \item Please see this description of the database: 
-#'    \url{https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html}
-#'    \item This page is landing page for technical description of HYDAT:
-#'    \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/}
-#'    \item This page links to a document that outlines database table definitions:
-#'    \url{https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf}
-#'    \item This FAQ provides a helpful list of ECCC data source questions:
-#'    \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}
-#'    }
+#'  
+#'    - Please see this description of the [database](https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html)
+#'    - This page is landing page for technical description of [HYDAT](https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/)
+#'    - This pdf links to a document that outlines database table [definitions](https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf)
+#'    - This FAQ provides a helpful list of ECCC data source [questions](https://wateroffice.ec.gc.ca/contactus/faq_e.html)
 #'    
 #'
 #' @keywords internal

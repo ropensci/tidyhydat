@@ -6,10 +6,10 @@
 \format{
 A tibble with 4 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{Year_from}{First year of use}
-  \item{Year_to}{Last year of use}
-  \item{REGULATED}{logical}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{Year_from}{First year of use}
+\item{Year_to}{Last year of use}
+\item{REGULATED}{logical}
 }
 }
 \source{
@@ -27,7 +27,7 @@ hy_stn_regulation(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
@@ -38,8 +38,8 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 A tibble of stations, years of regulation and the regulation status
 }
 \description{
-Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation. 
-\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values 
+Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation.
+\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values
 from the \code{hy_stations} table are returned.
 }
 \examples{

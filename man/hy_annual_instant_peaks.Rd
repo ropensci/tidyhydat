@@ -20,7 +20,7 @@ hy_annual_instant_peaks(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
@@ -35,7 +35,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 A tibble of hy_annual_instant_peaks.
 }
 \description{
-Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels. 
+Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels.
 \code{station_number} and \code{prov_terr_state_loc} can both be supplied.
 }
 \examples{

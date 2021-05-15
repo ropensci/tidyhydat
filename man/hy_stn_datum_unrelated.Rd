@@ -6,10 +6,10 @@
 \format{
 A tibble with 4 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATUM_ID}{Unique code identifying a datum}
-  \item{Year_from}{First year of use}
-  \item{Year_to}{Last year of use}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{DATUM_ID}{Unique code identifying a datum}
+\item{Year_from}{First year of use}
+\item{Year_to}{Last year of use}
 }
 }
 \usage{
@@ -24,7 +24,7 @@ hy_stn_datum_unrelated(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

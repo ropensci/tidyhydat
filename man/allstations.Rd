@@ -7,16 +7,16 @@
 \format{
 A tibble with 5 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{STATION_NAME}{Official name for station identification}
-  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-  \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
-  \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in 
-  real-time or near real-time}
-  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-  \item{station_tz}{Timezone of station calculated using the lutz package based on LAT/LONG of stations}
-  \item{standard_offset}{Offset from UTC of local standard time}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{STATION_NAME}{Official name for station identification}
+\item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+\item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
+\item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in
+real-time or near real-time}
+\item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+\item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+\item{station_tz}{Timezone of station calculated using the lutz package based on LAT/LONG of stations}
+\item{standard_offset}{Offset from UTC of local standard time}
 }
 }
 \source{
@@ -26,7 +26,7 @@ HYDAT, Meteorological Service of Canada datamart
 allstations
 }
 \description{
-A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. 
+A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}.
 Populated by both realtime and historical data from HYDAT.
 }
 \keyword{datasets}

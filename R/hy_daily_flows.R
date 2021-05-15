@@ -13,14 +13,14 @@
 #' @title Extract daily flows information from the HYDAT database
 #'
 #' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame of daily flows. 
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all 
-#' values from the \code{hy_stations} table are returned. That is a large tibble for \code{hy_daily_flows}.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all 
+#' values from the `hy_stations` table are returned. That is a large tibble for `hy_daily_flows`.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
-#' @param symbol_output Set whether the raw code, or the \code{english} or the \code{french} translations are outputted. Default 
-#'   value is \code{code}. 
+#' @param symbol_output Set whether the raw code, or the `english` or the `french` translations are outputted. Default 
+#'   value is `code`. 
 #'
 #' @return A tibble of daily flows
 #' 
@@ -61,7 +61,7 @@ hy_daily_flows <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   ## Determine which stations we are querying

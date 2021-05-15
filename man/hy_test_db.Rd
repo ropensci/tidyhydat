@@ -18,7 +18,7 @@ The file location of a HYDAT database.
 \description{
 The full HYDAT database needs to be downloaded from \link{download_hydat}, but for testing
 purposes, a small test database is included in this package. Use
-\code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database; 
+\code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database;
 use \code{hydat_path = hy_downloaded_db()} to explicitly use the full, most recent
 downloaded database (this is also the path returned by \code{hy_default_db()}).
 }

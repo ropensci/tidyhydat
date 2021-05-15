@@ -27,7 +27,7 @@ hy_stn_remarks <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
   ## Determine which stations we are querying
@@ -75,7 +75,7 @@ hy_stn_datum_conv <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
   ## Determine which stations we are querying
@@ -128,7 +128,7 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   ## Determine which stations we are querying
@@ -182,7 +182,7 @@ hy_stn_data_range <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   ## Determine which stations we are querying
@@ -238,7 +238,7 @@ hy_stn_data_coll <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   ## Determine which stations we are querying
@@ -295,7 +295,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   ## Determine which stations we are querying
@@ -358,7 +358,7 @@ hy_agency_list <- function(hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
@@ -388,7 +388,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
@@ -417,7 +417,7 @@ hy_datum_list <- function(hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
@@ -449,7 +449,7 @@ hy_version <- function(hydat_path = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
   
   version <- dplyr::tbl(hydat_con, "VERSION") %>%

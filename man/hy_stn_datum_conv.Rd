@@ -6,11 +6,11 @@
 \format{
 A tibble with 4 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{DATUM_FROM}{Identifying a datum from which water level is being converted}
-  \item{DATUM_TO}{Identifying a datum to which water level is being converted}
-  \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to 
-  one datum to obtain water levels referred to another datum}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{DATUM_FROM}{Identifying a datum from which water level is being converted}
+\item{DATUM_TO}{Identifying a datum to which water level is being converted}
+\item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to
+one datum to obtain water levels referred to another datum}
 }
 }
 \usage{
@@ -25,7 +25,7 @@ hy_stn_datum_conv(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

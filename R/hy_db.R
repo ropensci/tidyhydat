@@ -3,17 +3,17 @@
 #'
 #' This function gives low-level access to the underlying HYDAT database used by
 #' other functions. Many of these tables are too large to load into memory,
-#' so it is best to use dplyr to \link[dplyr]{filter} them before using
-#' \link[dplyr]{collect} to read them into memory.
+#' so it is best to use dplyr to [dplyr::filter()] them before using
+#' [dplyr::collect()] to read them into memory.
 #'
-#' @param src A \link[dplyr]{src_sqlite} as returned by \code{hy_src()}.
+#' @param src A  as returned by [hy_src()].
 #' @inheritParams hy_agency_list
 #'
-#' @return A dplyr \link[dplyr]{src_sqlite}
+#' @return A SQLite DBIConnection
 #' @export
 #' 
 #' @seealso 
-#' \link{download_hydat}
+#' [download_hydat()]
 #'
 #' @examples
 #' \dontrun{

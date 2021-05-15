@@ -14,16 +14,16 @@
 
 #' Extract station information from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame of station information. \code{station_number} and
-#' \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} table are returned. This
+#' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame of station information. `station_number` and
+#' `prov_terr_state_loc` can both be supplied. If both are omitted all values from the `hy_stations` table are returned. This
 #' is the entry point for most analyses is tidyhydat as establish the stations for consideration is likely the first step in many
 #' instances. 
 #'
 #' @inheritParams hy_agency_list
-#' @param station_number A seven digit Water Survey of Canada station number. If this argument is omitted, the value of \code{prov_terr_state_loc}
+#' @param station_number A seven digit Water Survey of Canada station number. If this argument is omitted, the value of `prov_terr_state_loc`
 #' is returned.
-#' @param prov_terr_state_loc Province, state or territory. If this argument is omitted, the value of \code{station_number}
-#' is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.
+#' @param prov_terr_state_loc Province, state or territory. If this argument is omitted, the value of `station_number`
+#' is returned. See `unique(allstations$prov_terr_state_loc)`. Will also accept `CA` to return only Canadian stations.
 #'
 #' @return A tibble of stations and associated metadata
 #'
@@ -75,7 +75,7 @@ hy_stations <- function(station_number = NULL,
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
-    on.exit(hy_src_disconnect(hydat_con))
+    on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
   ## Determine which stations we are querying

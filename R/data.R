@@ -13,7 +13,7 @@
 
 #' All Canadian stations 
 #' 
-#' A shorthand to avoid having always call \code{hy_stations} or \code{realtime_stations}. 
+#' A shorthand to avoid having always call `hy_stations` or `realtime_stations`. 
 #' Populated by both realtime and historical data from HYDAT. 
 #' 
 #' 

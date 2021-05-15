@@ -6,23 +6,23 @@
 \format{
 A tibble with 19 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
-  \item{Date}{Contains the time to the nearest minute of when the sample was taken}
-  \item{SAMPLE_REMARK_CODE}{Descriptive Sediment Sample Remark in English}
-  \item{TIME_SYMBOL}{An "E" symbol means the time is an estimate only}
-  \item{FLOW}{Contains the instantaneous discharge in cubic metres per second at the time the sample was taken}
-  \item{SYMBOL_EN}{Indicates a condition where the daily mean has a larger than expected error}
-  \item{SAMPLER_TYPE}{Contains the type of measurement device used to take the sample}
-  \item{SAMPLING_VERTICAL_LOCATION}{The location on the cross-section of the river 
-        at which the single sediment samples are collected. If one of the standard 
-        locations is not used the distance in meters will be shown}
-  \item{SAMPLING_VERTICAL_EN}{Indicates sample location relative to the 
-        regular measurement cross-section or the regular sampling site}
-  \item{TEMPERATURE}{Contains the instantaneous water temperature
-        in Celsius at the time the sample was taken}
-  \item{CONCENTRATION_EN}{Contains the instantaneous concentration sampled in milligrams per litre}
-  \item{SV_DEPTH2}{Depth 2 for split vertical depth integrating (m)}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
+\item{Date}{Contains the time to the nearest minute of when the sample was taken}
+\item{SAMPLE_REMARK_CODE}{Descriptive Sediment Sample Remark in English}
+\item{TIME_SYMBOL}{An "E" symbol means the time is an estimate only}
+\item{FLOW}{Contains the instantaneous discharge in cubic metres per second at the time the sample was taken}
+\item{SYMBOL_EN}{Indicates a condition where the daily mean has a larger than expected error}
+\item{SAMPLER_TYPE}{Contains the type of measurement device used to take the sample}
+\item{SAMPLING_VERTICAL_LOCATION}{The location on the cross-section of the river
+at which the single sediment samples are collected. If one of the standard
+locations is not used the distance in meters will be shown}
+\item{SAMPLING_VERTICAL_EN}{Indicates sample location relative to the
+regular measurement cross-section or the regular sampling site}
+\item{TEMPERATURE}{Contains the instantaneous water temperature
+in Celsius at the time the sample was taken}
+\item{CONCENTRATION_EN}{Contains the instantaneous concentration sampled in milligrams per litre}
+\item{SV_DEPTH2}{Depth 2 for split vertical depth integrating (m)}
 }
 }
 \source{
@@ -42,7 +42,7 @@ hy_sed_samples(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
@@ -57,8 +57,8 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 A tibble of instantaneous sediment samples data
 }
 \description{
-Provides wrapper to turn the hy_sed_samples table in HYDAT into a tidy data frame of instantaneous sediment sample information.  
-\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations} 
+Provides wrapper to turn the hy_sed_samples table in HYDAT into a tidy data frame of instantaneous sediment sample information.
+\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations}
 table are returned. That is a large vector for \code{hy_sed_samples}.
 }
 \examples{

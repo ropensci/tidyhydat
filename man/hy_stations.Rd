@@ -6,28 +6,28 @@
 \format{
 A tibble with 15 variables:
 \describe{
-  \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-  \item{STATION_NAME}{Official name for station identification}
-  \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-  \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station. 
-  Links to \link[tidyhydat]{hy_reg_office_list}}
-  \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
-  \item{SED_STATUS}{Current status of sediment monitoring in the hydrometric network}
-  \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-  \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-  \item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
-  \item{DRAINAGE_AREA_EFFECT}{The portion of the drainage basin that contributes runoff to 
-  the gauge site, calculated by subtracting any noncontributing portion from the 
-  gross drainage area (km^2)}
-  \item{RHBN}{Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric 
-  Basin Network (RHBN) is a sub-set of the national network that has been identified 
-  for use in the detection, monitoring, and assessment of climate change.}
-  \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in 
-  real-time or near real-time}
-  \item{CONTRIBUTOR_ID}{Unique ID of an agency that contributes data to the 
-  HYDAT database. The agency is non-WSC and non WSC funded}
-  \item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
-  \item{DATUM_ID}{Unique ID for a datum}
+\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
+\item{STATION_NAME}{Official name for station identification}
+\item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
+\item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station.
+Links to \link[tidyhydat]{hy_reg_office_list}}
+\item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
+\item{SED_STATUS}{Current status of sediment monitoring in the hydrometric network}
+\item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
+\item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
+\item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
+\item{DRAINAGE_AREA_EFFECT}{The portion of the drainage basin that contributes runoff to
+the gauge site, calculated by subtracting any noncontributing portion from the
+gross drainage area (km^2)}
+\item{RHBN}{Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric
+Basin Network (RHBN) is a sub-set of the national network that has been identified
+for use in the detection, monitoring, and assessment of climate change.}
+\item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in
+real-time or near real-time}
+\item{CONTRIBUTOR_ID}{Unique ID of an agency that contributes data to the
+HYDAT database. The agency is non-WSC and non WSC funded}
+\item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
+\item{DATUM_ID}{Unique ID for a datum}
 }
 }
 \source{
@@ -45,7 +45,7 @@ hy_stations(
 is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
-used by \link{download_hydat}. It is also possible to pass in an existing 
+used by \link{download_hydat}. It is also possible to pass in an existing
 \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 

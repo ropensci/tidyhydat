@@ -12,7 +12,7 @@ realtime_daily_mean(.data, na.rm = FALSE)
 \item{na.rm}{a logical value indicating whether NA values should be stripped before the computation proceeds.}
 }
 \description{
-This function is meant to be used within a pipe as a means of easily moving from higher resolution 
+This function is meant to be used within a pipe as a means of easily moving from higher resolution
 data to daily means.
 }
 \examples{

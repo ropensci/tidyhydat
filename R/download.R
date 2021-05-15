@@ -16,9 +16,9 @@
 #' The function will check for a existing sqlite file and won't download the file if the same version is already present. 
 
 #'
-#' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the \code{rappdirs} package and is OS specific and can be view by \code{hy_dir}. 
+#' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the `rappdirs` package and is OS specific and can be view by [hy_dir()]. 
 #' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
-#' It also downloads the database to a directory specified by \code{hy_dir}.
+#' It also downloads the database to a directory specified by [hy_dir()].
 #' @export
 #'
 #' @examples \dontrun{
@@ -37,10 +37,6 @@ download_hydat <- function(dl_hydat_here = NULL) {
       message(crayon::blue("See ?hy_set_default_db to change where tidyhydat looks for HYDAT"))
     }
   }
-  
-  ## Close all connections if function bonks halfway through
-  on.exit(closeAllConnections())
-  
 
   ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
                    "Is that okay?", sep = "\n"))
@@ -91,20 +87,14 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
   
-  ## Remove current version of HYDAT
-  #if (file.exists(hydat_path)){
-  #  file.remove(hydat_path)
-  #}
 
   ## temporary path to save
   tmp <- tempfile("hydat_")
-  ## Create the directory if it doesn't exist already.
-  #if(!dir.exists(dirname(tmp))) dir.create(dirname(tmp))
-  
+
   ## Download the zip file
   res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
                    httr::user_agent("https://github.com/ropensci/tidyhydat"))
-  on.exit(file.remove(tmp))
+  on.exit(file.remove(tmp), add = TRUE)
   httr::stop_for_status(res)
   
   if(file.exists(tmp)) info("Extracting HYDAT")
@@ -124,7 +114,7 @@ download_hydat <- function(dl_hydat_here = NULL) {
 
 hy_check <- function(hydat_path = NULL) {
   con <- hy_src(hydat_path)
-  on.exit(hy_src_disconnect(con))
+  on.exit(hy_src_disconnect(con), add = TRUE)
   
   have_tbls <- dplyr::src_tbls(con)
   
