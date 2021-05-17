@@ -12,6 +12,7 @@
 ^tidyhydat\.md$
 ^inst/JOSS$
 ^cran-comments.md$
+^revdep$
 .github
 tidyhydat_with_spatial.Rmd
 Rplots.pdf
