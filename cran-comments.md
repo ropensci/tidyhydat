@@ -1,3 +1,25 @@
+tidyhydat 0.5.3
+=========================
+## NEWS
+- Allow pkg to loaded without internet and rather just issue an message when it is not. (#149)
+- Added `add = TRUE` to all `on.exit` call so add not to overwrite previous call (#151)
+- Remove redundant and ill-advised  `closeAllConnections` (#153)
+- Update internal data
+- Convert most of the docs to markdown (#121)
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local Windows 10, R 4.0.5 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
+
+
 tidyhydat 0.5.2
 =========================
 ## NEWS
@@ -6,7 +28,6 @@ tidyhydat 0.5.2
 ## Test environments
 * win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
 * local Windows 10, R 4.0.3 (via R CMD check --as-cran)
->>>>>>> chk-tbls
 * ubuntu-20.04, r: 'release' (github actions)
 * ubuntu-20.04, r: 'devel' (github actions)
 * macOS,        r: 'release' (github actions)
