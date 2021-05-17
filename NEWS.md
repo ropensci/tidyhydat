@@ -1,5 +1,9 @@
-# tidyhydat 0.5.2.90000
+# tidyhydat 0.5.3
 - Allow pkg to loaded without internet and rather just issue an message when it is not. (#149)
+- Added `add = TRUE` to all `on.exit` call so add not to overwrite previous call (#151)
+- Remove redundant and ill-advised  `closeAllConnections` (#153)
+- Update internal data
+- Convert most of the docs to markdown (#121)
 
 # tidyhydat 0.5.2
 - add internal function `hy_check` to verify that HYDAT contains all the right tables and that those tables contain data. 
