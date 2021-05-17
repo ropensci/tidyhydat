@@ -1,7 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
-===============================================================
+# tidyhydat <img src="man/figures/tidyhydat.png" align="right" />
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Coverage
@@ -19,15 +18,13 @@ checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
 [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 
-Project Status
---------------
+## Project Status
 
 This package is maintained by the Data Science and Analytics Branch of
 the [British Columbia Ministry of Citizens’
 Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
 
-What does `tidyhydat` do?
--------------------------
+## What does `tidyhydat` do?
 
 -   Provides functions (`hy_*`) that access hydrometric data from the
     HYDAT database, a national archive of Canadian hydrometric data and
@@ -42,8 +39,7 @@ What does `tidyhydat` do?
     data and returns a [tibble](https://tibble.tidyverse.org/) of daily
     flows.
 
-Installation
-------------
+## Installation
 
 You can install `tidyhydat` from CRAN:
 
@@ -54,11 +50,10 @@ install directly from the rOpenSci development server:
 
     install.packages("tidyhydat", repos = "https://dev.ropensci.org")
 
-Usage
------
+## Usage
 
 More documentation on `tidyhydat` can found at the rOpenSci doc page:
-<a href="https://docs.ropensci.org/tidyhydat/" class="uri">https://docs.ropensci.org/tidyhydat/</a>
+<https://docs.ropensci.org/tidyhydat/>
 
 When you install `tidyhydat`, several other packages will be installed
 as well. One of those packages, `dplyr`, is useful for data
@@ -93,22 +88,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2020-10-06 20:15:00 (UTC)
-    #>   Date range: 2020-09-06 to 2020-10-06 
-    #> # A tibble: 17,532 x 8
-    #>    STATION_NUMBER PROV_TERR_STATE~ Date                Parameter Value Grade
-    #>    <chr>          <chr>            <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC               2020-09-06 08:00:00 Flow       4.01 <NA> 
-    #>  2 08LG006        BC               2020-09-06 08:05:00 Flow       4.01 <NA> 
-    #>  3 08LG006        BC               2020-09-06 08:10:00 Flow       3.98 <NA> 
-    #>  4 08LG006        BC               2020-09-06 08:15:00 Flow       3.98 <NA> 
-    #>  5 08LG006        BC               2020-09-06 08:20:00 Flow       3.98 <NA> 
-    #>  6 08LG006        BC               2020-09-06 08:25:00 Flow       3.98 <NA> 
-    #>  7 08LG006        BC               2020-09-06 08:30:00 Flow       3.98 <NA> 
-    #>  8 08LG006        BC               2020-09-06 08:35:00 Flow       3.98 <NA> 
-    #>  9 08LG006        BC               2020-09-06 08:40:00 Flow       3.98 <NA> 
-    #> 10 08LG006        BC               2020-09-06 08:45:00 Flow       3.98 <NA> 
-    #> # ... with 17,522 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>   Queried on: 2021-05-17 19:11:24 (UTC)
+    #>   Date range: 2021-04-17 to 2021-05-17 
+    #> # A tibble: 17,502 x 8
+    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
+    #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
+    #>  1 08LG006        BC                  2021-04-17 08:00:00 Flow       22.1 <NA> 
+    #>  2 08LG006        BC                  2021-04-17 08:05:00 Flow       22.1 <NA> 
+    #>  3 08LG006        BC                  2021-04-17 08:10:00 Flow       22.2 <NA> 
+    #>  4 08LG006        BC                  2021-04-17 08:15:00 Flow       22.2 <NA> 
+    #>  5 08LG006        BC                  2021-04-17 08:20:00 Flow       22.2 <NA> 
+    #>  6 08LG006        BC                  2021-04-17 08:25:00 Flow       22.2 <NA> 
+    #>  7 08LG006        BC                  2021-04-17 08:30:00 Flow       22.3 <NA> 
+    #>  8 08LG006        BC                  2021-04-17 08:35:00 Flow       22.3 <NA> 
+    #>  9 08LG006        BC                  2021-04-17 08:40:00 Flow       22.3 <NA> 
+    #> 10 08LG006        BC                  2021-04-17 08:45:00 Flow       22.4 <NA> 
+    #> # ... with 17,492 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
@@ -128,16 +123,14 @@ and also historical data:
 
 ![](man/figures/README-unnamed-chunk-8-1.png)
 
-Getting Help or Reporting an Issue
-----------------------------------
+## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an
 [issue](https://github.com/ropensci/tidyhydat/issues/).
 
 These are very welcome!
 
-How to Contribute
------------------
+## How to Contribute
 
 If you would like to contribute to the package, please see our
 [CONTRIBUTING](https://github.com/ropensci/tidyhydat/blob/master/CONTRIBUTING.md)
@@ -147,8 +140,7 @@ Please note that this project is released with a [Contributor Code of
 Conduct](https://github.com/ropensci/tidyhydat/blob/master/CODE_OF_CONDUCT.md).
 By participating in this project you agree to abide by its terms.
 
-Citation
---------
+## Citation
 
 Get citation information for `tidyhydat` in R by running:
 
@@ -156,8 +148,7 @@ Get citation information for `tidyhydat` in R by running:
 
 [![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
 
-License
--------
+## License
 
 Copyright 2017 Province of British Columbia
 
@@ -165,7 +156,7 @@ Licensed under the Apache License, Version 2.0 (the “License”); you may
 not use this file except in compliance with the License. You may obtain
 a copy of the License at
 
-<a href="http://www.apache.org/licenses/LICENSE-2.0" class="uri">http://www.apache.org/licenses/LICENSE-2.0</a>
+<https://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an “AS IS” BASIS,
