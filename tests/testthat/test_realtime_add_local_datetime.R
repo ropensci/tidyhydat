@@ -11,8 +11,8 @@ test_that("realtime_add_local_datetime add applies correct timezone",{
 test_that("realtime_add_local_datetime add applies first timezone when multiple timezones exist and generates a warning",{
   skip_on_cran()
   skip_if_net_down()
-  expect_warning(col_added <- realtime_dd(c("08MF005","02LA004")) %>% realtime_add_local_datetime())
-  expect_equal(lubridate::tz(col_added$local_datetime), unique(col_added$tz_used))
+  expect_warning(col_added <- realtime_dd(c("08MF005","02LA004", "02AB006")) %>% realtime_add_local_datetime())
+  expect_equal(lubridate::tz(col_added$local_datetime), "America/Toronto")
 })
 
 

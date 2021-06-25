@@ -163,7 +163,7 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL){
   
   timezone_data <- dplyr::left_join(.data, tidyhydat::allstations[,c("STATION_NUMBER", "station_tz")], by = c("STATION_NUMBER"))
   
-  tz_used <- timezone_data$station_tz[1]
+  tz_used <- names(sort(table(timezone_data$station_tz), decreasing = TRUE)[1])
   
   if(dplyr::n_distinct(timezone_data$station_tz) > 1) {
     warning(paste0("Multiple timezones detected. All times in local_time have been adjusted to ", tz_used), call. = FALSE)
