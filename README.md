@@ -20,7 +20,7 @@ checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.
 
 ## Project Status
 
-This package is maintained by the Data Science and Analytics Branch of
+This package is maintained by the Data Science Partnerships Program in
 the [British Columbia Ministry of Citizens’
 Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
 
@@ -88,22 +88,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2021-05-17 19:11:24 (UTC)
-    #>   Date range: 2021-04-17 to 2021-05-17 
-    #> # A tibble: 17,502 x 8
+    #>   Queried on: 2021-06-25 21:59:45 (UTC)
+    #>   Date range: 2021-05-26 to 2021-06-25 
+    #> # A tibble: 17,556 x 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC                  2021-04-17 08:00:00 Flow       22.1 <NA> 
-    #>  2 08LG006        BC                  2021-04-17 08:05:00 Flow       22.1 <NA> 
-    #>  3 08LG006        BC                  2021-04-17 08:10:00 Flow       22.2 <NA> 
-    #>  4 08LG006        BC                  2021-04-17 08:15:00 Flow       22.2 <NA> 
-    #>  5 08LG006        BC                  2021-04-17 08:20:00 Flow       22.2 <NA> 
-    #>  6 08LG006        BC                  2021-04-17 08:25:00 Flow       22.2 <NA> 
-    #>  7 08LG006        BC                  2021-04-17 08:30:00 Flow       22.3 <NA> 
-    #>  8 08LG006        BC                  2021-04-17 08:35:00 Flow       22.3 <NA> 
-    #>  9 08LG006        BC                  2021-04-17 08:40:00 Flow       22.3 <NA> 
-    #> 10 08LG006        BC                  2021-04-17 08:45:00 Flow       22.4 <NA> 
-    #> # ... with 17,492 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC                  2021-05-26 08:00:00 Flow        102 <NA> 
+    #>  2 08LG006        BC                  2021-05-26 08:05:00 Flow        102 <NA> 
+    #>  3 08LG006        BC                  2021-05-26 08:10:00 Flow        102 <NA> 
+    #>  4 08LG006        BC                  2021-05-26 08:15:00 Flow        102 <NA> 
+    #>  5 08LG006        BC                  2021-05-26 08:20:00 Flow        102 <NA> 
+    #>  6 08LG006        BC                  2021-05-26 08:25:00 Flow        102 <NA> 
+    #>  7 08LG006        BC                  2021-05-26 08:30:00 Flow        102 <NA> 
+    #>  8 08LG006        BC                  2021-05-26 08:35:00 Flow        103 <NA> 
+    #>  9 08LG006        BC                  2021-05-26 08:40:00 Flow        102 <NA> 
+    #> 10 08LG006        BC                  2021-05-26 08:45:00 Flow        102 <NA> 
+    #> # ... with 17,546 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 

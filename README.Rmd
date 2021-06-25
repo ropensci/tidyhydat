@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 ## Project Status
 
-This package is maintained by the Data Science and Analytics Branch of the [British Columbia Ministry of Citizens' Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
+This package is maintained by the Data Science Partnerships Program in the [British Columbia Ministry of Citizens' Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
 
 
 ## What does `tidyhydat` do?
