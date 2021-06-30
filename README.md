@@ -13,6 +13,7 @@ status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](
 Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https://CRAN.R-project.org/package=tidyhydat)
 [![cran
 checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)
+[![r-universe](https://ropensci.r-universe.dev/badges/tidyhydat)](https://ropensci.r-universe.dev/ui#builds)
 
 [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/software-review/issues/152)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
@@ -88,22 +89,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2021-06-25 21:59:45 (UTC)
-    #>   Date range: 2021-05-26 to 2021-06-25 
-    #> # A tibble: 17,556 x 8
+    #>   Queried on: 2021-06-30 23:09:36 (UTC)
+    #>   Date range: 2021-05-31 to 2021-06-30 
+    #> # A tibble: 17,604 x 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC                  2021-05-26 08:00:00 Flow        102 <NA> 
-    #>  2 08LG006        BC                  2021-05-26 08:05:00 Flow        102 <NA> 
-    #>  3 08LG006        BC                  2021-05-26 08:10:00 Flow        102 <NA> 
-    #>  4 08LG006        BC                  2021-05-26 08:15:00 Flow        102 <NA> 
-    #>  5 08LG006        BC                  2021-05-26 08:20:00 Flow        102 <NA> 
-    #>  6 08LG006        BC                  2021-05-26 08:25:00 Flow        102 <NA> 
-    #>  7 08LG006        BC                  2021-05-26 08:30:00 Flow        102 <NA> 
-    #>  8 08LG006        BC                  2021-05-26 08:35:00 Flow        103 <NA> 
-    #>  9 08LG006        BC                  2021-05-26 08:40:00 Flow        102 <NA> 
-    #> 10 08LG006        BC                  2021-05-26 08:45:00 Flow        102 <NA> 
-    #> # ... with 17,546 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC                  2021-05-31 08:00:00 Flow       65.3 <NA> 
+    #>  2 08LG006        BC                  2021-05-31 08:05:00 Flow       65.4 <NA> 
+    #>  3 08LG006        BC                  2021-05-31 08:10:00 Flow       65.4 <NA> 
+    #>  4 08LG006        BC                  2021-05-31 08:15:00 Flow       65.5 <NA> 
+    #>  5 08LG006        BC                  2021-05-31 08:20:00 Flow       65.5 <NA> 
+    #>  6 08LG006        BC                  2021-05-31 08:25:00 Flow       65.6 <NA> 
+    #>  7 08LG006        BC                  2021-05-31 08:30:00 Flow       65.6 <NA> 
+    #>  8 08LG006        BC                  2021-05-31 08:35:00 Flow       65.6 <NA> 
+    #>  9 08LG006        BC                  2021-05-31 08:40:00 Flow       65.6 <NA> 
+    #> 10 08LG006        BC                  2021-05-31 08:45:00 Flow       65.6 <NA> 
+    #> # ... with 17,594 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
