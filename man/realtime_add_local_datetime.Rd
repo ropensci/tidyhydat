@@ -12,13 +12,14 @@ realtime_add_local_datetime(.data, set_tz = NULL)
 \item{set_tz}{A timezone string in the format of \code{OlsonNames()}}
 }
 \description{
-Adds \code{local_datetime} and \code{tz_used} columns based on either the first timezone specified into the tibble or
+Adds \code{local_datetime} and \code{tz_used} columns based on either the most common timezone in the original data or
 a user supplied timezone. This function is meant to used in a pipe with the \code{realtime_dd()} function.
 }
 \details{
-Date from realtime_dd is supplied in UTC which is the easiest format to work with across timezones.
-\code{realtime_add_local_datetime} adjusts local_datetime to a common timezone. This is most useful when all stations exist
-within the same timezone though it is possible.
+\code{Date} from \code{realtime_dd} is supplied in UTC which is the easiest format to work with across timezones. This function
+does not change \code{Date} from UTC. Rather \code{station_tz} specifies the local timezone name and is useful in instances where
+\code{realtime_add_local_datetime} adjusts local_datetime to a common timezone that is not the \code{station_tz}. This function is most
+useful when all stations exist within the same timezone.
 }
 \examples{
 \dontrun{
