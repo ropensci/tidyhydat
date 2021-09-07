@@ -29,7 +29,8 @@ is returned.}
 is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \value{
-A tibble of water flow and level values.
+A tibble of water flow and level values. The date and time of the query (in UTC) is also
+stored as an attribute.
 }
 \description{
 Download realtime river data from the last 30 days from the Meteorological Service of Canada (MSC) datamart.
@@ -42,8 +43,11 @@ exist or is not found, no data is returned.
 ## Download from multiple provinces
 realtime_dd(station_number=c("01CD005","08MF005"))
 
-# To download all stations in Prince Edward Island:
-realtime_dd(prov_terr_state_loc = "PE")
+## To download all stations in Prince Edward Island:
+pei <- realtime_dd(prov_terr_state_loc = "PE")
+
+## Access the time of query
+attributes(pei)$query_time
 }
 
 }
