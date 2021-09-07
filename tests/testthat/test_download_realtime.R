@@ -9,7 +9,7 @@ context("Testing realtime functions")
   )
 })
 
-test_that("realtime_dd can download stations from a whole province using prov_terr_state_loc", {
+test_that("realtime_dd can download stations from a whole province using prov_terr_state_loc and stores query time", {
   #skip_on_travis()
   skip_on_cran()
   expected_columns <- c("STATION_NUMBER", "PROV_TERR_STATE_LOC", "Date", "Parameter", 
@@ -17,6 +17,7 @@ test_that("realtime_dd can download stations from a whole province using prov_te
   rldf <- realtime_dd(prov_terr_state_loc = "PE")
   
   expect_true(identical(expected_columns,colnames(rldf)))
+  expect_is(attributes(rldf)$query_time, "POSIXct")
 })
 
 

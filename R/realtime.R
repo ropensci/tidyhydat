@@ -20,7 +20,8 @@
 #'
 #' @inheritParams hy_stations
 #'
-#' @return A tibble of water flow and level values. 
+#' @return A tibble of water flow and level values. The date and time of the query (in UTC) is also 
+#' stored as an attribute.
 #' 
 #' @format A tibble with 8 variables:
 #' \describe{
@@ -41,8 +42,11 @@
 #' ## Download from multiple provinces
 #' realtime_dd(station_number=c("01CD005","08MF005"))
 #'
-#' # To download all stations in Prince Edward Island:
-#' realtime_dd(prov_terr_state_loc = "PE")
+#' ## To download all stations in Prince Edward Island:
+#' pei <- realtime_dd(prov_terr_state_loc = "PE")
+#' 
+#' ## Access the time of query
+#' attributes(pei)$query_time
 #' }
 #' 
 #' @family realtime functions
