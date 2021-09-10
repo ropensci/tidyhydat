@@ -103,7 +103,7 @@ Please note that this project is released with a [Contributor Code of Conduct](h
   
 ## Citation
 Get citation information for `tidyhydat` in R by running:
-```{r, eval=FALSE}
+```{r, echo=FALSE, comment=""}
 citation("tidyhydat")
 ```
 

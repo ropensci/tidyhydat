@@ -89,22 +89,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2021-06-30 23:09:36 (UTC)
-    #>   Date range: 2021-05-31 to 2021-06-30 
-    #> # A tibble: 17,604 x 8
+    #>   Queried on: 2021-09-10 21:14:29 (UTC)
+    #>   Date range: 2021-08-11 to 2021-09-10 
+    #> # A tibble: 17,562 x 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC                  2021-05-31 08:00:00 Flow       65.3 <NA> 
-    #>  2 08LG006        BC                  2021-05-31 08:05:00 Flow       65.4 <NA> 
-    #>  3 08LG006        BC                  2021-05-31 08:10:00 Flow       65.4 <NA> 
-    #>  4 08LG006        BC                  2021-05-31 08:15:00 Flow       65.5 <NA> 
-    #>  5 08LG006        BC                  2021-05-31 08:20:00 Flow       65.5 <NA> 
-    #>  6 08LG006        BC                  2021-05-31 08:25:00 Flow       65.6 <NA> 
-    #>  7 08LG006        BC                  2021-05-31 08:30:00 Flow       65.6 <NA> 
-    #>  8 08LG006        BC                  2021-05-31 08:35:00 Flow       65.6 <NA> 
-    #>  9 08LG006        BC                  2021-05-31 08:40:00 Flow       65.6 <NA> 
-    #> 10 08LG006        BC                  2021-05-31 08:45:00 Flow       65.6 <NA> 
-    #> # ... with 17,594 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC                  2021-08-11 08:00:00 Flow       5.32 <NA> 
+    #>  2 08LG006        BC                  2021-08-11 08:05:00 Flow       5.32 <NA> 
+    #>  3 08LG006        BC                  2021-08-11 08:10:00 Flow       5.32 <NA> 
+    #>  4 08LG006        BC                  2021-08-11 08:15:00 Flow       5.32 <NA> 
+    #>  5 08LG006        BC                  2021-08-11 08:20:00 Flow       5.32 <NA> 
+    #>  6 08LG006        BC                  2021-08-11 08:25:00 Flow       5.32 <NA> 
+    #>  7 08LG006        BC                  2021-08-11 08:30:00 Flow       5.32 <NA> 
+    #>  8 08LG006        BC                  2021-08-11 08:35:00 Flow       5.32 <NA> 
+    #>  9 08LG006        BC                  2021-08-11 08:40:00 Flow       5.32 <NA> 
+    #> 10 08LG006        BC                  2021-08-11 08:45:00 Flow       5.29 <NA> 
+    #> # ... with 17,552 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
@@ -145,7 +145,25 @@ By participating in this project you agree to abide by its terms.
 
 Get citation information for `tidyhydat` in R by running:
 
-    citation("tidyhydat")
+
+    Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric
+    Data." _The Journal of Open Source Software_, *2*(20). doi:
+    10.21105/joss.00511 (URL: https://doi.org/10.21105/joss.00511), <URL:
+    http://dx.doi.org/10.21105/joss.00511>.
+
+    A BibTeX entry for LaTeX users is
+
+      @Article{,
+        title = {tidyhydat: Extract and Tidy Canadian Hydrometric Data},
+        author = {Sam Albers},
+        doi = {10.21105/joss.00511},
+        url = {http://dx.doi.org/10.21105/joss.00511},
+        year = {2017},
+        publisher = {The Open Journal},
+        volume = {2},
+        number = {20},
+        journal = {The Journal of Open Source Software},
+      }
 
 [![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
 
