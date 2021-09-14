@@ -126,7 +126,8 @@ runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") 
 ggplot(runoff_data) + 
   geom_line(aes(x = Date, y = runoff, colour = STATION_NAME)) +
   labs(y = "Mean daily runoff [mm/d]") +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
 
 
