@@ -89,22 +89,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2021-09-10 21:14:29 (UTC)
-    #>   Date range: 2021-08-11 to 2021-09-10 
-    #> # A tibble: 17,562 x 8
+    #>   Queried on: 2021-09-14 15:45:48 (UTC)
+    #>   Date range: 2021-08-14 to 2021-09-14 
+    #> # A tibble: 18,000 x 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC                  2021-08-11 08:00:00 Flow       5.32 <NA> 
-    #>  2 08LG006        BC                  2021-08-11 08:05:00 Flow       5.32 <NA> 
-    #>  3 08LG006        BC                  2021-08-11 08:10:00 Flow       5.32 <NA> 
-    #>  4 08LG006        BC                  2021-08-11 08:15:00 Flow       5.32 <NA> 
-    #>  5 08LG006        BC                  2021-08-11 08:20:00 Flow       5.32 <NA> 
-    #>  6 08LG006        BC                  2021-08-11 08:25:00 Flow       5.32 <NA> 
-    #>  7 08LG006        BC                  2021-08-11 08:30:00 Flow       5.32 <NA> 
-    #>  8 08LG006        BC                  2021-08-11 08:35:00 Flow       5.32 <NA> 
-    #>  9 08LG006        BC                  2021-08-11 08:40:00 Flow       5.32 <NA> 
-    #> 10 08LG006        BC                  2021-08-11 08:45:00 Flow       5.29 <NA> 
-    #> # ... with 17,552 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08LG006        BC                  2021-08-14 08:00:00 Flow       4.75 <NA> 
+    #>  2 08LG006        BC                  2021-08-14 08:05:00 Flow       4.75 <NA> 
+    #>  3 08LG006        BC                  2021-08-14 08:10:00 Flow       4.75 <NA> 
+    #>  4 08LG006        BC                  2021-08-14 08:15:00 Flow       4.75 <NA> 
+    #>  5 08LG006        BC                  2021-08-14 08:20:00 Flow       4.75 <NA> 
+    #>  6 08LG006        BC                  2021-08-14 08:25:00 Flow       4.75 <NA> 
+    #>  7 08LG006        BC                  2021-08-14 08:30:00 Flow       4.75 <NA> 
+    #>  8 08LG006        BC                  2021-08-14 08:35:00 Flow       4.75 <NA> 
+    #>  9 08LG006        BC                  2021-08-14 08:40:00 Flow       4.75 <NA> 
+    #> 10 08LG006        BC                  2021-08-14 08:45:00 Flow       4.75 <NA> 
+    #> # ... with 17,990 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
