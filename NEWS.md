@@ -1,4 +1,4 @@
-# tidyhydat 0.5.3.9000
+# tidyhydat 0.5.4
 - When add a local timezone column, use the most common timezone in the data rather than the first one. This just seems more likely to be useful to users
 - Add more documentation to `realtime_add_local_datetime` to make how timezones are dealt with clearer (#157)
 - Expose the query time for realtime functions as an attribute (#160)
