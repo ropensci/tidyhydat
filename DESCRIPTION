@@ -7,6 +7,7 @@ Authors@R: c(person("Sam", "Albers", email = "sam.albers@gov.bc.ca", role = c("a
     person("Dewey", "Dunnington", email = "dewey@fishandwhistle.net", role = "ctb"),
     person("Ryan", "Whaley", email = "rdgwhaley@gmail.com", role = "ctb"),
     person("Province of British Columbia", role = "cph"),
+    person("Government of Canada", role = "dtc"),
     person("Luke", "Winslow", role = "rev", 
             comment = "Reviewed for rOpenSci"),
     person("Laura", "DeCicco", role = "rev", 
@@ -16,8 +17,8 @@ Description: Provides functions to access historical and real-time national 'hyd
     data from Water Survey of Canada data sources (<https://dd.weather.gc.ca/hydrometric/csv/> and
     <https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 License: Apache License (== 2.0) | file LICENSE
-URL: https://docs.ropensci.org/tidyhydat, https://github.com/ropensci/tidyhydat
-BugReports: https://github.com/ropensci/tidyhydat/issues
+URL: https://docs.ropensci.org/tidyhydat/, https://github.com/ropensci/tidyhydat/
+BugReports: https://github.com/ropensci/tidyhydat/issues/
 Depends: 
     R (>= 3.2.3)
 Imports: 
