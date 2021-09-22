@@ -19,7 +19,7 @@
 #' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the `rappdirs` package and is OS specific and can be view by [hy_dir()]. 
 #' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
 #' It also downloads the database to a directory specified by [hy_dir()].
-#' @param ans Answer (as boolean) can be provided to avoid keypress in function execution.
+#' @param ask Whether to ask (as \code{TRUE}/\code{FALSE}) if HYDAT should be downloaded. If \code{FALSE} the keypress question is skipped.
 #' @export
 #'
 #' @examples \dontrun{
@@ -27,7 +27,7 @@
 #' }
 #'
 
-download_hydat <- function(dl_hydat_here = NULL, ans=NULL) {
+download_hydat <- function(dl_hydat_here = NULL, ask=TRUE) {
   
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
@@ -39,13 +39,13 @@ download_hydat <- function(dl_hydat_here = NULL, ans=NULL) {
     }
   }
 
-  if (is.null(ans)) {
+  if (!is.logical(ask)) stop("Parameter ask must be a boolean")
+  
+  if (ask) {
     ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
                      "Is that okay?", sep = "\n"))
   } else {
-    if (ans != TRUE & ans != FALSE) {
-      stop("Parameter ans must be a boolean")
-    }
+    ans <- TRUE
   }
   
   if (!ans) stop("Maybe another day...", call. = FALSE)
