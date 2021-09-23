@@ -27,7 +27,7 @@
 #' }
 #'
 
-download_hydat <- function(dl_hydat_here = NULL, ask=TRUE) {
+download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
