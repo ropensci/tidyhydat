@@ -1,3 +1,6 @@
+### MINOR IMPROVEMENT
+* `download_hydat()` now has an `ask` parameter that can be used to bypass the keypress confirmation when downloading the HYDAT database (@rchlumsk, #165). 
+
 # tidyhydat 0.5.4
 - When add a local timezone column, use the most common timezone in the data rather than the first one. This just seems more likely to be useful to users
 - Add more documentation to `realtime_add_local_datetime` to make how timezones are dealt with clearer (#157)

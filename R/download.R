@@ -19,6 +19,7 @@
 #' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the `rappdirs` package and is OS specific and can be view by [hy_dir()]. 
 #' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach. 
 #' It also downloads the database to a directory specified by [hy_dir()].
+#' @param ask Whether to ask (as \code{TRUE}/\code{FALSE}) if HYDAT should be downloaded. If \code{FALSE} the keypress question is skipped.
 #' @export
 #'
 #' @examples \dontrun{
@@ -26,7 +27,7 @@
 #' }
 #'
 
-download_hydat <- function(dl_hydat_here = NULL) {
+download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
@@ -38,11 +39,18 @@ download_hydat <- function(dl_hydat_here = NULL) {
     }
   }
 
-  ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
-                   "Is that okay?", sep = "\n"))
+  if (!is.logical(ask)) stop("Parameter ask must be a logical")
+  
+  if (ask) {
+    ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
+                     "Is that okay?", sep = "\n"))
+  } else {
+    ans <- TRUE
+    green_message(paste0("Downloading HYDAT to ", normalizePath(dl_hydat_here)))
+  }
+  
   if (!ans) stop("Maybe another day...", call. = FALSE)
   
-
   info(paste0("Downloading HYDAT.sqlite3 to ", crayon::blue(dl_hydat_here)))
 
 
