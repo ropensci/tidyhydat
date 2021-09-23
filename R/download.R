@@ -39,7 +39,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     }
   }
 
-  if (!is.logical(ask)) stop("Parameter ask must be a boolean")
+  if (!is.logical(ask)) stop("Parameter ask must be a logical")
   
   if (ask) {
     ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
