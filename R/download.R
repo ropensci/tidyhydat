@@ -46,6 +46,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
                      "Is that okay?", sep = "\n"))
   } else {
     ans <- TRUE
+    green_message(paste0("Downloading HYDAT to ", normalizePath(dl_hydat_here)))
   }
   
   if (!ans) stop("Maybe another day...", call. = FALSE)
