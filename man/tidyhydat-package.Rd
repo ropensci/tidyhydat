@@ -6,9 +6,7 @@
 \alias{tidyhydat-package}
 \title{tidyhydat: Extract and Tidy Canadian 'Hydrometric' Data}
 \description{
-Provides functions to access historical and real-time national 'hydrometric'
-    data from Water Survey of Canada data sources (<https://dd.weather.gc.ca/hydrometric/csv/> and
-    <https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
+Provides functions to access historical and real-time national 'hydrometric' data from Water Survey of Canada data sources (<https://dd.weather.gc.ca/hydrometric/csv/> and <https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
 }
 \references{
 To download the latest version of hydat please:
@@ -19,7 +17,7 @@ To download the latest version of hydat please:
 
 For more information on tidy data please see
 \itemize{
-\item Wickham, Hadley. 2014. Tidy Data. The Journal of Statistical Software. 59. \url{https://www.jstatsoft.org/article/view/v059i10}
+\item Wickham, Hadley. 2014. Tidy Data. The Journal of Statistical Software. 59. \doi{10.18637/jss.v059.i10}
 \item tidy data vignette: \url{https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html}
 }
 
