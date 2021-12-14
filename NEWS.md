@@ -1,3 +1,5 @@
+# tidyhydat (development version)
+
 ### MINOR IMPROVEMENT
 * `download_hydat()` now has an `ask` parameter that can be used to bypass the keypress confirmation when downloading the HYDAT database (@rchlumsk, #165). 
 
