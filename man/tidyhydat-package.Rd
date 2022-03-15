@@ -41,7 +41,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sam Albers \email{sam.albers@gov.bc.ca} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID})
+\strong{Maintainer}: Sam Albers \email{sam.albers@gmail.com} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID})
 
 Other contributors:
 \itemize{

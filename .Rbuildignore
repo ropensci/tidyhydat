@@ -23,3 +23,5 @@ use_cases.md
 tidyhydat_intro.Rmd
 ^\.github$
 ^codecov\.yml$
+^vignette_development$
+^precompile.R$
