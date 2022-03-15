@@ -1,0 +1,76 @@
+---
+title: "Stepping into the HYDAT Database"
+author: "Dewey Dunnington"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Stepping into the HYDAT Database}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(tidyhydat)
+library(dplyr)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.path = "vignette-fig-",
+  comment = "#>"
+)
+```
+
+The HYDAT database is a massive hydrologic data resource. The functions in this package are designed to get the most out of the HYDAT database as quickly as possible, however in the process of reformatting the data to be more useful, the package modifies the original tables. This vignette is intended to demonstrate how to access tables within the database for your own custom HYDAT analysis, should additional information be needed. This should not be necessary for the vast majority of users, and is intended only for advanced R users.
+
+## Downloading HYDAT
+
+Before loading the HYDAT database, the latest version of the database must be downloaded using `hydat_download()`. This is a fairly lengthy operation (the download is around 1 GB) and may require several cups of coffee worth of your time.
+
+```{r, eval = FALSE}
+hydat_download()
+```
+
+```{r, include=FALSE}
+# we are actually going to use the test database
+# so the vignette can be reproducibly rebuilt without
+# needing to call hydat_download
+prev_default <- hy_set_default_db(hy_test_db())
+```
+
+## Working with HYDAT tables
+
+The HYDAT database is a SQLite database, which can be accessed in R using the [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/) packages. This package has simplified the connection process, so all you have to do to connect to the database is use `hy_src()`.
+
+```{r}
+src <- hy_src()
+```
+
+To list the tables, use `src_tbls()` from the **dplyr** package.
+
+```{r}
+src_tbls(src)
+```
+
+To inspect any particular table, use the `tbl()` function with the `src` and the table name.
+
+```{r}
+tbl(src, "STN_OPERATION_SCHEDULE")
+```
+
+Working with SQL tables in dplyr is much like working with regular data frames, except no data is actually read from the database until necessary. Because some of these tables are large (particularly those containing the actual data), you will want to `filter()` the tables before you `collect()` them (the `collect()` operation loads them into memory as a `data.frame`).
+
+```{r}
+tbl(src, "STN_OPERATION_SCHEDULE") %>%
+  filter(STATION_NUMBER == "05AA008") %>%
+  collect()
+```
+
+When you are finished with the database (i.e., the end of the script), it is good practice to close the connection (you may get a loud red warning if you don't!).
+
+```{r}
+hy_src_disconnect(src)
+```
+
+```{r, include=FALSE}
+# set the default location back to whatever it was before
+tidyhydat:::hy_set_default_db(NULL)
+```
