@@ -91,29 +91,29 @@ To download real-time data using the datamart we can use approximately
 the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
-    realtime_dd(station_number = "08LG006")
-    #>   Queried on: 2021-12-16 18:51:26 (UTC)
-    #>   Date range: 2021-11-15 to 2021-11-15 
-    #> # A tibble: 248 x 8
+    realtime_dd(station_number = "08MF005")
+    #>   Queried on: 2022-03-16 22:48:40 (UTC)
+    #>   Date range: 2022-02-14 to 2022-03-16 
+    #> # A tibble: 17,608 x 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08LG006        BC                  2021-11-15 08:00:00 Flow        162 <NA> 
-    #>  2 08LG006        BC                  2021-11-15 08:05:00 Flow        164 <NA> 
-    #>  3 08LG006        BC                  2021-11-15 08:10:00 Flow        165 <NA> 
-    #>  4 08LG006        BC                  2021-11-15 08:15:00 Flow        167 <NA> 
-    #>  5 08LG006        BC                  2021-11-15 08:20:00 Flow        169 <NA> 
-    #>  6 08LG006        BC                  2021-11-15 08:25:00 Flow        171 <NA> 
-    #>  7 08LG006        BC                  2021-11-15 08:30:00 Flow        172 <NA> 
-    #>  8 08LG006        BC                  2021-11-15 08:35:00 Flow        174 <NA> 
-    #>  9 08LG006        BC                  2021-11-15 08:40:00 Flow        174 <NA> 
-    #> 10 08LG006        BC                  2021-11-15 08:45:00 Flow        176 <NA> 
-    #> # ... with 238 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>  1 08MF005        BC                  2022-02-14 08:00:00 Flow       1080 <NA> 
+    #>  2 08MF005        BC                  2022-02-14 08:05:00 Flow       1080 <NA> 
+    #>  3 08MF005        BC                  2022-02-14 08:10:00 Flow       1070 <NA> 
+    #>  4 08MF005        BC                  2022-02-14 08:15:00 Flow       1070 <NA> 
+    #>  5 08MF005        BC                  2022-02-14 08:20:00 Flow       1070 <NA> 
+    #>  6 08MF005        BC                  2022-02-14 08:25:00 Flow       1070 <NA> 
+    #>  7 08MF005        BC                  2022-02-14 08:30:00 Flow       1070 <NA> 
+    #>  8 08MF005        BC                  2022-02-14 08:35:00 Flow       1080 <NA> 
+    #>  9 08MF005        BC                  2022-02-14 08:40:00 Flow       1070 <NA> 
+    #> 10 08MF005        BC                  2022-02-14 08:45:00 Flow       1070 <NA> 
+    #> # ... with 17,598 more rows, and 2 more variables: Symbol <chr>, Code <chr>
 
 ### Plotting
 
 Plot methods are also provided to quickly visualize realtime data:
 
-    realtime_ex <- realtime_dd(station_number = "08LG006")
+    realtime_ex <- realtime_dd(station_number = "08MF005")
 
     plot(realtime_ex)
 
@@ -121,7 +121,7 @@ Plot methods are also provided to quickly visualize realtime data:
 
 and also historical data:
 
-    hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
+    hy_ex <- hy_daily_flows(station_number = "08MF005", start_date = "2013-01-01")
 
     plot(hy_ex)
 

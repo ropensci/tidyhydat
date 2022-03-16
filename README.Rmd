@@ -71,21 +71,21 @@ This downloads (with your permission) the most recent version of HYDAT and then 
 ### Real-time
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r}
-realtime_dd(station_number = "08LG006")
+realtime_dd(station_number = "08MF005")
 ```
 
 ### Plotting
 
 Plot methods are also provided to quickly visualize realtime data:
 ```{r}
-realtime_ex <- realtime_dd(station_number = "08LG006")
+realtime_ex <- realtime_dd(station_number = "08MF005")
 
 plot(realtime_ex)
 ```
 
 and also historical data:
 ```{r, fig.height=7, fig.width=12}
-hy_ex <- hy_daily_flows(station_number = "08LA001", start_date = "2013-01-01")
+hy_ex <- hy_daily_flows(station_number = "08MF005", start_date = "2013-01-01")
 
 plot(hy_ex)
 ```
