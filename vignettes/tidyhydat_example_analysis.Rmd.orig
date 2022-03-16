@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE, 
                       message = FALSE, 
                       fig.path = "vignette-fig-",
-                      fig.width=7, fig.height=7)
+                      fig.width=9, fig.height=7)
 ```
 
 # Introduction
@@ -87,16 +87,18 @@ hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) %>%
 
 
 We now know that this station is actually *NIAGARA RIVER AT QUEENSTON* in Ontario and has an upstream drainage basin area of 686,000 square kilometres. As a first step toward visualization, let's simply plot the time series for the entire record with a smoother added:
+
 ```{r old_rec}
 longest_record_data %>%
   ggplot(aes(x = Date, y = Value)) +
-  geom_line() +
-  geom_point() +
+  geom_line(alpha = 0.5) +
+  geom_point(size = 0.25) +
   geom_smooth() +
   labs(y = "Discharge (m)") +
   theme_minimal()
 ```
 You can see very clearly where continuous monitoring was established. However, this type of plot obscures much of the data that we are interested in. We could plot all the years on the same axis and separate year by line colour. That requires a little bit of manipulation ahead of plotting using both `dplyr` and `lubridate`. Remember you can run a pipe adding one line at a time and comparing the outputs to get a sense of what each step is doing:
+
 ```{r old_rec_yr}
 longest_record_data %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
@@ -109,6 +111,7 @@ longest_record_data %>%
 ```
 
 This still is not a very useful plot mostly because our colour range still doesn't resolve year very well and any intra-annual is not visible with this plot. Consider, for example, if rather than a line plot we use a tile plot and modified our colour scale to include more colours:
+
 ```{r tile_plt}
 longest_record_data %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
@@ -117,11 +120,12 @@ longest_record_data %>%
   geom_tile() +
   scale_x_date(date_labels = "%b") +
   scale_y_reverse(expand = c(0, 0)) +
-  scale_fill_viridis_c(name = "Discharge (m^3/s) ") +
+  scale_fill_viridis_c(name = "Discharge (m^3/s)") +
   labs(y = "Year", x = "Date") +
   theme_minimal() +
   theme(legend.position="bottom")
 ```
+
 This type of plot provides a clear indicator of discharge patterns over time. Our analysis ends here but one can imagine drawing in climate indices and variation to help explain periods of extreme discharge. 
 
 # Example 2: Distribution of Historical Data
@@ -129,6 +133,7 @@ This type of plot provides a clear indicator of discharge patterns over time. Ou
 Evaluate current conditions in the station from Nunavut with longest record that is also in the Reference Hydrometric Basin Network relative to historical values.
 
 For our second example, we will illustrate how to calculate a common metric used in hydrology: percentiles. For this approach we will use another piped series of functions to zero in on the station that we want. The packages we need for this example are loaded first:
+
 ```{r pkg_load_2}
 library(tidyhydat)
 library(dplyr)
@@ -152,7 +157,7 @@ nunavut_stn_flows <- hy_stations() %>%
   hy_daily_flows()
 ``` 
 
-Armed with our data, we can now evaluate the historical distribution of data then to put some real time data into historical context. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
+We can now evaluate the historical distribution of data collection to put some real time data into historical context. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
 ```{r}
 pct_flow <- nunavut_stn_flows %>%
   mutate(dayofyear = yday(Date), Year = year(Date)) %>%
@@ -165,17 +170,18 @@ pct_flow <- nunavut_stn_flows %>%
 ```
 
 To collect real time data, we can use the `realtime_dd()` function in `tidyhydat`. Because real time data is collected in hourly (or higher) intervals and we are operating on a daily basis, we first need to take a daily mean of discharge. Again this is accomplished in a pipe:
+
 ```{r realtime}
 nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
-  mutate(Date_day = as.Date(Date)) %>%
-  group_by(Date_day) %>%
-  summarise(Value = mean(Value, na.rm = TRUE)) %>%
-  ungroup()
+     mutate(Date_day = as.Date(Date)) %>%
+     group_by(Date_day) %>%
+     summarise(Value = mean(Value, na.rm = TRUE), .groups = "drop") 
 ```
 
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
 **CAUTION**: All real time data are presented AS IS and represents unapproved data.
+
 ```{r, pcrtile_plt}
 ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
   geom_point(aes(colour = prctile)) +
