@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2022-03-15"
+date: "2022-03-16"
 output:
   html_vignette:
      keep_md: true
@@ -148,7 +148,8 @@ We saw above that if we were only interested in a subset of dates we could use t
 
 ```r
 hy_daily_flows(station_number = "08LA001", 
-               start_date = "1981-01-01", end_date = "1981-12-31")
+               start_date = "1981-01-01", 
+               end_date = "1981-12-31")
 ```
 
 This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
@@ -246,6 +247,7 @@ runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") 
 ggplot(runoff_data) + 
   geom_line(aes(x = Date, y = runoff, colour = STATION_NAME)) +
   labs(y = "Mean daily runoff [mm/d]") +
+  scale_colour_viridis_d(option = "C") +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
