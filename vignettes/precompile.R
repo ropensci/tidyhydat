@@ -41,8 +41,7 @@ precompile <- function(vignette_to_run = NULL) {
   }
 }
 
-## Run all vignettes
-precompile()
+
 
 
 

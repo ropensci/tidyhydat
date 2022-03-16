@@ -8,6 +8,13 @@ output: github_document
 source("data-raw/HYDAT_internal_data/process_internal_data.R")
 ```
 
+## precompile vignettes
+```
+source("vignettes/precompile.R")
+## Run all vignettes
+precompile()
+```
+
 ## Check if version is appropriate
 http://shiny.andyteucher.ca/shinyapps/rver-deps/
 
@@ -15,6 +22,7 @@ http://shiny.andyteucher.ca/shinyapps/rver-deps/
 ```
 devtools::check_win_devel()
 devtools::check_win_release()
+devtools::check_mac_release()
 devtools::check() ## build locally
 ```
 
@@ -25,6 +33,7 @@ library(rhub)
 check_with_rdevel()
 check_for_cran()
 check_on_windows()
+
 ```
 
 ## Run this in the console
