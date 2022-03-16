@@ -3,6 +3,8 @@
 ### MINOR IMPROVEMENT
 * `download_hydat()` now has an `ask` parameter that can be used to bypass the keypress confirmation when downloading the HYDAT database (@rchlumsk, #165). 
 * Change maintainer email. 
+* Precompile vignettes for CRAN
+* Minor tweaks to vignettes
 
 # tidyhydat 0.5.4
 - When add a local timezone column, use the most common timezone in the data rather than the first one. This just seems more likely to be useful to users
