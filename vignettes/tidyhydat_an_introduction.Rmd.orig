@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE, 
                       message = FALSE, 
                       fig.path = "vignette-fig-",
-                      fig.width=10, fig.height=7)
+                      fig.width=13, fig.height=7)
 ```
 ## Package loading
 In addition to tidyhydat, this vignette makes use of the [dplyr](https://dplyr.tidyverse.org/) package for data manipulations and [ggplot2](https://ggplot2.tidyverse.org/) for plotting.
@@ -131,7 +131,7 @@ ggplot(runoff_data) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
-
+This is an effective way to make use of the variety of tables available in HYDAT.
 
 # License
 

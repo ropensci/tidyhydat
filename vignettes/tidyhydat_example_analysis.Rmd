@@ -1,7 +1,7 @@
 ---
 title: "Two examples of using tidyhydat"
 author: "Sam Albers"
-date: "2022-03-16"
+date: "2022-03-17"
 output:
   html_vignette:
      keep_md: true
@@ -205,7 +205,6 @@ longest_record_data %>%
 ```
 
 ![plot of chunk old_rec_yr](vignette-fig-old_rec_yr-1.png)
-
 This still is not a very useful plot mostly because our colour range still doesn't resolve year very well and any intra-annual is not visible with this plot. Consider, for example, if rather than a line plot we use a tile plot and modified our colour scale to include more colours:
 
 
@@ -224,7 +223,6 @@ longest_record_data %>%
 ```
 
 ![plot of chunk tile_plt](vignette-fig-tile_plt-1.png)
-
 This type of plot provides a clear indicator of discharge patterns over time. Our analysis ends here but one can imagine drawing in climate indices and variation to help explain periods of extreme discharge. 
 
 # Example 2: Distribution of Historical Data
@@ -283,7 +281,7 @@ nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
 
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
-**CAUTION**: All real time data are presented AS IS and represents unapproved data.
+
 
 
 ```r
@@ -301,3 +299,4 @@ ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
 ```
 
 ![plot of chunk pcrtile_plt](vignette-fig-pcrtile_plt-1.png)
+**CAUTION**: All real time data are presented AS IS and represents unapproved data.

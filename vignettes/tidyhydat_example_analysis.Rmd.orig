@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE, 
                       message = FALSE, 
                       fig.path = "vignette-fig-",
-                      fig.width=10, fig.height=7)
+                      fig.width=13, fig.height=7)
 ```
 
 # Introduction
@@ -109,7 +109,6 @@ longest_record_data %>%
   labs(y = "Discharge (m)") +
   theme_minimal()
 ```
-
 This still is not a very useful plot mostly because our colour range still doesn't resolve year very well and any intra-annual is not visible with this plot. Consider, for example, if rather than a line plot we use a tile plot and modified our colour scale to include more colours:
 
 ```{r tile_plt}
@@ -125,7 +124,6 @@ longest_record_data %>%
   theme_minimal() +
   theme(legend.position="bottom")
 ```
-
 This type of plot provides a clear indicator of discharge patterns over time. Our analysis ends here but one can imagine drawing in climate indices and variation to help explain periods of extreme discharge. 
 
 # Example 2: Distribution of Historical Data
@@ -180,7 +178,7 @@ nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
 
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
-**CAUTION**: All real time data are presented AS IS and represents unapproved data.
+
 
 ```{r, pcrtile_plt}
 ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
@@ -195,3 +193,4 @@ ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
        caption = "Real time data is presents AS IS and represents unapproved data",
        x = "Date", y = "Discharge (m^3/s)")
 ```
+**CAUTION**: All real time data are presented AS IS and represents unapproved data.
