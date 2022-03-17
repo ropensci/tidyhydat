@@ -1,3 +1,27 @@
+tidyhydat 0.5.5
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+There was one NOTE: 'Note: found 122 marked UTF-8 strings'. These strings are necessary for testing as the data source that this package accesses includes data with UTF-8 strings (french language accents)
+
+## NEWS
+- `download_hydat()` now has an `ask` parameter that can be used to bypass the keypress confirmation when downloading the HYDAT database (@rchlumsk, #165). 
+- Change maintainer email. 
+- Precompile vignettes for CRAN
+- Minor tweaks to vignettes
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local Windows 10, R 4.1.2 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
 tidyhydat 0.5.4
 =========================
 - When add a local timezone column, use the most common timezone in the data rather than the first one. This just seems more likely to be useful to users
