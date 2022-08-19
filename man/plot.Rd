@@ -24,9 +24,9 @@ visualize hydrometric data.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{realtime}: plot.realtime
-}}
+\item \code{plot(realtime)}: plot.realtime
 
+}}
 \examples{
 \dontrun{
 # One station
