@@ -1,7 +1,7 @@
 ---
 title: "Two examples of using tidyhydat"
 author: "Sam Albers"
-date: "2022-03-17"
+date: "2022-08-19"
 output:
   html_vignette:
      keep_md: true
@@ -60,25 +60,26 @@ hy_stn_data_range()
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-01-17
-##    Observations:                      12,055
-##    Station(s) returned:               7,923
+##   Queried from version of HYDAT released on 2022-07-21
+##    Observations:                      12,076
+##    Station(s) returned:               7,935
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 12,055 x 6
+## # A tibble: 12,076 × 6
 ##    STATION_NUMBER DATA_TYPE SED_DATA_TYPE Year_from Year_to RECORD_LENGTH
 ##    <chr>          <chr>     <chr>             <int>   <int>         <int>
 ##  1 01AA002        Q         <NA>               1967    1977            11
 ##  2 01AD001        Q         <NA>               1918    1997            80
-##  3 01AD002        Q         <NA>               1926    2019            94
-##  4 01AD003        H         <NA>               2011    2018             8
-##  5 01AD003        Q         <NA>               1951    2018            68
+##  3 01AD002        Q         <NA>               1926    2020            95
+##  4 01AD003        H         <NA>               2011    2020            10
+##  5 01AD003        Q         <NA>               1951    2020            70
 ##  6 01AD004        H         <NA>               1980    2019            35
 ##  7 01AD004        Q         <NA>               1968    1979            12
 ##  8 01AD005        H         <NA>               1966    1974             9
 ##  9 01AD008        H         <NA>               1972    1974             3
 ## 10 01AD009        H         <NA>               1973    1982            10
-## # ... with 12,045 more rows
+## # … with 12,066 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ```
 Our objective here is to filter from this data for the station that has the longest record of flow (`DATA_TYPE == "Q"`). You'll also notice this symbol `%>%` which in R is called a [pipe](https://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
 
@@ -88,12 +89,12 @@ hy_stn_data_range() %>%
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-01-17
+##   Queried from version of HYDAT released on 2022-07-21
 ##    Observations:                      1
 ##    Station(s) returned:               1
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 1 x 6
+## # A tibble: 1 × 6
 ##   STATION_NUMBER DATA_TYPE SED_DATA_TYPE Year_from Year_to RECORD_LENGTH
 ##   <chr>          <chr>     <chr>             <int>   <int>         <int>
 ## 1 02HA003        Q         <NA>               1860    2020           161
