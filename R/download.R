@@ -28,7 +28,6 @@
 #'
 
 download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
-  
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
   } else {
@@ -97,7 +96,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
 
   ## temporary path to save
-  tmp <- tempfile("hydat_")
+  tmp <- tempfile("hydat_", fileext = ".zip")
 
   ## Download the zip file
   res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
@@ -109,6 +108,12 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
   
   utils::unzip(tmp, exdir = dl_hydat_here, overwrite = TRUE)
+  
+  ## rename to consistent name
+  file.rename(
+    list.files(dl_hydat_here, pattern = "\\.sqlite3$", full.names = TRUE),
+    hydat_path
+  )
   
   
   if (file.exists(hydat_path)){
