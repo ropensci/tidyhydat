@@ -1,3 +1,7 @@
+# tidyhydat 0.5.6
+- fixed CRAN document issue
+- fixed bug created by HYDAT database name (#175)
+
 # tidyhydat 0.5.5
 
 ### MINOR IMPROVEMENTS

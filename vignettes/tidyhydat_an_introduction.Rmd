@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2022-03-17"
+date: "2022-08-19"
 output:
   html_vignette:
      keep_md: true
@@ -42,15 +42,15 @@ hy_daily_flows(station_number = "08LA001")
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-01-17
-##    Observations:                      30,255
-##    Measurement flags:                 6,020
+##   Queried from version of HYDAT released on 2022-07-21
+##    Observations:                      31,351
+##    Measurement flags:                 6,166
 ##    Parameter(s):                      Flow
-##    Date range:                        1914-01-01 to 2018-12-31 
+##    Date range:                        1914-01-01 to 2021-12-31 
 ##    Station(s) returned:               1
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 30,255 x 5
+## # A tibble: 31,351 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 08LA001        1914-01-01 Flow        144 <NA>  
@@ -63,7 +63,8 @@ hy_daily_flows(station_number = "08LA001")
 ##  8 08LA001        1914-01-08 Flow        140 <NA>  
 ##  9 08LA001        1914-01-09 Flow        140 <NA>  
 ## 10 08LA001        1914-01-10 Flow        140 <NA>  
-## # ... with 30,245 more rows
+## # … with 31,341 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ```
 
 Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code:PE) and then create vector for `hy_daily_flows()`:
@@ -79,7 +80,8 @@ PEI_stns
 ```
 
 ```
-## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010" "01CC011" "01CD005"
+## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010" "01CC011"
+## [9] "01CD005"
 ```
 
 ```r
@@ -87,15 +89,15 @@ hy_daily_flows(station_number = PEI_stns)
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-01-17
-##    Observations:                      113,507
-##    Measurement flags:                 20,357
+##   Queried from version of HYDAT released on 2022-07-21
+##    Observations:                      114,605
+##    Measurement flags:                 20,524
 ##    Parameter(s):                      Flow
 ##    Date range:                        1961-08-01 to 2020-12-31 
 ##    Station(s) returned:               9
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 113,507 x 5
+## # A tibble: 114,605 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -108,7 +110,8 @@ hy_daily_flows(station_number = PEI_stns)
 ##  8 01CB002        1961-08-04 Flow         NA <NA>  
 ##  9 01CA003        1961-08-05 Flow         NA <NA>  
 ## 10 01CB002        1961-08-05 Flow         NA <NA>  
-## # ... with 113,497 more rows
+## # … with 114,595 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example if for some reason we wanted all the stations in Canada that had the name "Canada" in them we unify that selection and data extraction process into a single pipe:
@@ -120,15 +123,15 @@ search_stn_name("canada") %>%
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-01-17
-##    Observations:                      84,594
-##    Measurement flags:                 25,617
+##   Queried from version of HYDAT released on 2022-07-21
+##    Observations:                      86,056
+##    Measurement flags:                 26,218
 ##    Parameter(s):                      Flow
-##    Date range:                        1918-08-01 to 2020-12-31 
+##    Date range:                        1918-08-01 to 2021-12-31 
 ##    Station(s) returned:               7
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 84,594 x 5
+## # A tibble: 86,056 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -141,7 +144,8 @@ search_stn_name("canada") %>%
 ##  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 ##  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 ## 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-## # ... with 84,584 more rows
+## # … with 86,046 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
@@ -194,7 +198,7 @@ search_stn_name("liard")
 ```
 
 ```
-## # A tibble: 9 x 5
+## # A tibble: 9 × 5
 ##   STATION_NUMBER STATION_NAME                      PROV_TERR_STATE_LOC LATITUDE LONGITUDE
 ##   <chr>          <chr>                             <chr>                  <dbl>     <dbl>
 ## 1 10AA001        LIARD RIVER AT UPPER CROSSING     YT                      60.1     -129.
@@ -214,20 +218,21 @@ search_stn_number("08MF")
 ```
 
 ```
-## # A tibble: 51 x 5
-##    STATION_NUMBER STATION_NAME                           PROV_TERR_STATE_LOC LATITUDE LONGITUDE
-##    <chr>          <chr>                                  <chr>                  <dbl>     <dbl>
-##  1 08MF005        FRASER RIVER AT HOPE                   BC                      49.4     -121.
-##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                      49.2     -122.
-##  3 08MF038        FRASER RIVER AT CANNOR                 BC                      49.1     -122.
-##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                      50.6     -122.
-##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                      49.5     -121.
-##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                      50.0     -122.
-##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                      49.4     -121.
-##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                      49.3     -122.
-##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                      49.2     -122.
-## 10 08MF001        ANDERSON RIVER NEAR BOSTON BAR         BC                      49.8     -121.
-## # ... with 41 more rows
+## # A tibble: 53 × 5
+##    STATION_NUMBER STATION_NAME                           PROV_TERR_STATE_LOC LATIT…¹ LONGI…²
+##    <chr>          <chr>                                  <chr>                 <dbl>   <dbl>
+##  1 08MF005        FRASER RIVER AT HOPE                   BC                     49.4   -121.
+##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                     49.2   -122.
+##  3 08MF038        FRASER RIVER AT CANNOR                 BC                     49.1   -122.
+##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                     50.6   -122.
+##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                     49.5   -121.
+##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                     50.0   -122.
+##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                     49.4   -121.
+##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                     49.3   -122.
+##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                     49.2   -122.
+## 10 08MF001        ANDERSON RIVER NEAR BOSTON BAR         BC                     49.8   -121.
+## # … with 43 more rows, and abbreviated variable names ¹​LATITUDE, ²​LONGITUDE
+## # ℹ Use `print(n = ...)` to see more rows
 ```
 
 ## Using joins 
