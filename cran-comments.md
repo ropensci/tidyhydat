@@ -1,3 +1,25 @@
+tidyhydat 0.5.6
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+There was one NOTE: 'Note: found 122 marked UTF-8 strings'. These strings are necessary for testing as the data source that this package accesses includes data with UTF-8 strings (french language accents)
+
+## NEWS
+- fixed CRAN document issue
+- fixed bug created by HYDAT database name (#175)
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.2.1 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
 tidyhydat 0.5.5
 =========================
 
