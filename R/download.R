@@ -69,11 +69,15 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   httr::stop_for_status(x)
   new_hydat <- substr(gsub("^.*\\Hydat_sqlite3_", "",
                            httr::content(x, "text")), 1, 8)
+  #Make the download URL
+  url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
+  response = httr::HEAD(url)
+  size <- round(as.numeric(httr::headers(response)[["Content-Length"]])/1000000, 0)
 
   
   ## Do we need to download a new version?
   if (new_hydat == existing_hydat & ask) { #DB exists and no new version
-    dl_overwrite <- ask(paste0("The existing local version of HYDAT, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available. Do you wish to overwrite it? Downloading HYDAT could take up to 10 minutes (~250 MB)."))
+    dl_overwrite <- ask(paste0("The existing local version of HYDAT, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available.  \nDo you wish to overwrite it?  \nDownloading HYDAT could take up to 10 minutes (", size, " MB)."))
   } else {
     dl_overwrite <- TRUE
   }
@@ -83,8 +87,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   }
   
   if (new_hydat != existing_hydat & ask) { #New DB available or no local DB at all
-    ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT, if applicable",
-                     "Is that okay?", sep = "\n"))
+    ans <- ask(paste0("Downloading HYDAT will take up to 10 minutes (", size, " MB).  \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"))
   } else {
     ans <- TRUE
   }
@@ -102,8 +105,6 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     } else {
       info(paste0("Downloading new version of HYDAT created on ", crayon::blue(lubridate::ymd(new_hydat))))
       }
-    
-    url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
     
     ## temporary path to save
     tmp <- tempfile("hydat_", fileext = ".zip")
