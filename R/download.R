@@ -129,7 +129,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     )
 
     
-    if (file.exists(hydat_path)){
+    if (file.exists(hydat_path)) {
       congrats("HYDAT successfully downloaded")
     } else {
     not_done("HYDAT not successfully downloaded")
