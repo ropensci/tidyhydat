@@ -40,23 +40,10 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
 
   if (!is.logical(ask)) stop("Parameter ask must be a logical")
   
-  if (ask) {
-    ans <- ask(paste("Downloading HYDAT will take ~10 minutes.","This will remove any older versions of HYDAT",
-                     "Is that okay?", sep = "\n"))
-  } else {
-    ans <- TRUE
-    green_message(paste0("Downloading HYDAT to ", normalizePath(dl_hydat_here)))
-  }
-  
-  if (!ans) stop("Maybe another day...", call. = FALSE)
-  
-  info(paste0("Downloading HYDAT.sqlite3 to ", crayon::blue(dl_hydat_here)))
-
 
   ## Create actual hydat_path
   hydat_path <- file.path(dl_hydat_here, "Hydat.sqlite3")
   
- 
   ## If there is an existing hydat file get the date of release
   if (file.exists(hydat_path)) {
     hy_version(hydat_path) %>%
@@ -82,72 +69,101 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   httr::stop_for_status(x)
   new_hydat <- substr(gsub("^.*\\Hydat_sqlite3_", "",
                            httr::content(x, "text")), 1, 8)
-
-  ## Do we need to download a new version?
-  if (new_hydat == existing_hydat) {
-    handle_error(stop(not_done(paste0("The existing local version of hydat, published on ",
-                lubridate::ymd(existing_hydat),
-                ", is the most recent version available."))))
-  } else {
-    info(paste0("Downloading version of HYDAT created on ", crayon::blue(lubridate::ymd(new_hydat))))
-  }
-
+  #Make the download URL
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
-  
+  response = httr::HEAD(url)
+  size <- round(as.numeric(httr::headers(response)[["Content-Length"]])/1000000, 0)
 
-  ## temporary path to save
-  tmp <- tempfile("hydat_", fileext = ".zip")
+  
+  ## Do we need to download a new version?
+  if (new_hydat == existing_hydat & ask) { #DB exists and no new version
+    dl_overwrite <- ask(paste0("The existing local version of HYDAT, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available.  \nDo you wish to overwrite it?  \nDownloading HYDAT could take up to 10 minutes (", size, " MB)."))
+  } else {
+    dl_overwrite <- TRUE
+  }
 
-  ## Download the zip file
-  res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
-                   httr::user_agent("https://github.com/ropensci/tidyhydat"))
-  on.exit(file.remove(tmp), add = TRUE)
-  httr::stop_for_status(res)
-  
-  if(file.exists(tmp)) info("Extracting HYDAT")
-  
-  
-  utils::unzip(tmp, exdir = dl_hydat_here, overwrite = TRUE)
-  
-  ## rename to consistent name
-  file.rename(
-    list.files(dl_hydat_here, pattern = "\\.sqlite3$", full.names = TRUE),
-    hydat_path
-  )
-  
-  
-  if (file.exists(hydat_path)){
-    congrats("HYDAT successfully downloaded")
-  } else(not_done("HYDAT not successfully downloaded"))
-  
-  hy_check()
-  
-  invisible(TRUE)
-}
-
-hy_check <- function(hydat_path = NULL) {
-  con <- hy_src(hydat_path)
-  on.exit(hy_src_disconnect(con), add = TRUE)
-  
-  have_tbls <- dplyr::src_tbls(con)
-  
-  tbl_diff <- setdiff(hy_expected_tbls(), have_tbls)
-  if (!rlang::is_empty(tbl_diff)) {
-    red_message("The following tables are missing from HYDAT")
-    red_message(paste0(tbl_diff, "\n"))
+  if (!dl_overwrite){
+    info("HYDAT is updated on a quarterly basis, check again soon for an updated version.")
   }
   
+  if (new_hydat != existing_hydat & ask) { #New DB available or no local DB at all
+    ans <- ask(paste0("Downloading HYDAT will take up to 10 minutes (", size, " MB).  \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"))
+  } else {
+    ans <- TRUE
+  }
   
-  invisible(lapply(have_tbls, function(x) {
-    tbl_rows <- dplyr::tbl(con, x) %>% 
-      utils::head(1) %>% 
-      dplyr::collect() %>% 
-      nrow()
+  if (!ans) {
+    stop("Maybe another day...", call. = FALSE)
+  } else if (dl_overwrite) {
+    green_message(paste0("Downloading HYDAT to ", normalizePath(dl_hydat_here)))
+  }
     
-    if(tbl_rows == 0) {
-      red_message(paste0(x, " table has no data."))
-    } 
-  }))
   
+  if (dl_overwrite){
+    if (new_hydat == existing_hydat){
+      info(paste0("Your local copy of HYDAT published on ", crayon::blue(lubridate::ymd(new_hydat)), " will be overwritten."))
+    } else {
+      info(paste0("Downloading new version of HYDAT created on ", crayon::blue(lubridate::ymd(new_hydat))))
+      }
+    
+    ## temporary path to save
+    tmp <- tempfile("hydat_", fileext = ".zip")
+    
+    ## Download the zip file
+    res <- httr::GET(url, httr::write_disk(tmp), httr::progress("down"), 
+                     httr::user_agent("https://github.com/ropensci/tidyhydat"))
+    on.exit(file.remove(tmp), add = TRUE)
+    httr::stop_for_status(res)
+    
+    ## Extract the file to a temporary dir
+    if(file.exists(tmp)) info("Extracting HYDAT")
+    tempdir <- paste0(tempdir(), "/extracted")
+    dir.create(tempdir)
+    utils::unzip(tmp, exdir = tempdir, overwrite = TRUE)
+    on.exit(unlink(tempdir, recursive=TRUE))
+    
+    ## Move to final resting place and rename to consistent name
+    file.rename(
+      list.files(tempdir, pattern = "\\.sqlite3$", full.names = TRUE),
+      hydat_path
+    )
+
+    
+    if (file.exists(hydat_path)) {
+      congrats("HYDAT successfully downloaded")
+    } else {
+    not_done("HYDAT not successfully downloaded")
+    }
+    
+    hy_check <- function(hydat_path = NULL) {
+      con <- hy_src(hydat_path)
+      on.exit(hy_src_disconnect(con), add = TRUE)
+      
+      have_tbls <- dplyr::src_tbls(con)
+      
+      tbl_diff <- setdiff(hy_expected_tbls(), have_tbls)
+      if (!rlang::is_empty(tbl_diff)) {
+        red_message("The following tables are missing from HYDAT")
+        red_message(paste0(tbl_diff, "\n"))
+      }
+      
+      
+      invisible(lapply(have_tbls, function(x) {
+        tbl_rows <- dplyr::tbl(con, x) %>% 
+          utils::head(1) %>% 
+          dplyr::collect() %>% 
+          nrow()
+        
+        if(tbl_rows == 0) {
+          red_message(paste0(x, " table has no data."))
+        } 
+      }))
+    }
+    
+    hy_check()
+    
+  } #End of DL and overwrite if statement
+  
+
 }
 
