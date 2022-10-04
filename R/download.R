@@ -28,6 +28,7 @@
 #'
 
 download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
+  
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
   } else {
@@ -46,38 +47,29 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
   ## If there is an existing hydat file get the date of release
   if (file.exists(hydat_path)) {
-    hy_version(hydat_path) %>%
-      dplyr::mutate(condensed_date = paste0(
-        substr(.data$Date, 1, 4),
-        substr(.data$Date, 6, 7),
-        substr(.data$Date, 9, 10)
-      )) %>%
-      dplyr::pull(.data$condensed_date) -> existing_hydat
+    existing_hydat <- as.Date(hy_version(hydat_path)$Date) 
+    existing_hydat <- gsub("-", "", as.character(existing_hydat))
   } else {
     existing_hydat <- "HYDAT not present"
   }
 
 
-  ## Create the link to download HYDAT
-  base_url <-
-    "https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
-  
-  # Run network check
-  network_check(base_url)
-  
-  x <- httr::GET(base_url)
-  httr::stop_for_status(x)
-  new_hydat <- substr(gsub("^.*\\Hydat_sqlite3_", "",
-                           httr::content(x, "text")), 1, 8)
+  new_hydat <- hy_remote()
   #Make the download URL
   url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
-  response = httr::HEAD(url)
+  response <- httr::HEAD(url)
+  httr::stop_for_status(response)
   size <- round(as.numeric(httr::headers(response)[["Content-Length"]])/1000000, 0)
 
   
   ## Do we need to download a new version?
   if (new_hydat == existing_hydat & ask) { #DB exists and no new version
-    dl_overwrite <- ask(paste0("The existing local version of HYDAT, published on ", lubridate::ymd(existing_hydat), ", is the most recent version available.  \nDo you wish to overwrite it?  \nDownloading HYDAT could take up to 10 minutes (", size, " MB)."))
+    msg <- paste0(
+      "The existing local version of HYDAT, published on ",
+      lubridate::ymd(existing_hydat), 
+      ", is the most recent version available. \nDo you wish to overwrite it? \nDownloading HYDAT could take up to 10 minutes (", 
+      size, " MB).")
+    dl_overwrite <- ask(msg)
   } else {
     dl_overwrite <- TRUE
   }
@@ -87,7 +79,11 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   }
   
   if (new_hydat != existing_hydat & ask) { #New DB available or no local DB at all
-    ans <- ask(paste0("Downloading HYDAT will take up to 10 minutes (", size, " MB).  \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"))
+    msg <- paste0(
+      "Downloading HYDAT will take up to 10 minutes (", 
+      size, " MB).  \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"
+      )
+    ans <- ask(msg)
   } else {
     ans <- TRUE
   }
@@ -95,7 +91,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   if (!ans) {
     stop("Maybe another day...", call. = FALSE)
   } else if (dl_overwrite) {
-    green_message(paste0("Downloading HYDAT to ", normalizePath(dl_hydat_here)))
+    green_message(paste0("Downloading HYDAT to ", dl_hydat_here))
   }
     
   
@@ -117,7 +113,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     
     ## Extract the file to a temporary dir
     if(file.exists(tmp)) info("Extracting HYDAT")
-    tempdir <- paste0(tempdir(), "/extracted")
+    tempdir <- file.path(tempdir(), "extracted")
     dir.create(tempdir)
     utils::unzip(tmp, exdir = tempdir, overwrite = TRUE)
     on.exit(unlink(tempdir, recursive=TRUE))
@@ -135,35 +131,57 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     not_done("HYDAT not successfully downloaded")
     }
     
-    hy_check <- function(hydat_path = NULL) {
-      con <- hy_src(hydat_path)
-      on.exit(hy_src_disconnect(con), add = TRUE)
-      
-      have_tbls <- dplyr::src_tbls(con)
-      
-      tbl_diff <- setdiff(hy_expected_tbls(), have_tbls)
-      if (!rlang::is_empty(tbl_diff)) {
-        red_message("The following tables are missing from HYDAT")
-        red_message(paste0(tbl_diff, "\n"))
-      }
-      
-      
-      invisible(lapply(have_tbls, function(x) {
-        tbl_rows <- dplyr::tbl(con, x) %>% 
-          utils::head(1) %>% 
-          dplyr::collect() %>% 
-          nrow()
-        
-        if(tbl_rows == 0) {
-          red_message(paste0(x, " table has no data."))
-        } 
-      }))
-    }
-    
     hy_check()
+    
+    invisible(hydat_path)
     
   } #End of DL and overwrite if statement
   
 
 }
 
+hy_base_url <- function() {
+  "https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
+}
+
+hy_remote <- function() {
+  ## Create the link to download HYDAT
+  base_url <- hy_base_url()
+  
+  # Run network check
+  network_check(base_url)
+  
+  x <- httr::GET(base_url)
+  httr::stop_for_status(x)
+  raw_date <- substr(
+    gsub("^.*\\Hydat_sqlite3_", "", httr::content(x, "text")), 
+    1, 8)
+  
+  raw_date
+}
+
+
+hy_check <- function(hydat_path = NULL) {
+  con <- hy_src(hydat_path)
+  on.exit(hy_src_disconnect(con), add = TRUE)
+  
+  have_tbls <- dplyr::src_tbls(con)
+  
+  tbl_diff <- setdiff(hy_expected_tbls(), have_tbls)
+  if (!rlang::is_empty(tbl_diff)) {
+    red_message("The following tables are missing from HYDAT")
+    red_message(paste0(tbl_diff, "\n"))
+  }
+  
+  
+  invisible(lapply(have_tbls, function(x) {
+    tbl_rows <- dplyr::tbl(con, x) %>% 
+      utils::head(1) %>% 
+      dplyr::collect() %>% 
+      nrow()
+    
+    if(tbl_rows == 0) {
+      red_message(paste0(x, " table has no data."))
+    } 
+  }))
+}
