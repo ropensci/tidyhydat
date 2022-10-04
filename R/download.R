@@ -144,6 +144,11 @@ hy_base_url <- function() {
   "https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
 }
 
+#' Get the version date of HYDAT that is current on the ECCC website
+#' 
+#' Retrieve the date of the HYDAT version available for download.
+#' 
+#' @export
 hy_remote <- function() {
   ## Create the link to download HYDAT
   base_url <- hy_base_url()
