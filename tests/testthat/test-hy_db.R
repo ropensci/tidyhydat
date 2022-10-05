@@ -59,7 +59,7 @@ test_that("hy_src fails when hydat_path is not a file", {
 
 test_that("hy_src returns a dplyr src", {
   src <- hy_src(hydat_path = hy_test_db())
-  expect_is(src, "src_sql")
+  expect_s3_class(src, "src_sql")
   hy_src_disconnect(src)
 })
 
