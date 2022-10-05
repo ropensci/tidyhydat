@@ -331,7 +331,7 @@ hy_stn_op_schedule <- function(station_number = NULL,
 #'
 #'
 hy_dir <- function(...){
-  normalizePath(
+  path.expand(
     rappdirs::user_data_dir(appname = "tidyhydat", ...)
   )
 }
