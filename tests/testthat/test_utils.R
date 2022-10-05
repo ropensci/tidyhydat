@@ -1,5 +1,3 @@
-context("Testing function in utils.R")
-
 test_that("hy_dir returns a path",{
   expect_silent(hy_dir())
 })

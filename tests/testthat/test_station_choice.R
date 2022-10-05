@@ -1,5 +1,3 @@
-context("Make sure that station choice chooses the correct station")
-
 test_that("Outputs that same station that is inputted in outputted when province is missing",{
   hydat_path <- hy_test_db()
   ## Read in database

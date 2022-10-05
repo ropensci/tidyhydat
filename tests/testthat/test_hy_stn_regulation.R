@@ -1,5 +1,3 @@
-context("Testing hy_stn_regulation")
-
 test_that("hy_stn_regulation accepts single and multiple province arguments",
           {
             stns <- "08NM083"

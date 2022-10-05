@@ -1,5 +1,3 @@
-context("Testing hy_monthly_flows")
-
 test_that("hy_monthly_flows accepts single and multiple province arguments",
           {
             stns <- "08MF005"

@@ -1,5 +1,3 @@
-context("Testing hy_daily_levels")
-
 test_that("hy_daily_levels accepts single and multiple station arguments",
           {
             stns <- "08MF005"

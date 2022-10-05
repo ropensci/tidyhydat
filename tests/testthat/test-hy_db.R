@@ -1,5 +1,3 @@
-context("hy_db")
-
 test_that("hy_*_db returns the correct locations", {
   expect_equal(basename(hy_downloaded_db()), "Hydat.sqlite3")
   expect_equal(basename(hy_test_db()), "tinyhydat.sqlite3")

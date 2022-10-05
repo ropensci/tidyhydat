@@ -1,5 +1,3 @@
-context("Testing hy_stations")
-
 test_that("hy_stations accepts single and multiple province arguments", {
   stns <- "08NM083"
   expect_identical(unique(hy_stations(station_number = stns, 

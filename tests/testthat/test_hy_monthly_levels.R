@@ -1,5 +1,3 @@
-context("Testing hy_monthly_levels")
-
 test_that("hy_monthly_levels accepts single and multiple province arguments",
           {
             stns <- "08MF005"

@@ -1,6 +1,4 @@
-context("Testing realtime functions")
-
- test_that("realtime_dd returns the correct data header", {
+test_that("realtime_dd returns the correct data header", {
    #skip_on_travis()
    skip_on_cran()
    expect_identical(

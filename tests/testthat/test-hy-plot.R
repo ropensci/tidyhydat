@@ -1,5 +1,3 @@
-context("testing plot methods for tidyhydat")
-
 test_that("plot fails with more than four stations",{
   skip_on_cran()
   skip_on_travis()

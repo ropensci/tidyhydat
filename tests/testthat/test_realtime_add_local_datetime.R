@@ -1,5 +1,3 @@
-context("Testing addition of local datetime column")
-
 test_that("realtime_add_local_datetime add applies correct timezone",{
   skip_on_cran()
   skip_if_net_down()

@@ -1,5 +1,3 @@
-context("Testing hy_daily_flows")
-
 test_that("hy_daily_flows accepts single and multiple station arguments", {
   stns <- "08MF005"
   expect_identical(unique(
