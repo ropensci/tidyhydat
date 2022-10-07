@@ -56,7 +56,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
 
   new_hydat <- hy_remote()
   #Make the download URL
-  url <- paste0(base_url, "Hydat_sqlite3_", new_hydat, ".zip")
+  url <- paste0(hy_base_url(), "Hydat_sqlite3_", new_hydat, ".zip")
   response <- httr::HEAD(url)
   httr::stop_for_status(response)
   size <- round(as.numeric(httr::headers(response)[["Content-Length"]])/1000000, 0)
@@ -150,13 +150,11 @@ hy_base_url <- function() {
 #' 
 #' @export
 hy_remote <- function() {
-  ## Create the link to download HYDAT
-  base_url <- hy_base_url()
-  
+
   # Run network check
-  network_check(base_url)
+  network_check(hy_base_url())
   
-  x <- httr::GET(base_url)
+  x <- httr::GET(hy_base_url())
   httr::stop_for_status(x)
   raw_date <- substr(
     gsub("^.*\\Hydat_sqlite3_", "", httr::content(x, "text")), 
