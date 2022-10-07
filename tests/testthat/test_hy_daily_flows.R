@@ -49,7 +49,7 @@ test_that("hy_daily_flows produces an error when a province is not specified cor
 # })
 
 test_that("hy_daily_flows respects Date specification", {
-  date_vector <- c("2013-01-01", "2014-01-01")
+  date_vector <- c("1912-03-01", "1912-05-01")
   temp_df <- hy_daily_flows(
     station_number = "08MF005",
     hydat_path = hy_test_db(),
