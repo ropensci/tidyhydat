@@ -1,5 +1,3 @@
-context("Make sure that station choice chooses the correct station")
-
 test_that("Outputs that same station that is inputted in outputted when province is missing",{
   hydat_path <- hy_test_db()
   ## Read in database
@@ -48,5 +46,5 @@ test_that("province in any case is accepted",{
 
 test_that("'CA' to prov_terr_state_loc argument returns only Canadian stations",{
   only_canada <- unique(hy_stations(prov_terr_state_loc = "CA", hydat_path = hy_test_db())$PROV_TERR_STATE_LOC)
-  expect_equal(c("NB", "AB", "SK", "YT", "BC"), only_canada)
+  expect_equal(c("AB", "SK", "BC"), only_canada)
 })

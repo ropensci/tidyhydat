@@ -1,5 +1,3 @@
-context("Testing hy_daily")
-
 test_that("hy_daily accepts a level only station argument", {
   skip_on_travis()
   skip_on_cran()

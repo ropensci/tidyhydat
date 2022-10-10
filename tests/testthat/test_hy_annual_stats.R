@@ -1,5 +1,3 @@
-context("Testing hy_annual_stats")
-
 test_that("hy_annual_stats accepts single and multiple province arguments", {
   stns <- "08NM083"
   expect_identical(unique(hy_annual_stats(

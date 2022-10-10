@@ -1,5 +1,3 @@
-context("hy_db")
-
 test_that("hy_*_db returns the correct locations", {
   expect_equal(basename(hy_downloaded_db()), "Hydat.sqlite3")
   expect_equal(basename(hy_test_db()), "tinyhydat.sqlite3")
@@ -61,7 +59,7 @@ test_that("hy_src fails when hydat_path is not a file", {
 
 test_that("hy_src returns a dplyr src", {
   src <- hy_src(hydat_path = hy_test_db())
-  expect_is(src, "src_sql")
+  expect_s3_class(src, "src_sql")
   hy_src_disconnect(src)
 })
 

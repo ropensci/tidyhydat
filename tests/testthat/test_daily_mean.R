@@ -1,5 +1,3 @@
-context("Testing daily_mean()")
-
 test_that("daily_mean takes a range of values for yesterday and reduces it to one value per parameter",{
   skip_on_cran()
   df <- realtime_dd("08MF005")

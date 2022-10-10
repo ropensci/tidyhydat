@@ -1,5 +1,3 @@
-context("Testing hy_annual_instant_peaks")
-
 test_that("hy_annual_instant_peaks accepts single and multiple province arguments",
           {
             stns <- "08NM083"

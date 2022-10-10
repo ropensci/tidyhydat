@@ -1,5 +1,3 @@
-context("Testing realtime_plot")
-
 test_that("realtime_plot will plot a lake only station", {
   skip_if_net_down()
   skip_on_cran()

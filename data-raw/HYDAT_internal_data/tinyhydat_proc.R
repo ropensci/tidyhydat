@@ -31,8 +31,9 @@ table_vector <- c("ANNUAL_INSTANT_PEAKS", "ANNUAL_STATISTICS",
 ## List of tables with STATION_NUMBER INFORMATION
 list_of_small_tables <- table_vector %>%
   map(~tbl(src = hydat_con, .) %>%
-        filter(STATION_NUMBER %in% c("08MF005","08NM083","08NE102","08AA003",
-                                     "05AA008","01AP003","08BB005", "05HD008")) %>%
+        filter(STATION_NUMBER %in% c("08MF005","08NM083","08NE102",
+                                     "05AA008", "05HD008")) %>%
+        head(2000) %>% 
         collect()
       ) %>% 
   set_names(table_vector)

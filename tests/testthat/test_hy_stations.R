@@ -1,5 +1,3 @@
-context("Testing hy_stations")
-
 test_that("hy_stations accepts single and multiple province arguments", {
   stns <- "08NM083"
   expect_identical(unique(hy_stations(station_number = stns, 
@@ -14,8 +12,8 @@ test_that("hy_stations accepts single and multiple province arguments", {
   prov <- c("BC")
   expect_identical(unique(hy_stations(prov_terr_state_loc = "BC", 
                                       hydat_path = hy_test_db())$PROV_TERR_STATE_LOC), prov)
-  expect_identical(unique(hy_stations(prov_terr_state_loc = c("AB", "YT"), 
-                                      hydat_path = hy_test_db())$PROV_TERR_STATE_LOC), c("AB", "YT"))
+  expect_identical(unique(hy_stations(prov_terr_state_loc = c("AB", "BC"), 
+                                      hydat_path = hy_test_db())$PROV_TERR_STATE_LOC), c("AB", "BC"))
 })
 
 test_that("hy_stations produces an error when a province is not specified correctly", {

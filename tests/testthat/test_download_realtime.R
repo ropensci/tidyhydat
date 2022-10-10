@@ -1,6 +1,4 @@
-context("Testing realtime functions")
-
- test_that("realtime_dd returns the correct data header", {
+test_that("realtime_dd returns the correct data header", {
    #skip_on_travis()
    skip_on_cran()
    expect_identical(
@@ -17,7 +15,7 @@ test_that("realtime_dd can download stations from a whole province using prov_te
   rldf <- realtime_dd(prov_terr_state_loc = "PE")
   
   expect_true(identical(expected_columns,colnames(rldf)))
-  expect_is(attributes(rldf)$query_time, "POSIXct")
+  expect_s3_class(attributes(rldf)$query_time, "POSIXct")
 })
 
 

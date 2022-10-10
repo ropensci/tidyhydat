@@ -1,5 +1,3 @@
-context("Testing hy_sed_samples_psd")
-
 test_that("hy_sed_samples_psd accepts single and multiple province arguments",
           {
             stns <- "05AA008"

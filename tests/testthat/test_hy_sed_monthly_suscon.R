@@ -1,5 +1,3 @@
-context("Testing hy_sed_monthly_suscon")
-
 test_that("hy_sed_monthly_suscon accepts single and multiple province arguments",
           {
             stns <- "08MF005"

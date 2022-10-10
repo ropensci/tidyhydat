@@ -1,5 +1,3 @@
-context("Testing hy_monthly_flows")
-
 test_that("hy_monthly_flows accepts single and multiple province arguments",
           {
             stns <- "08MF005"
@@ -48,7 +46,7 @@ test_that("hy_monthly_flows produces an error when a province is not specified c
 
 
 test_that("hy_monthly_flows respects Date specification", {
-  date_vector <- c("2013-01-01", "2014-01-01")
+  date_vector <- c("1912-03-01", "1912-05-01")
   temp_df <- hy_monthly_flows(
     station_number = "08MF005",
     hydat_path = hy_test_db(),
