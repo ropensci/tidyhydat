@@ -1,7 +1,7 @@
 ---
 title: "Two examples of using tidyhydat"
 author: "Sam Albers"
-date: "2022-08-19"
+date: "2022-10-09"
 output:
   html_vignette:
      keep_md: true
@@ -79,7 +79,6 @@ hy_stn_data_range()
 ##  9 01AD008        H         <NA>               1972    1974             3
 ## 10 01AD009        H         <NA>               1973    1982            10
 ## # … with 12,066 more rows
-## # ℹ Use `print(n = ...)` to see more rows
 ```
 Our objective here is to filter from this data for the station that has the longest record of flow (`DATA_TYPE == "Q"`). You'll also notice this symbol `%>%` which in R is called a [pipe](https://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
 

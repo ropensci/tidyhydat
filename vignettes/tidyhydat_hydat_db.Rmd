@@ -1,7 +1,7 @@
 ---
 title: "Stepping into the HYDAT Database"
 author: "Dewey Dunnington"
-date: "2022-08-19"
+date: "2022-10-09"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Stepping into the HYDAT Database}
@@ -38,17 +38,15 @@ To list the tables, use `src_tbls()` from the **dplyr** package.
 
 ```r
 src_tbls(src)
-#>  [1] "AGENCY_LIST"            "ANNUAL_INSTANT_PEAKS"   "ANNUAL_STATISTICS"     
-#>  [4] "CONCENTRATION_SYMBOLS"  "DATA_SYMBOLS"           "DATA_TYPES"            
-#>  [7] "DATUM_LIST"             "DLY_FLOWS"              "DLY_LEVELS"            
-#> [10] "MEASUREMENT_CODES"      "OPERATION_CODES"        "PEAK_CODES"            
-#> [13] "PRECISION_CODES"        "REGIONAL_OFFICE_LIST"   "SAMPLE_REMARK_CODES"   
-#> [16] "SED_DATA_TYPES"         "SED_DLY_LOADS"          "SED_DLY_SUSCON"        
-#> [19] "SED_SAMPLES"            "SED_SAMPLES_PSD"        "SED_VERTICAL_LOCATION" 
-#> [22] "SED_VERTICAL_SYMBOLS"   "STATIONS"               "STN_DATA_COLLECTION"   
-#> [25] "STN_DATA_RANGE"         "STN_DATUM_CONVERSION"   "STN_DATUM_UNRELATED"   
-#> [28] "STN_OPERATION_SCHEDULE" "STN_REGULATION"         "STN_REMARKS"           
-#> [31] "STN_REMARK_CODES"       "STN_STATUS_CODES"       "VERSION"
+#>  [1] "AGENCY_LIST"            "ANNUAL_INSTANT_PEAKS"   "ANNUAL_STATISTICS"      "CONCENTRATION_SYMBOLS" 
+#>  [5] "DATA_SYMBOLS"           "DATA_TYPES"             "DATUM_LIST"             "DLY_FLOWS"             
+#>  [9] "DLY_LEVELS"             "MEASUREMENT_CODES"      "OPERATION_CODES"        "PEAK_CODES"            
+#> [13] "PRECISION_CODES"        "REGIONAL_OFFICE_LIST"   "SAMPLE_REMARK_CODES"    "SED_DATA_TYPES"        
+#> [17] "SED_DLY_LOADS"          "SED_DLY_SUSCON"         "SED_SAMPLES"            "SED_SAMPLES_PSD"       
+#> [21] "SED_VERTICAL_LOCATION"  "SED_VERTICAL_SYMBOLS"   "STATIONS"               "STN_DATA_COLLECTION"   
+#> [25] "STN_DATA_RANGE"         "STN_DATUM_CONVERSION"   "STN_DATUM_UNRELATED"    "STN_OPERATION_SCHEDULE"
+#> [29] "STN_REGULATION"         "STN_REMARKS"            "STN_REMARK_CODES"       "STN_STATUS_CODES"      
+#> [33] "VERSION"
 ```
 
 To inspect any particular table, use the `tbl()` function with the `src` and the table name.
@@ -57,21 +55,20 @@ To inspect any particular table, use the `tbl()` function with the `src` and the
 ```r
 tbl(src, "STN_OPERATION_SCHEDULE")
 #> # Source:   table<STN_OPERATION_SCHEDULE> [?? x 5]
-#> # Database: sqlite 3.39.2 [/Users/samalbers/_dev/gh_repos/tidyhydat/inst/test_db/tinyhydat.sqlite3]
+#> # Database: sqlite 3.39.3 [/Users/samalbers/_dev/gh_repos/tidyhydat/inst/test_db/tinyhydat.sqlite3]
 #>    STATION_NUMBER DATA_TYPE  YEAR MONTH_FROM MONTH_TO
 #>    <chr>          <chr>     <int> <chr>      <chr>   
-#>  1 01AP003        H          1923 <NA>       <NA>    
-#>  2 01AP003        H          1924 <NA>       <NA>    
-#>  3 01AP003        H          1925 <NA>       <NA>    
-#>  4 01AP003        H          1926 <NA>       <NA>    
-#>  5 01AP003        H          1927 <NA>       <NA>    
-#>  6 01AP003        H          1928 <NA>       <NA>    
-#>  7 01AP003        H          1929 <NA>       <NA>    
-#>  8 01AP003        H          1930 <NA>       <NA>    
-#>  9 01AP003        H          1931 <NA>       <NA>    
-#> 10 01AP003        H          1932 <NA>       <NA>    
+#>  1 05AA008        H          2012 JAN        DEC     
+#>  2 05AA008        H          2013 JAN        DEC     
+#>  3 05AA008        H          2014 JAN        DEC     
+#>  4 05AA008        H          2015 JAN        DEC     
+#>  5 05AA008        H          2016 JAN        DEC     
+#>  6 05AA008        H          2017 JAN        DEC     
+#>  7 05AA008        H          2018 JAN        DEC     
+#>  8 05AA008        H          2019 JAN        DEC     
+#>  9 05AA008        H          2020 JAN        DEC     
+#> 10 05AA008        Q          1910 <NA>       <NA>    
 #> # … with more rows
-#> # ℹ Use `print(n = ...)` to see more rows
 ```
 
 Working with SQL tables in dplyr is much like working with regular data frames, except no data is actually read from the database until necessary. Because some of these tables are large (particularly those containing the actual data), you will want to `filter()` the tables before you `collect()` them (the `collect()` operation loads them into memory as a `data.frame`).
@@ -95,7 +92,6 @@ tbl(src, "STN_OPERATION_SCHEDULE") %>%
 #>  9 05AA008        H          2020 JAN        DEC     
 #> 10 05AA008        Q          1910 <NA>       <NA>    
 #> # … with 93 more rows
-#> # ℹ Use `print(n = ...)` to see more rows
 ```
 
 When you are finished with the database (i.e., the end of the script), it is good practice to close the connection (you may get a loud red warning if you don't!).
