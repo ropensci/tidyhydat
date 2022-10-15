@@ -22,12 +22,6 @@ checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.
 [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
 <!-- badges: end -->
 
-## Project Status
-
-This package is maintained by the Data Science Partnerships Program in
-the [British Columbia Ministry of Citizens’
-Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
-
 ## What does `tidyhydat` do?
 
 -   Provides functions (`hy_*`) that access hydrometric data from the
@@ -92,22 +86,23 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2022-03-16 22:48:40 (UTC)
-    #>   Date range: 2022-02-14 to 2022-03-16 
-    #> # A tibble: 17,608 x 8
-    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
-    #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08MF005        BC                  2022-02-14 08:00:00 Flow       1080 <NA> 
-    #>  2 08MF005        BC                  2022-02-14 08:05:00 Flow       1080 <NA> 
-    #>  3 08MF005        BC                  2022-02-14 08:10:00 Flow       1070 <NA> 
-    #>  4 08MF005        BC                  2022-02-14 08:15:00 Flow       1070 <NA> 
-    #>  5 08MF005        BC                  2022-02-14 08:20:00 Flow       1070 <NA> 
-    #>  6 08MF005        BC                  2022-02-14 08:25:00 Flow       1070 <NA> 
-    #>  7 08MF005        BC                  2022-02-14 08:30:00 Flow       1070 <NA> 
-    #>  8 08MF005        BC                  2022-02-14 08:35:00 Flow       1080 <NA> 
-    #>  9 08MF005        BC                  2022-02-14 08:40:00 Flow       1070 <NA> 
-    #> 10 08MF005        BC                  2022-02-14 08:45:00 Flow       1070 <NA> 
-    #> # ... with 17,598 more rows, and 2 more variables: Symbol <chr>, Code <chr>
+    #>   Queried on: 2022-10-15 15:31:53 (UTC)
+    #>   Date range: 2022-09-14 to 2022-10-15 
+    #> # A tibble: 18,006 × 8
+    #>    STATION_NUMBER PROV_TE…¹ Date                Param…² Value Grade Symbol Code 
+    #>    <chr>          <chr>     <dttm>              <chr>   <dbl> <chr> <chr>  <chr>
+    #>  1 08MF005        BC        2022-09-14 08:00:00 Flow     2010 <NA>  <NA>   1    
+    #>  2 08MF005        BC        2022-09-14 08:05:00 Flow     2010 <NA>  <NA>   1    
+    #>  3 08MF005        BC        2022-09-14 08:10:00 Flow     2000 <NA>  <NA>   1    
+    #>  4 08MF005        BC        2022-09-14 08:15:00 Flow     2010 <NA>  <NA>   1    
+    #>  5 08MF005        BC        2022-09-14 08:20:00 Flow     2000 <NA>  <NA>   1    
+    #>  6 08MF005        BC        2022-09-14 08:25:00 Flow     2000 <NA>  <NA>   1    
+    #>  7 08MF005        BC        2022-09-14 08:30:00 Flow     2000 <NA>  <NA>   1    
+    #>  8 08MF005        BC        2022-09-14 08:35:00 Flow     2010 <NA>  <NA>   1    
+    #>  9 08MF005        BC        2022-09-14 08:40:00 Flow     2010 <NA>  <NA>   1    
+    #> 10 08MF005        BC        2022-09-14 08:45:00 Flow     2000 <NA>  <NA>   1    
+    #> # … with 17,996 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
+    #> #   ²​Parameter
 
 ### Plotting
 
@@ -149,10 +144,12 @@ By participating in this project you agree to abide by its terms.
 Get citation information for `tidyhydat` in R by running:
 
 
-    Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric
-    Data." _The Journal of Open Source Software_, *2*(20). doi:
-    10.21105/joss.00511 (URL: https://doi.org/10.21105/joss.00511), <URL:
-    http://dx.doi.org/10.21105/joss.00511>.
+    To cite package 'tidyhydat' in publications use:
+
+      Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric
+      Data." _The Journal of Open Source Software_, *2*(20).
+      doi:10.21105/joss.00511 <https://doi.org/10.21105/joss.00511>,
+      <http://dx.doi.org/10.21105/joss.00511>.
 
     A BibTeX entry for LaTeX users is
 

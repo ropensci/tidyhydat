@@ -27,11 +27,6 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-## Project Status
-
-This package is maintained by the Data Science Partnerships Program in the [British Columbia Ministry of Citizens' Services](https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services).
-
-
 ## What does `tidyhydat` do?
 
 - Provides functions (`hy_*`) that access hydrometric data from the HYDAT database, a national archive of Canadian hydrometric data and return tidy data.
