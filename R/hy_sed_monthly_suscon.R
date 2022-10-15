@@ -65,7 +65,7 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
   
   ## Creating rlang symbols
-  sym_YEAR <- sym("Year")
+  sym_YEAR <- sym("YEAR")
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
   sym_variable <- sym("variable")
   sym_temp <- sym("temp")
