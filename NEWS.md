@@ -1,6 +1,7 @@
 # tidyhydat 0.5.7
 - new `hy_remote` function which looks to see what version is available from ECCC (#183)
 - Improved logic to download HYDAT even if there is some clutter present (@gdelaplante #180)
+- Updated to work with coming changes to dbplyr (#179)
 - Use testthat 3rd edition and update a bunch of tests
 - Make tinyhydat even tinier to remove R CMD check note
 
