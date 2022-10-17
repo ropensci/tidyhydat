@@ -44,6 +44,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
 
   ## Create actual hydat_path
   hydat_path <- file.path(dl_hydat_here, "Hydat.sqlite3")
+  dir.create(hydat_path, showWarnings = FALSE, recursive= TRUE)
   
   ## If there is an existing hydat file get the date of release
   if (file.exists(hydat_path)) {
