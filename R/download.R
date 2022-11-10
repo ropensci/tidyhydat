@@ -31,6 +31,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   
   if(is.null(dl_hydat_here)){
     dl_hydat_here <- hy_dir()
+    dir.create(dl_hydat_here, showWarnings = FALSE, recursive= TRUE)
   } else {
     if (!dir.exists(dl_hydat_here)) {
       dir.create(dl_hydat_here)
