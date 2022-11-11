@@ -1,3 +1,28 @@
+tidyhydat 0.5.7
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- new `hy_remote` function which looks to see what version is available from ECCC (#183)
+- Improved logic to download HYDAT even if there is some clutter present (@gdelaplante #180)
+- Updated to work with coming changes to dbplyr (#179)
+- Use testthat 3rd edition and update a bunch of tests
+- Make tinyhydat even tinier to remove R CMD check note
+
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.2.1 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
+
 tidyhydat 0.5.6
 =========================
 

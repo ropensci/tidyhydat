@@ -42,6 +42,11 @@ R CMD build tidyhydat
 R CMD check tidyhydat_0.5.1.tar.gz --as-cran ## or whatever the package name is
 ```
 
+## revedep check
+```
+revdepcheck::revdep_check(num_workers = 4)
+```
+
 ## Documentation
 - Update NEWS
 - Update cran-comments

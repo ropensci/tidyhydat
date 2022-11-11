@@ -25,3 +25,4 @@ tidyhydat_intro.Rmd
 ^codecov\.yml$
 ^vignette_development$
 ^precompile.R$
+^CRAN-SUBMISSION$
