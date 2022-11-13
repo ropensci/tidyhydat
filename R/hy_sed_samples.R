@@ -95,7 +95,7 @@ hy_sed_samples <- function(station_number = NULL,
   if(is.data.frame(sed_samples) && nrow(sed_samples)==0) stop("This station is not present in HYDAT")
   
   sed_samples <- dplyr::left_join(sed_samples, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(.data$DATE), date_no_time = as.Date(.data$DATE))
+  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(DATE), date_no_time = as.Date(DATE))
 
   ## SUBSET by date
   if (!dates_null[["start_is_null"]]) sed_samples <- dplyr::filter(sed_samples, !!sym("date_no_time") >= as.Date(start_date))
@@ -103,9 +103,9 @@ hy_sed_samples <- function(station_number = NULL,
   
   
   sed_samples <- dplyr::select(
-    sed_samples, .data$STATION_NUMBER, .data$SED_DATA_TYPE_EN, Date = .data$DATE, .data$SAMPLE_REMARK_EN, .data$TIME_SYMBOL,
-    .data$FLOW, .data$SYMBOL_EN, .data$SAMPLER_TYPE, .data$SAMPLING_VERTICAL_LOCATION, .data$SAMPLING_VERTICAL_EN,
-    .data$TEMPERATURE, .data$CONCENTRATION, .data$CONCENTRATION_EN, .data$SV_DEPTH2
+    sed_samples, STATION_NUMBER, SED_DATA_TYPE_EN, Date = DATE, SAMPLE_REMARK_EN, TIME_SYMBOL,
+    FLOW, SYMBOL_EN, SAMPLER_TYPE, SAMPLING_VERTICAL_LOCATION, SAMPLING_VERTICAL_EN,
+    TEMPERATURE, CONCENTRATION, CONCENTRATION_EN, SV_DEPTH2
   )
 
   attr(sed_samples,'missed_stns') <- setdiff(unique(stns), unique(sed_samples$STATION_NUMBER))

@@ -74,16 +74,16 @@ hy_sed_samples_psd <- function(station_number = NULL,
   
   if(is.data.frame(sed_samples_psd) && nrow(sed_samples_psd)==0) stop("This station is not present in HYDAT")
   
-  sed_samples_psd <- dplyr::mutate(sed_samples_psd, DATE = lubridate::ymd_hms(.data$DATE), date_no_time = as.Date(.data$DATE))
+  sed_samples_psd <- dplyr::mutate(sed_samples_psd, DATE = lubridate::ymd_hms(DATE), date_no_time = as.Date(DATE))
   
   ## SUBSET by date
   if (!dates_null[["start_is_null"]]) sed_samples_psd <- dplyr::filter(sed_samples_psd, !!sym("date_no_time") >= as.Date(start_date))
   if (!dates_null[["end_is_null"]]) sed_samples_psd <- dplyr::filter(sed_samples_psd, !!sym("date_no_time") <= as.Date(end_date))
   
   
-  sed_samples_psd <- dplyr::select(sed_samples_psd, .data$STATION_NUMBER, 
-                                   SED_DATA_TYPE = .data$SED_DATA_TYPE_EN, 
-                                   Date = .data$DATE, .data$PARTICLE_SIZE, .data$PERCENT)
+  sed_samples_psd <- dplyr::select(sed_samples_psd, STATION_NUMBER, 
+                                   SED_DATA_TYPE = SED_DATA_TYPE_EN, 
+                                   Date = DATE, PARTICLE_SIZE, PERCENT)
   
   attr(sed_samples_psd,'missed_stns') <- setdiff(unique(stns), unique(sed_samples_psd$STATION_NUMBER))
   as.hy(sed_samples_psd)

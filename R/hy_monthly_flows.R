@@ -84,7 +84,7 @@ hy_monthly_flows <- function(station_number = NULL,
   if (!dates_null[["start_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, !!sym_YEAR >= lubridate::year(start_date))
   if (!dates_null[["end_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, !!sym_YEAR <= lubridate::year(end_date))
 
-  monthly_flows <- dplyr::select(monthly_flows, .data$STATION_NUMBER:.data$MAX)
+  monthly_flows <- dplyr::select(monthly_flows, STATION_NUMBER:MAX)
   monthly_flows <- dplyr::collect(monthly_flows)
 
   if (is.data.frame(monthly_flows) && nrow(monthly_flows) == 0) stop("This station is not present in HYDAT")
@@ -98,24 +98,24 @@ hy_monthly_flows <- function(station_number = NULL,
 
 
 
-  monthly_flows <- tidyr::gather(monthly_flows, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$No_days))
+  monthly_flows <- tidyr::gather(monthly_flows, !!sym_variable, !!sym_temp, -(STATION_NUMBER:No_days))
   monthly_flows <- tidyr::separate(monthly_flows, !!sym_variable, into = c("Sum_stat", "temp2"), sep = "_")
 
   monthly_flows <- tidyr::spread(monthly_flows, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = paste0(.data$Year, "-", .data$Month, "-", .data$DAY))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = paste0(Year, "-", Month, "-", DAY))
   
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
-  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = ifelse(is.na(.data$DAY), NA, .data$Date_occurred))
-  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(.data$Date_occurred, quiet = TRUE))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = ifelse(is.na(DAY), NA, Date_occurred))
+  monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE))
   
   ## Then when a date column exist fine tune the subset
-  if (!dates_null[["start_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, .data$Date_occurred >= start_date)
-  if (!dates_null[["end_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, .data$Date_occurred <= end_date)
+  if (!dates_null[["start_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, Date_occurred >= start_date)
+  if (!dates_null[["end_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, Date_occurred <= end_date)
 
-  monthly_flows <- dplyr::select(monthly_flows, -.data$DAY)
-  monthly_flows <- dplyr::mutate(monthly_flows, Full_Month = .data$Full_Month == 1)
+  monthly_flows <- dplyr::select(monthly_flows, -DAY)
+  monthly_flows <- dplyr::mutate(monthly_flows, Full_Month = Full_Month == 1)
 
   attr(monthly_flows,'missed_stns') <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))
   as.hy(monthly_flows)

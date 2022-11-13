@@ -43,7 +43,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (is.null(station_number) && is.null(prov_terr_state_loc)) {
     stns <- dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::collect() %>%
-      dplyr::pull(.data$STATION_NUMBER)
+      dplyr::pull(STATION_NUMBER)
     return(stns)
   }
   
@@ -65,7 +65,7 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     dplyr::tbl(hydat_con, "STATIONS") %>%
       dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) %>%
       dplyr::collect() %>%
-      dplyr::pull(.data$STATION_NUMBER)
+      dplyr::pull(STATION_NUMBER)
     
   }
 
@@ -152,9 +152,9 @@ multi_param_msg <- function(data_arg, stns, params) {
   
   flow_stns <- data_arg %>%
     dplyr::filter(!!sym_Parameter == params) %>%
-    dplyr::distinct(.data$STATION_NUMBER) %>%
-    dplyr::arrange(.data$STATION_NUMBER) %>%
-    dplyr::pull(.data$STATION_NUMBER)
+    dplyr::distinct(STATION_NUMBER) %>%
+    dplyr::arrange(STATION_NUMBER) %>%
+    dplyr::pull(STATION_NUMBER)
   
   good_stns <- c()
   if(length(flow_stns) > 0L){
@@ -226,7 +226,7 @@ pull_station_number <- function(.data){
   
   if(!("STATION_NUMBER" %in% colnames(.data))) stop("No STATION_NUMBER column present", call. = FALSE)
   
-  unique(.data$STATION_NUMBER)
+  unique(STATION_NUMBER)
 }
 
 

@@ -88,20 +88,20 @@ hy_stations <- function(station_number = NULL,
   df <- dplyr::tbl(hydat_con, "STATIONS") %>%
     dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
     dplyr::collect() %>%
-    dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(.data$REGIONAL_OFFICE_ID)) %>%
+    dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
     dplyr::mutate(
       HYD_STATUS = dplyr::case_when(
-        .data$HYD_STATUS == "D" ~ "DISCONTINUED",
-        .data$HYD_STATUS == "A" ~ "ACTIVE",
+        HYD_STATUS == "D" ~ "DISCONTINUED",
+        HYD_STATUS == "A" ~ "ACTIVE",
         TRUE ~ NA_character_
       ),
       SED_STATUS = dplyr::case_when(
-        .data$SED_STATUS == "D" ~ "DISCONTINUED",
-        .data$SED_STATUS == "A" ~ "ACTIVE",
+        SED_STATUS == "D" ~ "DISCONTINUED",
+        SED_STATUS == "A" ~ "ACTIVE",
         TRUE ~ NA_character_
       ),
-      RHBN = .data$RHBN == 1,
-      REAL_TIME = .data$REAL_TIME == 1
+      RHBN = RHBN == 1,
+      REAL_TIME = REAL_TIME == 1
     )
   
   

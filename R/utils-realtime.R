@@ -126,7 +126,7 @@ single_realtime_station <- function(station_number) {
   }
   
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
-  p <- dplyr::filter(d, .data$Date < min(h$Date))
+  p <- dplyr::filter(d, Date < min(h$Date))
   output <- dplyr::bind_rows(p, h)
   
   ## Offloading tidying to another function
@@ -193,18 +193,18 @@ realtime_tidy_data <- function(data, prov){
   
   ## Now tidy the data
   ## TODO: Find a better way to do this
-  data <- dplyr::rename(data, `Level_` = .data$Level, `Flow_` = .data$Flow)
-  data <- tidyr::gather(data, !!sym_temp, !!sym_val, -.data$STATION_NUMBER, -.data$Date)
+  data <- dplyr::rename(data, `Level_` = Level, `Flow_` = Flow)
+  data <- tidyr::gather(data, !!sym_temp, !!sym_val, -STATION_NUMBER, -Date)
   data <- tidyr::separate(data, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
-  data <- dplyr::mutate(data, key = ifelse(.data$key == "", "Value", .data$key))
+  data <- dplyr::mutate(data, key = ifelse(key == "", "Value", key))
   data <- tidyr::spread(data, !!sym_key, !!sym_val)
-  data <- dplyr::rename(data, Code = .data$CODE, Grade = .data$GRADE, Symbol = .data$SYMBOL)
+  data <- dplyr::rename(data, Code = CODE, Grade = GRADE, Symbol = SYMBOL)
   data <- dplyr::mutate(data, PROV_TERR_STATE_LOC = prov)
   data <- dplyr::select(
-    data, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter, .data$Value,
-    .data$Grade, .data$Symbol, .data$Code
+    data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter, Value,
+    Grade, Symbol, Code
   )
-  data <- dplyr::arrange(data, .data$Parameter, .data$STATION_NUMBER, .data$Date)
+  data <- dplyr::arrange(data, Parameter, STATION_NUMBER, Date)
   data$Value <- as.numeric(data$Value)
   
   data

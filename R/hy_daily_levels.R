@@ -79,23 +79,23 @@ hy_daily_levels <- function(station_number = NULL,
   if (!dates_null[["start_is_null"]]) dly_levels <- dplyr::filter(dly_levels, !!sym_YEAR >= lubridate::year(start_date))
   if (!dates_null[["end_is_null"]]) dly_levels <- dplyr::filter(dly_levels, !!sym_YEAR <= lubridate::year(end_date))
 
-  dly_levels <- dplyr::select(dly_levels, .data$STATION_NUMBER, .data$YEAR, .data$MONTH,
-                              .data$NO_DAYS, dplyr::contains("LEVEL"))
+  dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, YEAR, MONTH,
+                              NO_DAYS, dplyr::contains("LEVEL"))
   dly_levels <- dplyr::collect(dly_levels)
   
   if(is.data.frame(dly_levels) && nrow(dly_levels)==0)
   {stop("No level data for this station in HYDAT")}
   
-  dly_levels <- tidyr::gather(dly_levels, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
-  dly_levels <- dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", .data$variable)))
-  dly_levels <- dplyr::mutate(dly_levels, variable = gsub("[0-9]+", "", .data$variable))
-  dly_levels <- tidyr::spread(dly_levels, .data$variable, .data$temp)
-  dly_levels <- dplyr::mutate(dly_levels, LEVEL = as.numeric(.data$LEVEL))
+  dly_levels <- tidyr::gather(dly_levels, !!sym_variable, !!sym_temp, -(STATION_NUMBER:NO_DAYS))
+  dly_levels <- dplyr::mutate(dly_levels, DAY = as.numeric(gsub("LEVEL|LEVEL_SYMBOL", "", variable)))
+  dly_levels <- dplyr::mutate(dly_levels, variable = gsub("[0-9]+", "", variable))
+  dly_levels <- tidyr::spread(dly_levels, variable, temp)
+  dly_levels <- dplyr::mutate(dly_levels, LEVEL = as.numeric(LEVEL))
   ## No days that exceed actual number of days in the month
-  dly_levels <- dplyr::filter(dly_levels, .data$DAY <= .data$NO_DAYS)
+  dly_levels <- dplyr::filter(dly_levels, DAY <= NO_DAYS)
 
   ## convert into R date.
-  dly_levels <- dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
+  dly_levels <- dplyr::mutate(dly_levels, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))
 
   ## Then when a date column exist fine tune the subset
   if (!dates_null[["start_is_null"]]) dly_levels <- dplyr::filter(dly_levels, !!sym_Date >= start_date)
@@ -107,21 +107,21 @@ hy_daily_levels <- function(station_number = NULL,
   
   ## Control for symbol ouput
   if(symbol_output == "code"){
-    dly_levels <- dplyr::select(dly_levels, .data$STATION_NUMBER, .data$Date, .data$Parameter,
-                                .data$LEVEL, .data$LEVEL_SYMBOL)
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter,
+                                LEVEL, LEVEL_SYMBOL)
   }
   
   if(symbol_output == "english"){
-    dly_levels <- dplyr::select(dly_levels, .data$STATION_NUMBER, .data$Date, .data$Parameter,
-                                .data$LEVEL, .data$SYMBOL_EN)
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter,
+                                LEVEL, SYMBOL_EN)
   }
   
   if(symbol_output == "french"){
-    dly_levels <- dplyr::select(dly_levels, .data$STATION_NUMBER, .data$Date, .data$Parameter,
-                                .data$LEVEL, .data$SYMBOL_FR)
+    dly_levels <- dplyr::select(dly_levels, STATION_NUMBER, Date, Parameter,
+                                LEVEL, SYMBOL_FR)
   }
   
-  dly_levels <- dplyr::arrange(dly_levels, .data$Date)
+  dly_levels <- dplyr::arrange(dly_levels, Date)
   
   colnames(dly_levels) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
   

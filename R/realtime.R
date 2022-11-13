@@ -139,7 +139,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   }
   
 
-  as.realtime(dplyr::filter(net_tibble, .data$PROV_TERR_STATE_LOC %in% prov))
+  as.realtime(dplyr::filter(net_tibble, PROV_TERR_STATE_LOC %in% prov))
 
 }
 
@@ -183,8 +183,8 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL){
   
   timezone_data$tz_used <- tz_used
   
-  dplyr::select(timezone_data, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, 
-                .data$station_tz, .data$local_datetime, .data$tz_used, dplyr::everything())
+  dplyr::select(timezone_data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, 
+                station_tz, local_datetime, tz_used, dplyr::everything())
 }
 
 
@@ -204,13 +204,13 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL){
 #' @export
 realtime_daily_mean <- function(.data, na.rm = FALSE){
   
-  df_mean <- dplyr::mutate(.data, Date = as.Date(.data$Date))
+  df_mean <- dplyr::mutate(.data, Date = as.Date(Date))
   
-  df_mean <- dplyr::group_by(df_mean, .data$STATION_NUMBER, .data$PROV_TERR_STATE_LOC, .data$Date, .data$Parameter)
+  df_mean <- dplyr::group_by(df_mean, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter)
   
-  df_mean <- dplyr::summarise(df_mean, Value = mean(.data$Value, na.rm = na.rm))
+  df_mean <- dplyr::summarise(df_mean, Value = mean(Value, na.rm = na.rm))
   
-  df_mean <- dplyr::arrange(df_mean, .data$Parameter)
+  df_mean <- dplyr::arrange(df_mean, Parameter)
   
   dplyr::ungroup(df_mean)
 }

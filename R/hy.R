@@ -39,8 +39,8 @@ hy_stn_remarks <- function(station_number = NULL,
   stn_remarks <- dplyr::tbl(hydat_con, "STN_REMARKS") 
   stn_remarks <- dplyr::filter(stn_remarks, !!sym_STATION_NUMBER %in% stns)
   stn_remarks <- dplyr::left_join(stn_remarks, dplyr::tbl(hydat_con, "STN_REMARK_CODES"), by = c("REMARK_TYPE_CODE"))
-  stn_remarks <- dplyr::select(stn_remarks, .data$STATION_NUMBER, 
-                               REMARK_TYPE = .data$REMARK_TYPE_EN, Year = .data$YEAR, REMARK = .data$REMARK_EN)
+  stn_remarks <- dplyr::select(stn_remarks, STATION_NUMBER, 
+                               REMARK_TYPE = REMARK_TYPE_EN, Year = YEAR, REMARK = REMARK_EN)
   
   stn_remarks <- dplyr::collect(stn_remarks)  
   
@@ -91,9 +91,9 @@ hy_stn_datum_conv <- function(station_number = NULL,
   stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_FROM = !!sym_DATUM_EN)
   stn_datum_conversion <- dplyr::left_join(stn_datum_conversion, dplyr::tbl(hydat_con, "DATUM_LIST"), by = c("DATUM_ID_TO" = "DATUM_ID"))
   stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_TO = !!sym_DATUM_EN)
-  stn_datum_conversion <- dplyr::select(stn_datum_conversion, .data$STATION_NUMBER, 
-                                        DATUM_FROM = .data$DATUM_EN_FROM, 
-                                        DATUM_TO = .data$DATUM_EN_TO, .data$CONVERSION_FACTOR)
+  stn_datum_conversion <- dplyr::select(stn_datum_conversion, STATION_NUMBER, 
+                                        DATUM_FROM = DATUM_EN_FROM, 
+                                        DATUM_TO = DATUM_EN_TO, CONVERSION_FACTOR)
   
   stn_datum_conversion <- dplyr::collect(stn_datum_conversion)
   
@@ -144,7 +144,7 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
   stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
   
-  stn_datum_unrelated <- dplyr::rename(stn_datum_unrelated, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)  
+  stn_datum_unrelated <- dplyr::rename(stn_datum_unrelated, Year_from = YEAR_FROM, Year_to = YEAR_TO)  
   
   attr(stn_datum_unrelated,'missed_stns') <- setdiff(unique(stns), unique(stn_datum_unrelated$STATION_NUMBER))
   as.hy(stn_datum_unrelated)
@@ -198,7 +198,7 @@ hy_stn_data_range <- function(station_number = NULL,
   
   stn_data_range[stn_data_range$SED_DATA_TYPE == "NA",]$SED_DATA_TYPE <- NA_character_
   
-  stn_data_range <- dplyr::rename(stn_data_range, Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO)
+  stn_data_range <- dplyr::rename(stn_data_range, Year_from = YEAR_FROM, Year_to = YEAR_TO)
   
   attr(stn_data_range,'missed_stns') <- setdiff(unique(stns), unique(stn_data_range$STATION_NUMBER))
   as.hy(stn_data_range)
@@ -254,10 +254,10 @@ hy_stn_data_coll <- function(station_number = NULL,
   stn_data_coll <- dplyr::collect(stn_data_coll)
   
   stn_data_coll <- dplyr::left_join(stn_data_coll, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
-  stn_data_coll <- dplyr::select(stn_data_coll, .data$STATION_NUMBER, DATA_TYPE = .data$DATA_TYPE_EN, 
-                                 Year_from = .data$YEAR_FROM, Year_to = .data$YEAR_TO, 
-                                 MEASUREMENT = .data$MEASUREMENT_EN, OPERATION = .data$OPERATION_EN)
-  stn_data_coll <- dplyr::arrange(stn_data_coll, .data$STATION_NUMBER, .data$Year_from)
+  stn_data_coll <- dplyr::select(stn_data_coll, STATION_NUMBER, DATA_TYPE = DATA_TYPE_EN, 
+                                 Year_from = YEAR_FROM, Year_to = YEAR_TO, 
+                                 MEASUREMENT = MEASUREMENT_EN, OPERATION = OPERATION_EN)
+  stn_data_coll <- dplyr::arrange(stn_data_coll, STATION_NUMBER, Year_from)
   
   attr(stn_data_coll,'missed_stns') <- setdiff(unique(stns), unique(stn_data_coll$STATION_NUMBER))
   as.hy(stn_data_coll)
@@ -309,9 +309,9 @@ hy_stn_op_schedule <- function(station_number = NULL,
   stn_operation_schedule <- dplyr::collect(stn_operation_schedule)
   stn_operation_schedule <- dplyr::left_join(stn_operation_schedule, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
   
-  stn_operation_schedule <- dplyr::select(stn_operation_schedule, .data$STATION_NUMBER, 
-                DATA_TYPE = .data$DATA_TYPE_EN, Year =.data$YEAR, 
-                Month_from = .data$MONTH_FROM, Month_to = .data$MONTH_TO)
+  stn_operation_schedule <- dplyr::select(stn_operation_schedule, STATION_NUMBER, 
+                DATA_TYPE = DATA_TYPE_EN, Year =YEAR, 
+                Month_from = MONTH_FROM, Month_to = MONTH_TO)
   
   attr(stn_operation_schedule,'missed_stns') <- setdiff(unique(stns), unique(stn_operation_schedule$STATION_NUMBER))
   as.hy(stn_operation_schedule)
@@ -456,7 +456,7 @@ hy_version <- function(hydat_path = NULL) {
   
   version <- dplyr::tbl(hydat_con, "VERSION") %>%
     dplyr::collect() %>%
-    dplyr::mutate(Date = lubridate::ymd_hms(.data$Date))
+    dplyr::mutate(Date = lubridate::ymd_hms(Date))
   
   version
   

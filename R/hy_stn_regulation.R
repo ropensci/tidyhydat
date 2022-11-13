@@ -64,7 +64,7 @@ hy_stn_regulation <- function(station_number = NULL,
   stn_reg <- dplyr::tbl(hydat_con, "STN_REGULATION")
   stn_reg <- dplyr::filter(stn_reg,!!sym_STATION_NUMBER %in% stns)
   stn_reg <- dplyr::collect(stn_reg)
-  stn_reg <- dplyr::mutate(stn_reg, REGULATED = .data$REGULATED == 1)
+  stn_reg <- dplyr::mutate(stn_reg, REGULATED = REGULATED == 1)
   
   colnames(stn_reg) <- c("STATION_NUMBER","Year_from","Year_to","REGULATED")
   

@@ -76,24 +76,24 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   if (!dates_null[["start_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR >= lubridate::year(start_date))
   if (!dates_null[["end_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_YEAR <= lubridate::year(end_date))
 
-  sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$YEAR, .data$MONTH, .data$NO_DAYS,
+  sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, YEAR, MONTH, NO_DAYS,
                                   dplyr::contains("SUSCON"))
   sed_dly_suscon <- dplyr::collect(sed_dly_suscon)
   
   if(is.data.frame(sed_dly_suscon) && nrow(sed_dly_suscon)==0)
   {stop("No suspended sediment data for this station in HYDAT")}
   
-  sed_dly_suscon <- tidyr::gather(sed_dly_suscon, !!sym_variable, !!sym_temp, -(.data$STATION_NUMBER:.data$NO_DAYS))
-  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, DAY = as.numeric(gsub("SUSCON|SUSCON_SYMBOL", "", .data$variable)))
-  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, variable = gsub("[0-9]+", "", .data$variable))
+  sed_dly_suscon <- tidyr::gather(sed_dly_suscon, !!sym_variable, !!sym_temp, -(STATION_NUMBER:NO_DAYS))
+  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, DAY = as.numeric(gsub("SUSCON|SUSCON_SYMBOL", "", variable)))
+  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, variable = gsub("[0-9]+", "", variable))
   sed_dly_suscon <- tidyr::spread(sed_dly_suscon, !!sym_variable, !!sym_temp)
-  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, SUSCON = as.numeric(.data$SUSCON))
+  sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, SUSCON = as.numeric(SUSCON))
   ## No days that exceed actual number of days in the month
-  sed_dly_suscon <- dplyr::filter(sed_dly_suscon, .data$DAY <= .data$NO_DAYS)
+  sed_dly_suscon <- dplyr::filter(sed_dly_suscon, DAY <= NO_DAYS)
 
   ## convert into R date.
   sed_dly_suscon <- dplyr::mutate(sed_dly_suscon, Date = lubridate::ymd(
-    paste0(.data$YEAR, "-", .data$MONTH, "-", .data$DAY)))
+    paste0(YEAR, "-", MONTH, "-", DAY)))
 
   ## Then when a date column exist fine tune the subset
   if (!dates_null[["start_is_null"]]) sed_dly_suscon <- dplyr::filter(sed_dly_suscon, !!sym_Date >= start_date)
@@ -105,21 +105,21 @@ hy_sed_daily_suscon <- function(station_number = NULL,
   
   ## Control for symbol ouput
   if(symbol_output == "code"){
-    sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$Date, .data$Parameter, 
-                                    .data$SUSCON, .data$SUSCON_SYMBOL)
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, 
+                                    SUSCON, SUSCON_SYMBOL)
   }
   
   if(symbol_output == "english"){
-    sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$Date, .data$Parameter, 
-                                    .data$SUSCON, .data$SYMBOL_EN)
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, 
+                                    SUSCON, SYMBOL_EN)
   }
   
   if(symbol_output == "french"){
-    sed_dly_suscon <- dplyr::select(sed_dly_suscon, .data$STATION_NUMBER, .data$Date, .data$Parameter, 
-                                    .data$SUSCON, .data$SYMBOL_FR)
+    sed_dly_suscon <- dplyr::select(sed_dly_suscon, STATION_NUMBER, Date, Parameter, 
+                                    SUSCON, SYMBOL_FR)
   }
   
-  sed_dly_suscon <- dplyr::arrange(sed_dly_suscon, .data$Date)
+  sed_dly_suscon <- dplyr::arrange(sed_dly_suscon, Date)
 
   colnames(sed_dly_suscon) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
   

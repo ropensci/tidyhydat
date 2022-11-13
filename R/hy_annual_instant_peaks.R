@@ -66,37 +66,37 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## If a year is supplied...
-  if (!is.null(start_year)) aip <- dplyr::filter(aip, .data$YEAR >= start_year)
-  if (!is.null(end_year)) aip <- dplyr::filter(aip, .data$YEAR <= end_year)
+  if (!is.null(start_year)) aip <- dplyr::filter(aip, YEAR >= start_year)
+  if (!is.null(end_year)) aip <- dplyr::filter(aip, YEAR <= end_year)
 
   ## Parse PEAK_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(.data$PEAK_CODE == "H", "MAX", "MIN"))
+  aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(PEAK_CODE == "H", "MAX", "MIN"))
 
   ## Parse PRECISION_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(.data$PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
+  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
   
   ## Add in timezone information
   aip <- dplyr::left_join(aip, tidyhydat::allstations, by = c("STATION_NUMBER"))
 
   ## Convert to dttm
   ## Manually convert to UTC
-  aip <- dplyr::mutate(aip, Datetime = lubridate::make_datetime(year = .data$YEAR, 
-                                                            month = .data$MONTH, 
-                                                            day = .data$DAY, 
-                                                            hour = .data$HOUR, 
-                                                            min = .data$MINUTE) - lubridate::dhours(.data$standard_offset)) 
+  aip <- dplyr::mutate(aip, Datetime = lubridate::make_datetime(year = YEAR, 
+                                                            month = MONTH, 
+                                                            day = DAY, 
+                                                            hour = HOUR, 
+                                                            min = MINUTE) - lubridate::dhours(standard_offset)) 
   
-  aip <- dplyr::mutate(aip, Date = lubridate::make_date(year = .data$YEAR, 
-                                                                month = .data$MONTH, 
-                                                                day = .data$DAY)) 
+  aip <- dplyr::mutate(aip, Date = lubridate::make_date(year = YEAR, 
+                                                                month = MONTH, 
+                                                                day = DAY)) 
   
   
 
   ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, .data$STATION_NUMBER, .data$Datetime, .data$Date, 
-                       station_tz = .data$station_tz, Parameter = .data$DATA_TYPE_EN,
-                       Value = .data$PEAK,  .data$PEAK_CODE, 
-                       .data$PRECISION_CODE, Symbol = .data$SYMBOL_EN) 
+  aip <- dplyr::select(aip, STATION_NUMBER, Datetime, Date, 
+                       station_tz = station_tz, Parameter = DATA_TYPE_EN,
+                       Value = PEAK,  PEAK_CODE, 
+                       PRECISION_CODE, Symbol = SYMBOL_EN) 
 
 
   attr(aip,'missed_stns') <- setdiff(unique(stns), unique(aip$STATION_NUMBER))

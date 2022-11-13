@@ -91,6 +91,6 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,
   }
   
   attr(daily,'missed_stns') <- setdiff(unique(stns), unique(daily$STATION_NUMBER))
-  as.hy(dplyr::arrange(daily, .data$STATION_NUMBER, .data$Date))
+  as.hy(dplyr::arrange(daily, STATION_NUMBER, Date))
 
 }
