@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2022-10-09"
+date: "2022-11-26"
 output:
   html_vignette:
      keep_md: true
@@ -42,7 +42,7 @@ hy_daily_flows(station_number = "08LA001")
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-07-21
+##   Queried from version of HYDAT released on 2022-10-24
 ##    Observations:                      31,351
 ##    Measurement flags:                 6,166
 ##    Parameter(s):                      Flow
@@ -87,15 +87,15 @@ hy_daily_flows(station_number = PEI_stns)
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-07-21
-##    Observations:                      114,605
-##    Measurement flags:                 20,524
+##   Queried from version of HYDAT released on 2022-10-24
+##    Observations:                      115,337
+##    Measurement flags:                 20,614
 ##    Parameter(s):                      Flow
 ##    Date range:                        1961-08-01 to 2020-12-31 
 ##    Station(s) returned:               9
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 114,605 × 5
+## # A tibble: 115,337 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -108,7 +108,7 @@ hy_daily_flows(station_number = PEI_stns)
 ##  8 01CB002        1961-08-04 Flow         NA <NA>  
 ##  9 01CA003        1961-08-05 Flow         NA <NA>  
 ## 10 01CB002        1961-08-05 Flow         NA <NA>  
-## # … with 114,595 more rows
+## # … with 115,327 more rows
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example if for some reason we wanted all the stations in Canada that had the name "Canada" in them we unify that selection and data extraction process into a single pipe:
@@ -120,15 +120,15 @@ search_stn_name("canada") %>%
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-07-21
-##    Observations:                      86,056
-##    Measurement flags:                 26,218
+##   Queried from version of HYDAT released on 2022-10-24
+##    Observations:                      86,147
+##    Measurement flags:                 26,222
 ##    Parameter(s):                      Flow
-##    Date range:                        1918-08-01 to 2021-12-31 
+##    Date range:                        1918-08-01 to 2022-06-30 
 ##    Station(s) returned:               7
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 86,056 × 5
+## # A tibble: 86,147 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -141,7 +141,7 @@ search_stn_name("canada") %>%
 ##  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 ##  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 ## 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-## # … with 86,046 more rows
+## # … with 86,137 more rows
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
