@@ -226,7 +226,7 @@ pull_station_number <- function(.data){
   
   if(!("STATION_NUMBER" %in% colnames(.data))) stop("No STATION_NUMBER column present", call. = FALSE)
   
-  unique(STATION_NUMBER)
+  unique(.data$STATION_NUMBER)
 }
 
 
