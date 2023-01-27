@@ -14,7 +14,7 @@ status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https://CRAN.R-project.org/package=tidyhydat)
 [![cran
-checks](https://cranchecks.info/badges/worst/tidyhydat)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)
+checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)
 [![r-universe](https://ropensci.r-universe.dev/badges/tidyhydat)](https://ropensci.r-universe.dev/ui#builds)
 [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/software-review/issues/152)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
@@ -86,22 +86,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2022-11-11 15:18:39 (UTC)
-    #>   Date range: 2022-10-11 to 2022-11-11 
-    #> # A tibble: 18,006 × 8
+    #>   Queried on: 2023-01-27 17:41:47 (UTC)
+    #>   Date range: 2022-12-28 to 2023-01-27 
+    #> # A tibble: 17,502 × 8
     #>    STATION_NUMBER PROV_TE…¹ Date                Param…² Value Grade Symbol Code 
     #>    <chr>          <chr>     <dttm>              <chr>   <dbl> <chr> <chr>  <chr>
-    #>  1 08MF005        BC        2022-10-11 08:00:00 Flow     1190 <NA>  <NA>   1    
-    #>  2 08MF005        BC        2022-10-11 08:05:00 Flow     1190 <NA>  <NA>   1    
-    #>  3 08MF005        BC        2022-10-11 08:10:00 Flow     1190 <NA>  <NA>   1    
-    #>  4 08MF005        BC        2022-10-11 08:15:00 Flow     1190 <NA>  <NA>   1    
-    #>  5 08MF005        BC        2022-10-11 08:20:00 Flow     1190 <NA>  <NA>   1    
-    #>  6 08MF005        BC        2022-10-11 08:25:00 Flow     1190 <NA>  <NA>   1    
-    #>  7 08MF005        BC        2022-10-11 08:30:00 Flow     1190 <NA>  <NA>   1    
-    #>  8 08MF005        BC        2022-10-11 08:35:00 Flow     1180 <NA>  <NA>   1    
-    #>  9 08MF005        BC        2022-10-11 08:40:00 Flow     1190 <NA>  <NA>   1    
-    #> 10 08MF005        BC        2022-10-11 08:45:00 Flow     1190 <NA>  <NA>   1    
-    #> # … with 17,996 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
+    #>  1 08MF005        BC        2022-12-28 08:00:00 Flow      890 <NA>  <NA>   1    
+    #>  2 08MF005        BC        2022-12-28 08:05:00 Flow      890 <NA>  <NA>   1    
+    #>  3 08MF005        BC        2022-12-28 08:10:00 Flow      892 <NA>  <NA>   1    
+    #>  4 08MF005        BC        2022-12-28 08:15:00 Flow      890 <NA>  <NA>   1    
+    #>  5 08MF005        BC        2022-12-28 08:20:00 Flow      888 <NA>  <NA>   1    
+    #>  6 08MF005        BC        2022-12-28 08:25:00 Flow      888 <NA>  <NA>   1    
+    #>  7 08MF005        BC        2022-12-28 08:30:00 Flow      890 <NA>  <NA>   1    
+    #>  8 08MF005        BC        2022-12-28 08:35:00 Flow      892 <NA>  <NA>   1    
+    #>  9 08MF005        BC        2022-12-28 08:40:00 Flow      889 <NA>  <NA>   1    
+    #> 10 08MF005        BC        2022-12-28 08:45:00 Flow      890 <NA>  <NA>   1    
+    #> # … with 17,492 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
     #> #   ²​Parameter
 
 ### Plotting
