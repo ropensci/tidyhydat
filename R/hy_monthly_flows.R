@@ -37,11 +37,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' hy_monthly_flows(station_number = c("02JE013","08MF005"),
-#'   start_date = "1996-01-01", end_date = "2000-01-01")
+#' hy_monthly_flows(
+#'   station_number = c("02JE013", "08MF005"),
+#'   start_date = "1996-01-01", end_date = "2000-01-01"
+#' )
 #'
 #' hy_monthly_flows(prov_terr_state_loc = "PE")
-#'           }
+#' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
@@ -51,10 +53,9 @@
 
 hy_monthly_flows <- function(station_number = NULL,
                              hydat_path = NULL,
-                             prov_terr_state_loc = NULL, 
-                             start_date =NULL, 
+                             prov_terr_state_loc = NULL,
+                             start_date = NULL,
                              end_date = NULL) {
-  
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
@@ -79,7 +80,7 @@ hy_monthly_flows <- function(station_number = NULL,
   monthly_flows <- dplyr::filter(monthly_flows, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  
+
   ## by year
   if (!dates_null[["start_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, !!sym_YEAR >= lubridate::year(start_date))
   if (!dates_null[["end_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, !!sym_YEAR <= lubridate::year(end_date))
@@ -105,11 +106,11 @@ hy_monthly_flows <- function(station_number = NULL,
 
   ## convert into R date for date of occurence.
   monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = paste0(Year, "-", Month, "-", DAY))
-  
+
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
   monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = ifelse(is.na(DAY), NA, Date_occurred))
   monthly_flows <- dplyr::mutate(monthly_flows, Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE))
-  
+
   ## Then when a date column exist fine tune the subset
   if (!dates_null[["start_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, Date_occurred >= start_date)
   if (!dates_null[["end_is_null"]]) monthly_flows <- dplyr::filter(monthly_flows, Date_occurred <= end_date)
@@ -117,6 +118,6 @@ hy_monthly_flows <- function(station_number = NULL,
   monthly_flows <- dplyr::select(monthly_flows, -DAY)
   monthly_flows <- dplyr::mutate(monthly_flows, Full_Month = Full_Month == 1)
 
-  attr(monthly_flows,'missed_stns') <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))
+  attr(monthly_flows, "missed_stns") <- setdiff(unique(stns), unique(monthly_flows$STATION_NUMBER))
   as.hy(monthly_flows)
 }

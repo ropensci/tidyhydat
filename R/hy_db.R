@@ -11,27 +11,27 @@
 #'
 #' @return A SQLite DBIConnection
 #' @export
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' [download_hydat()]
 #'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
-#' 
+#'
 #' # src is a src_sqlite
 #' src <- hy_src(hydat_path = hy_test_db())
 #' src_tbls(src)
-#' 
+#'
 #' # to get a table, use dplyr::tbl()
 #' tbl(src, "STATIONS")
-#' 
+#'
 #' # one you're sure the results are what you want
 #' # get a data.frame using collect()
 #' tbl(src, "STATIONS") %>%
 #'   filter(PROV_TERR_STATE_LOC == "BC") %>%
 #'   collect()
-#'   
+#'
 #' # close the connection to the database
 #' hy_src_disconnect(src)
 #' }
@@ -42,10 +42,10 @@ hy_src <- function(hydat_path = NULL) {
     hydat_path
   } else {
     # NULL means the default location of the hydat database
-    if(is.null(hydat_path)){
+    if (is.null(hydat_path)) {
       hydat_path <- hy_default_db()
     }
-    
+
     ## Check if hydat_path is present
     if (!file.exists(hydat_path)) {
       stop(sprintf(
@@ -53,7 +53,7 @@ hy_src <- function(hydat_path = NULL) {
         basename(hydat_path), dirname(hydat_path)
       ))
     }
-    
+
     dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), hydat_path))
   }
 }
@@ -61,30 +61,31 @@ hy_src <- function(hydat_path = NULL) {
 #' @rdname hy_src
 #' @export
 hy_src_disconnect <- function(src) {
-
   if (dplyr::is.src(src)) {
     con <- src$con
   } else {
-    stop("hy_src_disconnect doesn't know how to deal with object of class ",
-         paste(class(src), collapse = " / "))
+    stop(
+      "hy_src_disconnect doesn't know how to deal with object of class ",
+      paste(class(src), collapse = " / ")
+    )
   }
-  
+
   # close the connection (will throw warning if con is already connected)
   invisible(DBI::dbDisconnect(con))
 }
 
 #' Get the location of the HYDAT database
-#' 
+#'
 #' The full HYDAT database needs to be downloaded from \link{download_hydat}, but for testing
 #' purposes, a small test database is included in this package. Use
-#' \code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database; 
+#' \code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database;
 #' use \code{hydat_path = hy_downloaded_db()} to explicitly use the full, most recent
 #' downloaded database (this is also the path returned by \code{hy_default_db()}).
 #'
 #' @return The file location of a HYDAT database.
 #' @export
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' \link{hy_src}, \link{hy_set_default_db}.
 #'
 #' @examples
@@ -93,7 +94,7 @@ hy_src_disconnect <- function(src) {
 #' hy_downloaded_db()
 #' hy_default_db()
 #' }
-#' 
+#'
 hy_test_db <- function() {
   system.file("test_db/tinyhydat.sqlite3", package = "tidyhydat")
 }
@@ -115,9 +116,9 @@ hy_default_db <- function() {
 }
 
 #' Set the default database path
-#' 
+#'
 #' For many reasons, it may be convenient to set the default
-#' database location to somewhere other than the global default. Users 
+#' database location to somewhere other than the global default. Users
 #' may wish to use a previously downloaded version of the database for
 #' reproducibility purposes, store hydat somewhere other than hy_dir().
 #'
@@ -131,25 +132,24 @@ hy_default_db <- function() {
 #' \dontrun{
 #' # set default to the test database
 #' hy_set_default_db(hy_test_db())
-#' 
+#'
 #' # get the default value
 #' hy_default_db()
-#' 
+#'
 #' # set back to the default db location
 #' hy_set_default_db(NULL)
 #' }
-#' 
+#'
 hy_set_default_db <- function(hydat_path = NULL) {
-  
   old_value <- hy_default_db()
-  
+
   ## NULL means reset to the original default
   if (is.null(hydat_path)) {
     hydat_path <- hy_downloaded_db()
   } else {
     # make sure value is a character vector of length 1
     stopifnot(is.character(hydat_path), length(hydat_path) == 1)
-    
+
     # the file should exist, unless it is hy_downloaded_db(),
     # in which case a more informative error is provided when the user
     # calls hy_src()

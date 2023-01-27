@@ -33,7 +33,7 @@
 #' @examples
 #' \dontrun{
 #' hy_sed_daily_loads(prov_terr_state_loc = "PE")
-#'           }
+#' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
@@ -43,10 +43,9 @@
 
 hy_sed_daily_loads <- function(station_number = NULL,
                                hydat_path = NULL,
-                               prov_terr_state_loc = NULL,                       
-                               start_date = NULL, 
+                               prov_terr_state_loc = NULL,
+                               start_date = NULL,
                                end_date = NULL) {
-  
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
@@ -71,7 +70,7 @@ hy_sed_daily_loads <- function(station_number = NULL,
   sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_STATION_NUMBER %in% stns)
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
-  
+
   ## by year
   if (!dates_null[["start_is_null"]]) sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_YEAR >= lubridate::year(start_date))
   if (!dates_null[["end_is_null"]]) sed_dly_loads <- dplyr::filter(sed_dly_loads, !!sym_YEAR <= lubridate::year(end_date))
@@ -109,6 +108,6 @@ hy_sed_daily_loads <- function(station_number = NULL,
 
   colnames(sed_dly_loads) <- c("STATION_NUMBER", "Date", "Parameter", "Value")
 
-  attr(sed_dly_loads,'missed_stns') <- setdiff(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
+  attr(sed_dly_loads, "missed_stns") <- setdiff(unique(stns), unique(sed_dly_loads$STATION_NUMBER))
   as.hy(sed_dly_loads)
 }

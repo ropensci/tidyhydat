@@ -11,6 +11,3 @@ skip_on_actions <- function() {
   }
   skip("On GitHub Actions")
 }
-
-
-

@@ -10,12 +10,11 @@
     if (!has_internet()) {
       return(done("No access to internet."))
     }
-    
+
 
     ## HYDAT is updated quarterly - should we go check if a new one is available for download?
     ## Only check when there is likely a new version i.e. about 3 months after last version
     if (file.exists(file.path(hy_dir(), "Hydat.sqlite3")) && Sys.Date() > (as.Date(hy_version()$Date) + 115)) {
-      
       packageStartupMessage(info("Checking for a new version of HYDAT..."))
 
       base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"

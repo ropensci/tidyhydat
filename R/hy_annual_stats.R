@@ -37,23 +37,21 @@
 #'
 #' @examples
 #' \dontrun{
-#'   ## Multiple stations province not specified
-#'   hy_annual_stats(station_number = c("08NM083","05AE027"))
+#' ## Multiple stations province not specified
+#' hy_annual_stats(station_number = c("08NM083", "05AE027"))
 #'
-#'   ## Multiple province, station number not specified
-#'   hy_annual_stats(prov_terr_state_loc = c("AB","SK"))
+#' ## Multiple province, station number not specified
+#' hy_annual_stats(prov_terr_state_loc = c("AB", "SK"))
 #' }
 #'
 #' @family HYDAT functions
 #' @source HYDAT
 #' @export
 
-hy_annual_stats <- function(station_number =NULL,
+hy_annual_stats <- function(station_number = NULL,
                             hydat_path = NULL,
-                            prov_terr_state_loc=NULL,
+                            prov_terr_state_loc = NULL,
                             start_year = "ALL", end_year = "ALL") {
-
-
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -130,6 +128,6 @@ hy_annual_stats <- function(station_number =NULL,
 
   ## Rename to tidyhydat format
   colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")
-  attr(annual_statistics,'missed_stns') <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
+  attr(annual_statistics, "missed_stns") <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
   as.hy(annual_statistics)
 }
