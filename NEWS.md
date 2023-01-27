@@ -1,3 +1,6 @@
+# tidyhydat 0.5.8
+- fix bug where hydat folder was not being created
+
 # tidyhydat 0.5.7
 - new `hy_remote` function which looks to see what version is available from ECCC (#183)
 - Improved logic to download HYDAT even if there is some clutter present (@gdelaplante #180)
