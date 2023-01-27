@@ -39,7 +39,7 @@ hy_stn_remarks look-up Table
 }
 \examples{
 \dontrun{
-hy_stn_remarks(station_number = c("02JE013","08MF005"))
+hy_stn_remarks(station_number = c("02JE013", "08MF005"))
 }
 
 }

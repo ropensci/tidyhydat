@@ -47,8 +47,9 @@ contains both parameters. All arguments are passed directly to these functions.
 }
 \examples{
 \dontrun{
-hy_daily(station_number = c("02JE013","08MF005"))
+hy_daily(station_number = c("02JE013", "08MF005"))
 }
+
 }
 \seealso{
 Other HYDAT functions: 

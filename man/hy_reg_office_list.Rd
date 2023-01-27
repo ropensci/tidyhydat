@@ -26,7 +26,6 @@ OFFICE look-up Table
 hy_reg_office_list()
 }
 
-
 }
 \seealso{
 Other HYDAT functions: 

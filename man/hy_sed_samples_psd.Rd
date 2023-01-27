@@ -52,7 +52,7 @@ are omitted all values from the \code{\link[=hy_stations]{hy_stations()}} table 
 \examples{
 \dontrun{
 hy_sed_samples_psd(station_number = "01CA004")
-          }
+}
 
 }
 \seealso{

@@ -56,7 +56,7 @@ table are returned. That is a large vector for \code{hy_sed_daily_suscon}.
 \examples{
 \dontrun{
 hy_sed_daily_suscon(station_number = "01CE003")
-          }
+}
 
 }
 \seealso{

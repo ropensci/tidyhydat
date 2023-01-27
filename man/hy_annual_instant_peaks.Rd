@@ -41,10 +41,10 @@ Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy dat
 \examples{
 \dontrun{
 ## Multiple stations province not specified
-hy_annual_instant_peaks(station_number = c("08NM083","08NE102"))
+hy_annual_instant_peaks(station_number = c("08NM083", "08NE102"))
 
 ## Multiple province, station number not specified
-hy_annual_instant_peaks(prov_terr_state_loc = c("AB","YT"))
+hy_annual_instant_peaks(prov_terr_state_loc = c("AB", "YT"))
 }
 
 }

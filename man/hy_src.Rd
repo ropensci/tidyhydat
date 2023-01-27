@@ -42,7 +42,7 @@ tbl(src, "STATIONS")
 tbl(src, "STATIONS") \%>\%
   filter(PROV_TERR_STATE_LOC == "BC") \%>\%
   collect()
-  
+
 # close the connection to the database
 hy_src_disconnect(src)
 }

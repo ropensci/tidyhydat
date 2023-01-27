@@ -64,7 +64,7 @@ table are returned. That is a large vector for \code{hy_sed_samples}.
 \examples{
 \dontrun{
 hy_sed_samples(station_number = "01CA004")
-          }
+}
 
 }
 \seealso{

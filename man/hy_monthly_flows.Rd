@@ -55,11 +55,13 @@ That is a large vector for \code{hy_monthly_flows}.
 }
 \examples{
 \dontrun{
-hy_monthly_flows(station_number = c("02JE013","08MF005"),
-  start_date = "1996-01-01", end_date = "2000-01-01")
+hy_monthly_flows(
+  station_number = c("02JE013", "08MF005"),
+  start_date = "1996-01-01", end_date = "2000-01-01"
+)
 
 hy_monthly_flows(prov_terr_state_loc = "PE")
-          }
+}
 
 }
 \seealso{

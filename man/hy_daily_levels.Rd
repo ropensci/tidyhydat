@@ -55,11 +55,13 @@ values from the \code{hy_stations} table are returned. That is a large vector fo
 }
 \examples{
 \dontrun{
-hy_daily_levels(station_number = c("02JE013","08MF005"), 
-  start_date = "1996-01-01", end_date = "2000-01-01")
+hy_daily_levels(
+  station_number = c("02JE013", "08MF005"),
+  start_date = "1996-01-01", end_date = "2000-01-01"
+)
 
 hy_daily_levels(prov_terr_state_loc = "PE")
-          }
+}
 
 }
 \seealso{

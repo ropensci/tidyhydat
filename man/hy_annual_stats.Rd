@@ -54,11 +54,11 @@ Statistics provided include MEAN, MAX and MIN on an annual basis.
 }
 \examples{
 \dontrun{
-  ## Multiple stations province not specified
-  hy_annual_stats(station_number = c("08NM083","05AE027"))
+## Multiple stations province not specified
+hy_annual_stats(station_number = c("08NM083", "05AE027"))
 
-  ## Multiple province, station number not specified
-  hy_annual_stats(prov_terr_state_loc = c("AB","SK"))
+## Multiple province, station number not specified
+hy_annual_stats(prov_terr_state_loc = c("AB", "SK"))
 }
 
 }

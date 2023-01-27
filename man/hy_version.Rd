@@ -26,7 +26,6 @@ A function to get version number of hydat
 hy_version()
 }
 
-
 }
 \seealso{
 Other HYDAT functions: 

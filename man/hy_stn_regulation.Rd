@@ -45,10 +45,10 @@ from the \code{hy_stations} table are returned.
 \examples{
 \dontrun{
 ## Multiple stations province not specified
-hy_stn_regulation(station_number = c("08NM083","08NE102"))
+hy_stn_regulation(station_number = c("08NM083", "08NE102"))
 
 ## Multiple province, station number not specified
-hy_stn_regulation(prov_terr_state_loc = c("AB","YT"))
+hy_stn_regulation(prov_terr_state_loc = c("AB", "YT"))
 }
 
 }
