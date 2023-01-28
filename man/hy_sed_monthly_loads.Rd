@@ -56,8 +56,8 @@ That is a large vector for \code{hy_sed_monthly_loads}.
 \examples{
 \dontrun{
 hy_sed_monthly_loads(station_number = "01CE003")
-          }
-          
+}
+
 }
 \seealso{
 Other HYDAT functions: 

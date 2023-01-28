@@ -64,12 +64,11 @@ instances.
 \examples{
 \dontrun{
 ## Multiple stations province not specified
-hy_stations(station_number = c("08NM083","08NE102"))
+hy_stations(station_number = c("08NM083", "08NE102"))
 
 ## Multiple province, station number not specified
-hy_stations(prov_terr_state_loc = c("AB","YT"))
+hy_stations(prov_terr_state_loc = c("AB", "YT"))
 }
-
 
 }
 \seealso{

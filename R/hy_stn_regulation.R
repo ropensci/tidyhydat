@@ -14,14 +14,14 @@
 
 #' Extract station regulation from the HYDAT database
 #'
-#' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation. 
-#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all values 
+#' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all values
 #' from the `hy_stations` table are returned.
 #'
 #' @inheritParams hy_stations
 #'
 #' @return A tibble of stations, years of regulation and the regulation status
-#' 
+#'
 #' @format A tibble with 4 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
@@ -33,10 +33,10 @@
 #' @examples
 #' \dontrun{
 #' ## Multiple stations province not specified
-#' hy_stn_regulation(station_number = c("08NM083","08NE102"))
+#' hy_stn_regulation(station_number = c("08NM083", "08NE102"))
 #'
 #' ## Multiple province, station number not specified
-#' hy_stn_regulation(prov_terr_state_loc = c("AB","YT"))
+#' hy_stn_regulation(prov_terr_state_loc = c("AB", "YT"))
 #' }
 #'
 
@@ -44,10 +44,9 @@
 #' @source HYDAT
 #' @export
 
-hy_stn_regulation <- function(station_number = NULL, 
-                           hydat_path = NULL, 
-                           prov_terr_state_loc = NULL) {
-  
+hy_stn_regulation <- function(station_number = NULL,
+                              hydat_path = NULL,
+                              prov_terr_state_loc = NULL) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -56,20 +55,18 @@ hy_stn_regulation <- function(station_number = NULL,
 
   ## Determine which stations we are querying
   stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-  
+
   ## Creating rlang symbols
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## data manipulations to make it "tidy"
   stn_reg <- dplyr::tbl(hydat_con, "STN_REGULATION")
-  stn_reg <- dplyr::filter(stn_reg,!!sym_STATION_NUMBER %in% stns)
+  stn_reg <- dplyr::filter(stn_reg, !!sym_STATION_NUMBER %in% stns)
   stn_reg <- dplyr::collect(stn_reg)
-  stn_reg <- dplyr::mutate(stn_reg, REGULATED = .data$REGULATED == 1)
-  
-  colnames(stn_reg) <- c("STATION_NUMBER","Year_from","Year_to","REGULATED")
-  
-  attr(stn_reg,'missed_stns') <- setdiff(unique(stns), unique(stn_reg$STATION_NUMBER))
+  stn_reg <- dplyr::mutate(stn_reg, REGULATED = REGULATED == 1)
+
+  colnames(stn_reg) <- c("STATION_NUMBER", "Year_from", "Year_to", "REGULATED")
+
+  attr(stn_reg, "missed_stns") <- setdiff(unique(stns), unique(stn_reg$STATION_NUMBER))
   as.hy(stn_reg)
-
-
 }

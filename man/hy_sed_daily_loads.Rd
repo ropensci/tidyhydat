@@ -51,7 +51,7 @@ Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame
 \examples{
 \dontrun{
 hy_sed_daily_loads(prov_terr_state_loc = "PE")
-          }
+}
 
 }
 \seealso{

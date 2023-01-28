@@ -21,8 +21,8 @@ This can be used with \code{realtime_} and \code{hy_} functions.
 \dontrun{
 
 hy_stations(prov_terr_state_loc = "PE") \%>\%
- pull_station_number() \%>\%
- hy_annual_instant_peaks()
+  pull_station_number() \%>\%
+  hy_annual_instant_peaks()
 }
 
 }

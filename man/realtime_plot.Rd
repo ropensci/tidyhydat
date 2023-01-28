@@ -26,7 +26,7 @@ sometimes overlap plotted points.
 realtime_plot("08MF005")
 
 ## Multiple stations
-realtime_plot(c("07EC002","01AD003"))
+realtime_plot(c("07EC002", "01AD003"))
 }
 
 }

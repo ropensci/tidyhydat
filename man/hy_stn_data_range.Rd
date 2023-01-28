@@ -44,7 +44,7 @@ hy_stn_data_range look-up Table
 }
 \examples{
 \dontrun{
-hy_stn_data_range(station_number = c("02JE013","08MF005"))
+hy_stn_data_range(station_number = c("02JE013", "08MF005"))
 }
 
 }

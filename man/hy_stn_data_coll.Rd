@@ -46,7 +46,7 @@ hy_stn_data_coll look-up Table
 }
 \examples{
 \dontrun{
-hy_stn_data_coll(station_number = c("02JE013","08MF005"))
+hy_stn_data_coll(station_number = c("02JE013", "08MF005"))
 }
 
 }

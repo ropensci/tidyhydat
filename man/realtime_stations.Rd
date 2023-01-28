@@ -31,8 +31,9 @@ hydrometric network operated by Environment and Climate Change Canada
 unique(realtime_stations()$prov_terr_state_loc)
 
 realtime_stations(prov_terr_state_loc = "BC")
-realtime_stations(prov_terr_state_loc = c("QC","PE"))
+realtime_stations(prov_terr_state_loc = c("QC", "PE"))
 }
+
 }
 \seealso{
 Other realtime functions: 
