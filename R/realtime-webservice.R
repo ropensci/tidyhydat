@@ -53,16 +53,14 @@
 #'
 #' ws_08 <- realtime_ws(
 #'   station_number = c("08NL071", "08NM174"),
-#'   parameters = c(47, 5),
-#'   token = token_out
+#'   parameters = c(47, 5)
 #' )
 #'
 #' fivedays <- realtime_ws(
 #'   station_number = c("08NL071", "08NM174"),
 #'   parameters = c(47, 5),
 #'   end_date = Sys.Date(), # today
-#'   start_date = Sys.Date() - 5, # five days ago
-#'   token = token_out
+#'   start_date = Sys.Date() - 5 # five days ago
 #' )
 #' }
 #' @family realtime functions
@@ -80,18 +78,19 @@ realtime_ws <- function(station_number, parameters = NULL,
   if (is.null(parameters)) parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
 
   if (any(!parameters %in% param_id$Parameter)) {
-    stop(paste0(
-      paste0(parameters[!parameters %in% tidyhydat::param_id$Parameter], collapse = ","),
-      " are invalid parameters. Check param_id for a list of valid options."
-    ), call. = FALSE)
+    stop(
+      paste0(
+        paste0(parameters[!parameters %in% tidyhydat::param_id$Parameter], collapse = ","),
+        " are invalid parameters. Check param_id for a list of valid options."
+      ),
+      call. = FALSE
+    )
   }
 
   if (!is.numeric(parameters)) stop("parameters should be a number", call. = FALSE)
 
-  if (nchar(as.character(start_date)) == 10 | nchar(as.character(end_date)) == 10) {
-    start_date <- paste0(start_date, " 00:00:00")
-    end_date <- paste0(end_date, " 23:59:59")
-  }
+  if (inherits(start_date, "Date")) start_date <- paste0(start_date, " 00:00:00")
+  if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
 
 
   if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", start_date)) {
@@ -109,71 +108,41 @@ realtime_ws <- function(station_number, parameters = NULL,
     }
   }
 
-
-
   ## Check date is in the right format
   if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
     stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
   }
 
-  # if (as.Date(end_date) - as.Date(start_date) > 60) {
-  #  stop("The time period of data being requested should not exceed 2 months.
-  #       If more data is required, then a separate request should be issued to include a different time period.")
-  # }
-  ## English parameter names
-
-  ## Is it a valid parameter name?
-
-  ## Is it a valid Station name?
-
-
   ## Build link for GET
+  browser()
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
-  station_string <- paste0("stations[]=", station_number, collapse = "&")
-  parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
-  date_string <- paste0(
-    "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
-    "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
-  )
-
-  ## paste them all together
-  url_for_GET <- paste0(
-    baseurl,
-    station_string, "&",
-    parameters_string, "&",
-    date_string, "&"
-  )
-
-  ## Get data
-  get_ws <- httr::GET(url_for_GET, httr::user_agent("https://github.com/ropensci/tidyhydat"))
+  
+  req <- httr2::request(baseurl)
+  req <- httr2::req_url_query(
+    req,
+    stations = station_number,
+    parameters = I(paste0(parameters, collapse = "&")),
+    start_date = paste0(substr(start_date, 1, 10), "%20", substr(start_date, 12, 19)),
+    end_date = paste0(substr(end_date, 1, 10), "%20", substr(end_date, 12, 19))
+    ) 
+  req <- httr2::req_user_agent("https://github.com/ropensci/tidyhydat")
+  req <- httr2::req_perform(req)
+  
+  httr2::resp_check_status(req)
 
   ## Give webservice some time
   Sys.sleep(1)
+  
+  
 
-  if (httr::status_code(get_ws) == 403) {
-    stop("403 Forbidden: the web service is denying your request. Try any of the following options:
-         -Ensure you are not currently using all 5 tokens
-         -Wait a few minutes and try again
-         -Copy the token_ws call and paste it directly into the console
-         -Try using realtime_ws if you only need water quantity data
-         ")
-  }
-
-  ## Check the GET status
-  httr::stop_for_status(get_ws)
-
-  if (httr::headers(get_ws)$`content-type` != "text/csv; charset=utf-8") {
-    stop("GET response is not a csv file")
+  if (httr2::resp_content_type(req) != "text/csv") {
+    stop("response is not a csv file")
   }
 
   ## Turn it into a tibble and specify correct column classes
-  csv_df <- httr::content(
-    get_ws,
-    type = "text/csv",
-    encoding = "UTF-8",
-    col_types = "cTidcci"
-  )
-
+  csv_df <- httr2::resp_body_string(req) %>% 
+    readr::read_csv(col_types = "cTidcci")
+  
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {
     stop("No data exists for this station query")
