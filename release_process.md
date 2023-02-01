@@ -36,10 +36,10 @@ check_on_windows()
 
 ```
 
-## Run this in the console
+## Run this in the terminal
 ```
 R CMD build tidyhydat
-R CMD check tidyhydat_0.5.1.tar.gz --as-cran ## or whatever the package name is
+R CMD check tidyhydat_0.5.9.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## revedep check

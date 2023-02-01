@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2022-11-26"
+date: "2023-01-29"
 output:
   html_vignette:
      keep_md: true
@@ -79,7 +79,8 @@ PEI_stns
 ```
 
 ```
-## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010" "01CC011" "01CD005"
+## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010" "01CC011"
+## [9] "01CD005"
 ```
 
 ```r
@@ -195,17 +196,18 @@ search_stn_name("liard")
 
 ```
 ## # A tibble: 9 × 5
-##   STATION_NUMBER STATION_NAME                      PROV_TERR_STATE_LOC LATITUDE LONGITUDE
-##   <chr>          <chr>                             <chr>                  <dbl>     <dbl>
-## 1 10AA001        LIARD RIVER AT UPPER CROSSING     YT                      60.1     -129.
-## 2 10AA006        LIARD RIVER BELOW SCURVY CREEK    YT                      60.8     -131.
-## 3 10BE001        LIARD RIVER AT LOWER CROSSING     BC                      59.4     -126.
-## 4 10ED001        LIARD RIVER AT FORT LIARD         NT                      60.2     -123.
-## 5 10ED002        LIARD RIVER NEAR THE MOUTH        NT                      61.7     -121.
-## 6 10BE005        LIARD RIVER ABOVE BEAVER RIVER    BC                      59.7     -124.
-## 7 10BE006        LIARD RIVER ABOVE KECHIKA RIVER   BC                      59.7     -127.
-## 8 10ED008        LIARD RIVER AT LINDBERG LANDING   NT                      61.1     -123.
-## 9 10GC004        MACKENZIE RIVER ABOVE LIARD RIVER NT                      61.9     -121.
+##   STATION_NUMBER STATION_NAME                      PROV_TERR_STATE_LOC LATITUDE LONGIT…¹
+##   <chr>          <chr>                             <chr>                  <dbl>    <dbl>
+## 1 10AA001        LIARD RIVER AT UPPER CROSSING     YT                      60.1    -129.
+## 2 10AA006        LIARD RIVER BELOW SCURVY CREEK    YT                      60.8    -131.
+## 3 10BE001        LIARD RIVER AT LOWER CROSSING     BC                      59.4    -126.
+## 4 10ED001        LIARD RIVER AT FORT LIARD         NT                      60.2    -123.
+## 5 10ED002        LIARD RIVER NEAR THE MOUTH        NT                      61.7    -121.
+## 6 10BE005        LIARD RIVER ABOVE BEAVER RIVER    BC                      59.7    -124.
+## 7 10BE006        LIARD RIVER ABOVE KECHIKA RIVER   BC                      59.7    -127.
+## 8 10ED008        LIARD RIVER AT LINDBERG LANDING   NT                      61.1    -123.
+## 9 10GC004        MACKENZIE RIVER ABOVE LIARD RIVER NT                      61.9    -121.
+## # … with abbreviated variable name ¹​LONGITUDE
 ```
 Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
 
@@ -214,20 +216,21 @@ search_stn_number("08MF")
 ```
 
 ```
-## # A tibble: 53 × 5
-##    STATION_NUMBER STATION_NAME                           PROV_TERR_STATE_LOC LATITUDE LONGITUDE
-##    <chr>          <chr>                                  <chr>                  <dbl>     <dbl>
-##  1 08MF005        FRASER RIVER AT HOPE                   BC                      49.4     -121.
-##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                      49.2     -122.
-##  3 08MF038        FRASER RIVER AT CANNOR                 BC                      49.1     -122.
-##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                      50.6     -122.
-##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                      49.5     -121.
-##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                      50.0     -122.
-##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                      49.4     -121.
-##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                      49.3     -122.
-##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                      49.2     -122.
-## 10 08MF001        ANDERSON RIVER NEAR BOSTON BAR         BC                      49.8     -121.
-## # … with 43 more rows
+## # A tibble: 54 × 5
+##    STATION_NUMBER STATION_NAME                           PROV_TERR_STA…¹ LATIT…² LONGI…³
+##    <chr>          <chr>                                  <chr>             <dbl>   <dbl>
+##  1 08MF005        FRASER RIVER AT HOPE                   BC                 49.4   -121.
+##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                 49.2   -122.
+##  3 08MF038        FRASER RIVER AT CANNOR                 BC                 49.1   -122.
+##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                 50.6   -122.
+##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                 49.5   -121.
+##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                 50.0   -122.
+##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                 49.4   -121.
+##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                 49.3   -122.
+##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                 49.2   -122.
+## 10 08MF074        FRASER RIVER ABOVE HERRLING ISLAND     BC                 49.3   -122.
+## # … with 44 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC, ²​LATITUDE,
+## #   ³​LONGITUDE
 ```
 
 ## Using joins 
