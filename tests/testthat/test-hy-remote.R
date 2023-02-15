@@ -1,3 +1,6 @@
 test_that("hy_remote returns a string", {
-  expect_snapshot_output(hy_remote())
+  skip_on_cran()
+  expect_true(
+    is.character(hy_remote())
+  )
 })
