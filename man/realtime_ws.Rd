@@ -54,16 +54,14 @@ parameters or dates) being requested.
 
 ws_08 <- realtime_ws(
   station_number = c("08NL071", "08NM174"),
-  parameters = c(47, 5),
-  token = token_out
+  parameters = c(47, 5)
 )
 
 fivedays <- realtime_ws(
   station_number = c("08NL071", "08NM174"),
   parameters = c(47, 5),
   end_date = Sys.Date(), # today
-  start_date = Sys.Date() - 5, # five days ago
-  token = token_out
+  start_date = Sys.Date() - 5 # five days ago
 )
 }
 }
