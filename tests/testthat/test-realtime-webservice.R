@@ -38,7 +38,6 @@ test_that("realtime_ws fails with incorrectly specified date", {
 
 test_that("realtime_ws succeed specifying only date; no time", {
   skip_on_cran()
-  skip_on_travis()
 
   sdate <- Sys.Date() - 1
   edate <- Sys.Date()
