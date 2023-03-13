@@ -1,0 +1,9 @@
+Parameter,Code,Name_En,Name_Fr,Unit,Description_En,Description_Fr
+46,HG,Water level provisional,Niveau d'eau temporaire,m,"Height, stage, elevation of the water surface at a specified station above some arbitrary zero datum","Hauteur, niveau, élévation de la surface de l'eau à une station spécifiée au-dessus du zéro d'un système de référence arbitraire"
+16,HG2,Secondary water level,Niveau d'eau secondaire,m,"Height, stage, additional secondary water level reading at the specified station","Hauteur, niveau, lecture secondaire additionnelle du niveau d'eau à la station spécifiée"
+52,HG3,Tertiary water level,Niveau d'eau tertiaire,m,"Height, stage, additional tertiary water level reading at the specified station","Hauteur, niveau, lecture tertiaire additionnelle du niveau d'eau à la station spécifiée"
+47,QR,Discharge Provisional,Débit temporaire,m3/s,Discharge - flow measured at points along a stream,Débit - écoulement mesuré à des points le long d'un cours d'eau
+8,QRS,"Discharge, sensor","Débit, capteur",m3/s,s Discharge measured by sensor,Débit mesuré par capteur
+5,TW,Water temperature,Température de l'eau,degC,"Temperature, temperature of water at a specified depth","Température, température de l'eau à une profondeur spécifiée"
+41,TW2,Secondary water temperature,Température de l'eau secondaire,degC,"Temperature, additional secondary water temperature reading at the specified station","Température, lecture secondaire additionnelle de la température de l'eau à la station spécifiée"
+18,PC,Accumulated precipitation,Précipitations accumulées,mm,"Precipitation, accumulator - summation of precipitation collected beginning at a specified date","Précipitations, accumulateur - somme des précipitations recueillies depuis une date spécifiée"

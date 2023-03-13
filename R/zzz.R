@@ -103,5 +103,7 @@ globalVariables(unique(c(
 # single_realtime_station: 
 "Date", 
 # station_choice: 
-"STATION_NUMBER"
+"STATION_NUMBER",
+# realtime_ws: 
+"Approval", "Name_En", "Name_Fr", "param_id", "Unit"
 )))

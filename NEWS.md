@@ -1,3 +1,6 @@
+# tidyhydat 0.5.9000
+- Add capability to access ECCC webservice. The return of `realtime_ws`!
+
 # tidyhydat 0.5.9
 - drop `.data` pronoun throughout
 - fixed failing CRAN test

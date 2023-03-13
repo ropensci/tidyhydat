@@ -53,6 +53,7 @@ attributes(pei)$query_time
 }
 \seealso{
 Other realtime functions: 
-\code{\link{realtime_stations}()}
+\code{\link{realtime_stations}()},
+\code{\link{realtime_ws}()}
 }
 \concept{realtime functions}
