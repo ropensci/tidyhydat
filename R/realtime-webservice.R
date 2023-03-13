@@ -158,11 +158,11 @@ realtime_ws <- function(station_number, parameters = NULL,
 
   csv_df <- dplyr::left_join(
     csv_df,
-    dplyr::select(tidyhydat::param_id, -.data$Name_Fr),
+    dplyr::select(tidyhydat::param_id, -Name_Fr),
     by = c("Parameter")
   )
-  csv_df <- dplyr::select(csv_df, .data$STATION_NUMBER, .data$Date, .data$Name_En, .data$Value, .data$Unit,
-                          .data$Grade, .data$Symbol, .data$Approval, .data$Parameter, .data$Code)
+  csv_df <- dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit,
+                          Grade, Symbol, Approval, Parameter, Code)
 
   ## What stations were missed?
   differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
