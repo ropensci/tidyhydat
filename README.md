@@ -5,7 +5,7 @@ tidyhydat <img src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/)
 [![Coverage
 status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
 [![R build
@@ -90,9 +90,9 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2023-04-01 20:10:30 (UTC)
+    #>   Queried on: 2023-04-01 20:50:27 (UTC)
     #>   Date range: 2023-03-02 to 2023-04-01 
-    #> # A tibble: 17,286 × 8
+    #> # A tibble: 17,310 × 8
     #>    STATION_NUMBER PROV_TE…¹ Date                Param…² Value Grade Symbol Code 
     #>    <chr>          <chr>     <dttm>              <chr>   <dbl> <chr> <chr>  <chr>
     #>  1 08MF005        BC        2023-03-02 08:00:00 Flow      562 <NA>  <NA>   1    
@@ -105,7 +105,7 @@ easily select specific stations by supplying a station of interest:
     #>  8 08MF005        BC        2023-03-02 08:35:00 Flow      564 <NA>  <NA>   1    
     #>  9 08MF005        BC        2023-03-02 08:40:00 Flow      564 <NA>  <NA>   1    
     #> 10 08MF005        BC        2023-03-02 08:45:00 Flow      562 <NA>  <NA>   1    
-    #> # … with 17,276 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
+    #> # … with 17,300 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
     #> #   ²​Parameter
 
 Or we can use `realtime_ws`:
@@ -121,7 +121,7 @@ Or we can use `realtime_ws`:
     #>   problems(dat)
     #> All station successfully retrieved
     #> All parameters successfully retrieved
-    #> # A tibble: 4,475 × 10
+    #> # A tibble: 4,488 × 10
     #>    STATIO…¹ Date                Name_En Value Unit  Grade Symbol Appro…² Param…³
     #>    <chr>    <dttm>              <chr>   <dbl> <chr> <chr> <chr>    <int>   <dbl>
     #>  1 08MF005  2023-03-18 00:00:00 Water …  4.76 °C    -1    <NA>        NA       5
@@ -134,7 +134,7 @@ Or we can use `realtime_ws`:
     #>  8 08MF005  2023-03-18 07:00:00 Water …  3.11 °C    -1    <NA>        NA       5
     #>  9 08MF005  2023-03-18 08:00:00 Water …  3.03 °C    -1    <NA>        NA       5
     #> 10 08MF005  2023-03-18 09:00:00 Water …  2.93 °C    -1    <NA>        NA       5
-    #> # … with 4,465 more rows, 1 more variable: Code <chr>, and abbreviated variable
+    #> # … with 4,478 more rows, 1 more variable: Code <chr>, and abbreviated variable
     #> #   names ¹​STATION_NUMBER, ²​Approval, ³​Parameter
 
 Compare realtime\_ws and realtime\_dd
@@ -142,7 +142,7 @@ Compare realtime\_ws and realtime\_dd
 
 `tidyhydat` provides two methods to download realtime data.
 `realtime_dd()` provides a function to import .csv files from
-[here](http://dd.weather.gc.ca/hydrometric/csv/). `realtime_ws()` is an
+[here](https://dd.weather.gc.ca/hydrometric/csv/). `realtime_ws()` is an
 client for a web service hosted by ECCC. `realtime_ws()` has several
 difference to `realtime_dd()`. These include:
 

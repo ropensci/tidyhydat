@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 
 <!-- badges: start -->
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master) 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/) [![Coverage status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master) 
 [![R build status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions)
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tidyhydat)](https://cran.r-project.org/package=tidyhydat) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tidyhydat?color=brightgreen)](https://CRAN.R-project.org/package=tidyhydat) [![cran checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-project.org/web/checks/check_results_tidyhydat.html)  [![r-universe](https://ropensci.r-universe.dev/badges/tidyhydat)](https://ropensci.r-universe.dev/builds)
@@ -80,7 +80,7 @@ realtime_ws(
 ```
 
 ## Compare realtime_ws and realtime_dd
-`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](http://dd.weather.gc.ca/hydrometric/csv/). 
+`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](https://dd.weather.gc.ca/hydrometric/csv/). 
 `realtime_ws()` is an client for a web service hosted by ECCC. `realtime_ws()` has several difference to `realtime_dd()`. These include:
 
 - *Speed*: The `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries to `realtime_dd()` is more appropriate.

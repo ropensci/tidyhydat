@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2023-01-29"
+date: "2023-04-01"
 output:
   html_vignette:
      keep_md: true
@@ -42,7 +42,7 @@ hy_daily_flows(station_number = "08LA001")
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-10-24
+##   Queried from version of HYDAT released on 2023-01-15
 ##    Observations:                      31,351
 ##    Measurement flags:                 6,166
 ##    Parameter(s):                      Flow
@@ -79,8 +79,8 @@ PEI_stns
 ```
 
 ```
-## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010" "01CC011"
-## [9] "01CD005"
+## [1] "01CA003" "01CB002" "01CB004" "01CB018" "01CC002" "01CC005" "01CC010"
+## [8] "01CC011" "01CD005"
 ```
 
 ```r
@@ -88,7 +88,7 @@ hy_daily_flows(station_number = PEI_stns)
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-10-24
+##   Queried from version of HYDAT released on 2023-01-15
 ##    Observations:                      115,337
 ##    Measurement flags:                 20,614
 ##    Parameter(s):                      Flow
@@ -121,15 +121,15 @@ search_stn_name("canada") %>%
 ```
 
 ```
-##   Queried from version of HYDAT released on 2022-10-24
-##    Observations:                      86,147
-##    Measurement flags:                 26,222
+##   Queried from version of HYDAT released on 2023-01-15
+##    Observations:                      86,512
+##    Measurement flags:                 26,307
 ##    Parameter(s):                      Flow
 ##    Date range:                        1918-08-01 to 2022-06-30 
 ##    Station(s) returned:               7
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 86,147 × 5
+## # A tibble: 86,512 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -142,7 +142,7 @@ search_stn_name("canada") %>%
 ##  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 ##  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 ## 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-## # … with 86,137 more rows
+## # … with 86,502 more rows
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
@@ -160,6 +160,7 @@ In addition to the approved and vetted data in the HYDAT database ECCC also offe
 
 - `realtime_stations()`
 - `realtime_dd()`
+- `realtime_ws()`
 
 Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 
@@ -187,6 +188,18 @@ Another option is to provide simply the province as an argument and download all
 realtime_dd(prov_terr_state_loc = "PE")
 ```
 
+Or we can use `realtime_ws`:
+
+
+```r
+realtime_ws(
+  station_number = "08MF005",
+  parameters = c(46, 5), ## see param_id for a list of codes
+  start_date = Sys.Date() - 14,
+  end_date = Sys.Date()
+)
+```
+
 ## Search functions
 You can also make use of auxiliary functions in `tidyhydat` called `search_stn_name()` and `search_stn_number()` to look for matches when you know part of a name of a station. For example:
 
@@ -196,18 +209,18 @@ search_stn_name("liard")
 
 ```
 ## # A tibble: 9 × 5
-##   STATION_NUMBER STATION_NAME                      PROV_TERR_STATE_LOC LATITUDE LONGIT…¹
-##   <chr>          <chr>                             <chr>                  <dbl>    <dbl>
-## 1 10AA001        LIARD RIVER AT UPPER CROSSING     YT                      60.1    -129.
-## 2 10AA006        LIARD RIVER BELOW SCURVY CREEK    YT                      60.8    -131.
-## 3 10BE001        LIARD RIVER AT LOWER CROSSING     BC                      59.4    -126.
-## 4 10ED001        LIARD RIVER AT FORT LIARD         NT                      60.2    -123.
-## 5 10ED002        LIARD RIVER NEAR THE MOUTH        NT                      61.7    -121.
-## 6 10BE005        LIARD RIVER ABOVE BEAVER RIVER    BC                      59.7    -124.
-## 7 10BE006        LIARD RIVER ABOVE KECHIKA RIVER   BC                      59.7    -127.
-## 8 10ED008        LIARD RIVER AT LINDBERG LANDING   NT                      61.1    -123.
-## 9 10GC004        MACKENZIE RIVER ABOVE LIARD RIVER NT                      61.9    -121.
-## # … with abbreviated variable name ¹​LONGITUDE
+##   STATION_NUMBER STATION_NAME                      PROV_TERR_S…¹ LATIT…² LONGI…³
+##   <chr>          <chr>                             <chr>           <dbl>   <dbl>
+## 1 10AA001        LIARD RIVER AT UPPER CROSSING     YT               60.1   -129.
+## 2 10AA006        LIARD RIVER BELOW SCURVY CREEK    YT               60.8   -131.
+## 3 10BE001        LIARD RIVER AT LOWER CROSSING     BC               59.4   -126.
+## 4 10ED001        LIARD RIVER AT FORT LIARD         NT               60.2   -123.
+## 5 10ED002        LIARD RIVER NEAR THE MOUTH        NT               61.7   -121.
+## 6 10BE005        LIARD RIVER ABOVE BEAVER RIVER    BC               59.7   -124.
+## 7 10BE006        LIARD RIVER ABOVE KECHIKA RIVER   BC               59.7   -127.
+## 8 10ED008        LIARD RIVER AT LINDBERG LANDING   NT               61.1   -123.
+## 9 10GC004        MACKENZIE RIVER ABOVE LIARD RIVER NT               61.9   -121.
+## # … with abbreviated variable names ¹​PROV_TERR_STATE_LOC, ²​LATITUDE, ³​LONGITUDE
 ```
 Similarly, `search_stn_number()` can be useful if you are interested in all stations from the *08MF* sub-sub-drainage:
 
@@ -217,20 +230,20 @@ search_stn_number("08MF")
 
 ```
 ## # A tibble: 54 × 5
-##    STATION_NUMBER STATION_NAME                           PROV_TERR_STA…¹ LATIT…² LONGI…³
-##    <chr>          <chr>                                  <chr>             <dbl>   <dbl>
-##  1 08MF005        FRASER RIVER AT HOPE                   BC                 49.4   -121.
-##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                 49.2   -122.
-##  3 08MF038        FRASER RIVER AT CANNOR                 BC                 49.1   -122.
-##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                 50.6   -122.
-##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                 49.5   -121.
-##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                 50.0   -122.
-##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                 49.4   -121.
-##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                 49.3   -122.
-##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                 49.2   -122.
-## 10 08MF074        FRASER RIVER ABOVE HERRLING ISLAND     BC                 49.3   -122.
-## # … with 44 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC, ²​LATITUDE,
-## #   ³​LONGITUDE
+##    STATION_NUMBER STATION_NAME                           PROV_…¹ LATIT…² LONGI…³
+##    <chr>          <chr>                                  <chr>     <dbl>   <dbl>
+##  1 08MF005        FRASER RIVER AT HOPE                   BC         49.4   -121.
+##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC         49.2   -122.
+##  3 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC         50.6   -122.
+##  4 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC         49.5   -121.
+##  5 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC         50.0   -122.
+##  6 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC         49.4   -121.
+##  7 08MF072        FRASER RIVER AT LAIDLAW                BC         49.3   -122.
+##  8 08MF075        FRASER RIVER AT LOWER KENT             BC         49.2   -122.
+##  9 08MF076        FRASER RIVER ABOVE HUNTER CREEK        BC         49.4   -122.
+## 10 08MF001        ANDERSON RIVER NEAR BOSTON BAR         BC         49.8   -121.
+## # … with 44 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
+## #   ²​LATITUDE, ³​LONGITUDE
 ```
 
 ## Using joins 
@@ -255,7 +268,7 @@ ggplot(runoff_data) +
   theme(legend.position = "bottom")
 ```
 
-![plot of chunk unnamed-chunk-8](vignette-fig-unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-9](vignette-fig-unnamed-chunk-9-1.png)
 This is an effective way to make use of the variety of tables available in HYDAT.
 
 # License

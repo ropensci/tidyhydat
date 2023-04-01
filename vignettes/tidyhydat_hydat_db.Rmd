@@ -1,7 +1,7 @@
 ---
 title: "Stepping into the HYDAT Database"
 author: "Dewey Dunnington"
-date: "2023-01-29"
+date: "2023-04-01"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Stepping into the HYDAT Database}
@@ -57,7 +57,7 @@ To inspect any particular table, use the `tbl()` function with the `src` and the
 ```r
 tbl(src, "STN_OPERATION_SCHEDULE")
 #> # Source:   table<STN_OPERATION_SCHEDULE> [?? x 5]
-#> # Database: sqlite 3.39.4 [/Users/samalbers/_dev/gh_repos/tidyhydat/inst/test_db/tinyhydat.sqlite3]
+#> # Database: sqlite 3.40.0 [/home/hothroot/_dev/tidyhydat/inst/test_db/tinyhydat.sqlite3]
 #>    STATION_NUMBER DATA_TYPE  YEAR MONTH_FROM MONTH_TO
 #>    <chr>          <chr>     <int> <chr>      <chr>   
 #>  1 05AA008        H          2012 JAN        DEC     
