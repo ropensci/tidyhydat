@@ -1,6 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tidyhydat <img src="man/figures/logo.png" align="right" />
+tidyhydat <img src="man/figures/logo.png" align="right" />
+==========================================================
 
 <!-- badges: start -->
 
@@ -22,7 +23,8 @@ checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-proj
 [![R-CMD-check](https://github.com/ropensci/tidyhydat/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/tidyhydat/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-## What does `tidyhydat` do?
+What does `tidyhydat` do?
+-------------------------
 
 -   Provides functions (`hy_*`) that access hydrometric data from the
     HYDAT database, a national archive of Canadian hydrometric data and
@@ -37,7 +39,8 @@ checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-proj
     data and returns a [tibble](https://tibble.tidyverse.org/) of daily
     flows.
 
-## Installation
+Installation
+------------
 
 You can install `tidyhydat` from CRAN:
 
@@ -48,10 +51,11 @@ install directly from the rOpenSci development server:
 
     install.packages("tidyhydat", repos = "https://dev.ropensci.org")
 
-## Usage
+Usage
+-----
 
 More documentation on `tidyhydat` can found at the rOpenSci doc page:
-<https://docs.ropensci.org/tidyhydat/>
+<a href="https://docs.ropensci.org/tidyhydat/" class="uri">https://docs.ropensci.org/tidyhydat/</a>
 
 When you install `tidyhydat`, several other packages will be installed
 as well. One of those packages, `dplyr`, is useful for data
@@ -86,23 +90,75 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2023-01-30 17:30:14 (UTC)
-    #>   Date range: 2022-12-31 to 2023-01-30 
-    #> # A tibble: 17,478 × 8
+    #>   Queried on: 2023-04-01 20:10:30 (UTC)
+    #>   Date range: 2023-03-02 to 2023-04-01 
+    #> # A tibble: 17,286 × 8
     #>    STATION_NUMBER PROV_TE…¹ Date                Param…² Value Grade Symbol Code 
     #>    <chr>          <chr>     <dttm>              <chr>   <dbl> <chr> <chr>  <chr>
-    #>  1 08MF005        BC        2022-12-31 08:00:00 Flow      747 <NA>  <NA>   1    
-    #>  2 08MF005        BC        2022-12-31 08:05:00 Flow      747 <NA>  <NA>   1    
-    #>  3 08MF005        BC        2022-12-31 08:10:00 Flow      749 <NA>  <NA>   1    
-    #>  4 08MF005        BC        2022-12-31 08:15:00 Flow      748 <NA>  <NA>   1    
-    #>  5 08MF005        BC        2022-12-31 08:20:00 Flow      747 <NA>  <NA>   1    
-    #>  6 08MF005        BC        2022-12-31 08:25:00 Flow      748 <NA>  <NA>   1    
-    #>  7 08MF005        BC        2022-12-31 08:30:00 Flow      747 <NA>  <NA>   1    
-    #>  8 08MF005        BC        2022-12-31 08:35:00 Flow      749 <NA>  <NA>   1    
-    #>  9 08MF005        BC        2022-12-31 08:40:00 Flow      747 <NA>  <NA>   1    
-    #> 10 08MF005        BC        2022-12-31 08:45:00 Flow      746 <NA>  <NA>   1    
-    #> # … with 17,468 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
+    #>  1 08MF005        BC        2023-03-02 08:00:00 Flow      562 <NA>  <NA>   1    
+    #>  2 08MF005        BC        2023-03-02 08:05:00 Flow      561 <NA>  <NA>   1    
+    #>  3 08MF005        BC        2023-03-02 08:10:00 Flow      564 <NA>  <NA>   1    
+    #>  4 08MF005        BC        2023-03-02 08:15:00 Flow      564 <NA>  <NA>   1    
+    #>  5 08MF005        BC        2023-03-02 08:20:00 Flow      563 <NA>  <NA>   1    
+    #>  6 08MF005        BC        2023-03-02 08:25:00 Flow      564 <NA>  <NA>   1    
+    #>  7 08MF005        BC        2023-03-02 08:30:00 Flow      564 <NA>  <NA>   1    
+    #>  8 08MF005        BC        2023-03-02 08:35:00 Flow      564 <NA>  <NA>   1    
+    #>  9 08MF005        BC        2023-03-02 08:40:00 Flow      564 <NA>  <NA>   1    
+    #> 10 08MF005        BC        2023-03-02 08:45:00 Flow      562 <NA>  <NA>   1    
+    #> # … with 17,276 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
     #> #   ²​Parameter
+
+Or we can use `realtime_ws`:
+
+    realtime_ws(
+      station_number = "08MF005",
+      parameters = c(46, 5), ## see param_id for a list of codes
+      start_date = Sys.Date() - 14,
+      end_date = Sys.Date()
+    )
+    #> Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
+    #>   dat <- vroom(...)
+    #>   problems(dat)
+    #> All station successfully retrieved
+    #> All parameters successfully retrieved
+    #> # A tibble: 4,475 × 10
+    #>    STATIO…¹ Date                Name_En Value Unit  Grade Symbol Appro…² Param…³
+    #>    <chr>    <dttm>              <chr>   <dbl> <chr> <chr> <chr>    <int>   <dbl>
+    #>  1 08MF005  2023-03-18 00:00:00 Water …  4.76 °C    -1    <NA>        NA       5
+    #>  2 08MF005  2023-03-18 01:00:00 Water …  3.91 °C    -1    <NA>        NA       5
+    #>  3 08MF005  2023-03-18 02:00:00 Water …  3.67 °C    -1    <NA>        NA       5
+    #>  4 08MF005  2023-03-18 03:00:00 Water …  3.57 °C    -1    <NA>        NA       5
+    #>  5 08MF005  2023-03-18 04:00:00 Water …  3.24 °C    -1    <NA>        NA       5
+    #>  6 08MF005  2023-03-18 05:00:00 Water …  3.21 °C    -1    <NA>        NA       5
+    #>  7 08MF005  2023-03-18 06:00:00 Water …  3.06 °C    -1    <NA>        NA       5
+    #>  8 08MF005  2023-03-18 07:00:00 Water …  3.11 °C    -1    <NA>        NA       5
+    #>  9 08MF005  2023-03-18 08:00:00 Water …  3.03 °C    -1    <NA>        NA       5
+    #> 10 08MF005  2023-03-18 09:00:00 Water …  2.93 °C    -1    <NA>        NA       5
+    #> # … with 4,465 more rows, 1 more variable: Code <chr>, and abbreviated variable
+    #> #   names ¹​STATION_NUMBER, ²​Approval, ³​Parameter
+
+Compare realtime\_ws and realtime\_dd
+-------------------------------------
+
+`tidyhydat` provides two methods to download realtime data.
+`realtime_dd()` provides a function to import .csv files from
+[here](http://dd.weather.gc.ca/hydrometric/csv/). `realtime_ws()` is an
+client for a web service hosted by ECCC. `realtime_ws()` has several
+difference to `realtime_dd()`. These include:
+
+-   *Speed*: The `realtime_ws()` is much faster for larger queries
+    (i.e. many stations). For single station queries to `realtime_dd()`
+    is more appropriate.
+-   *Length of record*: `realtime_ws()` records goes back further in
+    time.
+-   *Type of parameters*: `realtime_dd()` are restricted to river flow
+    (either flow and level) data. In contrast `realtime_ws()` can
+    download several different parameters depending on what is available
+    for that station. See `data("param_id")` for a list and explanation
+    of the parameters.
+-   *Date/Time filtering*: `realtime_ws()` provides argument to select a
+    date range. Selecting a data range with `realtime_dd()` is not
+    possible until after all files have been downloaded.
 
 ### Plotting
 
@@ -112,7 +168,7 @@ Plot methods are also provided to quickly visualize realtime data:
 
     plot(realtime_ex)
 
-![](man/figures/README-unnamed-chunk-7-1.png)
+![](man/figures/README-unnamed-chunk-8-1.png)
 
 and also historical data:
 
@@ -120,16 +176,18 @@ and also historical data:
 
     plot(hy_ex)
 
-![](man/figures/README-unnamed-chunk-8-1.png)
+![](man/figures/README-unnamed-chunk-9-1.png)
 
-## Getting Help or Reporting an Issue
+Getting Help or Reporting an Issue
+----------------------------------
 
 To report bugs/issues/feature requests, please file an
 [issue](https://github.com/ropensci/tidyhydat/issues/).
 
 These are very welcome!
 
-## How to Contribute
+How to Contribute
+-----------------
 
 If you would like to contribute to the package, please see our
 [CONTRIBUTING](https://github.com/ropensci/tidyhydat/blob/master/CONTRIBUTING.md)
@@ -139,7 +197,8 @@ Please note that this project is released with a [Contributor Code of
 Conduct](https://github.com/ropensci/tidyhydat/blob/master/CODE_OF_CONDUCT.md).
 By participating in this project you agree to abide by its terms.
 
-## Citation
+Citation
+--------
 
 Get citation information for `tidyhydat` in R by running:
 
@@ -167,7 +226,8 @@ Get citation information for `tidyhydat` in R by running:
 
 [![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
 
-## License
+License
+-------
 
 Copyright 2017 Province of British Columbia
 
@@ -175,7 +235,7 @@ Licensed under the Apache License, Version 2.0 (the “License”); you may
 not use this file except in compliance with the License. You may obtain
 a copy of the License at
 
-<https://www.apache.org/licenses/LICENSE-2.0>
+<a href="https://www.apache.org/licenses/LICENSE-2.0" class="uri">https://www.apache.org/licenses/LICENSE-2.0</a>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an “AS IS” BASIS,
