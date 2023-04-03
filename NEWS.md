@@ -1,4 +1,4 @@
-# tidyhydat 0.5.9000
+# tidyhydat 0.6.0
 - Add capability to access ECCC webservice. The return of `realtime_ws`!
 
 # tidyhydat 0.5.9
