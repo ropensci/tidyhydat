@@ -68,6 +68,26 @@ To download real-time data using the datamart we can use approximately the same 
 realtime_dd(station_number = "08MF005")
 ```
 
+Or we can use `realtime_ws`:
+
+```{r}
+realtime_ws(
+  station_number = "08MF005",
+  parameters = c(46, 5), ## see param_id for a list of codes
+  start_date = Sys.Date() - 14,
+  end_date = Sys.Date()
+)
+```
+
+## Compare realtime_ws and realtime_dd
+`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](http://dd.weather.gc.ca/hydrometric/csv/). 
+`realtime_ws()` is an client for a web service hosted by ECCC. `realtime_ws()` has several difference to `realtime_dd()`. These include:
+
+- *Speed*: The `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries to `realtime_dd()` is more appropriate.
+- *Length of record*: `realtime_ws()` records goes back further in time. 
+- *Type of parameters*: `realtime_dd()` are restricted to river flow (either flow and level) data. In contrast `realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
+- *Date/Time filtering*: `realtime_ws()` provides argument to select a date range. Selecting a data range with `realtime_dd()` is not possible until after all files have been downloaded. 
+
 ### Plotting
 
 Plot methods are also provided to quickly visualize realtime data:
