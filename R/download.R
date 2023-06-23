@@ -56,9 +56,15 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   new_hydat <- hy_remote()
   # Make the download URL
   url <- paste0(hy_base_url(), "Hydat_sqlite3_", new_hydat, ".zip")
-  response <- httr::HEAD(url)
-  httr::stop_for_status(response)
-  size <- round(as.numeric(httr::headers(response)[["Content-Length"]]) / 1000000, 0)
+  req <- httr2::request(url)
+  req <- httr2::req_method(req, "HEAD")
+  req <- tidyhydat_agent(req)
+  req <- req_perform(req)
+  httr2::resp_check_status(req)
+
+  size <- round(as.numeric(
+    httr2::resp_header(req, "Content-Length")
+  ) / 1000000, 0)
 
 
   ## Do we need to download a new version?
@@ -77,11 +83,11 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   if (!dl_overwrite) {
     info("HYDAT is updated on a quarterly basis, check again soon for an updated version.")
   }
-
+  browser()
   if (new_hydat != existing_hydat & ask) { # New DB available or no local DB at all
     msg <- paste0(
-      "Downloading HYDAT will take up to 10 minutes (",
-      size, " MB).  \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"
+      "This version of HYDAT is ", size, "MB in size and will take some time to download. 
+      \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"
     )
     ans <- ask(msg)
   } else {
@@ -106,12 +112,10 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     tmp <- tempfile("hydat_", fileext = ".zip")
 
     ## Download the zip file
-    res <- httr::GET(
-      url, httr::write_disk(tmp), httr::progress("down"),
-      httr::user_agent("https://github.com/ropensci/tidyhydat")
-    )
-    on.exit(file.remove(tmp), add = TRUE)
-    httr::stop_for_status(res)
+    hydb_req <- httr2::request(url)
+    hydb_req <- tidyhydat_agent(hydb_req)
+    resp <- req_perform(hydb_req, tmp)
+    httr2::resp_check_status(resp)
 
     ## Extract the file to a temporary dir
     if (file.exists(tmp)) info("Extracting HYDAT")
@@ -153,10 +157,13 @@ hy_remote <- function() {
   # Run network check
   network_check(hy_base_url())
 
-  x <- httr::GET(hy_base_url())
-  httr::stop_for_status(x)
+  req <- httr2::request(hy_base_url())
+  req <- httr2::req_perform(req)
+  resp <- httr2::resp_check_status(req)
+
+  
   raw_date <- substr(
-    gsub("^.*\\Hydat_sqlite3_", "", httr::content(x, "text")),
+    gsub("^.*\\Hydat_sqlite3_", "", httr2::resp_body_string(req)),
     1, 8
   )
 

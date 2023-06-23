@@ -203,6 +203,12 @@ network_check <- function(url, proxy_url = NULL, proxy_port = NULL) {
   )
 }
 
+tidyhydat_agent <- function(req) {
+  httr2::req_user_agent(
+    req, 
+    string = "https://github.com/ropensci/tidyhydat")
+}
+
 
 #' Convenience function to pull station number from tidyhydat functions
 #'
