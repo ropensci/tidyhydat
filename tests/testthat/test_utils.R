@@ -25,6 +25,7 @@ test_that("hy_version returns a dataframe and works", {
 
 test_that("downloading hydat fails behind a proxy server with informative error message", {
   skip_on_cran()
+  skip_on_ci()
   base_url_cmc <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
   expect_snapshot_error(
     tidyhydat:::network_check(base_url_cmc, "64.251.21.73", 8080)
