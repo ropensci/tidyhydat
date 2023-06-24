@@ -66,12 +66,10 @@
 #' @export
 
 
-realtime_ws <- function(station_number, parameters = NULL,
-                        start_date = Sys.Date() - 30, end_date = Sys.Date()) {
-  if (is_mac()) {
-    # temporary patch to work around vroom 1.6.4 bug
-    readr::local_edition(1)
-  }
+realtime_ws <- function(station_number,
+                        parameters = NULL,
+                        start_date = Sys.Date() - 30,
+                        end_date = Sys.Date()) {
 
   if (is.null(parameters)) parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
 
@@ -92,17 +90,26 @@ realtime_ws <- function(station_number, parameters = NULL,
 
 
   if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", start_date)) {
-    stop("Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats", call. = FALSE)
+    stop(
+      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
+      call. = FALSE
+    )
   }
 
   if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", end_date)) {
-    stop("Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats", call. = FALSE)
+    stop(
+      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
+      call. = FALSE
+    )
   }
 
 
   if (!is.null(start_date) & !is.null(end_date)) {
     if (lubridate::ymd_hms(end_date) < lubridate::ymd_hms(start_date)) {
-      stop("start_date is after end_date. Try swapping values.", call. = FALSE)
+      stop(
+        "start_date is after end_date. Try swapping values.",
+        call. = FALSE
+      )
     }
   }
 
@@ -113,13 +120,17 @@ realtime_ws <- function(station_number, parameters = NULL,
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
+
+
   station_string <- paste0("stations[]=", station_number, collapse = "&")
   parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
-  date_string <- paste0("start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
-         "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19))
+  date_string <- paste0(
+    "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
+    "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
+  )
 
   ## paste them all together
-  url_for_GET <- paste0(
+  query_url <- paste0(
     baseurl,
     station_string, "&",
     parameters_string, "&",
@@ -127,26 +138,28 @@ realtime_ws <- function(station_number, parameters = NULL,
   )
 
   ## Get data
-  get_ws <- httr::GET(url_for_GET, httr::user_agent("https://github.com/ropensci/tidyhydat"))
+  req <- httr2::request(query_url)
+  req <- tidyhydat_agent(req)
+  resp <- httr2::req_perform(req)
 
   ## Give webservice some time
   Sys.sleep(1)
-  
 
-  ## Check the GET status
-  httr::stop_for_status(get_ws)
 
-  if (httr::headers(get_ws)$`content-type` != "text/csv; charset=utf-8") {
-    stop("GET response is not a csv file")
+  ## Check the respstatus
+  httr2::resp_check_status(resp)
+
+ 
+  if (httr2::resp_headers(resp)$`Content-Type` != "text/csv; charset=utf-8") {
+    stop("Response is not a csv file")
   }
 
   ## Turn it into a tibble and specify correct column classes
-  csv_df <- httr::content(
-    get_ws,
-    type = "text/csv",
-    encoding = "UTF-8",
+  csv_df <- readr::read_csv(
+    httr2::resp_body_string(resp),
     col_types = "cTidccc"
-    )
+  )
+
 
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {
@@ -154,15 +167,17 @@ realtime_ws <- function(station_number, parameters = NULL,
   }
 
   ## Rename columns to reflect tidyhydat naming
-  colnames(csv_df) <- c("STATION_NUMBER","Date","Parameter","Value","Grade","Symbol","Approval")
+  colnames(csv_df) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Grade", "Symbol", "Approval")
 
   csv_df <- dplyr::left_join(
     csv_df,
     dplyr::select(tidyhydat::param_id, -Name_Fr),
     by = c("Parameter")
   )
-  csv_df <- dplyr::select(csv_df, STATION_NUMBER, Date, Name_En, Value, Unit,
-                          Grade, Symbol, Approval, Parameter, Code)
+  csv_df <- dplyr::select(
+    csv_df, STATION_NUMBER, Date, Name_En, Value, Unit,
+    Grade, Symbol, Approval, Parameter, Code
+  )
 
   ## What stations were missed?
   differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
@@ -170,8 +185,7 @@ realtime_ws <- function(station_number, parameters = NULL,
     if (length(differ) <= 10) {
       message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
       message("Check station number for typos or if it is a valid station in the network")
-    }
-    else {
+    } else {
       message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
     }
   } else {
@@ -180,7 +194,7 @@ realtime_ws <- function(station_number, parameters = NULL,
 
   p_differ <- setdiff(unique(parameters), unique(csv_df$Parameter))
   if (length(p_differ) != 0) {
-      message("The following valid parameter(s) were not retrieved for at least one station you requested: ", paste0(p_differ, sep = " "))
+    message("The following valid parameter(s) were not retrieved for at least one station you requested: ", paste0(p_differ, sep = " "))
   } else {
     message("All parameters successfully retrieved")
   }
