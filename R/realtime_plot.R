@@ -30,10 +30,10 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow", "Level"), ...) {
   Parameter <- match.arg(Parameter)
 
   if (length(unique(x$STATION_NUMBER)) > 1L) {
-    stop("realtime plot methods only work with objects that contain one station", call. = FALSE)
+    stop("realtime plots only work with objects that contain one station", call. = FALSE)
   }
 
-  if (is.null(x)) stop("Station(s) not present in the datamart")
+  if (is.null(x)) stop("Station not present in the datamart")
 
   ## Catch mis labelled parameter
   if (Parameter == "Level" && ((nrow(x[x$Parameter == "Level", ]) == 0) | all(is.na(x[x$Parameter == "Level", ]$Value)))) {
