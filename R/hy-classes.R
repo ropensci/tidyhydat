@@ -21,7 +21,7 @@ print.hy <- function(x, ...) {
   summary_msg(x)
   if (c("Date") %in% names(x)) date_range_msg(x)
   if ("STATION_NUMBER" %in% names(x)) missed_station_msg(x)
-  print(dplyr::as_tibble(x))
+  print(dplyr::as_tibble(x), ...)
 }
 
 summary_msg <- function(x) {

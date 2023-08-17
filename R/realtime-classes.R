@@ -29,5 +29,5 @@ print.realtime <- function(x, ...) {
   } else {
     cat("  Date range: not available \n")
   }
-  print(dplyr::as_tibble(x))
+  print(dplyr::as_tibble(x), ...)
 }
