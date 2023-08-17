@@ -1,3 +1,6 @@
+# tidyhydat 0.6.0.9000
+- Add `...` to print methods so you can pass arguments all the way down. 
+
 # tidyhydat 0.6.0
 - Add capability to access ECCC webservice. The return of `realtime_ws`!
 
