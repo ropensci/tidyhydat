@@ -241,3 +241,9 @@ hy_expected_tbls <- function() {
     "STN_REMARKS", "STN_REMARK_CODES", "STN_STATUS_CODES", "VERSION"
   )
 }
+
+
+is_mac <- function() {
+  system_info <- Sys.info()
+  grepl("darwin", tolower(system_info["sysname"]))
+}
