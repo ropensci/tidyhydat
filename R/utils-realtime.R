@@ -13,6 +13,10 @@
 ###############################################
 ## Get realtime station data - single station
 single_realtime_station <- function(station_number) {
+  if (is_mac()) {
+    # temporary patch to work around vroom 1.6.4 bug
+    readr::local_edition(1)
+  }
   ## If station is provided
   if (!is.null(station_number)) {
     sym_STATION_NUMBER <- sym("STATION_NUMBER")

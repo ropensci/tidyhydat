@@ -109,6 +109,11 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
     stop(paste0(realtime_link, " is not a valid url. Datamart may be down or the url has changed."))
   }
 
+  if (is_mac()) {
+    # temporary patch to work around vroom 1.6.4 bug
+    readr::local_edition(1)
+  }
+
   net_tibble <- httr::content(url_check,
     type = "text/csv",
     encoding = "UTF-8",
