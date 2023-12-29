@@ -4,7 +4,8 @@ tidyhydat 0.6.1
 There were zero WARNINGS and zero ERRORS.
 
 ## NEWS
-- Add capability to access ECCC webservice. The return of `realtime_ws`!
+- Add `...` to print methods so you can pass arguments all the way down. 
+- Add workaround for vroom#519 bug that prevents `realtime_*` fucntions from working
 
 ## Test environments
 * win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
