@@ -1,4 +1,4 @@
-# tidyhydat 0.6.0.9000
+# tidyhydat 0.6.1
 - Add `...` to print methods so you can pass arguments all the way down. 
 - Add workaround for vroom#519 bug that prevents `realtime_*` fucntions from working
 
