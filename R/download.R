@@ -59,7 +59,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   req <- httr2::request(url)
   req <- httr2::req_method(req, "HEAD")
   req <- tidyhydat_agent(req)
-  req <- req_perform(req)
+  req <- tidyhydat_perform(req)
   httr2::resp_check_status(req)
 
   size <- round(as.numeric(
@@ -83,7 +83,6 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   if (!dl_overwrite) {
     info("HYDAT is updated on a quarterly basis, check again soon for an updated version.")
   }
-  browser()
   if (new_hydat != existing_hydat & ask) { # New DB available or no local DB at all
     msg <- paste0(
       "This version of HYDAT is ", size, "MB in size and will take some time to download. 
@@ -114,7 +113,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     ## Download the zip file
     hydb_req <- httr2::request(url)
     hydb_req <- tidyhydat_agent(hydb_req)
-    resp <- req_perform(hydb_req, tmp)
+    resp <- tidyhydat_perform(hydb_req, path = tmp)
     httr2::resp_check_status(resp)
 
     ## Extract the file to a temporary dir
@@ -158,7 +157,7 @@ hy_remote <- function() {
   network_check(hy_base_url())
 
   req <- httr2::request(hy_base_url())
-  req <- httr2::req_perform(req)
+  req <- tidyhydat_perform(req)
   resp <- httr2::resp_check_status(req)
 
   

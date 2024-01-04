@@ -257,3 +257,9 @@ is_mac <- function() {
   system_info <- Sys.info()
   grepl("darwin", tolower(system_info["sysname"]))
 }
+
+tidyhydat_perform  <- function(req, ...) {
+  req <- httr2::req_retry(req, max_tries = 5)
+  req <- httr2::req_progress(req)
+  httr2::req_perform(req, ...)
+}
