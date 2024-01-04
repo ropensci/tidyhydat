@@ -86,23 +86,24 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2023-04-04 12:54:46 (UTC)
-    #>   Date range: 2023-03-05 to 2023-04-04 
-    #> # A tibble: 17,118 × 8
-    #>    STATION_NUMBER PROV_TE…¹ Date                Param…² Value Grade Symbol Code 
-    #>    <chr>          <chr>     <dttm>              <chr>   <dbl> <chr> <chr>  <chr>
-    #>  1 08MF005        BC        2023-03-05 08:00:00 Flow      571 <NA>  <NA>   1    
-    #>  2 08MF005        BC        2023-03-05 08:05:00 Flow      572 <NA>  <NA>   1    
-    #>  3 08MF005        BC        2023-03-05 08:10:00 Flow      571 <NA>  <NA>   1    
-    #>  4 08MF005        BC        2023-03-05 08:15:00 Flow      571 <NA>  <NA>   1    
-    #>  5 08MF005        BC        2023-03-05 08:20:00 Flow      571 <NA>  <NA>   1    
-    #>  6 08MF005        BC        2023-03-05 08:25:00 Flow      572 <NA>  <NA>   1    
-    #>  7 08MF005        BC        2023-03-05 08:30:00 Flow      572 <NA>  <NA>   1    
-    #>  8 08MF005        BC        2023-03-05 08:35:00 Flow      571 <NA>  <NA>   1    
-    #>  9 08MF005        BC        2023-03-05 08:40:00 Flow      572 <NA>  <NA>   1    
-    #> 10 08MF005        BC        2023-03-05 08:45:00 Flow      573 <NA>  <NA>   1    
-    #> # … with 17,108 more rows, and abbreviated variable names ¹​PROV_TERR_STATE_LOC,
-    #> #   ²​Parameter
+    #>   Queried on: 2024-01-04 04:58:30.685797 (UTC)
+    #>   Date range: 2023-12-05 to 2023-12-29 
+    #> # A tibble: 13,658 × 8
+    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date               
+    #>    <chr>          <chr>               <dttm>             
+    #>  1 08MF005        BC                  2023-12-05 08:00:00
+    #>  2 08MF005        BC                  2023-12-05 08:05:00
+    #>  3 08MF005        BC                  2023-12-05 08:10:00
+    #>  4 08MF005        BC                  2023-12-05 08:15:00
+    #>  5 08MF005        BC                  2023-12-05 08:20:00
+    #>  6 08MF005        BC                  2023-12-05 08:25:00
+    #>  7 08MF005        BC                  2023-12-05 08:30:00
+    #>  8 08MF005        BC                  2023-12-05 08:35:00
+    #>  9 08MF005        BC                  2023-12-05 08:40:00
+    #> 10 08MF005        BC                  2023-12-05 08:45:00
+    #> # ℹ 13,648 more rows
+    #> # ℹ 5 more variables: Parameter <chr>, Value <dbl>,
+    #> #   Grade <chr>, Symbol <chr>, Code <chr>
 
 Or we can use `realtime_ws`:
 
@@ -112,27 +113,33 @@ Or we can use `realtime_ws`:
       start_date = Sys.Date() - 14,
       end_date = Sys.Date()
     )
-    #> Warning: One or more parsing issues, call `problems()` on your data frame for details,
-    #> e.g.:
-    #>   dat <- vroom(...)
-    #>   problems(dat)
+    #> Warning: 2823 parsing failures.
+    #> row                  col               expected                 actual         file
+    #>   1 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
+    #>   2 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
+    #>   3 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
+    #>   4 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
+    #>   5 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
+    #> ... .................... ...................... ...................... ............
+    #> See problems(...) for more details.
     #> All station successfully retrieved
     #> All parameters successfully retrieved
-    #> # A tibble: 4,384 × 10
-    #>    STATIO…¹ Date                Name_En Value Unit  Grade Symbol Appro…² Param…³
-    #>    <chr>    <dttm>              <chr>   <dbl> <chr> <chr> <chr>    <int>   <dbl>
-    #>  1 08MF005  2023-03-21 00:00:00 Water …  5.06 °C    -1    <NA>        NA       5
-    #>  2 08MF005  2023-03-21 01:00:00 Water …  4.65 °C    -1    <NA>        NA       5
-    #>  3 08MF005  2023-03-21 02:00:00 Water …  4.63 °C    -1    <NA>        NA       5
-    #>  4 08MF005  2023-03-21 03:00:00 Water …  4.22 °C    -1    <NA>        NA       5
-    #>  5 08MF005  2023-03-21 04:00:00 Water …  4.4  °C    -1    <NA>        NA       5
-    #>  6 08MF005  2023-03-21 05:00:00 Water …  3.94 °C    -1    <NA>        NA       5
-    #>  7 08MF005  2023-03-21 06:00:00 Water …  4    °C    -1    <NA>        NA       5
-    #>  8 08MF005  2023-03-21 07:00:00 Water …  4    °C    -1    <NA>        NA       5
-    #>  9 08MF005  2023-03-21 08:00:00 Water …  3.76 °C    -1    <NA>        NA       5
-    #> 10 08MF005  2023-03-21 09:00:00 Water …  3.7  °C    -1    <NA>        NA       5
-    #> # … with 4,374 more rows, 1 more variable: Code <chr>, and abbreviated variable
-    #> #   names ¹​STATION_NUMBER, ²​Approval, ³​Parameter
+    #> # A tibble: 2,823 × 10
+    #>    STATION_NUMBER Date                Name_En    Value Unit 
+    #>    <chr>          <dttm>              <chr>      <dbl> <chr>
+    #>  1 08MF005        2023-12-20 00:00:00 Water tem…  5.03 °C   
+    #>  2 08MF005        2023-12-20 01:00:00 Water tem…  5.05 °C   
+    #>  3 08MF005        2023-12-20 02:00:00 Water tem…  5.04 °C   
+    #>  4 08MF005        2023-12-20 03:00:00 Water tem…  5.04 °C   
+    #>  5 08MF005        2023-12-20 04:00:00 Water tem…  5.04 °C   
+    #>  6 08MF005        2023-12-20 05:00:00 Water tem…  5.03 °C   
+    #>  7 08MF005        2023-12-20 06:00:00 Water tem…  5.03 °C   
+    #>  8 08MF005        2023-12-20 07:00:00 Water tem…  5.02 °C   
+    #>  9 08MF005        2023-12-20 08:00:00 Water tem…  5.02 °C   
+    #> 10 08MF005        2023-12-20 09:00:00 Water tem…  5.03 °C   
+    #> # ℹ 2,813 more rows
+    #> # ℹ 5 more variables: Grade <chr>, Symbol <chr>,
+    #> #   Approval <int>, Parameter <dbl>, Code <chr>
 
 ## Compare realtime\_ws and realtime\_dd
 
@@ -195,12 +202,12 @@ By participating in this project you agree to abide by its terms.
 
 Get citation information for `tidyhydat` in R by running:
 
-
     To cite package 'tidyhydat' in publications use:
 
-      Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric
-      Data." _The Journal of Open Source Software_, *2*(20).
-      doi:10.21105/joss.00511 <https://doi.org/10.21105/joss.00511>,
+      Albers S (2017). "tidyhydat: Extract and Tidy
+      Canadian Hydrometric Data." _The Journal of Open
+      Source Software_, *2*(20). doi:10.21105/joss.00511
+      <https://doi.org/10.21105/joss.00511>,
       <http://dx.doi.org/10.21105/joss.00511>.
 
     A BibTeX entry for LaTeX users is
