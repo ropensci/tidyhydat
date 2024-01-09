@@ -1,6 +1,6 @@
 # tidyhydat 0.6.1
 - Add `...` to print methods so you can pass arguments all the way down. 
-- Add workaround for vroom#519 bug that prevents `realtime_*` fucntions from working
+- Add workaround for vroom#519 bug that prevents `realtime_*` functions from working
 
 # tidyhydat 0.6.0
 - Add capability to access ECCC webservice. The return of `realtime_ws`!
