@@ -145,7 +145,8 @@ realtime_ws <- function(station_number, parameters = NULL,
     get_ws,
     type = "text/csv",
     encoding = "UTF-8",
-    col_types = "cTidcci")
+    col_types = "cTidccc"
+    )
 
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {
