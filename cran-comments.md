@@ -5,7 +5,8 @@ There were zero WARNINGS and zero ERRORS.
 
 ## NEWS
 - Add `...` to print methods so you can pass arguments all the way down. 
-- Add workaround for vroom#519 bug that prevents `realtime_*` fucntions from working
+- Add workaround for vroom#519 bug that prevents `realtime_*` functions from working
+- `realtime_ws` now returns the `Approval/Approbation` column as a character vector rather than a integer. ECCC is now putting non-integers in that column so this is a less strict formatting solution. 
 
 ## Test environments
 * win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
