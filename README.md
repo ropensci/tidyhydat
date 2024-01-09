@@ -4,9 +4,7 @@
 
 <!-- badges: start -->
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/)
-[![Coverage
-status](https://codecov.io/gh/ropensci/tidyhydat/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/tidyhydat?branch=master)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/)ß
 [![R build
 status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions)
 
@@ -86,22 +84,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2024-01-04 04:58:30.685797 (UTC)
-    #>   Date range: 2023-12-05 to 2023-12-29 
-    #> # A tibble: 13,658 × 8
+    #>   Queried on: 2024-01-09 05:08:33.18974 (UTC)
+    #>   Date range: 2023-12-10 to 2024-01-09 
+    #> # A tibble: 10,972 × 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date               
     #>    <chr>          <chr>               <dttm>             
-    #>  1 08MF005        BC                  2023-12-05 08:00:00
-    #>  2 08MF005        BC                  2023-12-05 08:05:00
-    #>  3 08MF005        BC                  2023-12-05 08:10:00
-    #>  4 08MF005        BC                  2023-12-05 08:15:00
-    #>  5 08MF005        BC                  2023-12-05 08:20:00
-    #>  6 08MF005        BC                  2023-12-05 08:25:00
-    #>  7 08MF005        BC                  2023-12-05 08:30:00
-    #>  8 08MF005        BC                  2023-12-05 08:35:00
-    #>  9 08MF005        BC                  2023-12-05 08:40:00
-    #> 10 08MF005        BC                  2023-12-05 08:45:00
-    #> # ℹ 13,648 more rows
+    #>  1 08MF005        BC                  2023-12-10 08:00:00
+    #>  2 08MF005        BC                  2023-12-10 08:05:00
+    #>  3 08MF005        BC                  2023-12-10 08:10:00
+    #>  4 08MF005        BC                  2023-12-10 08:15:00
+    #>  5 08MF005        BC                  2023-12-10 08:20:00
+    #>  6 08MF005        BC                  2023-12-10 08:25:00
+    #>  7 08MF005        BC                  2023-12-10 08:30:00
+    #>  8 08MF005        BC                  2023-12-10 08:35:00
+    #>  9 08MF005        BC                  2023-12-10 08:40:00
+    #> 10 08MF005        BC                  2023-12-10 08:45:00
+    #> # ℹ 10,962 more rows
     #> # ℹ 5 more variables: Parameter <chr>, Value <dbl>,
     #> #   Grade <chr>, Symbol <chr>, Code <chr>
 
@@ -113,33 +111,24 @@ Or we can use `realtime_ws`:
       start_date = Sys.Date() - 14,
       end_date = Sys.Date()
     )
-    #> Warning: 2823 parsing failures.
-    #> row                  col               expected                 actual         file
-    #>   1 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
-    #>   2 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
-    #>   3 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
-    #>   4 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
-    #>   5 Approval/Approbation no trailing characters Provisional/Provisoire <raw vector>
-    #> ... .................... ...................... ...................... ............
-    #> See problems(...) for more details.
     #> All station successfully retrieved
     #> All parameters successfully retrieved
-    #> # A tibble: 2,823 × 10
+    #> # A tibble: 1,323 × 10
     #>    STATION_NUMBER Date                Name_En    Value Unit 
     #>    <chr>          <dttm>              <chr>      <dbl> <chr>
-    #>  1 08MF005        2023-12-20 00:00:00 Water tem…  5.03 °C   
-    #>  2 08MF005        2023-12-20 01:00:00 Water tem…  5.05 °C   
-    #>  3 08MF005        2023-12-20 02:00:00 Water tem…  5.04 °C   
-    #>  4 08MF005        2023-12-20 03:00:00 Water tem…  5.04 °C   
-    #>  5 08MF005        2023-12-20 04:00:00 Water tem…  5.04 °C   
-    #>  6 08MF005        2023-12-20 05:00:00 Water tem…  5.03 °C   
-    #>  7 08MF005        2023-12-20 06:00:00 Water tem…  5.03 °C   
-    #>  8 08MF005        2023-12-20 07:00:00 Water tem…  5.02 °C   
-    #>  9 08MF005        2023-12-20 08:00:00 Water tem…  5.02 °C   
-    #> 10 08MF005        2023-12-20 09:00:00 Water tem…  5.03 °C   
-    #> # ℹ 2,813 more rows
+    #>  1 08MF005        2023-12-25 00:00:00 Water tem…  5.14 °C   
+    #>  2 08MF005        2023-12-25 01:00:00 Water tem…  5.12 °C   
+    #>  3 08MF005        2023-12-25 02:00:00 Water tem…  5.11 °C   
+    #>  4 08MF005        2023-12-25 03:00:00 Water tem…  5.1  °C   
+    #>  5 08MF005        2023-12-25 04:00:00 Water tem…  5.1  °C   
+    #>  6 08MF005        2023-12-25 05:00:00 Water tem…  5.07 °C   
+    #>  7 08MF005        2023-12-25 06:00:00 Water tem…  5.06 °C   
+    #>  8 08MF005        2023-12-25 07:00:00 Water tem…  5.04 °C   
+    #>  9 08MF005        2023-12-25 08:00:00 Water tem…  5.02 °C   
+    #> 10 08MF005        2023-12-25 09:00:00 Water tem…  5    °C   
+    #> # ℹ 1,313 more rows
     #> # ℹ 5 more variables: Grade <chr>, Symbol <chr>,
-    #> #   Approval <int>, Parameter <dbl>, Code <chr>
+    #> #   Approval <chr>, Parameter <dbl>, Code <chr>
 
 ## Compare realtime\_ws and realtime\_dd
 
