@@ -23,6 +23,8 @@ test_that("realtime_plot will throw an error when try to plot more than one stat
 })
 
 test_that("throw an error when plotting a lake level station with Flow specified", {
+  skip_if_net_down()
+  skip_on_cran()
   l <- realtime_dd("08KH011")
   expect_error(plot(l, Parameter = "Flow"))
   expect_silent(plot(l, Parameter = "Level"))

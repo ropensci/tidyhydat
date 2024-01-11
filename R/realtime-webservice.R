@@ -68,11 +68,10 @@
 
 realtime_ws <- function(station_number, parameters = NULL,
                         start_date = Sys.Date() - 30, end_date = Sys.Date()) {
-  # if (length(station_number) >= 300) {
-  #  stop("Only 300 stations are supported for one request. If more stations are required,
-  #       a separate request should be issued to include the excess stations. This second request can
-  #       be issued on the same token if it isn't required.")
-  # }
+  if (is_mac()) {
+    # temporary patch to work around vroom 1.6.4 bug
+    readr::local_edition(1)
+  }
 
   if (is.null(parameters)) parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
 
@@ -146,7 +145,8 @@ realtime_ws <- function(station_number, parameters = NULL,
     get_ws,
     type = "text/csv",
     encoding = "UTF-8",
-    col_types = "cTidcci")
+    col_types = "cTidccc"
+    )
 
   ## Check here to see if csv_df has any data in it
   if (nrow(csv_df) == 0) {

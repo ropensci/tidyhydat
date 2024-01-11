@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2023-12-28"
+date: "2024-01-09"
 output:
   html_vignette:
      keep_md: true
@@ -224,11 +224,11 @@ search_stn_number("08MF")
 ##  3 08MF062        COQUIHALLA R… BC                      49.5
 ##  4 08MF065        NAHATLATCH R… BC                      50.0
 ##  5 08MF068        COQUIHALLA R… BC                      49.4
-##  6 08MF001        ANDERSON RIV… BC                      49.8
-##  7 08MF002        BOULDER CREE… BC                      49.3
-##  8 08MF003        COQUIHALLA R… BC                      49.4
-##  9 08MF004        FRASER RIVER… BC                      50.2
-## 10 08MF006        WAHLEACH CRE… BC                      49.3
+##  6 08MF075        FRASER RIVER… BC                      49.2
+##  7 08MF001        ANDERSON RIV… BC                      49.8
+##  8 08MF002        BOULDER CREE… BC                      49.3
+##  9 08MF003        COQUIHALLA R… BC                      49.4
+## 10 08MF004        FRASER RIVER… BC                      50.2
 ## # ℹ 44 more rows
 ## # ℹ 1 more variable: LONGITUDE <dbl>
 ```

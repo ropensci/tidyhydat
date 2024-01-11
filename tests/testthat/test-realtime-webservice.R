@@ -39,8 +39,9 @@ test_that("realtime_ws fails with incorrectly specified date", {
 test_that("realtime_ws succeed specifying only date; no time", {
   skip_on_cran()
 
-  sdate <- Sys.Date() - 1
-  edate <- Sys.Date()
+  today <- as.Date(as.POSIXct(Sys.time(), tz = "UTC"))
+  sdate <- today - 1
+  edate <- today
 
   output <- realtime_ws(
     station_number = "08MF005",
