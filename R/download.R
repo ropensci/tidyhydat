@@ -123,7 +123,8 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     ## Move to final resting place and rename to consistent name
     file.copy(
       list.files(tempdir, pattern = "\\.sqlite3$", full.names = TRUE),
-      hydat_path
+      hydat_path,
+      overwrite = TRUE
     )
 
 
