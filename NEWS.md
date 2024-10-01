@@ -1,4 +1,4 @@
-- fix bug where download_hydat() fails if tempdir() is on a different device than hydat_path (@mpdavison, #192)
+- fix bug where `download_hydat()` fails if `tempdir()` is on a different device than `hydat_path` (@mpdavison, #192)
 
 # tidyhydat 0.6.1
 - Add `...` to print methods so you can pass arguments all the way down. 
