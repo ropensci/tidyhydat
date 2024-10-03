@@ -134,7 +134,7 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
       not_done("HYDAT not successfully downloaded")
     }
 
-    hy_check()
+    hy_check(hydat_path)
 
     invisible(hydat_path)
   } # End of DL and overwrite if statement
