@@ -1,4 +1,4 @@
-# tidyhydat 0.6.1.9000
+# tidyhydat 0.7.0
 - bump minimum R version to 4.0.0
 - dropped httr in favour of httr2
 - fix bug where `download_hydat()` fails if `tempdir()` is on a different device than `hydat_path` (@mpdavison, #192)

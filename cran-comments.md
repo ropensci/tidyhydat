@@ -1,3 +1,25 @@
+tidyhydat 0.7.0
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- bump minimum R version to 4.0.0
+- dropped httr in favour of httr2
+- fix bug where `download_hydat()` fails if `tempdir()` is on a different device than `hydat_path` (@mpdavison, #192)
+- fix bug where `download_hydat()` wasn't checking alternative paths for success (@Travis-Simmons)
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.3.1 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* Fedora Linux, R-devel, clang, gfortran - r-hub
+* Debian Linux, R-release, GCC (debian-gcc-release) - r-hub
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit - r-hub
+
 tidyhydat 0.6.1
 =========================
 
