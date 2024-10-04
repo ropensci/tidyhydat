@@ -25,9 +25,9 @@ search_stn_name <- function(search_term, hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+  results <- realtime_stations() |>
+    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) |>
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) |>
     dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
 
   results <- results[grepl(toupper(search_term), results$STATION_NAME), ]
@@ -51,9 +51,9 @@ search_stn_number <- function(search_term, hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  results <- realtime_stations() %>%
-    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) %>%
-    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) %>%
+  results <- realtime_stations() |>
+    dplyr::bind_rows(suppressMessages(hy_stations(hydat_path = hydat_con))) |>
+    dplyr::distinct(STATION_NUMBER, .keep_all = TRUE) |>
     dplyr::select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, LATITUDE, LONGITUDE)
 
   results <- results[grepl(toupper(search_term), results$STATION_NUMBER), ]

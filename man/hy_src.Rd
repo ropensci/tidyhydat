@@ -39,8 +39,8 @@ tbl(src, "STATIONS")
 
 # one you're sure the results are what you want
 # get a data.frame using collect()
-tbl(src, "STATIONS") \%>\%
-  filter(PROV_TERR_STATE_LOC == "BC") \%>\%
+tbl(src, "STATIONS") |>
+  filter(PROV_TERR_STATE_LOC == "BC") |>
   collect()
 
 # close the connection to the database

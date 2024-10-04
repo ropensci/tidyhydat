@@ -47,9 +47,9 @@ hy_daily_flows(station_number = "08LA001")
 Another method is to use `hy_stations()` to generate your vector which is then given the `station_number` argument. For example, we could take a subset for only those active stations within Prince Edward Island (Province code:PE) and then create vector for `hy_daily_flows()`:
 
 ```{r example2, warning=FALSE}
-PEI_stns <- hy_stations() %>%
-  filter(HYD_STATUS == "ACTIVE") %>%
-  filter(PROV_TERR_STATE_LOC == "PE") %>%
+PEI_stns <- hy_stations() |>
+  filter(HYD_STATUS == "ACTIVE") |>
+  filter(PROV_TERR_STATE_LOC == "PE") |>
   pull_station_number()
 
 PEI_stns
@@ -59,8 +59,8 @@ hy_daily_flows(station_number = PEI_stns)
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example if for some reason we wanted all the stations in Canada that had the name "Canada" in them we unify that selection and data extraction process into a single pipe:
 ```{r, example3}
-search_stn_name("canada") %>%
-  pull_station_number() %>%
+search_stn_name("canada") |>
+  pull_station_number() |>
   hy_daily_flows()
 ```
 
@@ -115,11 +115,11 @@ search_stn_number("08MF")
 Sometimes it is required to make use of information from two tables from HYDAT. In some cases, we need to combine the information into one table using a common column. Here we will illustrate calculating runoff by combining the `hy_stations` tables with the `hy_daily_flows` table by the `STATION_NUMBER` column:
 ```{r}
 stns <- c("08NH130", "08NH005")
-runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") %>%
+runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") |>
   left_join(
-    hy_stations(station_number = stns) %>%
+    hy_stations(station_number = stns) |>
       select(STATION_NUMBER, STATION_NAME, DRAINAGE_AREA_GROSS),
-    by = "STATION_NUMBER") %>%
+    by = "STATION_NUMBER") |>
   ## conversion to mm/d
   mutate(runoff = Value / DRAINAGE_AREA_GROSS * 86400 / 1e6 * 1e3) 
 

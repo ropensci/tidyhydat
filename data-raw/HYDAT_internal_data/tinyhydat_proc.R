@@ -31,26 +31,26 @@ table_vector <- c(
 )
 
 ## List of tables with STATION_NUMBER INFORMATION
-list_of_small_tables <- table_vector %>%
-  map(~ tbl(src = hydat_con, .) %>%
+list_of_small_tables <- table_vector |>
+  map(~ tbl(src = hydat_con, .) |>
     filter(STATION_NUMBER %in% c(
       "08MF005", "08NM083", "08NE102",
       "05AA008", "05HD008"
-    )) %>%
-    head(2000) %>%
-    collect()) %>%
+    )) |>
+    head(2000) |>
+    collect()) |>
   set_names(table_vector)
 
 ## All tables without STATION_NUMBER
 no_stn_table_vector <- all_tables[!all_tables %in% table_vector]
 
-list_of_no_stn_tables <- no_stn_table_vector %>%
-  map(~ tbl(src = hydat_con, .) %>%
-    head(50) %>%
-    collect()) %>%
+list_of_no_stn_tables <- no_stn_table_vector |>
+  map(~ tbl(src = hydat_con, .) |>
+    head(50) |>
+    collect()) |>
   set_names(no_stn_table_vector)
 
-SED_DATA_TYPES <- dplyr::tbl(hydat_con, "SED_DATA_TYPES") %>% collect()
+SED_DATA_TYPES <- dplyr::tbl(hydat_con, "SED_DATA_TYPES") |> collect()
 
 DBI::dbDisconnect(hydat_con)
 

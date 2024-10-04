@@ -184,9 +184,9 @@ hy_check <- function(hydat_path = NULL) {
 
 
   invisible(lapply(have_tbls, function(x) {
-    tbl_rows <- dplyr::tbl(con, x) %>%
-      utils::head(1) %>%
-      dplyr::collect() %>%
+    tbl_rows <- dplyr::tbl(con, x) |>
+      utils::head(1) |>
+      dplyr::collect() |>
       nrow()
 
     if (tbl_rows == 0) {

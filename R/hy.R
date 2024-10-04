@@ -361,7 +361,7 @@ hy_agency_list <- function(hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") %>%
+  agency_list <- dplyr::tbl(hydat_con, "AGENCY_LIST") |>
     dplyr::collect()
 
   as.hy(agency_list)
@@ -389,7 +389,7 @@ hy_reg_office_list <- function(hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") %>%
+  regional_office_list <- dplyr::tbl(hydat_con, "REGIONAL_OFFICE_LIST") |>
     dplyr::collect()
 
   as.hy(regional_office_list)
@@ -418,7 +418,7 @@ hy_datum_list <- function(hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") %>%
+  datum_list <- dplyr::tbl(hydat_con, "DATUM_LIST") |>
     dplyr::collect()
 
   as.hy(datum_list)
@@ -448,8 +448,8 @@ hy_version <- function(hydat_path = NULL) {
     on.exit(hy_src_disconnect(hydat_con), add = TRUE)
   }
 
-  version <- dplyr::tbl(hydat_con, "VERSION") %>%
-    dplyr::collect() %>%
+  version <- dplyr::tbl(hydat_con, "VERSION") |>
+    dplyr::collect() |>
     dplyr::mutate(Date = lubridate::ymd_hms(Date))
 
   version

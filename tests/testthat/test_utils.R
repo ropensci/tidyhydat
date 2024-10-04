@@ -35,13 +35,13 @@ test_that("downloading hydat fails behind a proxy server with informative error 
 
 test_that("pull_station_number fails when a dataframe doesn't contain a STATION_NUMBER column", {
   data(iris)
-  expect_error(iris %>% pull_station_number())
+  expect_error(iris |> pull_station_number())
 })
 
 
 test_that("pull_station_number grabs station number successfully", {
   stns <- c("08NM083", "08NE102")
-  pulled_stns <- hy_annual_stats(stns, hydat_path = hy_test_db()) %>% pull_station_number()
+  pulled_stns <- hy_annual_stats(stns, hydat_path = hy_test_db()) |> pull_station_number()
   expect_identical(stns, unique(pulled_stns))
 })
 

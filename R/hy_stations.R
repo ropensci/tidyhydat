@@ -82,10 +82,10 @@ hy_stations <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## Create the dataframe to return
-  df <- dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
-    dplyr::collect() %>%
-    dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) %>%
+  df <- dplyr::tbl(hydat_con, "STATIONS") |>
+    dplyr::filter(!!sym_STATION_NUMBER %in% stns) |>
+    dplyr::collect() |>
+    dplyr::mutate(REGIONAL_OFFICE_ID = as.numeric(REGIONAL_OFFICE_ID)) |>
     dplyr::mutate(
       HYD_STATUS = dplyr::case_when(
         HYD_STATUS == "D" ~ "DISCONTINUED",

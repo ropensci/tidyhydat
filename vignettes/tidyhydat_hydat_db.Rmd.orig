@@ -59,8 +59,8 @@ tbl(src, "STN_OPERATION_SCHEDULE")
 Working with SQL tables in dplyr is much like working with regular data frames, except no data is actually read from the database until necessary. Because some of these tables are large (particularly those containing the actual data), you will want to `filter()` the tables before you `collect()` them (the `collect()` operation loads them into memory as a `data.frame`).
 
 ```{r}
-tbl(src, "STN_OPERATION_SCHEDULE") %>%
-  filter(STATION_NUMBER == "05AA008") %>%
+tbl(src, "STN_OPERATION_SCHEDULE") |>
+  filter(STATION_NUMBER == "05AA008") |>
   collect()
 ```
 

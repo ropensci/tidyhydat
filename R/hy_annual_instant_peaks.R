@@ -54,8 +54,8 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   ## Data manipulations
-  aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") %>%
-    dplyr::filter(!!sym_STATION_NUMBER %in% stns) %>%
+  aip <- dplyr::tbl(hydat_con, "ANNUAL_INSTANT_PEAKS") |>
+    dplyr::filter(!!sym_STATION_NUMBER %in% stns) |>
     dplyr::collect()
 
   ## Add in english data type

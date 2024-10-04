@@ -238,18 +238,18 @@ class:basic
 ## hydat::Water Survey of Canada Network
 
 ```{r out.width='100%', fig.height=6, eval=TRUE, message=FALSE}
-stns <- hy_stations() %>% 
+stns <- hy_stations() |> 
   filter(HYD_STATUS == "ACTIVE")
 
 st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
              crs = 4326,
-             agr= "constant") %>%
+             agr= "constant") |>
 mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery", cex = 4,
         popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC")))
 
-#leaflet(data = stns) %>% 
-#  addTiles() %>% 
-#  addMarkers(~LONGITUDE, ~LATITUDE, label=~as.character(STATION_NAME), clusterOptions = markerClusterOptions()) %>% #
+#leaflet(data = stns) |> 
+#  addTiles() |> 
+#  addMarkers(~LONGITUDE, ~LATITUDE, label=~as.character(STATION_NAME), clusterOptions = markerClusterOptions()) |> #
 #  setView(-96, 63, zoom = 3)
 ```
 
@@ -275,8 +275,8 @@ mapview(zcol = "STATION_NAME", legend = FALSE, map.types = "Esri.WorldImagery", 
 ## <span style="color:#309688">tidy</span>::<span style="color:red">un</span>tidy data
 ```{r, echo = FALSE}
 src <- hy_src()
-tbl(src, "DLY_FLOWS") %>%
-  filter(STATION_NUMBER == "08MF005") %>%
+tbl(src, "DLY_FLOWS") |>
+  filter(STATION_NUMBER == "08MF005") |>
   select(-contains("_SYMBOL"), )
 ```
 
@@ -337,9 +337,9 @@ class: basiclh, center
 ```{r, eval=TRUE, echo=FALSE, message=FALSE}
 stns_tbl <- hy_stations(c("08MF005","09CD001","05KJ001","02KF005"))[,c("STATION_NUMBER", "STATION_NAME")]
 
-x <- stns_tbl %>%
-  rename(`Station Name`=STATION_NAME, `Station Number`=STATION_NUMBER) %>%
-  knitr::kable(format = 'html') %>%
+x <- stns_tbl |>
+  rename(`Station Name`=STATION_NAME, `Station Number`=STATION_NUMBER) |>
+  knitr::kable(format = 'html') |>
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
 gsub("<thead>.*</thead>", "", x)
 ```
@@ -350,7 +350,7 @@ stns <- hy_stations(stns_tbl$STATION_NUMBER)
 
 st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
              crs = 4326,
-             agr= "constant") %>%
+             agr= "constant") |>
 mapview(zcol = "STATION_NAME", legend = FALSE, cex = 6,
         popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC")))
 ```
@@ -368,18 +368,18 @@ flows_data
 
 ## Build the analysis
 ```{r, echo = TRUE}
-flows_data %>%
+flows_data |>
   spread(key = STATION_NUMBER, value = Value) #<<
 ```
 
-### `%>%`: <span style="color:#309688">"then"</span>
+### `|>`: <span style="color:#309688">"then"</span>
 ### `spread`: <span style="color:#309688">function</span>
 ---
 
 ## Build the analysis
 ```{r, echo = TRUE}
-flows_data %>%
-  spread(key = STATION_NUMBER, value = Value) %>%
+flows_data |>
+  spread(key = STATION_NUMBER, value = Value) |>
   select(-Date, -Symbol, -Parameter) #<<
 ```
 
@@ -388,9 +388,9 @@ flows_data %>%
 
 ## Build the analysis
 ```{r, echo = TRUE}
-flows_data %>%
-  spread(key = STATION_NUMBER, value = Value) %>%
-  select(-Date, -Symbol, -Parameter) %>%
+flows_data |>
+  spread(key = STATION_NUMBER, value = Value) |>
+  select(-Date, -Symbol, -Parameter) |>
   correlate() #<<
 ```
 
@@ -399,10 +399,10 @@ flows_data %>%
 
 ## Build the analysis
 ```{r, echo = TRUE}
-flows_data %>%
-  spread(key = STATION_NUMBER, value = Value) %>%
-  select(-Date, -Symbol, -Parameter) %>%
-  correlate() %>%
+flows_data |>
+  spread(key = STATION_NUMBER, value = Value) |>
+  select(-Date, -Symbol, -Parameter) |>
+  correlate() |>
   stretch() #<<
 ```
 
@@ -412,12 +412,12 @@ flows_data %>%
 
 ## Scalable
 ```{r scalable1, echo = FALSE, message=FALSE, fig.width = 10, fig.height=6}
-stns <- hy_stations(prov_terr_state_loc = "NU") %>%
+stns <- hy_stations(prov_terr_state_loc = "NU") |>
   filter(HYD_STATUS == "ACTIVE")
 
 st_as_sf(stns, coords = c("LONGITUDE","LATITUDE"),
              crs = 4326,
-             agr= "constant") %>%
+             agr= "constant") |>
 mapview(zcol = "STATION_NAME", legend = FALSE, 
         popup = popupTable(., zcol = c("STATION_NUMBER", "STATION_NAME", "PROV_TERR_STATE_LOC", "HYD_STATUS")))
 ```
@@ -426,7 +426,7 @@ mapview(zcol = "STATION_NAME", legend = FALSE,
 
 ## Scalable
 ```{r scalable2, echo = TRUE, message=FALSE}
-stns <- hy_stations(prov_terr_state_loc = "NU") %>%
+stns <- hy_stations(prov_terr_state_loc = "NU") |>
   filter(HYD_STATUS == "ACTIVE")
 
 nu_flows <- hy_daily_flows(station_number = stns$STATION_NUMBER)
@@ -437,10 +437,10 @@ nu_flows
 
 ## Scalable
 ```{r scalable3, echo = TRUE, message=FALSE}
-nu_flows %>% #<<
-  spread(STATION_NUMBER, Value) %>%
-  select(-Date, -Symbol, -Parameter) %>%
-  correlate() %>% 
+nu_flows |> #<<
+  spread(STATION_NUMBER, Value) |>
+  select(-Date, -Symbol, -Parameter) |>
+  correlate() |> 
   stretch() 
 ```
 
@@ -484,13 +484,13 @@ realtime_plot("08MF005", Parameter = "Flow")
 ---
 ## What else is available in R?
 ```{r, warning=FALSE, message=FALSE, echo=TRUE}
-raw_stns <- hy_stations() %>%
+raw_stns <- hy_stations() |>
   select(STATION_NUMBER:PROV_TERR_STATE_LOC, DRAINAGE_AREA_GROSS)
   
-mad_long_avg <- hy_annual_stats(raw_stns$STATION_NUMBER) %>%
-  filter(Sum_stat == "MEAN", Parameter == "Flow") %>%
-  group_by(STATION_NUMBER) %>%
-  summarise(Value = mean(Value, na.rm = TRUE)) %>%
+mad_long_avg <- hy_annual_stats(raw_stns$STATION_NUMBER) |>
+  filter(Sum_stat == "MEAN", Parameter == "Flow") |>
+  group_by(STATION_NUMBER) |>
+  summarise(Value = mean(Value, na.rm = TRUE)) |>
   right_join(raw_stns)
 mad_long_avg #<<
 ```
