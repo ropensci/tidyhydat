@@ -113,9 +113,9 @@ all_realtime_station <- function(PROV) {
 
   # Define column names as the same as HYDAT
   colHeaders <- realtime_cols_headers()
-
   output <- readr::read_csv(
     res,
+    skip = 1, 
     col_names = colHeaders,
     col_types = realtime_cols_types()
   )
