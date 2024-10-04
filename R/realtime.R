@@ -101,22 +101,10 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   prov <- prov_terr_state_loc
 
   realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
+  resp_str <- realtime_parser(realtime_link)
 
-  url_check <- httr::GET(realtime_link, httr::user_agent("https://github.com/ropensci/tidyhydat"))
-
-  ## Checking to make sure the link is valid
-  if (httr::http_error(url_check) == "TRUE") {
-    stop(paste0(realtime_link, " is not a valid url. Datamart may be down or the url has changed."))
-  }
-
-  if (is_mac()) {
-    # temporary patch to work around vroom 1.6.4 bug
-    readr::local_edition(1)
-  }
-
-  net_tibble <- httr::content(url_check,
-    type = "text/csv",
-    encoding = "UTF-8",
+  net_tibble <- readr::read_csv(
+    resp_str,
     skip = 1,
     col_names = c(
       "STATION_NUMBER",
@@ -141,7 +129,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   }
 
 
-  as.realtime(dplyr::filter(net_tibble, PROV_TERR_STATE_LOC %in% prov))
+  as.realtime(net_tibble[net_tibble$PROV_TERR_STATE_LOC %in% prov, ])
 }
 
 #' Add local datetime column to realtime tibble

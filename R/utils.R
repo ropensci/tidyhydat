@@ -184,8 +184,12 @@ ask <- function(...) {
 # issues and fail with an informative error
 # message on where to download HYDAT.
 #' @noRd
-network_check <- function(url) {
-  tryCatch(httr::GET(url),
+network_check <- function(url, proxy_url = NULL, proxy_port = NULL) {
+  req <- httr2::request(base_url = url)
+  if (!is.null(proxy_url) && !is.null(proxy_port)) {
+    req <- httr2::req_proxy(req, url = proxy_url, port = proxy_port)
+  }
+  tryCatch(httr2::req_perform(req),
     error = function(e) {
       if (grepl("Timeout was reached:", e$message)) {
         stop(paste0("Could not connect to HYDAT source. Check your connection settings.
@@ -197,6 +201,12 @@ network_check <- function(url) {
       }
     }
   )
+}
+
+tidyhydat_agent <- function(req) {
+  httr2::req_user_agent(
+    req, 
+    string = "https://github.com/ropensci/tidyhydat")
 }
 
 
@@ -246,4 +256,10 @@ hy_expected_tbls <- function() {
 is_mac <- function() {
   system_info <- Sys.info()
   grepl("darwin", tolower(system_info["sysname"]))
+}
+
+tidyhydat_perform  <- function(req, ...) {
+  req <- httr2::req_retry(req, max_tries = 5)
+  req <- httr2::req_progress(req)
+  httr2::req_perform(req, ...)
 }

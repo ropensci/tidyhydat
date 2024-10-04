@@ -18,13 +18,12 @@
       packageStartupMessage(info("Checking for a new version of HYDAT..."))
 
       base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
-      x <- httr::GET(base_url)
-      httr::stop_for_status(x)
-
+      x <- realtime_parser(base_url)
+      
       ## Extract newest HYDAT
       new_hydat <- as.Date(substr(gsub(
         "^.*\\Hydat_sqlite3_", "",
-        httr::content(x, "text")
+        x
       ), 1, 8), "%Y%m%d")
 
       ## Compare that to existing HYDAT
