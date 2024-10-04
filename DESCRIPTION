@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 1.0.0
+Version: 0.7.0
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0002-9270-7884")),
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
@@ -20,7 +20,7 @@ License: Apache License (== 2.0) | file LICENSE
 URL: https://docs.ropensci.org/tidyhydat/, https://github.com/ropensci/tidyhydat/
 BugReports: https://github.com/ropensci/tidyhydat/issues/
 Depends: 
-    R (>= 4.1.1)
+    R (>= 4.2.0)
 Imports: 
     cli (>= 1.0.0),
     crayon (>= 1.3.4),
