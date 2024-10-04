@@ -18,7 +18,7 @@
       packageStartupMessage(info("Checking for a new version of HYDAT..."))
 
       base_url <- "http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/"
-      x <- tidyhydat_realtime_csv_parser(base_url)
+      x <- realtime_parser(base_url)
       
       ## Extract newest HYDAT
       new_hydat <- as.Date(substr(gsub(

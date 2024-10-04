@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 ###############################################
-tidyhydat_realtime_csv_parser <- function(file) {
+realtime_parser <- function(file) {
   req <- httr2::request(file)
   req <- httr2::req_user_agent(req, "https://github.com/ropensci/tidyhydat")
   req <- httr2::req_error(req, is_error = function(resp) FALSE)
@@ -58,78 +58,46 @@ single_realtime_station <- function(station_number) {
   )
 
   # Define column names as the same as HYDAT
-  colHeaders <-
-    c(
-      "STATION_NUMBER",
-      "Date",
-      "Level",
-      "Level_GRADE",
-      "Level_SYMBOL",
-      "Level_CODE",
-      "Flow",
-      "Flow_GRADE",
-      "Flow_SYMBOL",
-      "Flow_CODE"
-    )
+  colHeaders <- realtime_cols_headers()
 
-  h_resp_str <- tidyhydat_realtime_csv_parser(infile[1])
+  h_resp_str <- realtime_parser(infile[1])
   if (is.na(h_resp_str)) {
     h <- dplyr::tibble(
       A = station_number, B = NA, C = NA, D = NA, E = NA,
       F = NA, G = NA, H = NA, I = NA, J = NA
     )
     colnames(h) <- colHeaders
+    h <- readr::type_convert(h, realtime_cols_types())
   } else {
     h <- readr::read_csv(
       h_resp_str,
+      skip = 1,
       col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
+      col_types = realtime_cols_types()
     )
   }
   
 
   # download daily file
-  p_resp_str <- tidyhydat_realtime_csv_parser(infile[2])
+  p_resp_str <- realtime_parser(infile[2])
 
   if (is.na(p_resp_str)) {
     d <- dplyr::tibble(
       A = station_number, B = NA, C = NA, D = NA, E = NA,
       F = NA, G = NA, H = NA, I = NA, J = NA
     )
-    colnames(h) <- colHeaders
+    colnames(d) <- colHeaders
+    d <- readr::type_convert(d, realtime_cols_types())
   } else {
     d <- readr::read_csv(
       p_resp_str,
+      skip = 1,
       col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
+      col_types = realtime_cols_types()
     )
   }
 
-
-
-  # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
+  # now append the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- dplyr::filter(d, Date < min(h$Date))
   output <- dplyr::bind_rows(p, h)
 
@@ -141,43 +109,50 @@ all_realtime_station <- function(PROV) {
   base_url <- "https://dd.weather.gc.ca/hydrometric/csv/"
   prov_url <- paste0(base_url, PROV, "/daily/", PROV, "_daily_hydrometric.csv")
 
-  res <- tidyhydat_realtime_csv_parser(prov_url)
+  res <- realtime_parser(prov_url)
 
   # Define column names as the same as HYDAT
-  colHeaders <-
-    c(
-      "STATION_NUMBER",
-      "Date",
-      "Level",
-      "Level_GRADE",
-      "Level_SYMBOL",
-      "Level_CODE",
-      "Flow",
-      "Flow_GRADE",
-      "Flow_SYMBOL",
-      "Flow_CODE"
-    )
+  colHeaders <- realtime_cols_headers()
 
   output <- readr::read_csv(
     res,
     col_names = colHeaders,
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      Date = readr::col_datetime(),
-      Level = readr::col_double(),
-      Level_GRADE = readr::col_character(),
-      Level_SYMBOL = readr::col_character(),
-      Level_CODE = readr::col_integer(),
-      Flow = readr::col_double(),
-      Flow_GRADE = readr::col_character(),
-      Flow_SYMBOL = readr::col_character(),
-      Flow_CODE = readr::col_integer()
-    )
+    col_types = realtime_cols_types()
   )
 
 
   ## Offloading tidying to another function
   realtime_tidy_data(output, PROV)
+}
+
+realtime_cols_types <- function() {
+  readr::cols(
+    STATION_NUMBER = readr::col_character(),
+    Date = readr::col_datetime(),
+    Level = readr::col_double(),
+    Level_GRADE = readr::col_character(),
+    Level_SYMBOL = readr::col_character(),
+    Level_CODE = readr::col_integer(),
+    Flow = readr::col_double(),
+    Flow_GRADE = readr::col_character(),
+    Flow_SYMBOL = readr::col_character(),
+    Flow_CODE = readr::col_integer()
+  )
+}
+
+realtime_cols_headers <- function() {
+  c(
+    "STATION_NUMBER",
+    "Date",
+    "Level",
+    "Level_GRADE",
+    "Level_SYMBOL",
+    "Level_CODE",
+    "Flow",
+    "Flow_GRADE",
+    "Flow_SYMBOL",
+    "Flow_CODE"
+  )
 }
 
 
