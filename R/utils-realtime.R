@@ -14,8 +14,15 @@
 tidyhydat_realtime_csv_parser <- function(file) {
   req <- httr2::request(file)
   req <- httr2::req_user_agent(req, "https://github.com/ropensci/tidyhydat")
+  req <- httr2::req_error(req, is_error = function(resp) FALSE)
+  req <- httr2::req_retry(req, max_tries = 3)
   resp <- tidyhydat_perform(req)
-  httr2::resp_body_string(resp)
+  if (httr2::resp_status(resp) == 404) {
+    resp <- NA_character_
+  } else {
+    resp <- httr2::resp_body_string(resp)
+  }
+  resp
 }
 
 ## Get realtime station data - single station
@@ -66,42 +73,61 @@ single_realtime_station <- function(station_number) {
     )
 
   h_resp_str <- tidyhydat_realtime_csv_parser(infile[1])
-  h <- readr::read_csv(
-    h_resp_str,
-    col_names = colHeaders,
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      Date = readr::col_datetime(),
-      Level = readr::col_double(),
-      Level_GRADE = readr::col_character(),
-      Level_SYMBOL = readr::col_character(),
-      Level_CODE = readr::col_integer(),
-      Flow = readr::col_double(),
-      Flow_GRADE = readr::col_character(),
-      Flow_SYMBOL = readr::col_character(),
-      Flow_CODE = readr::col_integer()
+  if (is.na(h_resp_str)) {
+    h <- dplyr::tibble(
+      A = station_number, B = NA, C = NA, D = NA, E = NA,
+      F = NA, G = NA, H = NA, I = NA, J = NA
     )
-  )
+    colnames(h) <- colHeaders
+  } else {
+    h <- readr::read_csv(
+      h_resp_str,
+      col_names = colHeaders,
+      col_types = readr::cols(
+        STATION_NUMBER = readr::col_character(),
+        Date = readr::col_datetime(),
+        Level = readr::col_double(),
+        Level_GRADE = readr::col_character(),
+        Level_SYMBOL = readr::col_character(),
+        Level_CODE = readr::col_integer(),
+        Flow = readr::col_double(),
+        Flow_GRADE = readr::col_character(),
+        Flow_SYMBOL = readr::col_character(),
+        Flow_CODE = readr::col_integer()
+      )
+    )
+  }
+  
 
   # download daily file
   p_resp_str <- tidyhydat_realtime_csv_parser(infile[2])
 
-  d <- readr::read_csv(
-    p_resp_str,
-    col_names = colHeaders,
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      Date = readr::col_datetime(),
-      Level = readr::col_double(),
-      Level_GRADE = readr::col_character(),
-      Level_SYMBOL = readr::col_character(),
-      Level_CODE = readr::col_integer(),
-      Flow = readr::col_double(),
-      Flow_GRADE = readr::col_character(),
-      Flow_SYMBOL = readr::col_character(),
-      Flow_CODE = readr::col_integer()
+  if (is.na(p_resp_str)) {
+    d <- dplyr::tibble(
+      A = station_number, B = NA, C = NA, D = NA, E = NA,
+      F = NA, G = NA, H = NA, I = NA, J = NA
     )
-  )
+    colnames(h) <- colHeaders
+  } else {
+    d <- readr::read_csv(
+      p_resp_str,
+      col_names = colHeaders,
+      col_types = readr::cols(
+        STATION_NUMBER = readr::col_character(),
+        Date = readr::col_datetime(),
+        Level = readr::col_double(),
+        Level_GRADE = readr::col_character(),
+        Level_SYMBOL = readr::col_character(),
+        Level_CODE = readr::col_integer(),
+        Flow = readr::col_double(),
+        Flow_GRADE = readr::col_character(),
+        Flow_SYMBOL = readr::col_character(),
+        Flow_CODE = readr::col_integer()
+      )
+    )
+  }
+
+
 
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- dplyr::filter(d, Date < min(h$Date))

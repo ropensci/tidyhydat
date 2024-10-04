@@ -1,4 +1,5 @@
 # tidyhydat 0.6.2
+- dropped httr in favour of httr2
 - fix bug where `download_hydat()` fails if `tempdir()` is on a different device than `hydat_path` (@mpdavison, #192)
 - fix bug where `download_hydat()` wasn't checking alternative paths for success (@Travis-Simmons)
 
