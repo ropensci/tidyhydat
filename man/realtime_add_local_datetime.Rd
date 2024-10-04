@@ -24,7 +24,7 @@ useful when all stations exist within the same timezone.
 \examples{
 \dontrun{
 
-realtime_dd(c("08MF005", "02LA004")) \%>\%
+realtime_dd(c("08MF005", "02LA004")) |>
   realtime_add_local_datetime()
 }
 

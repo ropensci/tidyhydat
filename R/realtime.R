@@ -148,7 +148,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #' @examples
 #' \dontrun{
 #'
-#' realtime_dd(c("08MF005", "02LA004")) %>%
+#' realtime_dd(c("08MF005", "02LA004")) |>
 #'   realtime_add_local_datetime()
 #' }
 #'
@@ -188,7 +188,7 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' realtime_dd("08MF005") %>% realtime_daily_mean()
+#' realtime_dd("08MF005") |> realtime_daily_mean()
 #' }
 #'
 #' @export

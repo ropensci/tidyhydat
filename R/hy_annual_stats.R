@@ -75,7 +75,7 @@ hy_annual_stats <- function(station_number = NULL,
     annual_statistics <- dplyr::filter(annual_statistics, !!sym_YEAR >= start_year & !!sym_YEAR <= end_year)
   }
 
-  annual_statistics <- dplyr::filter(annual_statistics, !!sym_STATION_NUMBER %in% stns) %>%
+  annual_statistics <- dplyr::filter(annual_statistics, !!sym_STATION_NUMBER %in% stns) |>
     dplyr::collect()
 
   ## TODO: Figure out how to do this in fewer steps
@@ -106,10 +106,10 @@ hy_annual_stats <- function(station_number = NULL,
   colnames(as_max) <- gsub("MAX_", "", names(as_max))
 
   ## bind into 1 dataframe and by year and join in the symbol
-  annual_statistics <- as_mean %>%
-    dplyr::bind_rows(as_min) %>%
-    dplyr::bind_rows(as_max) %>%
-    dplyr::arrange(YEAR) %>%
+  annual_statistics <- as_mean |>
+    dplyr::bind_rows(as_min) |>
+    dplyr::bind_rows(as_max) |>
+    dplyr::arrange(YEAR) |>
     dplyr::left_join(tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## Format date of occurence; SuppressWarnings are justified because NA's are valid for MEAN Sum_stat

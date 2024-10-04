@@ -51,37 +51,37 @@ download_hydat()
 You can see where the database was downloaded by running `hy_dir()`. This should be the only instance where you will need to interact directly with HYDAT. Each `tidyhydat` function prefixed with `hy` will automatically know where to look for HYDAT saving you the trouble. When using `tidyhydat`, often your first task is to find the station(s) that you are interested in. Because we are interested in the longest record we can extract that information with `hy_stn_data_range()` and then feed that information to `hy_daily_flows()` like this: 
 
 ```{r, eval= FALSE, warning=FALSE, message=FALSE}
-longest_record_data <- hy_stn_data_range() %>%
-  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) %>%
-  pull_station_number() %>%
+longest_record_data <- hy_stn_data_range() |>
+  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) |>
+  pull_station_number() |>
   hy_daily_flows()
 ```
 Let's break this down line by line to understand how `tidyhydat` uses tidy tools. First we are interested in getting data on record length:
 ```{r data_range}
 hy_stn_data_range()
 ```
-Our objective here is to filter from this data for the station that has the longest record of flow (`DATA_TYPE == "Q"`). You'll also notice this symbol `%>%` which in R is called a [pipe](https://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
+Our objective here is to filter from this data for the station that has the longest record of flow (`DATA_TYPE == "Q"`). You'll also notice this symbol `|>` which in R is called a [pipe](https://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
 ```{r filter}
-hy_stn_data_range() %>%
+hy_stn_data_range() |>
   filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH))
 ```
 *then* pull the `STATION_NUMBER` that has the longest record:
 ```{r pull}
-hy_stn_data_range() %>%
-  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) %>%
+hy_stn_data_range() |>
+  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) |>
   pull_station_number()
 ```
 *then* feed that number to `hy_daily_flows()`
 ```{r, full1}
-longest_record_data <- hy_stn_data_range() %>%
-  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) %>%
-  pull_station_number() %>%
+longest_record_data <- hy_stn_data_range() |>
+  filter(DATA_TYPE == "Q", RECORD_LENGTH == max(RECORD_LENGTH)) |>
+  pull_station_number() |>
   hy_daily_flows()
 ```
 
 The result of this collection of simple functions is that we've extracted data the entire daily flow dataset (from 1860-2016) from station `02HA003`.If we wanted more information on this station we could query other tables in HYDAT for more information. The `hy_stations()` function is very useful and outputs considerable metadata on a given station (converted here to a list for viewing purposes):
 ```{r hy_stns}
-hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) %>%
+hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) |>
   as.list()
 ```
 
@@ -89,7 +89,7 @@ hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) %>%
 We now know that this station is actually *NIAGARA RIVER AT QUEENSTON* in Ontario and has an upstream drainage basin area of 686,000 square kilometres. As a first step toward visualization, let's simply plot the time series for the entire record with a smoother added:
 
 ```{r old_rec}
-longest_record_data %>%
+longest_record_data |>
   ggplot(aes(x = Date, y = Value)) +
   geom_line(alpha = 0.5) +
   geom_point(size = 0.25) +
@@ -100,9 +100,9 @@ longest_record_data %>%
 You can see very clearly where continuous monitoring was established. However, this type of plot obscures much of the data that we are interested in. We could plot all the years on the same axis and separate year by line colour. That requires a little bit of manipulation ahead of plotting using both `dplyr` and `lubridate`. Remember you can run a pipe adding one line at a time and comparing the outputs to get a sense of what each step is doing:
 
 ```{r old_rec_yr}
-longest_record_data %>%
-  mutate(dayofyear = yday(Date), Year = year(Date)) %>%
-  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) %>% ## leap year as placeholder
+longest_record_data |>
+  mutate(dayofyear = yday(Date), Year = year(Date)) |>
+  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) |> ## leap year as placeholder
   ggplot(aes(x = dayofyear_formatted, y = Value, colour = Year)) +
   geom_line() +
   scale_x_date(date_labels = "%b %d") +
@@ -112,9 +112,9 @@ longest_record_data %>%
 This still is not a very useful plot mostly because our colour range still doesn't resolve year very well and any intra-annual is not visible with this plot. Consider, for example, if rather than a line plot we use a tile plot and modified our colour scale to include more colours:
 
 ```{r tile_plt}
-longest_record_data %>%
-  mutate(dayofyear = yday(Date), Year = year(Date)) %>%
-  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) %>% 
+longest_record_data |>
+  mutate(dayofyear = yday(Date), Year = year(Date)) |>
+  mutate(dayofyear_formatted = as.Date(dayofyear - 1, origin = "2016-01-01")) |> 
   ggplot(aes(x = dayofyear_formatted, y = Year, fill = Value)) +
   geom_tile() +
   scale_x_date(date_labels = "%b") +
@@ -142,37 +142,37 @@ library(lubridate)
 The pipe below finds the active station that has realtime data in the [Reference Hydrometric Basin Network](https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/reference-hydrometric-basin-network.html) (RHBN) in the territory of Nunavut that has the longest record then grabs all the daily flow information:
   
 ```{r}
-nunavut_stn_flows <- hy_stations() %>%
-  filter(HYD_STATUS == "ACTIVE") %>%
-  filter(REAL_TIME == TRUE) %>%
-  filter(RHBN == TRUE) %>%
-  filter(PROV_TERR_STATE_LOC == "NU") %>%
-  pull_station_number() %>%
-  hy_stn_data_range() %>%
-  filter(DATA_TYPE == "Q") %>% 
-  filter(RECORD_LENGTH == max(RECORD_LENGTH)) %>%
-  pull_station_number() %>%
+nunavut_stn_flows <- hy_stations() |>
+  filter(HYD_STATUS == "ACTIVE") |>
+  filter(REAL_TIME == TRUE) |>
+  filter(RHBN == TRUE) |>
+  filter(PROV_TERR_STATE_LOC == "NU") |>
+  pull_station_number() |>
+  hy_stn_data_range() |>
+  filter(DATA_TYPE == "Q") |> 
+  filter(RECORD_LENGTH == max(RECORD_LENGTH)) |>
+  pull_station_number() |>
   hy_daily_flows()
 ``` 
 
 We can now evaluate the historical distribution of data collection to put some real time data into historical context. First we need to calculate where an individual observation is distributed against all other observations on that day for every day. The `prctile` column tells us what percentage of values on that same day over the entire data record fall above and below the observations on that row. We are restricting our analysis to the last thirty days from when this vignette was last compiled. The `ecdf()` function creates an equation to calculate percentiles based on the `Value` column (i.e discharge) then takes each individual observation of `Value` and calculates the percentile. 
 ```{r}
-pct_flow <- nunavut_stn_flows %>%
-  mutate(dayofyear = yday(Date), Year = year(Date)) %>%
+pct_flow <- nunavut_stn_flows |>
+  mutate(dayofyear = yday(Date), Year = year(Date)) |>
   filter(dayofyear %in% yday(seq.Date(from = (Sys.Date()-30), 
-                                      to = Sys.Date(), by = "day"))) %>%
-  group_by(dayofyear) %>%
-  mutate(prctile = ecdf(Value)(Value)) %>%
-  mutate(Date_no_year = dmy(paste0(day(Date),"-",month(Date),"-",year(Sys.Date())))) %>%
+                                      to = Sys.Date(), by = "day"))) |>
+  group_by(dayofyear) |>
+  mutate(prctile = ecdf(Value)(Value)) |>
+  mutate(Date_no_year = dmy(paste0(day(Date),"-",month(Date),"-",year(Sys.Date())))) |>
   ungroup()
 ```
 
 To collect real time data, we can use the `realtime_dd()` function in `tidyhydat`. Because real time data is collected in hourly (or higher) intervals and we are operating on a daily basis, we first need to take a daily mean of discharge. Again this is accomplished in a pipe:
 
 ```{r realtime}
-nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) %>%
-     mutate(Date_day = as.Date(Date)) %>%
-     group_by(Date_day) %>%
+nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) |>
+     mutate(Date_day = as.Date(Date)) |>
+     group_by(Date_day) |>
      summarise(Value = mean(Value, na.rm = TRUE), .groups = "drop") 
 ```
 

@@ -17,7 +17,7 @@ data to daily means.
 }
 \examples{
 \dontrun{
-realtime_dd("08MF005") \%>\% realtime_daily_mean()
+realtime_dd("08MF005") |> realtime_daily_mean()
 }
 
 }

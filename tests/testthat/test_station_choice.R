@@ -13,9 +13,9 @@ test_that("Test that all stations are outputted when just a province is supplied
   ## Read in database
   hydat_con <- DBI::dbConnect(RSQLite::SQLite(), hydat_path)
   ## All BC stations in test db
-  dplyr::tbl(hydat_con, "STATIONS") %>%
-    dplyr::filter(PROV_TERR_STATE_LOC == "BC") %>%
-    dplyr::collect() %>%
+  dplyr::tbl(hydat_con, "STATIONS") |>
+    dplyr::filter(PROV_TERR_STATE_LOC == "BC") |>
+    dplyr::collect() |>
     dplyr::pull(STATION_NUMBER) -> stns
   on.exit(DBI::dbDisconnect(hydat_con), add = TRUE)
   stns_out <- tidyhydat:::station_choice(hydat_con, station_number = NULL, prov_terr_state_loc = "BC")

@@ -83,8 +83,8 @@ Working with SQL tables in dplyr is much like working with regular data frames, 
 
 
 ```r
-tbl(src, "STN_OPERATION_SCHEDULE") %>%
-  filter(STATION_NUMBER == "05AA008") %>%
+tbl(src, "STN_OPERATION_SCHEDULE") |>
+  filter(STATION_NUMBER == "05AA008") |>
   collect()
 #> # A tibble: 103 × 5
 #>    STATION_NUMBER DATA_TYPE  YEAR MONTH_FROM MONTH_TO
