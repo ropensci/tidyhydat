@@ -11,12 +11,15 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 ###############################################
+tidyhydat_realtime_csv_parser <- function(file) {
+  req <- httr2::request(file)
+  req <- httr2::req_user_agent(req, "https://github.com/ropensci/tidyhydat")
+  resp <- tidyhydat_perform(req)
+  httr2::resp_body_string(resp)
+}
+
 ## Get realtime station data - single station
 single_realtime_station <- function(station_number) {
-  if (is_mac()) {
-    # temporary patch to work around vroom 1.6.4 bug
-    readr::local_edition(1)
-  }
   ## If station is provided
   if (!is.null(station_number)) {
     sym_STATION_NUMBER <- sym("STATION_NUMBER")
@@ -62,71 +65,43 @@ single_realtime_station <- function(station_number) {
       "Flow_CODE"
     )
 
-  url_check <- httr::GET(infile[1], httr::user_agent("https://github.com/ropensci/tidyhydat"))
-  ## check if a valid url
-  if (httr::http_error(url_check) == TRUE) {
-    info(paste0("No hourly data found for ", STATION_NUMBER_SEL))
-
-    h <- dplyr::tibble(
-      A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
-      F = NA, G = NA, H = NA, I = NA, J = NA
+  h_resp_str <- tidyhydat_realtime_csv_parser(infile[1])
+  h <- readr::read_csv(
+    h_resp_str,
+    col_names = colHeaders,
+    col_types = readr::cols(
+      STATION_NUMBER = readr::col_character(),
+      Date = readr::col_datetime(),
+      Level = readr::col_double(),
+      Level_GRADE = readr::col_character(),
+      Level_SYMBOL = readr::col_character(),
+      Level_CODE = readr::col_integer(),
+      Flow = readr::col_double(),
+      Flow_GRADE = readr::col_character(),
+      Flow_SYMBOL = readr::col_character(),
+      Flow_CODE = readr::col_integer()
     )
-
-    colnames(h) <- colHeaders
-  } else {
-    h <- httr::content(
-      url_check,
-      type = "text/csv",
-      encoding = "UTF-8",
-      skip = 1,
-      col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
-    )
-  }
+  )
 
   # download daily file
-  url_check_d <- httr::GET(infile[2], httr::user_agent("https://github.com/ropensci/tidyhydat"))
-  ## check if a valid url
-  if (httr::http_error(url_check_d) == TRUE) {
-    info(paste0("No daily data found for ", STATION_NUMBER_SEL))
+  p_resp_str <- tidyhydat_realtime_csv_parser(infile[2])
 
-    d <- dplyr::tibble(
-      A = STATION_NUMBER_SEL, B = NA, C = NA, D = NA, E = NA,
-      F = NA, G = NA, H = NA, I = NA, J = NA
+  d <- readr::read_csv(
+    p_resp_str,
+    col_names = colHeaders,
+    col_types = readr::cols(
+      STATION_NUMBER = readr::col_character(),
+      Date = readr::col_datetime(),
+      Level = readr::col_double(),
+      Level_GRADE = readr::col_character(),
+      Level_SYMBOL = readr::col_character(),
+      Level_CODE = readr::col_integer(),
+      Flow = readr::col_double(),
+      Flow_GRADE = readr::col_character(),
+      Flow_SYMBOL = readr::col_character(),
+      Flow_CODE = readr::col_integer()
     )
-    colnames(d) <- colHeaders
-  } else {
-    d <- httr::content(
-      url_check_d,
-      type = "text/csv",
-      encoding = "UTF-8",
-      skip = 1,
-      col_names = colHeaders,
-      col_types = readr::cols(
-        STATION_NUMBER = readr::col_character(),
-        Date = readr::col_datetime(),
-        Level = readr::col_double(),
-        Level_GRADE = readr::col_character(),
-        Level_SYMBOL = readr::col_character(),
-        Level_CODE = readr::col_integer(),
-        Flow = readr::col_double(),
-        Flow_GRADE = readr::col_character(),
-        Flow_SYMBOL = readr::col_character(),
-        Flow_CODE = readr::col_integer()
-      )
-    )
-  }
+  )
 
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- dplyr::filter(d, Date < min(h$Date))

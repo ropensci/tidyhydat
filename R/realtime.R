@@ -101,12 +101,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   prov <- prov_terr_state_loc
 
   realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
-
-  url_check <- httr::GET(realtime_link, httr::user_agent("https://github.com/ropensci/tidyhydat"))
-
-  req <- httr2::request(realtime_link)
-  resp <- tidyhydat_perform(req)
-  resp_str <- httr2::resp_body_string(resp)
+  resp_str <- tidyhydat_realtime_csv_parser(realtime_link)
 
   net_tibble <- readr::read_csv(
     resp_str,
