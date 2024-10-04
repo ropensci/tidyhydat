@@ -76,7 +76,7 @@ single_realtime_station <- function(station_number) {
       col_types = realtime_cols_types()
     )
   }
-  
+
 
   # download daily file
   p_resp_str <- realtime_parser(infile[2])
