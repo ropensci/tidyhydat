@@ -115,9 +115,7 @@ all_realtime_station <- function(PROV) {
   base_url <- "https://dd.weather.gc.ca/hydrometric/csv/"
   prov_url <- paste0(base_url, PROV, "/daily/", PROV, "_daily_hydrometric.csv")
 
-  res <- httr::GET(prov_url, httr::progress("down"), httr::user_agent("https://github.com/ropensci/tidyhydat"))
-
-  httr::stop_for_status(res)
+  res <- tidyhydat_realtime_csv_parser(prov_url)
 
   # Define column names as the same as HYDAT
   colHeaders <-
@@ -134,11 +132,8 @@ all_realtime_station <- function(PROV) {
       "Flow_CODE"
     )
 
-  output <- httr::content(
+  output <- readr::read_csv(
     res,
-    type = "text/csv",
-    encoding = "UTF-8",
-    skip = 1,
     col_names = colHeaders,
     col_types = readr::cols(
       STATION_NUMBER = readr::col_character(),
