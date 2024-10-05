@@ -4,7 +4,7 @@
 
 <!-- badges: start -->
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/)ß
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0)
 [![R build
 status](https://github.com/ropensci/tidyhydat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/tidyhydat/actions)
 
@@ -84,24 +84,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2024-01-09 05:08:33.18974 (UTC)
-    #>   Date range: 2023-12-10 to 2024-01-09 
-    #> # A tibble: 10,972 × 8
-    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date               
-    #>    <chr>          <chr>               <dttm>             
-    #>  1 08MF005        BC                  2023-12-10 08:00:00
-    #>  2 08MF005        BC                  2023-12-10 08:05:00
-    #>  3 08MF005        BC                  2023-12-10 08:10:00
-    #>  4 08MF005        BC                  2023-12-10 08:15:00
-    #>  5 08MF005        BC                  2023-12-10 08:20:00
-    #>  6 08MF005        BC                  2023-12-10 08:25:00
-    #>  7 08MF005        BC                  2023-12-10 08:30:00
-    #>  8 08MF005        BC                  2023-12-10 08:35:00
-    #>  9 08MF005        BC                  2023-12-10 08:40:00
-    #> 10 08MF005        BC                  2023-12-10 08:45:00
-    #> # ℹ 10,962 more rows
-    #> # ℹ 5 more variables: Parameter <chr>, Value <dbl>,
-    #> #   Grade <chr>, Symbol <chr>, Code <chr>
+    #>   Queried on: 2024-10-04 21:22:54.830085 (UTC)
+    #>   Date range: 2024-09-04 to 2024-10-04 
+    #> # A tibble: 17,574 × 8
+    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade Symbol Code 
+    #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr> <chr>  <chr>
+    #>  1 08MF005        BC                  2024-09-04 08:00:00 Flow       1830 <NA>  <NA>   1    
+    #>  2 08MF005        BC                  2024-09-04 08:05:00 Flow       1830 <NA>  <NA>   1    
+    #>  3 08MF005        BC                  2024-09-04 08:10:00 Flow       1830 <NA>  <NA>   1    
+    #>  4 08MF005        BC                  2024-09-04 08:15:00 Flow       1840 <NA>  <NA>   1    
+    #>  5 08MF005        BC                  2024-09-04 08:20:00 Flow       1840 <NA>  <NA>   1    
+    #>  6 08MF005        BC                  2024-09-04 08:25:00 Flow       1830 <NA>  <NA>   1    
+    #>  7 08MF005        BC                  2024-09-04 08:30:00 Flow       1830 <NA>  <NA>   1    
+    #>  8 08MF005        BC                  2024-09-04 08:35:00 Flow       1830 <NA>  <NA>   1    
+    #>  9 08MF005        BC                  2024-09-04 08:40:00 Flow       1830 <NA>  <NA>   1    
+    #> 10 08MF005        BC                  2024-09-04 08:45:00 Flow       1830 <NA>  <NA>   1    
+    #> # ℹ 17,564 more rows
 
 Or we can use `realtime_ws`:
 
@@ -113,22 +111,20 @@ Or we can use `realtime_ws`:
     )
     #> All station successfully retrieved
     #> All parameters successfully retrieved
-    #> # A tibble: 1,323 × 10
-    #>    STATION_NUMBER Date                Name_En    Value Unit 
-    #>    <chr>          <dttm>              <chr>      <dbl> <chr>
-    #>  1 08MF005        2023-12-25 00:00:00 Water tem…  5.14 °C   
-    #>  2 08MF005        2023-12-25 01:00:00 Water tem…  5.12 °C   
-    #>  3 08MF005        2023-12-25 02:00:00 Water tem…  5.11 °C   
-    #>  4 08MF005        2023-12-25 03:00:00 Water tem…  5.1  °C   
-    #>  5 08MF005        2023-12-25 04:00:00 Water tem…  5.1  °C   
-    #>  6 08MF005        2023-12-25 05:00:00 Water tem…  5.07 °C   
-    #>  7 08MF005        2023-12-25 06:00:00 Water tem…  5.06 °C   
-    #>  8 08MF005        2023-12-25 07:00:00 Water tem…  5.04 °C   
-    #>  9 08MF005        2023-12-25 08:00:00 Water tem…  5.02 °C   
-    #> 10 08MF005        2023-12-25 09:00:00 Water tem…  5    °C   
-    #> # ℹ 1,313 more rows
-    #> # ℹ 5 more variables: Grade <chr>, Symbol <chr>,
-    #> #   Approval <chr>, Parameter <dbl>, Code <chr>
+    #> # A tibble: 4,632 × 10
+    #>    STATION_NUMBER Date                Name_En           Value Unit  Grade Symbol Approval               Parameter Code 
+    #>    <chr>          <dttm>              <chr>             <dbl> <chr> <chr> <chr>  <chr>                      <dbl> <chr>
+    #>  1 08MF005        2024-09-20 00:00:00 Water temperature  17.0 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  2 08MF005        2024-09-20 01:00:00 Water temperature  17.0 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  3 08MF005        2024-09-20 02:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  4 08MF005        2024-09-20 03:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  5 08MF005        2024-09-20 04:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  6 08MF005        2024-09-20 05:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  7 08MF005        2024-09-20 06:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  8 08MF005        2024-09-20 07:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #>  9 08MF005        2024-09-20 08:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #> 10 08MF005        2024-09-20 09:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
+    #> # ℹ 4,622 more rows
 
 ## Compare realtime\_ws and realtime\_dd
 
@@ -193,10 +189,7 @@ Get citation information for `tidyhydat` in R by running:
 
     To cite package 'tidyhydat' in publications use:
 
-      Albers S (2017). "tidyhydat: Extract and Tidy
-      Canadian Hydrometric Data." _The Journal of Open
-      Source Software_, *2*(20). doi:10.21105/joss.00511
-      <https://doi.org/10.21105/joss.00511>,
+      Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric Data." _The Journal of Open Source Software_, *2*(20). doi:10.21105/joss.00511 <https://doi.org/10.21105/joss.00511>,
       <http://dx.doi.org/10.21105/joss.00511>.
 
     A BibTeX entry for LaTeX users is
