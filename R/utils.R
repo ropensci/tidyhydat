@@ -264,9 +264,6 @@ validate_params <- function(parameters, start_date, end_date) {
 
   if (!is.numeric(parameters)) stop("parameters should be a number", call. = FALSE)
 
-  if (inherits(start_date, "Date")) start_date <- paste0(start_date, " 00:00:00")
-  if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
-
 
   if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", start_date)) {
     stop(

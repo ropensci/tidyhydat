@@ -83,12 +83,14 @@ realtime_ws <- function(station_number,
     )
   }
 
+  if (inherits(start_date, "Date")) start_date <- paste0(start_date, " 00:00:00")
+  if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
+
   validate_params(parameters, start_date, end_date)
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
 
-  browser()
   query_url <- construct_url(
     baseurl,
     station_number,
