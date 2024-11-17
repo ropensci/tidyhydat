@@ -83,58 +83,18 @@ realtime_ws <- function(station_number,
     )
   }
 
-  if (!is.numeric(parameters)) stop("parameters should be a number", call. = FALSE)
-
-  if (inherits(start_date, "Date")) start_date <- paste0(start_date, " 00:00:00")
-  if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
-
-
-  if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", start_date)) {
-    stop(
-      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
-      call. = FALSE
-    )
-  }
-
-  if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", end_date)) {
-    stop(
-      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
-      call. = FALSE
-    )
-  }
-
-
-  if (!is.null(start_date) & !is.null(end_date)) {
-    if (lubridate::ymd_hms(end_date) < lubridate::ymd_hms(start_date)) {
-      stop(
-        "start_date is after end_date. Try swapping values.",
-        call. = FALSE
-      )
-    }
-  }
-
-  ## Check date is in the right format
-  if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
-    stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-  }
+  validate_params(parameters, start_date, end_date)
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
 
-
-  station_string <- paste0("stations[]=", station_number, collapse = "&")
-  parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
-  date_string <- paste0(
-    "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
-    "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
-  )
-
-  ## paste them all together
-  query_url <- paste0(
+  browser()
+  query_url <- construct_url(
     baseurl,
-    station_string, "&",
-    parameters_string, "&",
-    date_string
+    station_number,
+    parameters, 
+    start_date, 
+    end_date
   )
 
   ## Get data
