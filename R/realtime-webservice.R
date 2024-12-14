@@ -92,6 +92,7 @@ realtime_ws <- function(station_number,
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
 
   query_url <- construct_url(
+    venue = "realtime",
     baseurl,
     station_number,
     parameters, 

@@ -297,13 +297,30 @@ validate_params <- function(parameters, start_date, end_date) {
   invisible(TRUE)
 }
 
-construct_url <- function(baseurl, station_number, parameters, start_date, end_date) {
+construct_url <- function(
+  venue = "realtime", 
+  baseurl, 
+  station_number, 
+  parameters, 
+  start_date, 
+  end_date
+  ) {
   station_string <- paste0("stations[]=", station_number, collapse = "&")
   parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
-  date_string <- paste0(
-    "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
-    "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
-  )
+  if (venue == "realtime") {
+    date_string <- paste0(
+      "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
+      "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
+    )
+  } 
+  
+  if (venue == "historical"){
+    date_string <- paste0(
+      "start_date=", start_date,
+      "&end_date=", end_date
+    )
+  }
+  
 
   ## paste them all together
   paste0(
