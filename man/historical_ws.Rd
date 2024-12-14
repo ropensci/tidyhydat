@@ -22,7 +22,7 @@ A tibble with 6 variables:
 historical_ws(
   station_number,
   parameters = "flow",
-  start_date = Sys.Date() - 30,
+  start_date = Sys.Date() - 365,
   end_date = Sys.Date()
 )
 }
@@ -51,23 +51,14 @@ parameters or dates) being requested.
 \examples{
 \dontrun{
 
-ws_08 <- realtime_ws(
+flow_data <- historical_ws(
   station_number = c("08NL071", "08NM174"),
-  parameters = c(47, 5)
+  parameters = "flow"
 )
 
-fivedays <- realtime_ws(
+level_data <- realtime_ws(
   station_number = c("08NL071", "08NM174"),
-  parameters = c(47, 5),
-  end_date = Sys.Date(), # today
-  start_date = Sys.Date() - 5 # five days ago
+  parameters = "level"
 )
 }
 }
-\seealso{
-Other realtime functions: 
-\code{\link{realtime_dd}()},
-\code{\link{realtime_stations}()},
-\code{\link{realtime_ws}()}
-}
-\concept{realtime functions}

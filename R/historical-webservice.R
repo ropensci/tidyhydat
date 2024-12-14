@@ -35,26 +35,23 @@
 #' @examples
 #' \dontrun{
 #'
-#' ws_08 <- realtime_ws(
+#' flow_data <- historical_ws(
 #'   station_number = c("08NL071", "08NM174"),
-#'   parameters = c(47, 5)
+#'   parameters = "flow"
 #' )
 #'
-#' fivedays <- realtime_ws(
+#' level_data <- realtime_ws(
 #'   station_number = c("08NL071", "08NM174"),
-#'   parameters = c(47, 5),
-#'   end_date = Sys.Date(), # today
-#'   start_date = Sys.Date() - 5 # five days ago
+#'   parameters = "level"
 #' )
 #' }
-#' @family realtime functions
 #' @export
 
 
 historical_ws <- function(
     station_number,
     parameters = "flow",
-    start_date = Sys.Date() - 30,
+    start_date = Sys.Date() - 365,
     end_date = Sys.Date()) {
   
   parameters <- match.arg(parameters, choices = c("level", "flow"))
