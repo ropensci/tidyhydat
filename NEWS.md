@@ -1,3 +1,6 @@
+# tidyhydat 0.7.0.9000
+- add historical webservice functions `ws_daily_flows` and `ws_daily_levels` (#211)
+
 # tidyhydat 0.7.0
 - bump minimum R version to 4.2.0
 - dropped httr in favour of httr2
