@@ -129,14 +129,6 @@ get_historical_data <- function(
     message("All station successfully retrieved")
   }
 
-  p_differ <- setdiff(unique(parameters), unique(csv_df$Parameter))
-  if (length(p_differ) != 0) {
-    message("The following valid parameter(s) were not retrieved for at least one station you requested: ", paste0(p_differ, sep = " "))
-  } else {
-    message("All parameters successfully retrieved")
-  }
-
-
   ## Return it
   csv_df
 }
