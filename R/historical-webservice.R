@@ -1,62 +1,76 @@
-#' Download realtime data from the ECCC web service
+#' Download historical flow and level data from the ECCC web service
 #'
-#' Function to actually retrieve data from ECCC web service.
-#' The maximum number of days that can be queried depends on other parameters being requested.
-#' If one station is requested, 18 months of data can be requested. If you continually receiving
-#' errors when invoking this function, reduce the number of observations (via station_number,
-#' parameters or dates) being requested.
+#' Functions to retrieve historical flow and levels data from ECCC web service. This data is
+#' the same as HYDAT data but provides the convenience of not having to download
+#' the HYDAT database. This function is useful when a smaller amount of data is needed. If
+#' you need lots of data, consider using HYDAT and the `hy_` family of functions
 #'
 #' @param station_number Water Survey of Canada station number.
-#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id}
-#' for some options though undocumented parameters may be implemented. Defaults to Water level provisional, Secondary water level,
-#' Tertiary water level, Discharge Provisional, Discharge, sensor, Water temperature, Secondary water temperature, Accumulated precipitation
-#' @param start_date Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
+#' @param start_date Accepts YYYY-MM-DD.
 #' If only start date is supplied (i.e. YYYY-MM-DD) values are returned from the start of that day.
-#' Defaults to 30 days before current date. Time is supplied in UTC.
-#' @param end_date Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
+#' Defaults to 365 days before current date. 
+#' @param end_date Accepts either YYYY-MM-DD.
 #' If only a date is supplied (i.e. YYYY-MM-DD) values are returned from the end of that day.
-#' Defaults to current date. Time is supplied in UTC.
+#' Defaults to current date.
 #'
 #'
 #' @format A tibble with 6 variables:
 #' \describe{
 #'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
 #'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
-#'   \item{Name_En}{Code name in English}
+#'   \item{Parameter}{Type of parameter}
 #'   \item{Value}{Value of the measurement.}
-#'   \item{Unit}{Value units}
-#'   \item{Grade}{future use}
 #'   \item{Symbol}{future use}
-#'   \item{Approval}{future use}
-#'   \item{Parameter}{Numeric parameter code}
-#'   \item{Code}{Letter parameter code}
 #' }
 #'
+#' @seealso hy_daily_flows
 #' @examples
 #' \dontrun{
 #'
-#' flow_data <- historical_ws(
-#'   station_number = c("08NL071", "08NM174"),
-#'   parameters = "flow"
+#' flow_data <- ws_daily_flows(
+#'   station_number = c("08NL071", "08NM174")
 #' )
 #'
-#' level_data <- realtime_ws(
-#'   station_number = c("08NL071", "08NM174"),
-#'   parameters = "level"
+#' level_data <- ws_daily_level(
+#'   station_number = c("08NL071", "08NM174")
 #' )
 #' }
 #' @export
-
-
-historical_ws <- function(
+ws_daily_flows <- function(
     station_number,
-    parameters = "flow",
     start_date = Sys.Date() - 365,
     end_date = Sys.Date()) {
   
-  parameters <- match.arg(parameters, choices = c("level", "flow"))
+  get_historical_data(
+    station_number = station_number,
+    parameters = "flow",
+    start_date = start_date,
+    end_date = end_date
+  )
+}
 
-  # validate_params(parameters, start_date, end_date)
+#' @rdname ws_daily_flows
+#' @export
+ws_daily_levels <- function(
+    station_number,
+    start_date = Sys.Date() - 365,
+    end_date = Sys.Date()) {
+  
+  get_historical_data(
+    station_number = station_number,
+    parameters = "level",
+    start_date = start_date,
+    end_date = end_date
+  )
+}
+
+
+get_historical_data <- function(
+    station_number,
+    parameters = "flow",
+    start_date,
+    end_date) {
+  parameters <- match.arg(parameters, choices = c("level", "flow"))
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/daily_data/csv/inline?"
@@ -89,8 +103,8 @@ historical_ws <- function(
 
   ## Turn it into a tibble and specify correct column classes
   csv_df <- readr::read_csv(
-    httr2::resp_body_string(resp),
-    col_types = "cDcdc"
+    I(httr2::resp_body_string(resp)),
+    col_types = "cDcdc",
   )
 
 

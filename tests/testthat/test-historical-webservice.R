@@ -1,10 +1,7 @@
 test_that("historical_ws returns the correct data header", {
   skip_on_cran()
 
-  ws_test <- historical_ws(
-    station_number = "08MF005",
-    parameters = "level"
-  )
+  ws_test <- ws_daily_flows(station_number = "08MF005")
 
   expect_identical(
     colnames(ws_test),
@@ -21,12 +18,11 @@ test_that("historical_ws returns the correct data header", {
 test_that("historical_ws is empty is a nearish date", {
   skip_on_cran()
 
-  empty = historical_ws(
+  expect_error(ws_daily_flows(
     station_number = "08MF005",
-    parameters = "level",
     start_date = Sys.Date() - 2
-  )
-  expect_true(nrow(empty) == 0)
+  ), "No data exists for this station query during the period chosen")
+  
 })
 
 
