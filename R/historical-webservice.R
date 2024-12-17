@@ -6,12 +6,10 @@
 #' you need lots of data, consider using HYDAT and the `hy_` family of functions
 #'
 #' @param station_number Water Survey of Canada station number.
-#' @param start_date Accepts YYYY-MM-DD.
-#' If only start date is supplied (i.e. YYYY-MM-DD) values are returned from the start of that day.
-#' Defaults to 365 days before current date. 
-#' @param end_date Accepts either YYYY-MM-DD.
-#' If only a date is supplied (i.e. YYYY-MM-DD) values are returned from the end of that day.
-#' Defaults to current date.
+#' @param start_date Accepts YYYY-MM-DD. You need to provide a start date. 
+#' The default value is NULL
+#' @param end_date Accepts either YYYY-MM-DD. You need to provide an end date. 
+#' The default value is NULL
 #'
 #'
 #' @format A tibble with 6 variables:
@@ -26,20 +24,26 @@
 #' @seealso hy_daily_flows
 #' @examples
 #' \dontrun{
-#'
-#' flow_data <- ws_daily_flows(
-#'   station_number = c("08NL071", "08NM174")
+#' try(
+#'    flow_data <- ws_daily_flows(
+#'      station_number = c("08NL071", "08NM174"),
+#'      start_date = Sys.Date() - 365,
+#'      end_date = Sys.Date()
+#'    )
 #' )
-#'
-#' level_data <- ws_daily_level(
-#'   station_number = c("08NL071", "08NM174")
+#' try(
+#'    level_data <- ws_daily_level(
+#'      station_number = c("08NL071", "08NM174"),
+#'      start_date = Sys.Date() - 365,
+#'      end_date = Sys.Date()
+#'      )
 #' )
-#' }
+#'}
 #' @export
 ws_daily_flows <- function(
     station_number,
-    start_date = Sys.Date() - 365,
-    end_date = Sys.Date()) {
+    start_date = NULL,
+    end_date = NULL) {
   
   get_historical_data(
     station_number = station_number,
@@ -53,8 +57,8 @@ ws_daily_flows <- function(
 #' @export
 ws_daily_levels <- function(
     station_number,
-    start_date = Sys.Date() - 365,
-    end_date = Sys.Date()) {
+    start_date = NULL,
+    end_date = NULL) {
   
   get_historical_data(
     station_number = station_number,
@@ -71,6 +75,14 @@ get_historical_data <- function(
     start_date,
     end_date) {
   parameters <- match.arg(parameters, choices = c("level", "flow"))
+
+  if (is.null(start_date)) {
+    stop("please provide a valid date for the start_date argument", call. = FALSE)
+  }
+
+  if (is.null(end_date)) {
+    stop("please provide a valid date for the end_date argument", call. = FALSE)
+  }
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/daily_data/csv/inline?"

@@ -3,7 +3,7 @@
 \name{ws_daily_flows}
 \alias{ws_daily_flows}
 \alias{ws_daily_levels}
-\title{Download historical data from the ECCC web service}
+\title{Download historical flow and level data from the ECCC web service}
 \format{
 A tibble with 6 variables:
 \describe{
@@ -15,44 +15,40 @@ A tibble with 6 variables:
 }
 }
 \usage{
-ws_daily_flows(
-  station_number,
-  start_date = Sys.Date() - 365,
-  end_date = Sys.Date()
-)
+ws_daily_flows(station_number, start_date = NULL, end_date = NULL)
 
-ws_daily_levels(
-  station_number,
-  start_date = Sys.Date() - 365,
-  end_date = Sys.Date()
-)
+ws_daily_levels(station_number, start_date = NULL, end_date = NULL)
 }
 \arguments{
 \item{station_number}{Water Survey of Canada station number.}
 
-\item{start_date}{Accepts YYYY-MM-DD.
-If only start date is supplied (i.e. YYYY-MM-DD) values are returned from the start of that day.
-Defaults to 365 days before current date.}
+\item{start_date}{Accepts YYYY-MM-DD. You need to provide a start date.
+The default value is NULL}
 
-\item{end_date}{Accepts either YYYY-MM-DD.
-If only a date is supplied (i.e. YYYY-MM-DD) values are returned from the end of that day.
-Defaults to current date.}
+\item{end_date}{Accepts either YYYY-MM-DD. You need to provide an end date.
+The default value is NULL}
 }
 \description{
-Function to retrieve historical data from ECCC web service. This data is
+Functions to retrieve historical flow and levels data from ECCC web service. This data is
 the same as HYDAT data but provides the convenience of not having to download
-the HYDAT database. This function when a smaller amount of data is needed. If
-you need lots of data, consider the \code{hy_} family of functions
+the HYDAT database. This function is useful when a smaller amount of data is needed. If
+you need lots of data, consider using HYDAT and the \code{hy_} family of functions
 }
 \examples{
 \dontrun{
-
-flow_data <- ws_daily_flows(
-  station_number = c("08NL071", "08NM174")
+try(
+   flow_data <- ws_daily_flows(
+     station_number = c("08NL071", "08NM174"),
+     start_date = Sys.Date() - 365,
+     end_date = Sys.Date()
+   )
 )
-
-level_data <- ws_daily_level(
-  station_number = c("08NL071", "08NM174")
+try(
+   level_data <- ws_daily_level(
+     station_number = c("08NL071", "08NM174"),
+     start_date = Sys.Date() - 365,
+     end_date = Sys.Date()
+     )
 )
 }
 }
