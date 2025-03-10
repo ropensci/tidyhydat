@@ -1,3 +1,7 @@
+# tidyhydat 0.7.0.9999
+- add columns added by a webservice update (#213)
+- fix some partial matching in `realtime_add_local_datetime` internals
+
 # tidyhydat 0.7.0
 - bump minimum R version to 4.2.0
 - dropped httr in favour of httr2
