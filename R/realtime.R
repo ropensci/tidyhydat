@@ -167,7 +167,7 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL) {
     tz_used <- set_tz
   }
 
-  timezone_data$local_datetime <- lubridate::with_tz(timezone_data$Date, tz = tz_used)
+  timezone_data$local_datetime <- lubridate::with_tz(timezone_data$Date, tzone = tz_used)
 
   timezone_data$tz_used <- tz_used
 
