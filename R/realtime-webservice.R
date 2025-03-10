@@ -167,7 +167,16 @@ realtime_ws <- function(station_number,
   }
 
   ## Rename columns to reflect tidyhydat naming
-  colnames(csv_df) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Grade", "Symbol", "Approval")
+  csv_df = dplyr::rename(csv_df,
+    STATION_NUMBER = ID,
+    Parameter = 'Parameter/Paramètre',
+    Value = "Value/Valeur",
+    Qualifier = "Qualifier/Qualificatif", 
+    Symbol = "Symbol/Symbole", 
+    Approval = "Approval/Approbation", 
+    Grade = "Grade/Classification" ,
+    Qualifiers = "Qualifiers/Qualificatifs"
+  )
 
   csv_df <- dplyr::left_join(
     csv_df,
@@ -176,7 +185,7 @@ realtime_ws <- function(station_number,
   )
   csv_df <- dplyr::select(
     csv_df, STATION_NUMBER, Date, Name_En, Value, Unit,
-    Grade, Symbol, Approval, Parameter, Code
+    Grade, Symbol, Approval, Parameter, Code, Qualifier, Qualifiers
   )
 
   ## What stations were missed?
