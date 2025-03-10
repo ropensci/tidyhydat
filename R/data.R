@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 #' All Canadian stations
 #'
 #' A shorthand to avoid having always call `hy_stations` or `realtime_stations`.
@@ -66,7 +65,7 @@
 #' @title Parameter ID
 #'
 #' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
-#' 
+#'
 #' @format A tibble with 8 rows and 7 variables:
 #' \describe{
 #'   \item{Parameter}{Numeric parameter code}

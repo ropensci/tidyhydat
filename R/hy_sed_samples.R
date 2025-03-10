@@ -52,16 +52,15 @@
 #' @source HYDAT
 #' @export
 
-
-
-hy_sed_samples <- function(station_number = NULL,
-                           hydat_path = NULL,
-                           prov_terr_state_loc = NULL,
-                           start_date = NULL,
-                           end_date = NULL) {
+hy_sed_samples <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_date = NULL,
+  end_date = NULL
+) {
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
-
 
   ## Read in database
   hydat_con <- hy_src(hydat_path)
@@ -76,38 +75,84 @@ hy_sed_samples <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
   sym_DATE <- sym("DATE")
 
-
   ## Data manipulations
   sed_samples <- dplyr::tbl(hydat_con, "SED_SAMPLES")
   sed_samples <- dplyr::filter(sed_samples, !!sym_STATION_NUMBER %in% stns)
-  sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "SED_DATA_TYPES"), by = c("SED_DATA_TYPE"))
-  sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "SAMPLE_REMARK_CODES"), by = c("SAMPLE_REMARK_CODE"))
   sed_samples <- dplyr::left_join(
-    sed_samples, dplyr::tbl(hydat_con, "SED_VERTICAL_LOCATION"),
+    sed_samples,
+    dplyr::tbl(hydat_con, "SED_DATA_TYPES"),
+    by = c("SED_DATA_TYPE")
+  )
+  sed_samples <- dplyr::left_join(
+    sed_samples,
+    dplyr::tbl(hydat_con, "SAMPLE_REMARK_CODES"),
+    by = c("SAMPLE_REMARK_CODE")
+  )
+  sed_samples <- dplyr::left_join(
+    sed_samples,
+    dplyr::tbl(hydat_con, "SED_VERTICAL_LOCATION"),
     by = c("SAMPLING_VERTICAL_LOCATION" = "SAMPLING_VERTICAL_LOCATION_ID")
   )
-  sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "SED_VERTICAL_SYMBOLS"), by = c("SAMPLING_VERTICAL_SYMBOL"))
-  sed_samples <- dplyr::left_join(sed_samples, dplyr::tbl(hydat_con, "CONCENTRATION_SYMBOLS"), by = c("CONCENTRATION_SYMBOL"))
+  sed_samples <- dplyr::left_join(
+    sed_samples,
+    dplyr::tbl(hydat_con, "SED_VERTICAL_SYMBOLS"),
+    by = c("SAMPLING_VERTICAL_SYMBOL")
+  )
+  sed_samples <- dplyr::left_join(
+    sed_samples,
+    dplyr::tbl(hydat_con, "CONCENTRATION_SYMBOLS"),
+    by = c("CONCENTRATION_SYMBOL")
+  )
 
   sed_samples <- dplyr::collect(sed_samples)
 
-  if (is.data.frame(sed_samples) && nrow(sed_samples) == 0) stop("This station is not present in HYDAT")
+  if (is.data.frame(sed_samples) && nrow(sed_samples) == 0)
+    stop("This station is not present in HYDAT")
 
-  sed_samples <- dplyr::left_join(sed_samples, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
-  sed_samples <- dplyr::mutate(sed_samples, DATE = lubridate::ymd_hms(DATE), date_no_time = as.Date(DATE))
-
-  ## SUBSET by date
-  if (!dates_null[["start_is_null"]]) sed_samples <- dplyr::filter(sed_samples, !!sym("date_no_time") >= as.Date(start_date))
-  if (!dates_null[["end_is_null"]]) sed_samples <- dplyr::filter(sed_samples, !!sym("date_no_time") <= as.Date(end_date))
-
-
-  sed_samples <- dplyr::select(
-    sed_samples, STATION_NUMBER, SED_DATA_TYPE_EN,
-    Date = DATE, SAMPLE_REMARK_EN, TIME_SYMBOL,
-    FLOW, SYMBOL_EN, SAMPLER_TYPE, SAMPLING_VERTICAL_LOCATION, SAMPLING_VERTICAL_EN,
-    TEMPERATURE, CONCENTRATION, CONCENTRATION_EN, SV_DEPTH2
+  sed_samples <- dplyr::left_join(
+    sed_samples,
+    tidyhydat::hy_data_symbols,
+    by = c("FLOW_SYMBOL" = "SYMBOL_ID")
+  )
+  sed_samples <- dplyr::mutate(
+    sed_samples,
+    DATE = lubridate::ymd_hms(DATE),
+    date_no_time = as.Date(DATE)
   )
 
-  attr(sed_samples, "missed_stns") <- setdiff(unique(stns), unique(sed_samples$STATION_NUMBER))
+  ## SUBSET by date
+  if (!dates_null[["start_is_null"]])
+    sed_samples <- dplyr::filter(
+      sed_samples,
+      !!sym("date_no_time") >= as.Date(start_date)
+    )
+  if (!dates_null[["end_is_null"]])
+    sed_samples <- dplyr::filter(
+      sed_samples,
+      !!sym("date_no_time") <= as.Date(end_date)
+    )
+
+  sed_samples <- dplyr::select(
+    sed_samples,
+    STATION_NUMBER,
+    SED_DATA_TYPE_EN,
+    Date = DATE,
+    SAMPLE_REMARK_EN,
+    TIME_SYMBOL,
+    FLOW,
+    SYMBOL_EN,
+    SAMPLER_TYPE,
+    SAMPLING_VERTICAL_LOCATION,
+    SAMPLING_VERTICAL_EN,
+    TEMPERATURE,
+    CONCENTRATION,
+    CONCENTRATION_EN,
+    SV_DEPTH2
+  )
+
+  attr(sed_samples, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(sed_samples$STATION_NUMBER)
+  )
   as.hy(sed_samples)
 }

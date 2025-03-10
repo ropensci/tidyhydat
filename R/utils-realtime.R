@@ -33,16 +33,21 @@ single_realtime_station <- function(station_number) {
 
     ## first check internal dataframe for station info
     if (any(tidyhydat::allstations$STATION_NUMBER %in% station_number)) {
-      choose_df <- dplyr::filter(tidyhydat::allstations, !!sym_STATION_NUMBER %in% station_number)
+      choose_df <- dplyr::filter(
+        tidyhydat::allstations,
+        !!sym_STATION_NUMBER %in% station_number
+      )
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
       PROV <- choose_df$PROV_TERR_STATE_LOC
     } else {
-      choose_df <- dplyr::filter(realtime_stations(), !!sym_STATION_NUMBER %in% station_number)
+      choose_df <- dplyr::filter(
+        realtime_stations(),
+        !!sym_STATION_NUMBER %in% station_number
+      )
       STATION_NUMBER_SEL <- choose_df$STATION_NUMBER
       PROV <- choose_df$PROV_TERR_STATE_LOC
     }
   }
-
 
   base_url <- "https://dd.weather.gc.ca/hydrometric"
 
@@ -63,8 +68,16 @@ single_realtime_station <- function(station_number) {
   h_resp_str <- realtime_parser(infile[1])
   if (is.na(h_resp_str)) {
     h <- dplyr::tibble(
-      A = station_number, B = NA, C = NA, D = NA, E = NA,
-      F = NA, G = NA, H = NA, I = NA, J = NA
+      A = station_number,
+      B = NA,
+      C = NA,
+      D = NA,
+      E = NA,
+      F = NA,
+      G = NA,
+      H = NA,
+      I = NA,
+      J = NA
     )
     colnames(h) <- colHeaders
     h <- readr::type_convert(h, realtime_cols_types())
@@ -77,14 +90,21 @@ single_realtime_station <- function(station_number) {
     )
   }
 
-
   # download daily file
   p_resp_str <- realtime_parser(infile[2])
 
   if (is.na(p_resp_str)) {
     d <- dplyr::tibble(
-      A = station_number, B = NA, C = NA, D = NA, E = NA,
-      F = NA, G = NA, H = NA, I = NA, J = NA
+      A = station_number,
+      B = NA,
+      C = NA,
+      D = NA,
+      E = NA,
+      F = NA,
+      G = NA,
+      H = NA,
+      I = NA,
+      J = NA
     )
     colnames(d) <- colHeaders
     d <- readr::type_convert(d, realtime_cols_types())
@@ -115,11 +135,10 @@ all_realtime_station <- function(PROV) {
   colHeaders <- realtime_cols_headers()
   output <- readr::read_csv(
     res,
-    skip = 1, 
+    skip = 1,
     col_names = colHeaders,
     col_types = realtime_cols_types()
   )
-
 
   ## Offloading tidying to another function
   realtime_tidy_data(output, PROV)
@@ -166,14 +185,27 @@ realtime_tidy_data <- function(data, prov) {
   ## TODO: Find a better way to do this
   data <- dplyr::rename(data, `Level_` = Level, `Flow_` = Flow)
   data <- tidyr::gather(data, !!sym_temp, !!sym_val, -STATION_NUMBER, -Date)
-  data <- tidyr::separate(data, !!sym_temp, c("Parameter", "key"), sep = "_", remove = TRUE)
+  data <- tidyr::separate(
+    data,
+    !!sym_temp,
+    c("Parameter", "key"),
+    sep = "_",
+    remove = TRUE
+  )
   data <- dplyr::mutate(data, key = ifelse(key == "", "Value", key))
   data <- tidyr::spread(data, !!sym_key, !!sym_val)
   data <- dplyr::rename(data, Code = CODE, Grade = GRADE, Symbol = SYMBOL)
   data <- dplyr::mutate(data, PROV_TERR_STATE_LOC = prov)
   data <- dplyr::select(
-    data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter, Value,
-    Grade, Symbol, Code
+    data,
+    STATION_NUMBER,
+    PROV_TERR_STATE_LOC,
+    Date,
+    Parameter,
+    Value,
+    Grade,
+    Symbol,
+    Code
   )
   data <- dplyr::arrange(data, Parameter, STATION_NUMBER, Date)
   data$Value <- as.numeric(data$Value)
@@ -182,7 +214,8 @@ realtime_tidy_data <- function(data, prov) {
 }
 
 has_internet <- function() {
-  z <- try(suppressWarnings(readLines("https://www.google.ca", n = 1)),
+  z <- try(
+    suppressWarnings(readLines("https://www.google.ca", n = 1)),
     silent = TRUE
   )
   !inherits(z, "try-error")
