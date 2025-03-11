@@ -34,12 +34,13 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     if (!dir.exists(dl_hydat_here)) {
       dir.create(dl_hydat_here)
       message(crayon::blue("You have downloaded hydat to", dl_hydat_here))
-      message(crayon::blue("See ?hy_set_default_db to change where tidyhydat looks for HYDAT"))
+      message(crayon::blue(
+        "See ?hy_set_default_db to change where tidyhydat looks for HYDAT"
+      ))
     }
   }
 
   if (!is.logical(ask)) stop("Parameter ask must be a logical")
-
 
   ## Create actual hydat_path
   hydat_path <- file.path(dl_hydat_here, "Hydat.sqlite3")
@@ -52,7 +53,6 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     existing_hydat <- "HYDAT not present"
   }
 
-
   new_hydat <- hy_remote()
   # Make the download URL
   url <- paste0(hy_base_url(), "Hydat_sqlite3_", new_hydat, ".zip")
@@ -62,18 +62,23 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   req <- tidyhydat_perform(req)
   httr2::resp_check_status(req)
 
-  size <- round(as.numeric(
-    httr2::resp_header(req, "Content-Length")
-  ) / 1000000, 0)
-
+  size <- round(
+    as.numeric(
+      httr2::resp_header(req, "Content-Length")
+    ) /
+      1000000,
+    0
+  )
 
   ## Do we need to download a new version?
-  if (new_hydat == existing_hydat & ask) { # DB exists and no new version
+  if (new_hydat == existing_hydat & ask) {
+    # DB exists and no new version
     msg <- paste0(
       "The existing local version of HYDAT, published on ",
       lubridate::ymd(existing_hydat),
       ", is the most recent version available. \nDo you wish to overwrite it? \nDownloading HYDAT could take up to 10 minutes (",
-      size, " MB)."
+      size,
+      " MB)."
     )
     dl_overwrite <- ask(msg)
   } else {
@@ -81,11 +86,16 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
   }
 
   if (!dl_overwrite) {
-    info("HYDAT is updated on a quarterly basis, check again soon for an updated version.")
+    info(
+      "HYDAT is updated on a quarterly basis, check again soon for an updated version."
+    )
   }
-  if (new_hydat != existing_hydat & ask) { # New DB available or no local DB at all
+  if (new_hydat != existing_hydat & ask) {
+    # New DB available or no local DB at all
     msg <- paste0(
-      "This version of HYDAT is ", size, "MB in size and will take some time to download. 
+      "This version of HYDAT is ",
+      size,
+      "MB in size and will take some time to download. 
       \nThis will remove any older versions of HYDAT, if applicable.  \nIs that okay?"
     )
     ans <- ask(msg)
@@ -99,12 +109,18 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
     green_message(paste0("Downloading HYDAT to ", dl_hydat_here))
   }
 
-
   if (dl_overwrite) {
     if (new_hydat == existing_hydat) {
-      info(paste0("Your local copy of HYDAT published on ", crayon::blue(lubridate::ymd(new_hydat)), " will be overwritten."))
+      info(paste0(
+        "Your local copy of HYDAT published on ",
+        crayon::blue(lubridate::ymd(new_hydat)),
+        " will be overwritten."
+      ))
     } else {
-      info(paste0("Downloading new version of HYDAT created on ", crayon::blue(lubridate::ymd(new_hydat))))
+      info(paste0(
+        "Downloading new version of HYDAT created on ",
+        crayon::blue(lubridate::ymd(new_hydat))
+      ))
     }
 
     ## temporary path to save
@@ -129,7 +145,6 @@ download_hydat <- function(dl_hydat_here = NULL, ask = TRUE) {
       hydat_path,
       overwrite = TRUE
     )
-
 
     if (file.exists(hydat_path)) {
       congrats("HYDAT successfully downloaded")
@@ -160,10 +175,10 @@ hy_remote <- function() {
   req <- tidyhydat_perform(req)
   resp <- httr2::resp_check_status(req)
 
-  
   raw_date <- substr(
     gsub("^.*\\Hydat_sqlite3_", "", httr2::resp_body_string(req)),
-    1, 8
+    1,
+    8
   )
 
   raw_date
@@ -181,7 +196,6 @@ hy_check <- function(hydat_path = NULL) {
     red_message("The following tables are missing from HYDAT")
     red_message(paste0(tbl_diff, "\n"))
   }
-
 
   invisible(lapply(have_tbls, function(x) {
     tbl_rows <- dplyr::tbl(con, x) |>

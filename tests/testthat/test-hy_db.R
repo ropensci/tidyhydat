@@ -40,10 +40,16 @@ test_that("default place to look for Hydat database can be get/set internally", 
   prev_val <- tidyhydat:::hy_set_default_db(NULL)
 
   # NULL should set back to original default
-  expect_equal(tidyhydat:::hy_default_db(), file.path(hy_dir(), "Hydat.sqlite3"))
+  expect_equal(
+    tidyhydat:::hy_default_db(),
+    file.path(hy_dir(), "Hydat.sqlite3")
+  )
 
   # set_default_db should return previous value
-  expect_equal(tidyhydat:::hy_set_default_db(hy_test_db()), file.path(hy_dir(), "Hydat.sqlite3"))
+  expect_equal(
+    tidyhydat:::hy_set_default_db(hy_test_db()),
+    file.path(hy_dir(), "Hydat.sqlite3")
+  )
 
   # set back to value when we started
   tidyhydat:::hy_set_default_db(prev_val)

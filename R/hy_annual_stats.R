@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 #' Extract annual statistics information from the HYDAT database
 #'
 #' Provides wrapper to turn the ANNUAL_STATISTICS table in HYDAT into a tidy data frame of annual statistics.
@@ -48,10 +47,13 @@
 #' @source HYDAT
 #' @export
 
-hy_annual_stats <- function(station_number = NULL,
-                            hydat_path = NULL,
-                            prov_terr_state_loc = NULL,
-                            start_year = "ALL", end_year = "ALL") {
+hy_annual_stats <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_year = "ALL",
+  end_year = "ALL"
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -72,36 +74,81 @@ hy_annual_stats <- function(station_number = NULL,
 
   ## If a yearis supplied...
   if (start_year != "ALL" | end_year != "ALL") {
-    annual_statistics <- dplyr::filter(annual_statistics, !!sym_YEAR >= start_year & !!sym_YEAR <= end_year)
+    annual_statistics <- dplyr::filter(
+      annual_statistics,
+      !!sym_YEAR >= start_year & !!sym_YEAR <= end_year
+    )
   }
 
-  annual_statistics <- dplyr::filter(annual_statistics, !!sym_STATION_NUMBER %in% stns) |>
+  annual_statistics <- dplyr::filter(
+    annual_statistics,
+    !!sym_STATION_NUMBER %in% stns
+  ) |>
     dplyr::collect()
 
   ## TODO: Figure out how to do this in fewer steps
   ## Mean tibble
-  as_mean <- dplyr::select(annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MEAN)
-  as_mean <- tidyr::gather(as_mean, !!sym_SUM_STAT, !!sym_Value, -STATION_NUMBER, -DATA_TYPE, -YEAR)
+  as_mean <- dplyr::select(
+    annual_statistics,
+    STATION_NUMBER,
+    DATA_TYPE,
+    YEAR,
+    MEAN
+  )
+  as_mean <- tidyr::gather(
+    as_mean,
+    !!sym_SUM_STAT,
+    !!sym_Value,
+    -STATION_NUMBER,
+    -DATA_TYPE,
+    -YEAR
+  )
 
   ## Min tibble
   as_min <- dplyr::select(
-    annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MIN_MONTH,
-    MIN_DAY, MIN, MIN_SYMBOL
+    annual_statistics,
+    STATION_NUMBER,
+    DATA_TYPE,
+    YEAR,
+    MIN_MONTH,
+    MIN_DAY,
+    MIN,
+    MIN_SYMBOL
   )
   as_min <- tidyr::gather(
-    as_min, !!sym_SUM_STAT, !!sym_Value, -STATION_NUMBER, -DATA_TYPE, -YEAR,
-    -MIN_MONTH, -MIN_DAY, -MIN_SYMBOL
+    as_min,
+    !!sym_SUM_STAT,
+    !!sym_Value,
+    -STATION_NUMBER,
+    -DATA_TYPE,
+    -YEAR,
+    -MIN_MONTH,
+    -MIN_DAY,
+    -MIN_SYMBOL
   )
   colnames(as_min) <- gsub("MIN_", "", names(as_min))
 
   ## Max tibble
   as_max <- dplyr::select(
-    annual_statistics, STATION_NUMBER, DATA_TYPE, YEAR, MAX_MONTH,
-    MAX_DAY, MAX, MAX_SYMBOL
+    annual_statistics,
+    STATION_NUMBER,
+    DATA_TYPE,
+    YEAR,
+    MAX_MONTH,
+    MAX_DAY,
+    MAX,
+    MAX_SYMBOL
   )
   as_max <- tidyr::gather(
-    as_max, !!sym_SUM_STAT, !!sym_Value, -STATION_NUMBER, -DATA_TYPE, -YEAR, -MAX_MONTH,
-    -MAX_DAY, -MAX_SYMBOL
+    as_max,
+    !!sym_SUM_STAT,
+    !!sym_Value,
+    -STATION_NUMBER,
+    -DATA_TYPE,
+    -YEAR,
+    -MAX_MONTH,
+    -MAX_DAY,
+    -MAX_SYMBOL
   )
   colnames(as_max) <- gsub("MAX_", "", names(as_max))
 
@@ -113,21 +160,43 @@ hy_annual_stats <- function(station_number = NULL,
     dplyr::left_join(tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
 
   ## Format date of occurence; SuppressWarnings are justified because NA's are valid for MEAN Sum_stat
-  annual_statistics <- dplyr::mutate(annual_statistics, Date = suppressWarnings(
-    lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-"))
-  ))
+  annual_statistics <- dplyr::mutate(
+    annual_statistics,
+    Date = suppressWarnings(
+      lubridate::ymd(paste(YEAR, MONTH, DAY, sep = "-"))
+    )
+  )
 
   ## Format
-  annual_statistics <- dplyr::left_join(annual_statistics, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
+  annual_statistics <- dplyr::left_join(
+    annual_statistics,
+    tidyhydat::hy_data_types,
+    by = c("DATA_TYPE")
+  )
 
   ## Clean up the variables
   annual_statistics <- dplyr::select(
-    annual_statistics, STATION_NUMBER, DATA_TYPE_EN, YEAR:Value,
-    Date, SYMBOL_EN
+    annual_statistics,
+    STATION_NUMBER,
+    DATA_TYPE_EN,
+    YEAR:Value,
+    Date,
+    SYMBOL_EN
   )
 
   ## Rename to tidyhydat format
-  colnames(annual_statistics) <- c("STATION_NUMBER", "Parameter", "Year", "Sum_stat", "Value", "Date", "Symbol")
-  attr(annual_statistics, "missed_stns") <- setdiff(unique(stns), unique(annual_statistics$STATION_NUMBER))
+  colnames(annual_statistics) <- c(
+    "STATION_NUMBER",
+    "Parameter",
+    "Year",
+    "Sum_stat",
+    "Value",
+    "Date",
+    "Symbol"
+  )
+  attr(annual_statistics, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(annual_statistics$STATION_NUMBER)
+  )
   as.hy(annual_statistics)
 }

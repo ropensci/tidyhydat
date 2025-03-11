@@ -24,7 +24,10 @@ as.realtime <- function(x) {
 print.realtime <- function(x, ...) {
   cat(paste("  Queried on:", attributes(x)$query_time, "(UTC)\n"))
   if (c("Date") %in% names(x) && !all(is.na(x$Date))) {
-    date_range <- paste0(range(as.Date(x$Date), na.rm = TRUE), collapse = " to ")
+    date_range <- paste0(
+      range(as.Date(x$Date), na.rm = TRUE),
+      collapse = " to "
+    )
     cat(paste0("  Date range: ", date_range, " \n"))
   } else {
     cat("  Date range: not available \n")

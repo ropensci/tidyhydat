@@ -30,27 +30,51 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow", "Level"), ...) {
   Parameter <- match.arg(Parameter)
 
   if (length(unique(x$STATION_NUMBER)) > 1L) {
-    stop("realtime plots only work with objects that contain one station", call. = FALSE)
+    stop(
+      "realtime plots only work with objects that contain one station",
+      call. = FALSE
+    )
   }
 
   if (is.null(x)) stop("Station not present in the datamart")
 
   ## Catch mis labelled parameter
-  if (Parameter == "Level" && ((nrow(x[x$Parameter == "Level", ]) == 0) | all(is.na(x[x$Parameter == "Level", ]$Value)))) {
-    stop(paste0(unique(x$STATION_NUMBER), " is likely a flow station. Try setting Parameter = 'Flow'"), call. = FALSE)
+  if (
+    Parameter == "Level" &&
+      ((nrow(x[x$Parameter == "Level", ]) == 0) |
+        all(is.na(x[x$Parameter == "Level", ]$Value)))
+  ) {
+    stop(
+      paste0(
+        unique(x$STATION_NUMBER),
+        " is likely a flow station. Try setting Parameter = 'Flow'"
+      ),
+      call. = FALSE
+    )
   }
 
-  if (Parameter == "Flow" && ((nrow(x[x$Parameter == "Flow", ]) == 0) | all(is.na(x[x$Parameter == "Flow", ]$Value)))) {
-    stop(paste0(unique(x$STATION_NUMBER), " is likely a lake level station. Try setting Parameter = 'Level'"), call. = FALSE)
+  if (
+    Parameter == "Flow" &&
+      ((nrow(x[x$Parameter == "Flow", ]) == 0) |
+        all(is.na(x[x$Parameter == "Flow", ]$Value)))
+  ) {
+    stop(
+      paste0(
+        unique(x$STATION_NUMBER),
+        " is likely a lake level station. Try setting Parameter = 'Level'"
+      ),
+      call. = FALSE
+    )
   } else {
     x <- x[x$Parameter == Parameter, ]
   }
 
-
-
-
   ## Join with meta data to get station name
-  x <- dplyr::left_join(x, tidyhydat::allstations, by = c("STATION_NUMBER", "PROV_TERR_STATE_LOC"))
+  x <- dplyr::left_join(
+    x,
+    tidyhydat::allstations,
+    by = c("STATION_NUMBER", "PROV_TERR_STATE_LOC")
+  )
 
   x$STATION <- paste(x$STATION_NAME, x$STATION_NUMBER, sep = " - ")
 
@@ -61,10 +85,12 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow", "Level"), ...) {
     mgp = c(3.1, 0.4, 0),
     las = 1,
     tck = -.01,
-    xaxs = "i", yaxs = "i"
+    xaxs = "i",
+    yaxs = "i"
   )
 
-  graphics::plot(Value ~ Date,
+  graphics::plot(
+    Value ~ Date,
     data = x,
     xlab = "Date",
     ylab = eval(parse(text = label_helper(unique(x$Parameter)))),
@@ -79,16 +105,26 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow", "Level"), ...) {
 
   at_y <- utils::tail(utils::head(pretty(x$Value), -1), -1)
   graphics::mtext(
-    side = 2, text = at_y, at = at_y,
-    col = "grey20", line = 1, cex = 1
+    side = 2,
+    text = at_y,
+    at = at_y,
+    col = "grey20",
+    line = 1,
+    cex = 1
   )
 
   at_x <- utils::tail(utils::head(pretty(x$Date), -1), -1)
-  graphics::mtext(side = 1, text = format(at_x, "%b-%d"), at = at_x, col = "grey20", line = 1, cex = 1)
+  graphics::mtext(
+    side = 1,
+    text = format(at_x, "%b-%d"),
+    at = at_x,
+    col = "grey20",
+    line = 1,
+    cex = 1
+  )
 
   graphics::title(main = paste0(unique(x$STATION)), cex.main = 1.1)
 }
-
 
 
 #' Convenience function to plot realtime data
@@ -114,47 +150,62 @@ plot.realtime <- function(x = NULL, Parameter = c("Flow", "Level"), ...) {
 #'
 #' @export
 
-realtime_plot <- function(station_number = NULL, Parameter = c("Flow", "Level")) {
+realtime_plot <- function(
+  station_number = NULL,
+  Parameter = c("Flow", "Level")
+) {
   Parameter <- match.arg(Parameter)
 
-  if (length(station_number) > 1L) stop("realtime_plot only accepts one station number")
+  if (length(station_number) > 1L)
+    stop("realtime_plot only accepts one station number")
 
   rldf <- realtime_dd(station_number)
 
   if (is.null(rldf)) stop("Station(s) not present in the datamart")
 
   ## Is there any NA's in the flow data?
-  if (any(is.na(rldf[rldf$Parameter == "Flow", ]$Value)) & Parameter == "Flow") {
+  if (
+    any(is.na(rldf[rldf$Parameter == "Flow", ]$Value)) & Parameter == "Flow"
+  ) {
     rldf <- rldf[rldf$Parameter == "Level", ]
-    message(paste0(station_number, " is lake level station. Defaulting Parameter = 'Level'"))
+    message(paste0(
+      station_number,
+      " is lake level station. Defaulting Parameter = 'Level'"
+    ))
   } else {
     rldf <- rldf[rldf$Parameter == Parameter, ]
   }
 
-
-
-
   ## Join with meta data to get station name
-  rldf <- dplyr::left_join(rldf, realtime_stations(), by = c("STATION_NUMBER", "PROV_TERR_STATE_LOC"))
+  rldf <- dplyr::left_join(
+    rldf,
+    realtime_stations(),
+    by = c("STATION_NUMBER", "PROV_TERR_STATE_LOC")
+  )
 
   rldf$STATION <- paste(rldf$STATION_NAME, rldf$STATION_NUMBER, sep = " - ")
 
   rldf$STATION <- factor(rldf$STATION)
 
-
-  y_axis <- ifelse(Parameter == "Flow", expression(Discharge ~ (m^3 / s)), "Level (m)")
+  y_axis <- ifelse(
+    Parameter == "Flow",
+    expression(Discharge ~ (m^3 / s)),
+    "Level (m)"
+  )
 
   ## Set the palette
   # palette(rainbow(length(unique(rldf$STATION_NUMBER))))
 
-  graphics::plot(Value ~ Date,
+  graphics::plot(
+    Value ~ Date,
     data = rldf,
     col = rldf$STATION,
     main = "Realtime Water Survey of Canada Gauges",
     xlab = "Date",
     ylab = "",
     bty = "L",
-    pch = 20, cex = 1
+    pch = 20,
+    cex = 1
   )
 
   graphics::title(ylab = y_axis, line = 2.25)

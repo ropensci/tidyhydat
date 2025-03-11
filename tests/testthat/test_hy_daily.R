@@ -20,5 +20,8 @@ test_that("hy_daily generates right column names", {
   skip_on_cran()
   hy_daily_out <- hy_daily("08MF005", hydat_path = hy_test_db())
 
-  expect_identical(colnames(hy_daily_out), c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol"))
+  expect_identical(
+    colnames(hy_daily_out),
+    c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
+  )
 })
