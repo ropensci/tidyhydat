@@ -1,7 +1,7 @@
 ---
 title: "Stepping into the HYDAT Database"
 author: "Dewey Dunnington"
-date: "2024-10-04"
+date: "2025-03-11"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Stepping into the HYDAT Database}
@@ -38,10 +38,11 @@ To list the tables, use `src_tbls()` from the **dplyr** package.
 
 ``` r
 src_tbls(src)
-#>  [1] "AGENCY_LIST"            "ANNUAL_INSTANT_PEAKS"   "ANNUAL_STATISTICS"      "CONCENTRATION_SYMBOLS"  "DATA_SYMBOLS"           "DATA_TYPES"             "DATUM_LIST"             "DLY_FLOWS"              "DLY_LEVELS"            
-#> [10] "MEASUREMENT_CODES"      "OPERATION_CODES"        "PEAK_CODES"             "PRECISION_CODES"        "REGIONAL_OFFICE_LIST"   "SAMPLE_REMARK_CODES"    "SED_DATA_TYPES"         "SED_DLY_LOADS"          "SED_DLY_SUSCON"        
-#> [19] "SED_SAMPLES"            "SED_SAMPLES_PSD"        "SED_VERTICAL_LOCATION"  "SED_VERTICAL_SYMBOLS"   "STATIONS"               "STN_DATA_COLLECTION"    "STN_DATA_RANGE"         "STN_DATUM_CONVERSION"   "STN_DATUM_UNRELATED"   
-#> [28] "STN_OPERATION_SCHEDULE" "STN_REGULATION"         "STN_REMARKS"            "STN_REMARK_CODES"       "STN_STATUS_CODES"       "VERSION"
+#>  [1] "AGENCY_LIST"            "ANNUAL_INSTANT_PEAKS"   "ANNUAL_STATISTICS"      "CONCENTRATION_SYMBOLS"  "DATA_SYMBOLS"           "DATA_TYPES"             "DATUM_LIST"            
+#>  [8] "DLY_FLOWS"              "DLY_LEVELS"             "MEASUREMENT_CODES"      "OPERATION_CODES"        "PEAK_CODES"             "PRECISION_CODES"        "REGIONAL_OFFICE_LIST"  
+#> [15] "SAMPLE_REMARK_CODES"    "SED_DATA_TYPES"         "SED_DLY_LOADS"          "SED_DLY_SUSCON"         "SED_SAMPLES"            "SED_SAMPLES_PSD"        "SED_VERTICAL_LOCATION" 
+#> [22] "SED_VERTICAL_SYMBOLS"   "STATIONS"               "STN_DATA_COLLECTION"    "STN_DATA_RANGE"         "STN_DATUM_CONVERSION"   "STN_DATUM_UNRELATED"    "STN_OPERATION_SCHEDULE"
+#> [29] "STN_REGULATION"         "STN_REMARKS"            "STN_REMARK_CODES"       "STN_STATUS_CODES"       "VERSION"
 ```
 
 To inspect any particular table, use the `tbl()` function with the `src` and the table name.

@@ -17,7 +17,6 @@ checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-proj
 [![](http://badges.ropensci.org/152_status.svg)](https://github.com/ropensci/software-review/issues/152)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00511/status.svg)](https://doi.org/10.21105/joss.00511)
 [![DOI](https://zenodo.org/badge/100978874.svg)](https://zenodo.org/badge/latestdoi/100978874)
-[![R-CMD-check](https://github.com/ropensci/tidyhydat/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/tidyhydat/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## What does `tidyhydat` do?
@@ -84,22 +83,23 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2024-10-04 21:22:54.830085 (UTC)
-    #>   Date range: 2024-09-04 to 2024-10-04 
-    #> # A tibble: 17,574 × 8
-    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade Symbol Code 
-    #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr> <chr>  <chr>
-    #>  1 08MF005        BC                  2024-09-04 08:00:00 Flow       1830 <NA>  <NA>   1    
-    #>  2 08MF005        BC                  2024-09-04 08:05:00 Flow       1830 <NA>  <NA>   1    
-    #>  3 08MF005        BC                  2024-09-04 08:10:00 Flow       1830 <NA>  <NA>   1    
-    #>  4 08MF005        BC                  2024-09-04 08:15:00 Flow       1840 <NA>  <NA>   1    
-    #>  5 08MF005        BC                  2024-09-04 08:20:00 Flow       1840 <NA>  <NA>   1    
-    #>  6 08MF005        BC                  2024-09-04 08:25:00 Flow       1830 <NA>  <NA>   1    
-    #>  7 08MF005        BC                  2024-09-04 08:30:00 Flow       1830 <NA>  <NA>   1    
-    #>  8 08MF005        BC                  2024-09-04 08:35:00 Flow       1830 <NA>  <NA>   1    
-    #>  9 08MF005        BC                  2024-09-04 08:40:00 Flow       1830 <NA>  <NA>   1    
-    #> 10 08MF005        BC                  2024-09-04 08:45:00 Flow       1830 <NA>  <NA>   1    
-    #> # ℹ 17,564 more rows
+    #>   Queried on: 2025-03-11 19:53:39.321743 (UTC)
+    #>   Date range: 2025-02-09 to 2025-03-11 
+    #> # A tibble: 17,520 × 8
+    #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
+    #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
+    #>  1 08MF005        BC                  2025-02-09 08:00:00 Flow        612 <NA> 
+    #>  2 08MF005        BC                  2025-02-09 08:05:00 Flow        612 <NA> 
+    #>  3 08MF005        BC                  2025-02-09 08:10:00 Flow        613 <NA> 
+    #>  4 08MF005        BC                  2025-02-09 08:15:00 Flow        611 <NA> 
+    #>  5 08MF005        BC                  2025-02-09 08:20:00 Flow        611 <NA> 
+    #>  6 08MF005        BC                  2025-02-09 08:25:00 Flow        611 <NA> 
+    #>  7 08MF005        BC                  2025-02-09 08:30:00 Flow        610 <NA> 
+    #>  8 08MF005        BC                  2025-02-09 08:35:00 Flow        611 <NA> 
+    #>  9 08MF005        BC                  2025-02-09 08:40:00 Flow        611 <NA> 
+    #> 10 08MF005        BC                  2025-02-09 08:45:00 Flow        611 <NA> 
+    #> # ℹ 17,510 more rows
+    #> # ℹ 2 more variables: Symbol <chr>, Code <chr>
 
 Or we can use `realtime_ws`:
 
@@ -111,20 +111,22 @@ Or we can use `realtime_ws`:
     )
     #> All station successfully retrieved
     #> All parameters successfully retrieved
-    #> # A tibble: 4,632 × 10
-    #>    STATION_NUMBER Date                Name_En           Value Unit  Grade Symbol Approval               Parameter Code 
-    #>    <chr>          <dttm>              <chr>             <dbl> <chr> <chr> <chr>  <chr>                      <dbl> <chr>
-    #>  1 08MF005        2024-09-20 00:00:00 Water temperature  17.0 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  2 08MF005        2024-09-20 01:00:00 Water temperature  17.0 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  3 08MF005        2024-09-20 02:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  4 08MF005        2024-09-20 03:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  5 08MF005        2024-09-20 04:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  6 08MF005        2024-09-20 05:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  7 08MF005        2024-09-20 06:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  8 08MF005        2024-09-20 07:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #>  9 08MF005        2024-09-20 08:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #> 10 08MF005        2024-09-20 09:00:00 Water temperature  17.1 °C    -1    <NA>   Provisional/Provisoire         5 TW   
-    #> # ℹ 4,622 more rows
+    #> # A tibble: 4,602 × 12
+    #>    STATION_NUMBER Date                Name_En  Value Unit  Grade Symbol Approval
+    #>    <chr>          <dttm>              <chr>    <dbl> <chr> <lgl> <chr>  <chr>   
+    #>  1 08MF005        2025-02-25 00:00:00 Water t…  4.46 °C    NA    <NA>   Provisi…
+    #>  2 08MF005        2025-02-25 01:00:00 Water t…  4.48 °C    NA    <NA>   Provisi…
+    #>  3 08MF005        2025-02-25 02:00:00 Water t…  4.49 °C    NA    <NA>   Provisi…
+    #>  4 08MF005        2025-02-25 03:00:00 Water t…  4.48 °C    NA    <NA>   Provisi…
+    #>  5 08MF005        2025-02-25 04:00:00 Water t…  4.5  °C    NA    <NA>   Provisi…
+    #>  6 08MF005        2025-02-25 05:00:00 Water t…  4.51 °C    NA    <NA>   Provisi…
+    #>  7 08MF005        2025-02-25 06:00:00 Water t…  4.52 °C    NA    <NA>   Provisi…
+    #>  8 08MF005        2025-02-25 07:00:00 Water t…  4.52 °C    NA    <NA>   Provisi…
+    #>  9 08MF005        2025-02-25 08:00:00 Water t…  4.55 °C    NA    <NA>   Provisi…
+    #> 10 08MF005        2025-02-25 09:00:00 Water t…  4.54 °C    NA    <NA>   Provisi…
+    #> # ℹ 4,592 more rows
+    #> # ℹ 4 more variables: Parameter <dbl>, Code <chr>, Qualifier <chr>,
+    #> #   Qualifiers <lgl>
 
 ## Compare realtime\_ws and realtime\_dd
 
@@ -189,7 +191,9 @@ Get citation information for `tidyhydat` in R by running:
 
     To cite package 'tidyhydat' in publications use:
 
-      Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric Data." _The Journal of Open Source Software_, *2*(20). doi:10.21105/joss.00511 <https://doi.org/10.21105/joss.00511>,
+      Albers S (2017). "tidyhydat: Extract and Tidy Canadian Hydrometric
+      Data." _The Journal of Open Source Software_, *2*(20).
+      doi:10.21105/joss.00511 <https://doi.org/10.21105/joss.00511>,
       <http://dx.doi.org/10.21105/joss.00511>.
 
     A BibTeX entry for LaTeX users is
