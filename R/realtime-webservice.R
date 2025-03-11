@@ -169,7 +169,7 @@ realtime_ws <- function(station_number,
   ## Rename columns to reflect tidyhydat naming
   csv_df = dplyr::rename(csv_df,
     STATION_NUMBER = ID,
-    Parameter = 'Parameter/Paramètre',
+    Parameter = "Parameter/Param\u00e8tre",
     Value = "Value/Valeur",
     Qualifier = "Qualifier/Qualificatif", 
     Symbol = "Symbol/Symbole", 
