@@ -48,14 +48,14 @@
 #' @source HYDAT
 #' @export
 
-
-
-hy_daily_flows <- function(station_number = NULL,
-                           hydat_path = NULL,
-                           prov_terr_state_loc = NULL,
-                           start_date = NULL,
-                           end_date = NULL,
-                           symbol_output = "code") {
+hy_daily_flows <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_date = NULL,
+  end_date = NULL,
+  symbol_output = "code"
+) {
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
@@ -82,20 +82,40 @@ hy_daily_flows <- function(station_number = NULL,
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
 
   ## by year
-  if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= lubridate::year(start_date))
-  if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR <= lubridate::year(end_date))
-
+  if (!dates_null[["start_is_null"]])
+    dly_flows <- dplyr::filter(
+      dly_flows,
+      !!sym_YEAR >= lubridate::year(start_date)
+    )
+  if (!dates_null[["end_is_null"]])
+    dly_flows <- dplyr::filter(
+      dly_flows,
+      !!sym_YEAR <= lubridate::year(end_date)
+    )
 
   dly_flows <- dplyr::select(
-    dly_flows, STATION_NUMBER, YEAR, MONTH,
-    NO_DAYS, dplyr::contains("FLOW")
+    dly_flows,
+    STATION_NUMBER,
+    YEAR,
+    MONTH,
+    NO_DAYS,
+    dplyr::contains("FLOW")
   )
   dly_flows <- dplyr::collect(dly_flows)
 
-  if (is.data.frame(dly_flows) && nrow(dly_flows) == 0) stop("No flow data for this station in HYDAT")
+  if (is.data.frame(dly_flows) && nrow(dly_flows) == 0)
+    stop("No flow data for this station in HYDAT")
 
-  dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, -(STATION_NUMBER:NO_DAYS))
-  dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable)))
+  dly_flows <- tidyr::gather(
+    dly_flows,
+    !!sym_variable,
+    !!sym_temp,
+    -(STATION_NUMBER:NO_DAYS)
+  )
+  dly_flows <- dplyr::mutate(
+    dly_flows,
+    DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", "", variable))
+  )
   dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", "", variable))
   dly_flows <- tidyr::spread(dly_flows, variable, temp)
   dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
@@ -103,43 +123,71 @@ hy_daily_flows <- function(station_number = NULL,
   dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
 
   ## convert into R date.
-  dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY)))
+  dly_flows <- dplyr::mutate(
+    dly_flows,
+    Date = lubridate::ymd(paste0(YEAR, "-", MONTH, "-", DAY))
+  )
 
   ## Then when a date column exist fine tune the subset
-  if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
-  if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
+  if (!dates_null[["start_is_null"]])
+    dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
+  if (!dates_null[["end_is_null"]])
+    dly_flows <- dplyr::filter(dly_flows, !!sym_Date <= end_date)
 
-  dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, by = c("FLOW_SYMBOL" = "SYMBOL_ID"))
+  dly_flows <- dplyr::left_join(
+    dly_flows,
+    tidyhydat::hy_data_symbols,
+    by = c("FLOW_SYMBOL" = "SYMBOL_ID")
+  )
   dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
 
   ## Control for symbol ouput
   if (symbol_output == "code") {
     dly_flows <- dplyr::select(
-      dly_flows, STATION_NUMBER, Date, Parameter, FLOW,
+      dly_flows,
+      STATION_NUMBER,
+      Date,
+      Parameter,
+      FLOW,
       FLOW_SYMBOL
     )
   }
 
   if (symbol_output == "english") {
     dly_flows <- dplyr::select(
-      dly_flows, STATION_NUMBER, Date,
-      Parameter, FLOW, SYMBOL_EN
+      dly_flows,
+      STATION_NUMBER,
+      Date,
+      Parameter,
+      FLOW,
+      SYMBOL_EN
     )
   }
 
   if (symbol_output == "french") {
     dly_flows <- dplyr::select(
-      dly_flows, STATION_NUMBER, Date,
-      Parameter, FLOW, SYMBOL_FR
+      dly_flows,
+      STATION_NUMBER,
+      Date,
+      Parameter,
+      FLOW,
+      SYMBOL_FR
     )
   }
 
-
   dly_flows <- dplyr::arrange(dly_flows, Date)
 
-  colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Symbol")
+  colnames(dly_flows) <- c(
+    "STATION_NUMBER",
+    "Date",
+    "Parameter",
+    "Value",
+    "Symbol"
+  )
 
-
-  attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
+  attr(dly_flows, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(dly_flows$STATION_NUMBER)
+  )
   as.hy(dly_flows)
 }

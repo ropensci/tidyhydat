@@ -37,8 +37,12 @@
 #' hy_daily(station_number = c("02JE013", "08MF005"))
 #' }
 #'
-hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,
-                     hydat_path = NULL, ...) {
+hy_daily <- function(
+  station_number = NULL,
+  prov_terr_state_loc = NULL,
+  hydat_path = NULL,
+  ...
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -51,15 +55,12 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,
   ## Create an empty tibble
   daily <- dplyr::tibble()
 
-
   ## Query each parameter then check if it returned a tibble
 
   ## flows
   flows <- handle_error(
     suppressMessages(hy_daily_flows(stns, hydat_path = hydat_con, ...))
   )
-
-
 
   if (inherits(flows, "tbl_df")) daily <- flows
 
@@ -84,11 +85,17 @@ hy_daily <- function(station_number = NULL, prov_terr_state_loc = NULL,
 
   if (inherits(suscon, "tbl_df")) daily <- dplyr::bind_rows(daily, suscon)
 
-
   if (nrow(daily) == 0) {
-    info(paste0("No data for ", station_number, ". Did you correctly input station name or province?"))
+    info(paste0(
+      "No data for ",
+      station_number,
+      ". Did you correctly input station name or province?"
+    ))
   }
 
-  attr(daily, "missed_stns") <- setdiff(unique(stns), unique(daily$STATION_NUMBER))
+  attr(daily, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(daily$STATION_NUMBER)
+  )
   as.hy(dplyr::arrange(daily, STATION_NUMBER, Date))
 }

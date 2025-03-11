@@ -48,13 +48,13 @@
 #' @source HYDAT
 #' @export
 
-
-
-hy_monthly_levels <- function(station_number = NULL,
-                              hydat_path = NULL,
-                              prov_terr_state_loc = NULL,
-                              start_date = NULL,
-                              end_date = NULL) {
+hy_monthly_levels <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_date = NULL,
+  end_date = NULL
+) {
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
@@ -76,13 +76,24 @@ hy_monthly_levels <- function(station_number = NULL,
 
   ## Data manipulations to make it "tidy"
   monthly_levels <- dplyr::tbl(hydat_con, "DLY_LEVELS")
-  monthly_levels <- dplyr::filter(monthly_levels, !!sym_STATION_NUMBER %in% stns)
+  monthly_levels <- dplyr::filter(
+    monthly_levels,
+    !!sym_STATION_NUMBER %in% stns
+  )
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
 
   ## by year
-  if (!dates_null[["start_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR >= lubridate::year(start_date))
-  if (!dates_null[["end_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, !!sym_YEAR <= lubridate::year(end_date))
+  if (!dates_null[["start_is_null"]])
+    monthly_levels <- dplyr::filter(
+      monthly_levels,
+      !!sym_YEAR >= lubridate::year(start_date)
+    )
+  if (!dates_null[["end_is_null"]])
+    monthly_levels <- dplyr::filter(
+      monthly_levels,
+      !!sym_YEAR <= lubridate::year(end_date)
+    )
 
   monthly_levels <- dplyr::select(monthly_levels, STATION_NUMBER:MAX)
   monthly_levels <- dplyr::collect(monthly_levels)
@@ -93,32 +104,63 @@ hy_monthly_levels <- function(station_number = NULL,
 
   ## Need to rename columns for gather
   colnames(monthly_levels) <- c(
-    "STATION_NUMBER", "Year", "Month", "PRECISION_CODE", "Full_month", "No_days", "MEAN_Value",
-    "TOTAL_Value", "MIN_DAY", "MIN_Value", "MAX_DAY", "MAX_Value"
+    "STATION_NUMBER",
+    "Year",
+    "Month",
+    "PRECISION_CODE",
+    "Full_month",
+    "No_days",
+    "MEAN_Value",
+    "TOTAL_Value",
+    "MIN_DAY",
+    "MIN_Value",
+    "MAX_DAY",
+    "MAX_Value"
   )
 
-
-
-  monthly_levels <- tidyr::gather(monthly_levels, !!sym_variable, !!sym_temp, -(STATION_NUMBER:No_days))
-  monthly_levels <- tidyr::separate(monthly_levels, !!sym_variable, into = c("Sum_stat", "temp2"), sep = "_")
+  monthly_levels <- tidyr::gather(
+    monthly_levels,
+    !!sym_variable,
+    !!sym_temp,
+    -(STATION_NUMBER:No_days)
+  )
+  monthly_levels <- tidyr::separate(
+    monthly_levels,
+    !!sym_variable,
+    into = c("Sum_stat", "temp2"),
+    sep = "_"
+  )
 
   monthly_levels <- tidyr::spread(monthly_levels, !!sym_temp2, !!sym_temp)
 
   ## convert into R date for date of occurence.
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = paste0(Year, "-", Month, "-", DAY))
+  monthly_levels <- dplyr::mutate(
+    monthly_levels,
+    Date_occurred = paste0(Year, "-", Month, "-", DAY)
+  )
 
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = ifelse(is.na(DAY), NA, Date_occurred))
-  monthly_levels <- dplyr::mutate(monthly_levels, Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE))
+  monthly_levels <- dplyr::mutate(
+    monthly_levels,
+    Date_occurred = ifelse(is.na(DAY), NA, Date_occurred)
+  )
+  monthly_levels <- dplyr::mutate(
+    monthly_levels,
+    Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE)
+  )
 
   ## Then when a date column exist fine tune the subset
-  if (!dates_null[["start_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, Date_occurred >= start_date)
-  if (!dates_null[["end_is_null"]]) monthly_levels <- dplyr::filter(monthly_levels, Date_occurred <= end_date)
+  if (!dates_null[["start_is_null"]])
+    monthly_levels <- dplyr::filter(monthly_levels, Date_occurred >= start_date)
+  if (!dates_null[["end_is_null"]])
+    monthly_levels <- dplyr::filter(monthly_levels, Date_occurred <= end_date)
 
   monthly_levels <- dplyr::select(monthly_levels, -DAY)
   monthly_levels <- dplyr::mutate(monthly_levels, Full_month = Full_month == 1)
 
-
-  attr(monthly_levels, "missed_stns") <- setdiff(unique(stns), unique(monthly_levels$STATION_NUMBER))
+  attr(monthly_levels, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(monthly_levels$STATION_NUMBER)
+  )
   as.hy(monthly_levels)
 }

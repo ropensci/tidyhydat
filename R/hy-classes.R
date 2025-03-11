@@ -25,7 +25,11 @@ print.hy <- function(x, ...) {
 }
 
 summary_msg <- function(x) {
-  cat(paste0("  Queried from version of HYDAT released on ", as.Date(hy_version()$Date), "\n"))
+  cat(paste0(
+    "  Queried from version of HYDAT released on ",
+    as.Date(hy_version()$Date),
+    "\n"
+  ))
 
   n_records <- format(nrow(x), big.mark = ",")
   cat(paste0("   Observations:                      ", n_records, "\n"))
@@ -36,11 +40,19 @@ summary_msg <- function(x) {
   }
 
   if ("PROV_TERR_STATE_LOC" %in% names(x)) {
-    cat(paste0("   Jurisdictions: ", paste0(unique(x$PROV_TERR_STATE_LOC), collapse = ", "), "\n"))
+    cat(paste0(
+      "   Jurisdictions: ",
+      paste0(unique(x$PROV_TERR_STATE_LOC), collapse = ", "),
+      "\n"
+    ))
   }
 
   if ("Parameter" %in% names(x)) {
-    cat(paste0("   Parameter(s):                      ", paste0(unique(x$Parameter), collapse = "/"), "\n"))
+    cat(paste0(
+      "   Parameter(s):                      ",
+      paste0(unique(x$Parameter), collapse = "/"),
+      "\n"
+    ))
   }
 }
 
@@ -58,12 +70,17 @@ missed_station_msg <- function(x) {
   cat("   Stations requested but not returned: \n")
   if (length(differ) != 0) {
     if (length(differ) > 50) {
-      cat(crayon::cyan("     More than 50 stations requested but not returned. \n"))
-      cat(crayon::cyan(paste0("     See object attributes for complete list of missing stations.\n")))
+      cat(crayon::cyan(
+        "     More than 50 stations requested but not returned. \n"
+      ))
+      cat(crayon::cyan(paste0(
+        "     See object attributes for complete list of missing stations.\n"
+      )))
     } else {
       cat(
         crayon::cyan(
-          paste0("    ",
+          paste0(
+            "    ",
             strwrap(
               paste0(differ, collapse = " "),
               width = 40

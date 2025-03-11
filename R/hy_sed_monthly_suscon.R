@@ -43,13 +43,13 @@
 #' @source HYDAT
 #' @export
 
-
-
-hy_sed_monthly_suscon <- function(station_number = NULL,
-                                  hydat_path = NULL,
-                                  prov_terr_state_loc = NULL,
-                                  start_date = NULL,
-                                  end_date = NULL) {
+hy_sed_monthly_suscon <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_date = NULL,
+  end_date = NULL
+) {
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
@@ -71,14 +71,24 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
 
   ## Data manipulations to make it "tidy"
   sed_monthly_suscon <- dplyr::tbl(hydat_con, "SED_DLY_SUSCON")
-  sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_STATION_NUMBER %in% stns)
+  sed_monthly_suscon <- dplyr::filter(
+    sed_monthly_suscon,
+    !!sym_STATION_NUMBER %in% stns
+  )
 
   ## Do the initial subset to take advantage of dbplyr only issuing sql query when it has too
 
   ## by year
-  if (!dates_null[["start_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR >= lubridate::year(start_date))
-  if (!dates_null[["end_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, !!sym_YEAR <= lubridate::year(end_date))
-
+  if (!dates_null[["start_is_null"]])
+    sed_monthly_suscon <- dplyr::filter(
+      sed_monthly_suscon,
+      !!sym_YEAR >= lubridate::year(start_date)
+    )
+  if (!dates_null[["end_is_null"]])
+    sed_monthly_suscon <- dplyr::filter(
+      sed_monthly_suscon,
+      !!sym_YEAR <= lubridate::year(end_date)
+    )
 
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, STATION_NUMBER:MAX)
   sed_monthly_suscon <- dplyr::collect(sed_monthly_suscon)
@@ -89,31 +99,74 @@ hy_sed_monthly_suscon <- function(station_number = NULL,
 
   ## Need to rename columns for gather
   colnames(sed_monthly_suscon) <- c(
-    "STATION_NUMBER", "Year", "Month", "Full_Month", "No_days",
-    "TOTAL_Value", "MIN_DAY", "MIN_Value", "MAX_DAY", "MAX_Value"
+    "STATION_NUMBER",
+    "Year",
+    "Month",
+    "Full_Month",
+    "No_days",
+    "TOTAL_Value",
+    "MIN_DAY",
+    "MIN_Value",
+    "MAX_DAY",
+    "MAX_Value"
   )
 
+  sed_monthly_suscon <- tidyr::gather(
+    sed_monthly_suscon,
+    !!sym_variable,
+    !!sym_temp,
+    -(STATION_NUMBER:No_days)
+  )
+  sed_monthly_suscon <- tidyr::separate(
+    sed_monthly_suscon,
+    !!sym_variable,
+    into = c("Sum_stat", "temp2"),
+    sep = "_"
+  )
 
-
-  sed_monthly_suscon <- tidyr::gather(sed_monthly_suscon, !!sym_variable, !!sym_temp, -(STATION_NUMBER:No_days))
-  sed_monthly_suscon <- tidyr::separate(sed_monthly_suscon, !!sym_variable, into = c("Sum_stat", "temp2"), sep = "_")
-
-  sed_monthly_suscon <- tidyr::spread(sed_monthly_suscon, !!sym_temp2, !!sym_temp)
+  sed_monthly_suscon <- tidyr::spread(
+    sed_monthly_suscon,
+    !!sym_temp2,
+    !!sym_temp
+  )
 
   ## convert into R date for date of occurence.
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = paste0(Year, "-", Month, "-", DAY))
+  sed_monthly_suscon <- dplyr::mutate(
+    sed_monthly_suscon,
+    Date_occurred = paste0(Year, "-", Month, "-", DAY)
+  )
 
   ## Check if DAY is NA and if so give it an NA value so the date parse correctly.
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = ifelse(is.na(DAY), NA, Date_occurred))
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE))
+  sed_monthly_suscon <- dplyr::mutate(
+    sed_monthly_suscon,
+    Date_occurred = ifelse(is.na(DAY), NA, Date_occurred)
+  )
+  sed_monthly_suscon <- dplyr::mutate(
+    sed_monthly_suscon,
+    Date_occurred = lubridate::ymd(Date_occurred, quiet = TRUE)
+  )
 
   ## Then when a date column exist fine tune the subset
-  if (!dates_null[["start_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, Date_occurred >= start_date)
-  if (!dates_null[["end_is_null"]]) sed_monthly_suscon <- dplyr::filter(sed_monthly_suscon, Date_occurred <= end_date)
+  if (!dates_null[["start_is_null"]])
+    sed_monthly_suscon <- dplyr::filter(
+      sed_monthly_suscon,
+      Date_occurred >= start_date
+    )
+  if (!dates_null[["end_is_null"]])
+    sed_monthly_suscon <- dplyr::filter(
+      sed_monthly_suscon,
+      Date_occurred <= end_date
+    )
 
   sed_monthly_suscon <- dplyr::select(sed_monthly_suscon, -DAY)
-  sed_monthly_suscon <- dplyr::mutate(sed_monthly_suscon, Full_Month = Full_Month == 1)
+  sed_monthly_suscon <- dplyr::mutate(
+    sed_monthly_suscon,
+    Full_Month = Full_Month == 1
+  )
 
-  attr(sed_monthly_suscon, "missed_stns") <- setdiff(unique(stns), unique(sed_monthly_suscon$STATION_NUMBER))
+  attr(sed_monthly_suscon, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(sed_monthly_suscon$STATION_NUMBER)
+  )
   as.hy(sed_monthly_suscon)
 }

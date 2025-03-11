@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 #' Extract annual max/min instantaneous flows and water levels from HYDAT database
 #'
 #' Provides wrapper to turn the ANNUAL_INSTANT_PEAKS table in HYDAT into a tidy data frame of instantaneous flows and water levels.
@@ -36,11 +35,13 @@
 #' @source HYDAT
 #' @export
 #'
-hy_annual_instant_peaks <- function(station_number = NULL,
-                                    hydat_path = NULL,
-                                    prov_terr_state_loc = NULL,
-                                    start_year = NULL,
-                                    end_year = NULL) {
+hy_annual_instant_peaks <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  start_year = NULL,
+  end_year = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -62,7 +63,11 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::left_join(aip, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
 
   ## Add in Symbol
-  aip <- dplyr::left_join(aip, tidyhydat::hy_data_symbols, by = c("SYMBOL" = "SYMBOL_ID"))
+  aip <- dplyr::left_join(
+    aip,
+    tidyhydat::hy_data_symbols,
+    by = c("SYMBOL" = "SYMBOL_ID")
+  )
 
   ## If a year is supplied...
   if (!is.null(start_year)) aip <- dplyr::filter(aip, YEAR >= start_year)
@@ -72,36 +77,50 @@ hy_annual_instant_peaks <- function(station_number = NULL,
   aip <- dplyr::mutate(aip, PEAK_CODE = ifelse(PEAK_CODE == "H", "MAX", "MIN"))
 
   ## Parse PRECISION_CODE manually - there are only 2
-  aip <- dplyr::mutate(aip, PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)"))
+  aip <- dplyr::mutate(
+    aip,
+    PRECISION_CODE = ifelse(PRECISION_CODE == 8, "in m (to mm)", "in m (to cm)")
+  )
 
   ## Add in timezone information
   aip <- dplyr::left_join(aip, tidyhydat::allstations, by = c("STATION_NUMBER"))
 
   ## Convert to dttm
   ## Manually convert to UTC
-  aip <- dplyr::mutate(aip, Datetime = lubridate::make_datetime(
-    year = YEAR,
-    month = MONTH,
-    day = DAY,
-    hour = HOUR,
-    min = MINUTE
-  ) - lubridate::dhours(standard_offset))
-
-  aip <- dplyr::mutate(aip, Date = lubridate::make_date(
-    year = YEAR,
-    month = MONTH,
-    day = DAY
-  ))
-
-
-
-  ## Clean up and select only columns we need
-  aip <- dplyr::select(aip, STATION_NUMBER, Datetime, Date,
-    station_tz = station_tz, Parameter = DATA_TYPE_EN,
-    Value = PEAK, PEAK_CODE,
-    PRECISION_CODE, Symbol = SYMBOL_EN
+  aip <- dplyr::mutate(
+    aip,
+    Datetime = lubridate::make_datetime(
+      year = YEAR,
+      month = MONTH,
+      day = DAY,
+      hour = HOUR,
+      min = MINUTE
+    ) -
+      lubridate::dhours(standard_offset)
   )
 
+  aip <- dplyr::mutate(
+    aip,
+    Date = lubridate::make_date(
+      year = YEAR,
+      month = MONTH,
+      day = DAY
+    )
+  )
+
+  ## Clean up and select only columns we need
+  aip <- dplyr::select(
+    aip,
+    STATION_NUMBER,
+    Datetime,
+    Date,
+    station_tz = station_tz,
+    Parameter = DATA_TYPE_EN,
+    Value = PEAK,
+    PEAK_CODE,
+    PRECISION_CODE,
+    Symbol = SYMBOL_EN
+  )
 
   attr(aip, "missed_stns") <- setdiff(unique(stns), unique(aip$STATION_NUMBER))
   as.hy(aip)
