@@ -30,9 +30,7 @@ devtools::check() ## build locally
 ```
 library(rhub)
 
-check_with_rdevel()
-check_for_cran()
-check_on_windows()
+rhub_check(gh_url = 'https://github.com/ropensci/tidyhydat')
 
 ```
 

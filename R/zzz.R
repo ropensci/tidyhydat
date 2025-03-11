@@ -293,5 +293,8 @@ globalVariables(unique(c(
   "Name_En",
   "Name_Fr",
   "param_id",
-  "Unit"
+  "Unit",
+  "ID",
+  "Qualifier",
+  "Qualifiers"
 )))

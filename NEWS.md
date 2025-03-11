@@ -1,4 +1,4 @@
-# tidyhydat 0.7.0.9999
+# tidyhydat 0.7.1
 - add columns added by a webservice update (#213)
 - fix some partial matching in `realtime_add_local_datetime` internals
 - re-format all code with the lovely air tool
