@@ -1,3 +1,6 @@
+# tidyhydat 0.7.1.9000
+- fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+
 # tidyhydat 0.7.1
 - add columns added by a webservice update (#213)
 - fix some partial matching in `realtime_add_local_datetime` internals
