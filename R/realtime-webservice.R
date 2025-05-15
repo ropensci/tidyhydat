@@ -70,14 +70,14 @@ realtime_ws <- function(
 ) {
   if (is.null(parameters)) parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
 
-  if (any(!parameters %in% param_id$Parameter)) {
+  if (any(!parameters %in% tidyhydat::param_id$Parameter)) {
     stop(
       paste0(
         paste0(
           parameters[!parameters %in% tidyhydat::param_id$Parameter],
           collapse = ","
         ),
-        " are invalid parameters. Check param_id for a list of valid options."
+        " are invalid parameters. Check tidyhydat::param_id for a list of valid options."
       ),
       call. = FALSE
     )
