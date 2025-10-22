@@ -127,7 +127,14 @@ single_realtime_station <- function(station_number) {
 
 all_realtime_station <- function(PROV) {
   base_url <- base_url_datamart()
-  prov_url <- paste0(base_url, PROV, "/daily/", PROV, "_daily_hydrometric.csv")
+  prov_url <- paste0(
+    base_url,
+    "csv/",
+    PROV,
+    "/daily/",
+    PROV,
+    "_daily_hydrometric.csv"
+  )
 
   res <- realtime_parser(prov_url)
 
