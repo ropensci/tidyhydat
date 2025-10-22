@@ -1,5 +1,7 @@
-# tidyhydat 0.7.1.9000
+# tidyhydat 0.7.2
 - fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+- changed based datamart url (#228)
+- fail more gracefully and informatively when urls behind `realtime_*` functions are down or changed. (#229)
 
 # tidyhydat 0.7.1
 - add columns added by a webservice update (#213)

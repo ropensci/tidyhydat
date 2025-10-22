@@ -59,3 +59,27 @@ test_that("realtime_dd works when station is not realtime", {
   )
   expect_s3_class(realtime_dd(stn), "realtime")
 })
+
+test_that("single_realtime_station handles 404 gracefully", {
+  skip_on_cran()
+  local_mocked_bindings(
+    realtime_parser = function(file) NA_character_
+  )
+
+  result <- single_realtime_station("08MF005")
+  expect_s3_class(result, "tbl_df")
+  expect_true(all(is.na(result$Date)))
+  expect_equal(result$STATION_NUMBER[1], "08MF005")
+})
+
+test_that("all_realtime_station handles 404 gracefully", {
+  skip_on_cran()
+  local_mocked_bindings(
+    realtime_parser = function(file) NA_character_
+  )
+
+  result <- all_realtime_station("BC")
+  expect_s3_class(result, "tbl_df")
+  expect_true(all(is.na(result$Date)))
+  expect_equal(result$PROV_TERR_STATE_LOC[1], "BC")
+})

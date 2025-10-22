@@ -53,16 +53,23 @@ When you install `tidyhydat`, several other packages will be installed as well. 
 library(tidyhydat)
 library(dplyr)
 ```
-  
+
 ### HYDAT download
 To use many of the functions in the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's database of historical hydrometric data then tell R where to find the database. Conveniently `tidyhydat` does all this for you via:
 ```{r, eval=FALSE}
 download_hydat()
 ```
-This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this can take a long time! To see where HYDAT was saved you can run `hy_default_db()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
+
+This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `
+tidyhydat
+`'s function will look for it. Do be patient though as this can take a long time! To see where HYDAT was saved you can run `
+hy_default_db()
+`. Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
 
 ### Real-time
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `
+realtime_dd()
+` we can easily select specific stations by supplying a station of interest:
 ```{r}
 realtime_dd(station_number = "08MF005")
 ```
@@ -79,7 +86,9 @@ realtime_ws(
 ```
 
 ## Compare realtime_ws and realtime_dd
-`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](https://dd.weather.gc.ca/hydrometric/csv/). 
+
+
+`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](`r tidyhydat:::base_url_datamart()`). 
 `realtime_ws()` is an client for a web service hosted by ECCC. `realtime_ws()` has several difference to `realtime_dd()`. These include:
 
 - *Speed*: The `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries to `realtime_dd()` is more appropriate.
