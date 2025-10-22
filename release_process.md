@@ -4,12 +4,12 @@ output: github_document
 ---
 
 ## Update `allstations` data and documentation
-```
+```r
 source("data-raw/HYDAT_internal_data/process_internal_data.R")
 ```
 
 ## precompile vignettes
-```
+```r
 source("vignettes/precompile.R")
 ## Run all vignettes
 precompile()
@@ -19,7 +19,7 @@ precompile()
 http://shiny.andyteucher.ca/shinyapps/rver-deps/
 
 ## Build and check within `R/devtools`
-```
+```r
 devtools::check_win_devel()
 devtools::check_win_release()
 devtools::check_mac_release()
@@ -27,7 +27,7 @@ devtools::check() ## build locally
 ```
 
 ## Build and check on rhub
-```
+```r
 library(rhub)
 
 rhub_check(gh_url = 'https://github.com/ropensci/tidyhydat')
@@ -35,13 +35,13 @@ rhub_check(gh_url = 'https://github.com/ropensci/tidyhydat')
 ```
 
 ## Run this in the terminal
-```
+```bash
 R CMD build tidyhydat
 R CMD check tidyhydat_0.5.9.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## revedep check
-```
+```r
 revdepcheck::revdep_check(num_workers = 4)
 ```
 
@@ -50,12 +50,12 @@ revdepcheck::revdep_check(num_workers = 4)
 - Update cran-comments
 
 ## Actually release it
-```
+```r
 devtools::release()
 ```
 
 ## Once it is release create signed release on github
-```
+```bash
 git tag -s [version] -m "[version]"
 git push --tags
 ```
