@@ -1,3 +1,13 @@
+tidyhydat 0.7.2
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+
+- fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+- changed based datamart url (#228)
+- fail more gracefully and informatively when urls behind `realtime_*` functions are down or changed. (#229)
+
 tidyhydat 0.7.1
 =========================
 
