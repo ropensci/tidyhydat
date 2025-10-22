@@ -102,26 +102,37 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
   realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
   resp_str <- realtime_parser(realtime_link)
 
-  net_tibble <- readr::read_csv(
-    resp_str,
-    skip = 1,
-    col_names = c(
-      "STATION_NUMBER",
-      "STATION_NAME",
-      "LATITUDE",
-      "LONGITUDE",
-      "PROV_TERR_STATE_LOC",
-      "TIMEZONE"
-    ),
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      STATION_NAME = readr::col_character(),
-      LATITUDE = readr::col_double(),
-      LONGITUDE = readr::col_double(),
-      PROV_TERR_STATE_LOC = readr::col_character(),
-      TIMEZONE = readr::col_character()
+  if (is.na(resp_str)) {
+    net_tibble <- dplyr::tibble(
+      STATION_NUMBER = NA_character_,
+      STATION_NAME = NA_character_,
+      LATITUDE = NA_real_,
+      LONGITUDE = NA_real_,
+      PROV_TERR_STATE_LOC = NA_character_,
+      TIMEZONE = NA_character_
     )
-  )
+  } else {
+    net_tibble <- readr::read_csv(
+      resp_str,
+      skip = 1,
+      col_names = c(
+        "STATION_NUMBER",
+        "STATION_NAME",
+        "LATITUDE",
+        "LONGITUDE",
+        "PROV_TERR_STATE_LOC",
+        "TIMEZONE"
+      ),
+      col_types = readr::cols(
+        STATION_NUMBER = readr::col_character(),
+        STATION_NAME = readr::col_character(),
+        LATITUDE = readr::col_double(),
+        LONGITUDE = readr::col_double(),
+        PROV_TERR_STATE_LOC = readr::col_character(),
+        TIMEZONE = readr::col_character()
+      )
+    )
+  }
 
   if (is.null(prov)) {
     return(net_tibble)

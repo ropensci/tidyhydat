@@ -1,5 +1,6 @@
 # tidyhydat 0.7.1.9000
 - fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+- fail more gracefully and informatively when urls behind `realtime_*` functions are down or changed.
 
 # tidyhydat 0.7.1
 - add columns added by a webservice update (#213)

@@ -18,6 +18,8 @@ realtime_parser <- function(file) {
   req <- httr2::req_retry(req, max_tries = 3)
   resp <- tidyhydat_perform(req)
   if (httr2::resp_status(resp) == 404) {
+    red_message(paste0("URL not found (404): ", file))
+    red_message("The URL may be incorrect or the service may be temporarily unavailable.")
     resp <- NA_character_
   } else {
     resp <- httr2::resp_body_string(resp)
@@ -67,20 +69,7 @@ single_realtime_station <- function(station_number) {
 
   h_resp_str <- realtime_parser(infile[1])
   if (is.na(h_resp_str)) {
-    h <- dplyr::tibble(
-      A = station_number,
-      B = NA,
-      C = NA,
-      D = NA,
-      E = NA,
-      F = NA,
-      G = NA,
-      H = NA,
-      I = NA,
-      J = NA
-    )
-    colnames(h) <- colHeaders
-    h <- readr::type_convert(h, realtime_cols_types())
+    h <- create_empty_realtime_df(station_number)
   } else {
     h <- readr::read_csv(
       h_resp_str,
@@ -94,20 +83,7 @@ single_realtime_station <- function(station_number) {
   p_resp_str <- realtime_parser(infile[2])
 
   if (is.na(p_resp_str)) {
-    d <- dplyr::tibble(
-      A = station_number,
-      B = NA,
-      C = NA,
-      D = NA,
-      E = NA,
-      F = NA,
-      G = NA,
-      H = NA,
-      I = NA,
-      J = NA
-    )
-    colnames(d) <- colHeaders
-    d <- readr::type_convert(d, realtime_cols_types())
+    d <- create_empty_realtime_df(station_number)
   } else {
     d <- readr::read_csv(
       p_resp_str,
@@ -133,12 +109,17 @@ all_realtime_station <- function(PROV) {
 
   # Define column names as the same as HYDAT
   colHeaders <- realtime_cols_headers()
-  output <- readr::read_csv(
-    res,
-    skip = 1,
-    col_names = colHeaders,
-    col_types = realtime_cols_types()
-  )
+
+  if (is.na(res)) {
+    output <- create_empty_realtime_df(NA_character_)
+  } else {
+    output <- readr::read_csv(
+      res,
+      skip = 1,
+      col_names = colHeaders,
+      col_types = realtime_cols_types()
+    )
+  }
 
   ## Offloading tidying to another function
   realtime_tidy_data(output, PROV)
@@ -172,6 +153,24 @@ realtime_cols_headers <- function() {
     "Flow_SYMBOL",
     "Flow_CODE"
   )
+}
+
+create_empty_realtime_df <- function(station_number) {
+  colHeaders <- realtime_cols_headers()
+  empty_df <- dplyr::tibble(
+    A = station_number,
+    B = NA,
+    C = NA,
+    D = NA,
+    E = NA,
+    F = NA,
+    G = NA,
+    H = NA,
+    I = NA,
+    J = NA
+  )
+  colnames(empty_df) <- colHeaders
+  readr::type_convert(empty_df, realtime_cols_types())
 }
 
 
