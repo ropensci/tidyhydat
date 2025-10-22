@@ -51,7 +51,9 @@
 #' @family realtime functions
 #' @export
 realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
-  if (!has_internet()) stop("No access to internet", call. = FALSE)
+  if (!has_internet()) {
+    stop("No access to internet", call. = FALSE)
+  }
 
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
@@ -95,11 +97,16 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 #' }
 #'
 realtime_stations <- function(prov_terr_state_loc = NULL) {
-  if (!has_internet()) stop("No access to internet", call. = FALSE)
+  if (!has_internet()) {
+    stop("No access to internet", call. = FALSE)
+  }
 
   prov <- prov_terr_state_loc
 
-  realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
+  realtime_link <- paste0(
+    base_url_datamart(),
+    "/doc/hydrometric_StationList.csv"
+  )
   resp_str <- realtime_parser(realtime_link)
 
   if (is.na(resp_str)) {
@@ -236,4 +243,9 @@ realtime_daily_mean <- function(.data, na.rm = FALSE) {
   df_mean <- dplyr::arrange(df_mean, Parameter)
 
   dplyr::ungroup(df_mean)
+}
+
+
+base_url_datamart <- function() {
+  "https://dd.weather.gc.ca/today/hydrometric/"
 }
