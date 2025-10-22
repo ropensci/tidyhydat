@@ -37,7 +37,7 @@ rhub_check(gh_url = 'https://github.com/ropensci/tidyhydat')
 ## Run this in the terminal
 ```bash
 R CMD build tidyhydat
-R CMD check tidyhydat_0.5.9.tar.gz --as-cran ## or whatever the package name is
+R CMD check tidyhydat_0.7.2.tar.gz --as-cran ## or whatever the package name is
 ```
 
 ## revedep check

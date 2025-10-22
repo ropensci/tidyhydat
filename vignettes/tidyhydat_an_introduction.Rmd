@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2025-03-11"
+date: "2025-10-22"
 output:
   html_vignette:
      keep_md: true
@@ -42,7 +42,7 @@ hy_daily_flows(station_number = "08LA001")
 ```
 
 ```
-##   Queried from version of HYDAT released on 2025-01-17
+##   Queried from version of HYDAT released on 2025-10-14
 ##    Observations:                      32,081
 ##    Measurement flags:                 6,243
 ##    Parameter(s):                      Flow
@@ -87,15 +87,15 @@ hy_daily_flows(station_number = PEI_stns)
 ```
 
 ```
-##   Queried from version of HYDAT released on 2025-01-17
-##    Observations:                      126,290
-##    Measurement flags:                 22,203
+##   Queried from version of HYDAT released on 2025-10-14
+##    Observations:                      127,022
+##    Measurement flags:                 22,288
 ##    Parameter(s):                      Flow
-##    Date range:                        1961-08-01 to 2023-12-31 
+##    Date range:                        1961-08-01 to 2024-12-31 
 ##    Station(s) returned:               9
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 126,290 × 5
+## # A tibble: 127,022 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01CA003        1961-08-01 Flow         NA <NA>  
@@ -108,7 +108,7 @@ hy_daily_flows(station_number = PEI_stns)
 ##  8 01CB002        1961-08-04 Flow         NA <NA>  
 ##  9 01CA003        1961-08-05 Flow         NA <NA>  
 ## 10 01CB002        1961-08-05 Flow         NA <NA>  
-## # ℹ 126,280 more rows
+## # ℹ 127,012 more rows
 ```
 
 We can also merge our station choice and data extraction into one unified pipe which accomplishes a single goal. For example if for some reason we wanted all the stations in Canada that had the name "Canada" in them we unify that selection and data extraction process into a single pipe:
@@ -120,15 +120,15 @@ search_stn_name("canada") |>
 ```
 
 ```
-##   Queried from version of HYDAT released on 2025-01-17
-##    Observations:                      91,684
-##    Measurement flags:                 27,976
+##   Queried from version of HYDAT released on 2025-10-14
+##    Observations:                      92,416
+##    Measurement flags:                 28,256
 ##    Parameter(s):                      Flow
-##    Date range:                        1918-08-01 to 2023-12-31 
+##    Date range:                        1918-08-01 to 2024-12-31 
 ##    Station(s) returned:               7
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 91,684 × 5
+## # A tibble: 92,416 × 5
 ##    STATION_NUMBER Date       Parameter Value Symbol
 ##    <chr>          <date>     <chr>     <dbl> <chr> 
 ##  1 01AK001        1918-08-01 Flow      NA    <NA>  
@@ -141,7 +141,7 @@ search_stn_name("canada") |>
 ##  8 01AK001        1918-08-08 Flow       1.78 <NA>  
 ##  9 01AK001        1918-08-09 Flow       1.5  <NA>  
 ## 10 01AK001        1918-08-10 Flow       1.78 <NA>  
-## # ℹ 91,674 more rows
+## # ℹ 92,406 more rows
 ```
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
@@ -198,11 +198,11 @@ search_stn_name("liard")
 ##    STATION_NUMBER STATION_NAME                                    PROV_TERR_STATE_LOC LATITUDE LONGITUDE
 ##    <chr>          <chr>                                           <chr>                  <dbl>     <dbl>
 ##  1 10AA001        LIARD RIVER AT UPPER CROSSING                   YT                      60.1     -129.
-##  2 10BE001        LIARD RIVER AT LOWER CROSSING                   BC                      59.4     -126.
-##  3 10EC004        SOUTH NAHANNI RIVER NEAR LIARD RIVER CONFLUENCE NT                      61.0     -123.
-##  4 10AA006        LIARD RIVER BELOW SCURVY CREEK                  YT                      60.8     -131.
-##  5 10BE005        LIARD RIVER ABOVE BEAVER RIVER                  BC                      59.7     -124.
-##  6 10BE006        LIARD RIVER ABOVE KECHIKA RIVER                 BC                      59.7     -127.
+##  2 10AA006        LIARD RIVER BELOW SCURVY CREEK                  YT                      60.8     -131.
+##  3 10BE001        LIARD RIVER AT LOWER CROSSING                   BC                      59.4     -126.
+##  4 10BE005        LIARD RIVER ABOVE BEAVER RIVER                  BC                      59.7     -124.
+##  5 10BE006        LIARD RIVER ABOVE KECHIKA RIVER                 BC                      59.7     -127.
+##  6 10EC004        SOUTH NAHANNI RIVER NEAR LIARD RIVER CONFLUENCE NT                      61.0     -123.
 ##  7 10ED001        LIARD RIVER AT FORT LIARD                       NT                      60.2     -123.
 ##  8 10ED002        LIARD RIVER NEAR THE MOUTH                      NT                      61.7     -121.
 ##  9 10ED008        LIARD RIVER AT LINDBERG LANDING                 NT                      61.1     -123.
@@ -216,18 +216,18 @@ search_stn_number("08MF")
 
 ```
 ## # A tibble: 54 × 5
-##    STATION_NUMBER STATION_NAME                           PROV_TERR_STATE_LOC LATITUDE LONGITUDE
-##    <chr>          <chr>                                  <chr>                  <dbl>     <dbl>
-##  1 08MF005        FRASER RIVER AT HOPE                   BC                      49.4     -121.
-##  2 08MF035        FRASER RIVER NEAR AGASSIZ              BC                      49.2     -122.
-##  3 08MF038        FRASER RIVER AT CANNOR                 BC                      49.1     -122.
-##  4 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                      50.6     -122.
-##  5 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                      49.5     -121.
-##  6 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                      50.0     -122.
-##  7 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                      49.4     -121.
-##  8 08MF072        FRASER RIVER AT LAIDLAW                BC                      49.3     -122.
-##  9 08MF073        FRASER RIVER AT HARRISON MILLS         BC                      49.2     -122.
-## 10 08MF075        FRASER RIVER AT LOWER KENT             BC                      49.2     -122.
+##    STATION_NUMBER STATION_NAME                                PROV_TERR_STATE_LOC LATITUDE LONGITUDE
+##    <chr>          <chr>                                       <chr>                  <dbl>     <dbl>
+##  1 08MF001        ANDERSON RIVER NEAR BOSTON BAR              BC                      49.8     -121.
+##  2 08MF002        BOULDER CREEK NEAR LAIDLAW                  BC                      49.3     -122.
+##  3 08MF003        COQUIHALLA RIVER NEAR HOPE                  BC                      49.4     -121.
+##  4 08MF004        FRASER RIVER ABOVE THOMPSON RIVER           BC                      50.2     -122.
+##  5 08MF005        FRASER RIVER AT HOPE                        BC                      49.4     -121.
+##  6 08MF006        WAHLEACH CREEK NEAR LAIDLAW (UPPER STATION) BC                      49.3     -122.
+##  7 08MF007        NAHATLATCH RIVER AT OUTLET OF FRANCES LAKE  BC                      50.0     -122.
+##  8 08MF008        NAHATLATCH RIVER NEAR KEEFERS               BC                      50.0     -122.
+##  9 08MF009        SILVERHOPE CREEK NEAR HOPE                  BC                      49.4     -121.
+## 10 08MF011        STEIN RIVER NEAR LYTTON                     BC                      50.3     -122.
 ## # ℹ 44 more rows
 ```
 
