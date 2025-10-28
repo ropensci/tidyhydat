@@ -72,8 +72,8 @@ ws_daily_levels <- function(
 get_historical_data <- function(
     station_number,
     parameters = "flow",
-    start_date,
-    end_date) {
+    start_date = NULL,
+    end_date = NULL) {
   parameters <- match.arg(parameters, choices = c("level", "flow"))
 
   if (is.null(start_date)) {
@@ -82,6 +82,10 @@ get_historical_data <- function(
 
   if (is.null(end_date)) {
     stop("please provide a valid date for the end_date argument", call. = FALSE)
+  }
+
+  if (end_date < start_date) {
+    stop("end_date must be after start_date", call. = FALSE)
   }
 
   ## Build link for GET
