@@ -22,7 +22,7 @@ test_that("ws_daily_flows is empty with a nearish date", {
 
   expect_error(ws_daily_flows(
     station_number = "08MF005",
-    start_date = Sys.Date() - 2
+    start_date = Sys.Date() - 2,
     end_date = Sys.Date()
   ), "No data exists for this station query during the period chosen")
 })
