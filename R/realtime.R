@@ -246,6 +246,3 @@ realtime_daily_mean <- function(.data, na.rm = FALSE) {
 }
 
 
-base_url_datamart <- function() {
-  "https://dd.weather.gc.ca/today/hydrometric/"
-}

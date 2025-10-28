@@ -1,3 +1,6 @@
+# tidyhydat 0.7.2.9000
+- add historical webservice functions `ws_daily_flows` and `ws_daily_levels` (#211)
+
 # tidyhydat 0.7.2
 - fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
 - changed based datamart url (#228)

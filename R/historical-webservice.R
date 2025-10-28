@@ -85,7 +85,7 @@ get_historical_data <- function(
   }
 
   ## Build link for GET
-  baseurl <- "https://wateroffice.ec.gc.ca/services/daily_data/csv/inline?"
+  baseurl <- base_url_historical_webservice()
 
   query_url <- construct_url(
     venue = "historical",
