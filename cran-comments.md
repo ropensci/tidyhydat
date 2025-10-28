@@ -1,3 +1,60 @@
+tidyhydat 0.7.2
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+- changed based datamart url (#228)
+- fail more gracefully and informatively when urls behind `realtime_*` functions are down or changed. (#229)
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.3.1 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* ubuntu-devel, r: 'release' (rhub)
+* linux, r: 'devel' (rhub)
+* macos-arm64, r: 'devel' (rhub)
+* windows, r: 'devel' (rhub)
+  
+## revdepcheck results
+
+We checked 3 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+
+tidyhydat 0.7.1
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- add columns added by a webservice update (#213)
+- fix some partial matching in `realtime_add_local_datetime` internals
+- re-format all code with the lovely air tool
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.3.1 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* ubuntu-devel, r: 'release' (rhub)
+* linux, r: 'devel' (rhub)
+* macos-arm64, r: 'devel' (rhub)
+* windows, r: 'devel' (rhub)
+  
+## revdepcheck results
+
+We checked 3 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
+
 tidyhydat 0.7.0
 =========================
 

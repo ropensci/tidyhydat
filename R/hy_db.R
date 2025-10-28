@@ -1,4 +1,3 @@
-
 #' Open a connection to the HYDAT database
 #'
 #' This function gives low-level access to the underlying HYDAT database used by
@@ -50,7 +49,8 @@ hy_src <- function(hydat_path = NULL) {
     if (!file.exists(hydat_path)) {
       stop(sprintf(
         "No %s found at %s. Run download_hydat() to download the database.",
-        basename(hydat_path), dirname(hydat_path)
+        basename(hydat_path),
+        dirname(hydat_path)
       ))
     }
 

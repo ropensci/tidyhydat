@@ -10,9 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
-
-
 #' @title Function to chose a station based on consistent arguments for hydat functions.
 #'
 #' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
@@ -25,20 +22,32 @@
 #'
 station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
   if (!is.null(station_number) && !is.null(prov_terr_state_loc)) {
-    stop("Only specify one of station_number or prov_terr_state_loc.", call. = FALSE)
+    stop(
+      "Only specify one of station_number or prov_terr_state_loc.",
+      call. = FALSE
+    )
   }
 
   if (!is.null(prov_terr_state_loc) && prov_terr_state_loc[1] == "CA") {
     prov_terr_state_loc <- c(
-      "QC", "NB", "PE", "NS", "ON", "NL", "MB",
-      "AB", "SK", "NU", "NT", "BC", "YT"
+      "QC",
+      "NB",
+      "PE",
+      "NS",
+      "ON",
+      "NL",
+      "MB",
+      "AB",
+      "SK",
+      "NU",
+      "NT",
+      "BC",
+      "YT"
     )
   }
 
-
   ## Prov symbol
   sym_PROV_TERR_STATE_LOC <- sym("PROV_TERR_STATE_LOC")
-
 
   ## Get all stations
   if (is.null(station_number) && is.null(prov_terr_state_loc)) {
@@ -61,7 +70,8 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     ## Only possible values for prov_terr_state_loc
     stn_option <- unique(tidyhydat::allstations$PROV_TERR_STATE_LOC)
 
-    if (any(!prov_terr_state_loc %in% stn_option) == TRUE) stop("Invalid prov_terr_state_loc value")
+    if (any(!prov_terr_state_loc %in% stn_option) == TRUE)
+      stop("Invalid prov_terr_state_loc value")
 
     dplyr::tbl(hydat_con, "STATIONS") |>
       dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) |>
@@ -80,17 +90,25 @@ date_check <- function(start_date = NULL, end_date = NULL) {
 
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {
-    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", start_date)) stop("Invalid date format. start_date need to be in YYYY-MM-DD format", call. = FALSE)
+    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", start_date))
+      stop(
+        "Invalid date format. start_date need to be in YYYY-MM-DD format",
+        call. = FALSE
+      )
   }
 
   if (!is.null(end_date)) {
-    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", end_date)) stop("Invalid date format. end_date need to be in YYYY-MM-DD format", call. = FALSE)
+    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", end_date))
+      stop(
+        "Invalid date format. end_date need to be in YYYY-MM-DD format",
+        call. = FALSE
+      )
   }
 
   if (!is.null(start_date) & !is.null(end_date)) {
-    if (lubridate::ymd(end_date) < lubridate::ymd(start_date)) stop("start_date is after end_date. Try swapping values.", call. = FALSE)
+    if (lubridate::ymd(end_date) < lubridate::ymd(start_date))
+      stop("start_date is after end_date. Try swapping values.", call. = FALSE)
   }
-
 
   invisible(list(start_is_null = start_is_null, end_is_null = end_is_null))
 }
@@ -114,7 +132,9 @@ differ_msg <- function(stns_input, stns_output) {
         "The following station(s) were not retrieved: ",
         paste0(differ, sep = " ")
       )
-      message("Check station number typos or if it is a valid station in the network")
+      message(
+        "Check station number typos or if it is a valid station in the network"
+      )
     } else {
       message(
         "More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified."
@@ -136,7 +156,12 @@ multi_param_msg <- function(data_arg, stns, params) {
   ## Is the data anything other than a tibble?
   if (!inherits(data_arg, "tbl_df")) {
     return(
-      cli::cat_line(paste0(crayon::red(cli::symbol$cross), " ", stns, collapse = "\n"))
+      cli::cat_line(paste0(
+        crayon::red(cli::symbol$cross),
+        " ",
+        stns,
+        collapse = "\n"
+      ))
     )
   }
 
@@ -150,7 +175,12 @@ multi_param_msg <- function(data_arg, stns, params) {
 
   good_stns <- c()
   if (length(flow_stns) > 0L) {
-    good_stns <- paste0(crayon::green(cli::symbol$tick), " ", flow_stns, collapse = "\n")
+    good_stns <- paste0(
+      crayon::green(cli::symbol$tick),
+      " ",
+      flow_stns,
+      collapse = "\n"
+    )
   }
 
   ## Station not in output
@@ -158,7 +188,12 @@ multi_param_msg <- function(data_arg, stns, params) {
 
   bad_stns <- c()
   if (length(not_in) > 0L) {
-    bad_stns <- paste0(crayon::red(cli::symbol$cross), " ", not_in, collapse = "\n")
+    bad_stns <- paste0(
+      crayon::red(cli::symbol$cross),
+      " ",
+      not_in,
+      collapse = "\n"
+    )
   }
 
   cli::cat_line(paste0(good_stns, "\n", bad_stns))
@@ -184,24 +219,27 @@ network_check <- function(url, proxy_url = NULL, proxy_port = NULL) {
   if (!is.null(proxy_url) && !is.null(proxy_port)) {
     req <- httr2::req_proxy(req, url = proxy_url, port = proxy_port)
   }
-  tryCatch(httr2::req_perform(req),
-    error = function(e) {
-      if (grepl("Timeout was reached:", e$message)) {
-        stop(paste0("Could not connect to HYDAT source. Check your connection settings.
+  tryCatch(httr2::req_perform(req), error = function(e) {
+    if (grepl("Timeout was reached:", e$message)) {
+      stop(
+        paste0(
+          "Could not connect to HYDAT source. Check your connection settings.
             Try downloading HYDAT_sqlite3 from this url:
             [http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/]
-            and unzipping the saved file to this directory: ", hy_dir()),
-          call. = FALSE
-        )
-      }
+            and unzipping the saved file to this directory: ",
+          hy_dir()
+        ),
+        call. = FALSE
+      )
     }
-  )
+  })
 }
 
 tidyhydat_agent <- function(req) {
   httr2::req_user_agent(
-    req, 
-    string = "https://github.com/ropensci/tidyhydat")
+    req,
+    string = "https://github.com/ropensci/tidyhydat"
+  )
 }
 
 
@@ -226,7 +264,8 @@ tidyhydat_agent <- function(req) {
 #' }
 #'
 pull_station_number <- function(.data) {
-  if (!("STATION_NUMBER" %in% colnames(.data))) stop("No STATION_NUMBER column present", call. = FALSE)
+  if (!("STATION_NUMBER" %in% colnames(.data)))
+    stop("No STATION_NUMBER column present", call. = FALSE)
 
   unique(.data$STATION_NUMBER)
 }
@@ -235,15 +274,39 @@ pull_station_number <- function(.data) {
 ## expected tables
 hy_expected_tbls <- function() {
   c(
-    "AGENCY_LIST", "ANNUAL_INSTANT_PEAKS", "ANNUAL_STATISTICS",
-    "CONCENTRATION_SYMBOLS", "DATA_SYMBOLS", "DATA_TYPES", "DATUM_LIST",
-    "DLY_FLOWS", "DLY_LEVELS", "MEASUREMENT_CODES", "OPERATION_CODES",
-    "PEAK_CODES", "PRECISION_CODES", "REGIONAL_OFFICE_LIST", "SAMPLE_REMARK_CODES",
-    "SED_DATA_TYPES", "SED_DLY_LOADS", "SED_DLY_SUSCON", "SED_SAMPLES",
-    "SED_SAMPLES_PSD", "SED_VERTICAL_LOCATION", "SED_VERTICAL_SYMBOLS",
-    "STATIONS", "STN_DATA_COLLECTION", "STN_DATA_RANGE", "STN_DATUM_CONVERSION",
-    "STN_DATUM_UNRELATED", "STN_OPERATION_SCHEDULE", "STN_REGULATION",
-    "STN_REMARKS", "STN_REMARK_CODES", "STN_STATUS_CODES", "VERSION"
+    "AGENCY_LIST",
+    "ANNUAL_INSTANT_PEAKS",
+    "ANNUAL_STATISTICS",
+    "CONCENTRATION_SYMBOLS",
+    "DATA_SYMBOLS",
+    "DATA_TYPES",
+    "DATUM_LIST",
+    "DLY_FLOWS",
+    "DLY_LEVELS",
+    "MEASUREMENT_CODES",
+    "OPERATION_CODES",
+    "PEAK_CODES",
+    "PRECISION_CODES",
+    "REGIONAL_OFFICE_LIST",
+    "SAMPLE_REMARK_CODES",
+    "SED_DATA_TYPES",
+    "SED_DLY_LOADS",
+    "SED_DLY_SUSCON",
+    "SED_SAMPLES",
+    "SED_SAMPLES_PSD",
+    "SED_VERTICAL_LOCATION",
+    "SED_VERTICAL_SYMBOLS",
+    "STATIONS",
+    "STN_DATA_COLLECTION",
+    "STN_DATA_RANGE",
+    "STN_DATUM_CONVERSION",
+    "STN_DATUM_UNRELATED",
+    "STN_OPERATION_SCHEDULE",
+    "STN_REGULATION",
+    "STN_REMARKS",
+    "STN_REMARK_CODES",
+    "STN_STATUS_CODES",
+    "VERSION"
   )
 }
 
@@ -253,7 +316,7 @@ is_mac <- function() {
   grepl("darwin", tolower(system_info["sysname"]))
 }
 
-tidyhydat_perform  <- function(req, ...) {
+tidyhydat_perform <- function(req, ...) {
   req <- httr2::req_retry(req, max_tries = 5)
   req <- httr2::req_progress(req)
   httr2::req_perform(req, ...)

@@ -10,8 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
-
 #' Extract station regulation from the HYDAT database
 #'
 #' Provides wrapper to turn the hy_stn_regulation table in HYDAT into a tidy data frame of station regulation.
@@ -44,9 +42,11 @@
 #' @source HYDAT
 #' @export
 
-hy_stn_regulation <- function(station_number = NULL,
-                              hydat_path = NULL,
-                              prov_terr_state_loc = NULL) {
+hy_stn_regulation <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -67,6 +67,9 @@ hy_stn_regulation <- function(station_number = NULL,
 
   colnames(stn_reg) <- c("STATION_NUMBER", "Year_from", "Year_to", "REGULATED")
 
-  attr(stn_reg, "missed_stns") <- setdiff(unique(stns), unique(stn_reg$STATION_NUMBER))
+  attr(stn_reg, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_reg$STATION_NUMBER)
+  )
   as.hy(stn_reg)
 }

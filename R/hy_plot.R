@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 #' Plot historical and realtime data
 #'
 #' This method plots either daily time series data from HYDAT or realtime data from
@@ -39,7 +38,8 @@ plot.hy <- function(x = NULL, ...) {
   }
 
   ### Join with meta data to get station name
-  hydf <- dplyr::left_join(x,
+  hydf <- dplyr::left_join(
+    x,
     suppressMessages(tidyhydat::allstations),
     by = c("STATION_NUMBER")
   )
@@ -50,7 +50,11 @@ plot.hy <- function(x = NULL, ...) {
 
   num_stns <- length(unique(hydf$STATION))
 
-  if (num_stns > 4L) stop("You are trying to plot more than four stations at once.", call. = FALSE)
+  if (num_stns > 4L)
+    stop(
+      "You are trying to plot more than four stations at once.",
+      call. = FALSE
+    )
 
   if (num_stns > 2L) {
     m <- matrix(c(1, 1, 2, 3, 4, 5, 6, 6), nrow = 4, ncol = 2, byrow = TRUE)
@@ -69,7 +73,13 @@ plot.hy <- function(x = NULL, ...) {
 
   graphics::par(mar = c(1, 1, 1, 1))
   graphics::plot.new()
-  graphics::text(0.5, 0.5, "Historical Water Survey of Canada Gauges", cex = 2, font = 2)
+  graphics::text(
+    0.5,
+    0.5,
+    "Historical Water Survey of Canada Gauges",
+    cex = 2,
+    font = 2
+  )
 
   for (i in seq_along(unique(hydf$STATION))) {
     graphics::par(
@@ -77,33 +87,57 @@ plot.hy <- function(x = NULL, ...) {
       mgp = c(3.1, 0.4, 0),
       las = 1,
       tck = -.01,
-      xaxs = "i", yaxs = "i"
+      xaxs = "i",
+      yaxs = "i"
     )
 
-    graphics::plot(Value ~ Date,
+    graphics::plot(
+      Value ~ Date,
       data = hydf[hydf$STATION == unique(hydf$STATION)[i], ],
       xlab = "Date",
       ylab = eval(parse(text = label_helper(unique(hydf$Parameter)))),
       axes = FALSE,
       pch = 20,
-      ylim = c(0, max(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Value, na.rm = TRUE)),
+      ylim = c(
+        0,
+        max(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Value, na.rm = TRUE)
+      ),
       cex = 0.75,
       frame.plot = TRUE,
       ...
     )
 
-    at_y <- utils::head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Value), -1)
+    at_y <- utils::head(
+      pretty(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Value),
+      -1
+    )
     graphics::mtext(
-      side = 2, text = at_y, at = at_y,
-      col = "grey20", line = 1, cex = 0.75
+      side = 2,
+      text = at_y,
+      at = at_y,
+      col = "grey20",
+      line = 1,
+      cex = 0.75
     )
 
-    at_x <- utils::tail(utils::head(pretty(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Date), -1), -1)
-    graphics::mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.75)
+    at_x <- utils::tail(
+      utils::head(
+        pretty(hydf[hydf$STATION == unique(hydf$STATION)[i], ]$Date),
+        -1
+      ),
+      -1
+    )
+    graphics::mtext(
+      side = 1,
+      text = format(at_x, "%Y"),
+      at = at_x,
+      col = "grey20",
+      line = 1,
+      cex = 0.75
+    )
 
     graphics::title(main = paste0(unique(hydf$STATION)[i]), cex.main = 1.1)
   }
-
 
   graphics::plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 
@@ -134,9 +168,13 @@ label_helper <- function(parameter) {
 #' @param Parameter Parameter of interest. Either "Flow" or "Level".
 #'
 #' @export
-hy_plot <- function(station_number = NULL, Parameter = c("Flow", "Level", "Suscon", "Load")) {
-  message("hy_plot has been deprecated in favour of using the generic R plot method and will disappear in future versions.")
-
+hy_plot <- function(
+  station_number = NULL,
+  Parameter = c("Flow", "Level", "Suscon", "Load")
+) {
+  message(
+    "hy_plot has been deprecated in favour of using the generic R plot method and will disappear in future versions."
+  )
 
   Parameter <- match.arg(Parameter, several.ok = TRUE)
 
@@ -147,7 +185,8 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow", "Level", "Susco
   params <- unique(hydf$Parameter)
 
   ### Join with meta data to get station name
-  hydf <- dplyr::left_join(hydf,
+  hydf <- dplyr::left_join(
+    hydf,
     suppressMessages(hy_stations()),
     by = c("STATION_NUMBER")
   )
@@ -155,7 +194,6 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow", "Level", "Susco
   hydf$STATION <- paste(hydf$STATION_NAME, hydf$STATION_NUMBER, sep = "\n")
 
   hydf$STATION <- factor(hydf$STATION)
-
 
   # y_axis <- ifelse(Parameter == "Flow", expression(Discharge~(m^3/s)), "Level (m)")
 
@@ -175,7 +213,6 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow", "Level", "Susco
     graphics::layout(mat = m, heights = c(0.2, 0.6, 0.2))
   }
 
-
   if (length(params) == 1) {
     m <- matrix(c(1, 2, 3), nrow = 3, ncol = 1, byrow = TRUE)
 
@@ -185,29 +222,38 @@ hy_plot <- function(station_number = NULL, Parameter = c("Flow", "Level", "Susco
   graphics::par(mar = c(1, 1, 1, 1))
   graphics::plot.new()
   # graphics::plot(1, type = "n", axes=FALSE, xlab="", ylab="")
-  graphics::text(0.5, 0.5, "Historical Water Survey of Canada Gauges", cex = 2, font = 2)
+  graphics::text(
+    0.5,
+    0.5,
+    "Historical Water Survey of Canada Gauges",
+    cex = 2,
+    font = 2
+  )
 
   for (i in seq_along(params)) {
     graphics::par(mar = c(2, 2, 1, 1))
-    graphics::plot(Value ~ Date,
+    graphics::plot(
+      Value ~ Date,
       data = hydf[hydf$Parameter == params[i], ],
       col = hydf$STATION,
       xlab = "Date",
       ylab = paste0(params[i]),
       bty = "L",
-      pch = 20, cex = 1
+      pch = 20,
+      cex = 1
     )
 
     graphics::title(main = paste0(params[i]), cex.main = 1.75)
   }
 
-
   graphics::plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
   graphics::legend(
-    x = "top", inset = 0,
+    x = "top",
+    inset = 0,
     legend = unique(hydf$STATION),
     fill = unique(hydf$STATION),
     bty = "n",
-    cex = 1, horiz = TRUE
+    cex = 1,
+    horiz = TRUE
   )
 }

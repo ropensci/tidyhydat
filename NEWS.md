@@ -1,5 +1,12 @@
-# tidyhydat 0.7.0.9000
-- add historical webservice functions `ws_daily_flows` and `ws_daily_levels` (#211)
+# tidyhydat 0.7.2
+- fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
+- changed based datamart url (#228)
+- fail more gracefully and informatively when urls behind `realtime_*` functions are down or changed. (#229)
+
+# tidyhydat 0.7.1
+- add columns added by a webservice update (#213)
+- fix some partial matching in `realtime_add_local_datetime` internals
+- re-format all code with the lovely air tool
 
 # tidyhydat 0.7.0
 - bump minimum R version to 4.2.0

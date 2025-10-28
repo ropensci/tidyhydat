@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 0.7.0
+Version: 0.7.2
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0002-9270-7884")),
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
@@ -14,8 +14,7 @@ Authors@R: c(person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("a
             comment = "Reviewed for rOpenSci")
     )
 Description: Provides functions to access historical and real-time national 'hydrometric'
-    data from Water Survey of Canada data sources (<https://dd.weather.gc.ca/hydrometric/csv/> and
-    <https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/>) and then applies tidy data principles.
+    data from Water Survey of Canada data sources and then applies tidy data principles.
 License: Apache License (== 2.0) | file LICENSE
 URL: https://docs.ropensci.org/tidyhydat/, https://github.com/ropensci/tidyhydat/
 BugReports: https://github.com/ropensci/tidyhydat/issues/

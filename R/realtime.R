@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 #' Download a tibble of realtime river data from the last 30 days from the Meteorological Service of Canada datamart
 #'
 #' Download realtime river data from the last 30 days from the Meteorological Service of Canada (MSC) datamart.
@@ -52,7 +51,9 @@
 #' @family realtime functions
 #' @export
 realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
-  if (!has_internet()) stop("No access to internet", call. = FALSE)
+  if (!has_internet()) {
+    stop("No access to internet", call. = FALSE)
+  }
 
   ## If station number isn't and user wants the province
   if (is.null(station_number)) {
@@ -96,38 +97,53 @@ realtime_dd <- function(station_number = NULL, prov_terr_state_loc = NULL) {
 #' }
 #'
 realtime_stations <- function(prov_terr_state_loc = NULL) {
-  if (!has_internet()) stop("No access to internet", call. = FALSE)
+  if (!has_internet()) {
+    stop("No access to internet", call. = FALSE)
+  }
 
   prov <- prov_terr_state_loc
 
-  realtime_link <- "https://dd.weather.gc.ca/hydrometric/doc/hydrometric_StationList.csv"
+  realtime_link <- paste0(
+    base_url_datamart(),
+    "/doc/hydrometric_StationList.csv"
+  )
   resp_str <- realtime_parser(realtime_link)
 
-  net_tibble <- readr::read_csv(
-    resp_str,
-    skip = 1,
-    col_names = c(
-      "STATION_NUMBER",
-      "STATION_NAME",
-      "LATITUDE",
-      "LONGITUDE",
-      "PROV_TERR_STATE_LOC",
-      "TIMEZONE"
-    ),
-    col_types = readr::cols(
-      STATION_NUMBER = readr::col_character(),
-      STATION_NAME = readr::col_character(),
-      LATITUDE = readr::col_double(),
-      LONGITUDE = readr::col_double(),
-      PROV_TERR_STATE_LOC = readr::col_character(),
-      TIMEZONE = readr::col_character()
+  if (is.na(resp_str)) {
+    net_tibble <- dplyr::tibble(
+      STATION_NUMBER = NA_character_,
+      STATION_NAME = NA_character_,
+      LATITUDE = NA_real_,
+      LONGITUDE = NA_real_,
+      PROV_TERR_STATE_LOC = NA_character_,
+      TIMEZONE = NA_character_
     )
-  )
+  } else {
+    net_tibble <- readr::read_csv(
+      resp_str,
+      skip = 1,
+      col_names = c(
+        "STATION_NUMBER",
+        "STATION_NAME",
+        "LATITUDE",
+        "LONGITUDE",
+        "PROV_TERR_STATE_LOC",
+        "TIMEZONE"
+      ),
+      col_types = readr::cols(
+        STATION_NUMBER = readr::col_character(),
+        STATION_NAME = readr::col_character(),
+        LATITUDE = readr::col_double(),
+        LONGITUDE = readr::col_double(),
+        PROV_TERR_STATE_LOC = readr::col_character(),
+        TIMEZONE = readr::col_character()
+      )
+    )
+  }
 
   if (is.null(prov)) {
     return(net_tibble)
   }
-
 
   as.realtime(net_tibble[net_tibble$PROV_TERR_STATE_LOC %in% prov, ])
 }
@@ -154,12 +170,22 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #'
 #' @export
 realtime_add_local_datetime <- function(.data, set_tz = NULL) {
-  timezone_data <- dplyr::left_join(.data, tidyhydat::allstations[, c("STATION_NUMBER", "station_tz")], by = c("STATION_NUMBER"))
+  timezone_data <- dplyr::left_join(
+    .data,
+    tidyhydat::allstations[, c("STATION_NUMBER", "station_tz")],
+    by = c("STATION_NUMBER")
+  )
 
   tz_used <- names(sort(table(timezone_data$station_tz), decreasing = TRUE)[1])
 
   if (dplyr::n_distinct(timezone_data$station_tz) > 1) {
-    warning(paste0("Multiple timezones detected. All times in local_time have been adjusted to ", tz_used), call. = FALSE)
+    warning(
+      paste0(
+        "Multiple timezones detected. All times in local_time have been adjusted to ",
+        tz_used
+      ),
+      call. = FALSE
+    )
   }
 
   if (!is.null(set_tz)) {
@@ -167,13 +193,22 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL) {
     tz_used <- set_tz
   }
 
-  timezone_data$local_datetime <- lubridate::with_tz(timezone_data$Date, tz = tz_used)
+  timezone_data$local_datetime <- lubridate::with_tz(
+    timezone_data$Date,
+    tzone = tz_used
+  )
 
   timezone_data$tz_used <- tz_used
 
   dplyr::select(
-    timezone_data, STATION_NUMBER, PROV_TERR_STATE_LOC, Date,
-    station_tz, local_datetime, tz_used, dplyr::everything()
+    timezone_data,
+    STATION_NUMBER,
+    PROV_TERR_STATE_LOC,
+    Date,
+    station_tz,
+    local_datetime,
+    tz_used,
+    dplyr::everything()
   )
 }
 
@@ -195,11 +230,22 @@ realtime_add_local_datetime <- function(.data, set_tz = NULL) {
 realtime_daily_mean <- function(.data, na.rm = FALSE) {
   df_mean <- dplyr::mutate(.data, Date = as.Date(Date))
 
-  df_mean <- dplyr::group_by(df_mean, STATION_NUMBER, PROV_TERR_STATE_LOC, Date, Parameter)
+  df_mean <- dplyr::group_by(
+    df_mean,
+    STATION_NUMBER,
+    PROV_TERR_STATE_LOC,
+    Date,
+    Parameter
+  )
 
   df_mean <- dplyr::summarise(df_mean, Value = mean(Value, na.rm = na.rm))
 
   df_mean <- dplyr::arrange(df_mean, Parameter)
 
   dplyr::ungroup(df_mean)
+}
+
+
+base_url_datamart <- function() {
+  "https://dd.weather.gc.ca/today/hydrometric/"
 }

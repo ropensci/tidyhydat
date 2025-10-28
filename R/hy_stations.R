@@ -10,8 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
-
 #' Extract station information from the HYDAT database
 #'
 #' Provides wrapper to turn the hy_stations table in HYDAT into a tidy data frame of station information. `station_number` and
@@ -66,9 +64,11 @@
 #' @source HYDAT
 #' @export
 
-hy_stations <- function(station_number = NULL,
-                        hydat_path = NULL,
-                        prov_terr_state_loc = NULL) {
+hy_stations <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -100,7 +100,6 @@ hy_stations <- function(station_number = NULL,
       RHBN = RHBN == 1,
       REAL_TIME = REAL_TIME == 1
     )
-
 
   attr(df, "missed_stns") <- setdiff(unique(stns), unique(df$STATION_NUMBER))
   as.hy(df)

@@ -8,7 +8,8 @@ load_all()
 
 ## Borrowed from @steffilazerte
 tz_offset <- function(tz) {
-  t <- as.numeric(difftime(as.POSIXct("2016-01-01 00:00:00", tz = "UTC"),
+  t <- as.numeric(difftime(
+    as.POSIXct("2016-01-01 00:00:00", tz = "UTC"),
     as.POSIXct("2016-01-01 00:00:00", tz = tz),
     units = "hours"
   ))
@@ -26,8 +27,18 @@ allstations <- realtime_stations() |>
   mutate(HYD_STATUS = "ACTIVE", REAL_TIME = TRUE) |>
   bind_rows(hy_stations()) |>
   distinct(STATION_NUMBER, .keep_all = TRUE) |>
-  select(STATION_NUMBER, STATION_NAME, PROV_TERR_STATE_LOC, HYD_STATUS, REAL_TIME, LATITUDE, LONGITUDE) |>
-  mutate(station_tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate")) |>
+  select(
+    STATION_NUMBER,
+    STATION_NAME,
+    PROV_TERR_STATE_LOC,
+    HYD_STATUS,
+    REAL_TIME,
+    LATITUDE,
+    LONGITUDE
+  ) |>
+  mutate(
+    station_tz = tz_lookup_coords(LATITUDE, LONGITUDE, method = "accurate")
+  ) |>
   mutate(standard_offset = map_dbl(station_tz, ~ tz_offset(.x))) |>
   mutate(OlsonName = map_chr(standard_offset, ~ create_olson(.x))) |>
   write_csv("./data-raw/HYDAT_internal_data/allstations.csv")
@@ -40,15 +51,19 @@ if (!all(unique(allstations$OlsonName) %in% c(OlsonNames(), "Etc/GMT+3.5"))) {
 }
 
 
-
 ## Load up hydat connection
 ## Read in database
-hydat_con <- DBI::dbConnect(RSQLite::SQLite(), file.path(hy_dir(), "Hydat.sqlite3"))
+hydat_con <- DBI::dbConnect(
+  RSQLite::SQLite(),
+  file.path(hy_dir(), "Hydat.sqlite3")
+)
 
 ## DATA_TYPES
 hy_data_types <- tbl(hydat_con, "DATA_TYPES") |>
   collect() |>
-  mutate(DATA_TYPE_FR = iconv(DATA_TYPE_FR, from = "UTF-8", to = "ASCII//TRANSLIT"))
+  mutate(
+    DATA_TYPE_FR = iconv(DATA_TYPE_FR, from = "UTF-8", to = "ASCII//TRANSLIT")
+  )
 use_data(hy_data_types, overwrite = TRUE)
 
 ## DATA_SYMBOLS

@@ -20,9 +20,11 @@
 #' hy_stn_remarks(station_number = c("02JE013", "08MF005"))
 #' }
 #'
-hy_stn_remarks <- function(station_number = NULL,
-                           hydat_path = NULL,
-                           prov_terr_state_loc = NULL) {
+hy_stn_remarks <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -37,14 +39,25 @@ hy_stn_remarks <- function(station_number = NULL,
 
   stn_remarks <- dplyr::tbl(hydat_con, "STN_REMARKS")
   stn_remarks <- dplyr::filter(stn_remarks, !!sym_STATION_NUMBER %in% stns)
-  stn_remarks <- dplyr::left_join(stn_remarks, dplyr::tbl(hydat_con, "STN_REMARK_CODES"), by = c("REMARK_TYPE_CODE"))
-  stn_remarks <- dplyr::select(stn_remarks, STATION_NUMBER,
-    REMARK_TYPE = REMARK_TYPE_EN, Year = YEAR, REMARK = REMARK_EN
+  stn_remarks <- dplyr::left_join(
+    stn_remarks,
+    dplyr::tbl(hydat_con, "STN_REMARK_CODES"),
+    by = c("REMARK_TYPE_CODE")
+  )
+  stn_remarks <- dplyr::select(
+    stn_remarks,
+    STATION_NUMBER,
+    REMARK_TYPE = REMARK_TYPE_EN,
+    Year = YEAR,
+    REMARK = REMARK_EN
   )
 
   stn_remarks <- dplyr::collect(stn_remarks)
 
-  attr(stn_remarks, "missed_stns") <- setdiff(unique(stns), unique(stn_remarks$STATION_NUMBER))
+  attr(stn_remarks, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_remarks$STATION_NUMBER)
+  )
   as.hy(stn_remarks)
 }
 
@@ -70,8 +83,11 @@ hy_stn_remarks <- function(station_number = NULL,
 #' \dontrun{
 #' hy_stn_datum_conv(station_number = c("02JE013", "08MF005"))
 #' }
-hy_stn_datum_conv <- function(station_number = NULL,
-                              hydat_path = NULL, prov_terr_state_loc = NULL) {
+hy_stn_datum_conv <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -86,19 +102,42 @@ hy_stn_datum_conv <- function(station_number = NULL,
   sym_DATUM_EN <- sym("DATUM_EN")
 
   stn_datum_conversion <- dplyr::tbl(hydat_con, "STN_DATUM_CONVERSION")
-  stn_datum_conversion <- dplyr::filter(stn_datum_conversion, !!sym_STATION_NUMBER %in% stns)
-  stn_datum_conversion <- dplyr::left_join(stn_datum_conversion, dplyr::tbl(hydat_con, "DATUM_LIST"), by = c("DATUM_ID_FROM" = "DATUM_ID"))
-  stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_FROM = !!sym_DATUM_EN)
-  stn_datum_conversion <- dplyr::left_join(stn_datum_conversion, dplyr::tbl(hydat_con, "DATUM_LIST"), by = c("DATUM_ID_TO" = "DATUM_ID"))
-  stn_datum_conversion <- dplyr::rename(stn_datum_conversion, DATUM_EN_TO = !!sym_DATUM_EN)
-  stn_datum_conversion <- dplyr::select(stn_datum_conversion, STATION_NUMBER,
+  stn_datum_conversion <- dplyr::filter(
+    stn_datum_conversion,
+    !!sym_STATION_NUMBER %in% stns
+  )
+  stn_datum_conversion <- dplyr::left_join(
+    stn_datum_conversion,
+    dplyr::tbl(hydat_con, "DATUM_LIST"),
+    by = c("DATUM_ID_FROM" = "DATUM_ID")
+  )
+  stn_datum_conversion <- dplyr::rename(
+    stn_datum_conversion,
+    DATUM_EN_FROM = !!sym_DATUM_EN
+  )
+  stn_datum_conversion <- dplyr::left_join(
+    stn_datum_conversion,
+    dplyr::tbl(hydat_con, "DATUM_LIST"),
+    by = c("DATUM_ID_TO" = "DATUM_ID")
+  )
+  stn_datum_conversion <- dplyr::rename(
+    stn_datum_conversion,
+    DATUM_EN_TO = !!sym_DATUM_EN
+  )
+  stn_datum_conversion <- dplyr::select(
+    stn_datum_conversion,
+    STATION_NUMBER,
     DATUM_FROM = DATUM_EN_FROM,
-    DATUM_TO = DATUM_EN_TO, CONVERSION_FACTOR
+    DATUM_TO = DATUM_EN_TO,
+    CONVERSION_FACTOR
   )
 
   stn_datum_conversion <- dplyr::collect(stn_datum_conversion)
 
-  attr(stn_datum_conversion, "missed_stns") <- setdiff(unique(stns), unique(stn_datum_conversion$STATION_NUMBER))
+  attr(stn_datum_conversion, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_datum_conversion$STATION_NUMBER)
+  )
   as.hy(stn_datum_conversion)
 }
 
@@ -123,8 +162,11 @@ hy_stn_datum_conv <- function(station_number = NULL,
 #' hy_stn_datum_unrelated()
 #' }
 #'
-hy_stn_datum_unrelated <- function(station_number = NULL,
-                                   hydat_path = NULL, prov_terr_state_loc = NULL) {
+hy_stn_datum_unrelated <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -138,15 +180,29 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   stn_datum_unrelated <- dplyr::tbl(hydat_con, "STN_DATUM_UNRELATED")
-  stn_datum_unrelated <- dplyr::filter(stn_datum_unrelated, !!sym_STATION_NUMBER %in% stns)
+  stn_datum_unrelated <- dplyr::filter(
+    stn_datum_unrelated,
+    !!sym_STATION_NUMBER %in% stns
+  )
   stn_datum_unrelated <- dplyr::collect(stn_datum_unrelated)
 
-  stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_FROM))
-  stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(stn_datum_unrelated$YEAR_TO))
+  stn_datum_unrelated$YEAR_FROM <- lubridate::ymd(as.Date(
+    stn_datum_unrelated$YEAR_FROM
+  ))
+  stn_datum_unrelated$YEAR_TO <- lubridate::ymd(as.Date(
+    stn_datum_unrelated$YEAR_TO
+  ))
 
-  stn_datum_unrelated <- dplyr::rename(stn_datum_unrelated, Year_from = YEAR_FROM, Year_to = YEAR_TO)
+  stn_datum_unrelated <- dplyr::rename(
+    stn_datum_unrelated,
+    Year_from = YEAR_FROM,
+    Year_to = YEAR_TO
+  )
 
-  attr(stn_datum_unrelated, "missed_stns") <- setdiff(unique(stns), unique(stn_datum_unrelated$STATION_NUMBER))
+  attr(stn_datum_unrelated, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_datum_unrelated$STATION_NUMBER)
+  )
   as.hy(stn_datum_unrelated)
 }
 
@@ -175,9 +231,11 @@ hy_stn_datum_unrelated <- function(station_number = NULL,
 #' hy_stn_data_range(station_number = c("02JE013", "08MF005"))
 #' }
 #'
-hy_stn_data_range <- function(station_number = NULL,
-                              hydat_path = NULL,
-                              prov_terr_state_loc = NULL) {
+hy_stn_data_range <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -191,15 +249,27 @@ hy_stn_data_range <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   stn_data_range <- dplyr::tbl(hydat_con, "STN_DATA_RANGE")
-  stn_data_range <- dplyr::filter(stn_data_range, !!sym_STATION_NUMBER %in% stns)
+  stn_data_range <- dplyr::filter(
+    stn_data_range,
+    !!sym_STATION_NUMBER %in% stns
+  )
 
   stn_data_range <- dplyr::collect(stn_data_range)
 
-  stn_data_range[stn_data_range$SED_DATA_TYPE == "NA", ]$SED_DATA_TYPE <- NA_character_
+  stn_data_range[
+    stn_data_range$SED_DATA_TYPE == "NA",
+  ]$SED_DATA_TYPE <- NA_character_
 
-  stn_data_range <- dplyr::rename(stn_data_range, Year_from = YEAR_FROM, Year_to = YEAR_TO)
+  stn_data_range <- dplyr::rename(
+    stn_data_range,
+    Year_from = YEAR_FROM,
+    Year_to = YEAR_TO
+  )
 
-  attr(stn_data_range, "missed_stns") <- setdiff(unique(stns), unique(stn_data_range$STATION_NUMBER))
+  attr(stn_data_range, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_data_range$STATION_NUMBER)
+  )
   as.hy(stn_data_range)
 }
 
@@ -230,8 +300,11 @@ hy_stn_data_range <- function(station_number = NULL,
 #' hy_stn_data_coll(station_number = c("02JE013", "08MF005"))
 #' }
 #'
-hy_stn_data_coll <- function(station_number = NULL,
-                             hydat_path = NULL, prov_terr_state_loc = NULL) {
+hy_stn_data_coll <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -246,19 +319,38 @@ hy_stn_data_coll <- function(station_number = NULL,
 
   stn_data_coll <- dplyr::tbl(hydat_con, "STN_DATA_COLLECTION")
   stn_data_coll <- dplyr::filter(stn_data_coll, !!sym_STATION_NUMBER %in% stns)
-  stn_data_coll <- dplyr::left_join(stn_data_coll, dplyr::tbl(hydat_con, "MEASUREMENT_CODES"), by = c("MEASUREMENT_CODE"))
-  stn_data_coll <- dplyr::left_join(stn_data_coll, dplyr::tbl(hydat_con, "OPERATION_CODES"), by = c("OPERATION_CODE"))
+  stn_data_coll <- dplyr::left_join(
+    stn_data_coll,
+    dplyr::tbl(hydat_con, "MEASUREMENT_CODES"),
+    by = c("MEASUREMENT_CODE")
+  )
+  stn_data_coll <- dplyr::left_join(
+    stn_data_coll,
+    dplyr::tbl(hydat_con, "OPERATION_CODES"),
+    by = c("OPERATION_CODE")
+  )
   stn_data_coll <- dplyr::collect(stn_data_coll)
 
-  stn_data_coll <- dplyr::left_join(stn_data_coll, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
-  stn_data_coll <- dplyr::select(stn_data_coll, STATION_NUMBER,
+  stn_data_coll <- dplyr::left_join(
+    stn_data_coll,
+    tidyhydat::hy_data_types,
+    by = c("DATA_TYPE")
+  )
+  stn_data_coll <- dplyr::select(
+    stn_data_coll,
+    STATION_NUMBER,
     DATA_TYPE = DATA_TYPE_EN,
-    Year_from = YEAR_FROM, Year_to = YEAR_TO,
-    MEASUREMENT = MEASUREMENT_EN, OPERATION = OPERATION_EN
+    Year_from = YEAR_FROM,
+    Year_to = YEAR_TO,
+    MEASUREMENT = MEASUREMENT_EN,
+    OPERATION = OPERATION_EN
   )
   stn_data_coll <- dplyr::arrange(stn_data_coll, STATION_NUMBER, Year_from)
 
-  attr(stn_data_coll, "missed_stns") <- setdiff(unique(stns), unique(stn_data_coll$STATION_NUMBER))
+  attr(stn_data_coll, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_data_coll$STATION_NUMBER)
+  )
   as.hy(stn_data_coll)
 }
 
@@ -287,9 +379,11 @@ hy_stn_data_coll <- function(station_number = NULL,
 #' hy_stn_op_schedule(station_number = c("02JE013"))
 #' }
 #'
-hy_stn_op_schedule <- function(station_number = NULL,
-                               hydat_path = NULL,
-                               prov_terr_state_loc = NULL) {
+hy_stn_op_schedule <- function(
+  station_number = NULL,
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
+) {
   ## Read in database
   hydat_con <- hy_src(hydat_path)
   if (!dplyr::is.src(hydat_path)) {
@@ -303,16 +397,30 @@ hy_stn_op_schedule <- function(station_number = NULL,
   sym_STATION_NUMBER <- sym("STATION_NUMBER")
 
   stn_operation_schedule <- dplyr::tbl(hydat_con, "STN_OPERATION_SCHEDULE")
-  stn_operation_schedule <- dplyr::filter(stn_operation_schedule, !!sym_STATION_NUMBER %in% stns)
+  stn_operation_schedule <- dplyr::filter(
+    stn_operation_schedule,
+    !!sym_STATION_NUMBER %in% stns
+  )
   stn_operation_schedule <- dplyr::collect(stn_operation_schedule)
-  stn_operation_schedule <- dplyr::left_join(stn_operation_schedule, tidyhydat::hy_data_types, by = c("DATA_TYPE"))
-
-  stn_operation_schedule <- dplyr::select(stn_operation_schedule, STATION_NUMBER,
-    DATA_TYPE = DATA_TYPE_EN, Year = YEAR,
-    Month_from = MONTH_FROM, Month_to = MONTH_TO
+  stn_operation_schedule <- dplyr::left_join(
+    stn_operation_schedule,
+    tidyhydat::hy_data_types,
+    by = c("DATA_TYPE")
   )
 
-  attr(stn_operation_schedule, "missed_stns") <- setdiff(unique(stns), unique(stn_operation_schedule$STATION_NUMBER))
+  stn_operation_schedule <- dplyr::select(
+    stn_operation_schedule,
+    STATION_NUMBER,
+    DATA_TYPE = DATA_TYPE_EN,
+    Year = YEAR,
+    Month_from = MONTH_FROM,
+    Month_to = MONTH_TO
+  )
+
+  attr(stn_operation_schedule, "missed_stns") <- setdiff(
+    unique(stns),
+    unique(stn_operation_schedule$STATION_NUMBER)
+  )
   as.hy(stn_operation_schedule)
 }
 

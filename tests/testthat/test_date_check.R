@@ -21,6 +21,12 @@ test_that("correct logicals are returned when date params are left null", {
 
 
 test_that("date_check errors when start_date is after end_date", {
-  expect_error(tidyhydat::date_check(start_date = "2010-01-01", end_date = "2009-01-01"))
-  expect_silent(tidyhydat:::date_check(start_date = "2009-01-01", end_date = "2010-01-01"))
+  expect_error(tidyhydat::date_check(
+    start_date = "2010-01-01",
+    end_date = "2009-01-01"
+  ))
+  expect_silent(tidyhydat:::date_check(
+    start_date = "2009-01-01",
+    end_date = "2010-01-01"
+  ))
 })

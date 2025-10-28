@@ -14,6 +14,14 @@ library(readxl)
 
 param_id <- read_excel('data-raw/param-id/parameterList_viaWebService.xlsx')
 
-colnames(param_id) <- c("Parameter", "Code", "Unit", "Name_En", "Name_Fr",  "Description_En", "Description_Fr")
+colnames(param_id) <- c(
+  "Parameter",
+  "Code",
+  "Unit",
+  "Name_En",
+  "Name_Fr",
+  "Description_En",
+  "Description_Fr"
+)
 
 usethis::use_data(param_id, overwrite = TRUE)

@@ -11,8 +11,18 @@ test_that("realtime_ws returns the correct data header", {
   expect_identical(
     colnames(ws_test),
     c(
-      "STATION_NUMBER", "Date", "Name_En", "Value", "Unit", "Grade",
-      "Symbol", "Approval", "Parameter", "Code"
+      "STATION_NUMBER",
+      "Date",
+      "Name_En",
+      "Value",
+      "Unit",
+      "Grade",
+      "Symbol",
+      "Approval",
+      "Parameter",
+      "Code",
+      "Qualifier",
+      "Qualifiers"
     )
   )
 
