@@ -166,36 +166,13 @@ realtime_ws <- function(
 
   ## What stations were missed?
   differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message(
-        "The following station(s) were not retrieved: ",
-        paste0(differ, sep = " ")
-      )
-      message(
-        "Check station number for typos or if it is a valid station in the network"
-      )
-    } else {
-      message(
-        "More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified."
-      )
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
-
   p_differ <- setdiff(unique(parameters), unique(csv_df$Parameter))
-  if (length(p_differ) != 0) {
-    message(
-      "The following valid parameter(s) were not retrieved for at least one station you requested: ",
-      paste0(p_differ, sep = " ")
-    )
-  } else {
-    message("All parameters successfully retrieved")
-  }
+
+  ## Apply ws class and store missed stations/parameters as attributes
+  csv_df <- as.ws(csv_df)
+  attr(csv_df, "missed_stns") <- differ
+  attr(csv_df, "missed_params") <- p_differ
 
   ## Return it
   csv_df
-
-  ## Need to output a warning to see if any stations weren't retrieved
 }

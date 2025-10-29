@@ -134,16 +134,10 @@ get_historical_data <- function(
 
   ## What stations were missed?
   differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message("The following station(s) were not retrieved: ", paste0(differ, sep = " "))
-      message("Check station number for typos or if it is a valid station in the network")
-    } else {
-      message("More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified.")
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
+
+  ## Apply ws class and store missed stations as attribute
+  csv_df <- as.ws(csv_df)
+  attr(csv_df, "missed_stns") <- differ
 
   ## Return it
   csv_df

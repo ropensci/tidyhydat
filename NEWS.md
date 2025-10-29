@@ -1,6 +1,7 @@
 # tidyhydat 0.7.2.9000
 - add historical webservice functions `ws_daily_flows` and `ws_daily_levels` (#212)
 - add httptest2 for mocking webservice tests (#212)
+- add classes to webservice outputs with print methods (#212)
 
 # tidyhydat 0.7.2
 - fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)
