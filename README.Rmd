@@ -29,6 +29,7 @@ knitr::opts_chunk$set(
 
 - Provides functions (`hy_*`) that access hydrometric data from the HYDAT database, a national archive of Canadian hydrometric data and return tidy data.
 - Provides functions (`realtime_*`) that access Environment and Climate Change Canada's real-time hydrometric data source.
+- Provides functions (`ws_*`) that access historical daily data via web service without requiring HYDAT download.
 - Provides functions (`search_*`) that can search through the approximately 7000 stations in the database and aid in generating station vectors
 - Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](https://tibble.tidyverse.org/) of daily flows.
 
@@ -85,14 +86,34 @@ realtime_ws(
 )
 ```
 
+### Historical web service
+For smaller queries where downloading the entire HYDAT database is unnecessary, `tidyhydat` provides web service functions that access historical daily data directly:
+
+```{r}
+ws_daily_flows(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = "2020-12-31"
+)
+```
+
+Similarly for water levels:
+```{r}
+ws_daily_levels(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = "2020-12-31"
+)
+```
+
 ## Compare realtime_ws and realtime_dd
 
 
-`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](`r tidyhydat:::base_url_datamart()`). 
+`tidyhydat` provides two methods to download realtime data. `realtime_dd()` provides a function to import .csv files from [here](`r tidyhydat:::base_url_datamart()`).
 `realtime_ws()` is an client for a web service hosted by ECCC. `realtime_ws()` has several difference to `realtime_dd()`. These include:
 
 - *Speed*: The `realtime_ws()` is much faster for larger queries (i.e. many stations). For single station queries to `realtime_dd()` is more appropriate.
-- *Length of record*: `realtime_ws()` records goes back further in time. 
+- *Length of record*: `realtime_ws()` records goes back further in time.
 - *Type of parameters*: `realtime_dd()` are restricted to river flow (either flow and level) data. In contrast `realtime_ws()` can download several different parameters depending on what is available for that station. See `data("param_id")` for a list and explanation of the parameters.
 - *Date/Time filtering*: `realtime_ws()` provides argument to select a date range. Selecting a data range with `realtime_dd()` is not possible until after all files have been downloaded. 
 
