@@ -25,7 +25,7 @@ If the ECCC API changes or you need to update test data:
 
    # IMPORTANT: Use simplify=FALSE to preserve HTTP headers
    httptest2::capture_requests(simplify = FALSE, {
-     # Record success cases
+     # Historical webservice - record full year of data
      ws_daily_flows(
        station_number = "08MF005",
        start_date = as.Date("2023-01-01"),
@@ -47,6 +47,23 @@ If the ECCC API changes or you need to update test data:
      tryCatch(
        ws_daily_levels("08MF005", Sys.Date() - 2, Sys.Date()),
        error = function(e) invisible(NULL)
+     )
+
+     # Realtime webservice - use recent dates that will have data
+     recent_date <- Sys.Date() - 7
+
+     realtime_ws(
+       station_number = "08MF005",
+       parameters = 46,  # Water level
+       start_date = recent_date,
+       end_date = recent_date
+     )
+
+     realtime_ws(
+       station_number = "08MF005",
+       parameters = 46,
+       start_date = recent_date - 1,
+       end_date = recent_date
      )
    })
    ```

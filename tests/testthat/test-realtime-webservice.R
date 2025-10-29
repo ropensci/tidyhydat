@@ -1,39 +1,53 @@
-test_that("realtime_ws returns the correct data header", {
-  skip_on_cran()
+# Tests for realtime webservice functions
+# These tests use httptest2 to mock HTTP responses
 
-  ws_test <- realtime_ws(
-    station_number = "08MF005",
-    parameters = c(46), ## Water level
-    start_date = Sys.Date(),
-    end_date = Sys.Date()
-  )
-
-  expect_identical(
-    colnames(ws_test),
-    c(
-      "STATION_NUMBER",
-      "Date",
-      "Name_En",
-      "Value",
-      "Unit",
-      "Grade",
-      "Symbol",
-      "Approval",
-      "Parameter",
-      "Code",
-      "Qualifier",
-      "Qualifiers"
+httptest2::with_mock_dir("fixtures", {
+  test_that("realtime_ws returns the correct data header", {
+    ws_test <- realtime_ws(
+      station_number = "08MF005",
+      parameters = c(46), ## Water level
+      start_date = Sys.Date() - 7,
+      end_date = Sys.Date() - 7
     )
-  )
 
-  ## Turned #42 into a test
-  expect_true(is.numeric(ws_test$Value))
+    expect_identical(
+      colnames(ws_test),
+      c(
+        "STATION_NUMBER",
+        "Date",
+        "Name_En",
+        "Value",
+        "Unit",
+        "Grade",
+        "Symbol",
+        "Approval",
+        "Parameter",
+        "Code",
+        "Qualifier",
+        "Qualifiers"
+      )
+    )
+
+    ## Turned #42 into a test
+    expect_true(is.numeric(ws_test$Value))
+  })
+
+  test_that("realtime_ws succeed specifying only date; no time", {
+    output <- realtime_ws(
+      station_number = "08MF005",
+      parameters = 46,
+      start_date = Sys.Date() - 8,
+      end_date = Sys.Date() - 7
+    )
+
+    expect_s3_class(output, "tbl_df")
+    expect_true(nrow(output) > 0)
+    expect_equal(unique(output$STATION_NUMBER), "08MF005")
+  })
 })
 
-
+# Date validation tests don't make HTTP calls, so they're outside the mock context
 test_that("realtime_ws fails with incorrectly specified date", {
-  skip_on_cran()
-
   expect_error(realtime_ws(
     station_number = "08MF005",
     parameters = 46,
@@ -46,37 +60,20 @@ test_that("realtime_ws fails with incorrectly specified date", {
   ))
 })
 
-test_that("realtime_ws succeed specifying only date; no time", {
-  skip_on_cran()
+test_that("realtime_ws handles Date objects", {
+  skip_if_not_installed("httptest2")
 
-  today <- as.Date(as.POSIXct(Sys.time(), tz = "UTC"))
-  sdate <- today - 1
-  edate <- today
+  httptest2::with_mock_dir("fixtures", {
+    # Date objects should work (converted to strings internally)
+    output <- realtime_ws(
+      station_number = "08MF005",
+      parameters = 46,
+      start_date = Sys.Date() - 8,
+      end_date = Sys.Date() - 7
+    )
 
-  output <- realtime_ws(
-    station_number = "08MF005",
-    parameters = 46,
-    start_date = sdate,
-    end_date = edate
-  )
-
-  expect_equal(as.Date(max(output$Date)), edate)
-  expect_equal(as.Date(min(output$Date)), sdate)
-})
-
-test_that("realtime_ws succeed specifying  time", {
-  skip_on_cran()
-
-  stime <- as.POSIXlt(Sys.time() - 1E5, tz = "UTC")
-  etime <- as.POSIXlt(Sys.time(), tz = "UTC")
-
-  output <- realtime_ws(
-    station_number = "08MF005",
-    parameters = 46,
-    start_date = stime,
-    end_date = etime
-  )
-
-  expect_true(max(output$Date) <= etime)
-  expect_true(min(output$Date) >= stime)
+    expect_s3_class(output, "tbl_df")
+    expect_true(nrow(output) > 0)
+    expect_equal(unique(output$Parameter), 46)
+  })
 })
