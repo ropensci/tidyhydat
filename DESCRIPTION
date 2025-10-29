@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 0.7.2
+Version: 0.7.2.9000
 Authors@R: c(person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0002-9270-7884")),
     person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
@@ -33,8 +33,9 @@ Imports:
     rlang (>= 0.1.2),
     RSQLite (>= 2.0),
     tidyr (>= 0.7.1)
-Suggests: 
+Suggests:
     ggplot2,
+    httptest2,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),

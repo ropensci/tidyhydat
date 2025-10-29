@@ -27,3 +27,4 @@ tidyhydat_intro.Rmd
 ^precompile.R$
 ^CRAN-SUBMISSION$
 .claude
+tests/README.md
