@@ -1,0 +1,10 @@
+structure(list(method = "GET", url = "https://wateroffice.ec.gc.ca/services/daily_data/csv/inline?stations[]=08MF005&parameters[]=flow&start_date=2025-10-27&end_date=2025-10-29", 
+    status_code = 200L, headers = structure(list(Date = "Wed, 29 Oct 2025 16:27:45 GMT", 
+        Server = "Apache", `Strict-Transport-Security` = "max-age=63072000; preload", 
+        `Content-Disposition` = "inline; filename=daily_data.csv", 
+        Pragma = "public", `Cache-Control` = "must-revalidate, post-check=0, pre-check=0", 
+        `Referrer-Policy` = "no-referrer-when-downgrade", `Content-Security-Policy` = "frame-src 'self'; media-src 'self'; object-src 'self'; base-uri 'self'; form-action 'self' https://www.canada.ca https://canada.ca https://recherche-search.gc.ca https://weather.gc.ca https://meteo.gc.ca https://*.cmc.ec.gc.ca https://*.edc-mtl.ec.gc.ca", 
+        `Content-Length` = "60", `Content-Type` = "text/csv; charset=utf-8"), class = "httr2_headers"), 
+    body = charToRaw("﻿ ID,Date,Parameter/Paramètre,Value/Valeur,Symbol/Symbole"), 
+    timing = c(redirect = 0, namelookup = 0, connect = 0, pretransfer = 0.000168, 
+    starttransfer = 0.08338, total = 0.083423), cache = new.env(parent = emptyenv())), class = "httr2_response")

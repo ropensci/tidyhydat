@@ -90,71 +90,18 @@ realtime_ws <- function(
     start_date <- paste0(start_date, " 00:00:00")
   if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
 
-  if (
-    !grepl(
-      "[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]",
-      start_date
-    )
-  ) {
-    stop(
-      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
-      call. = FALSE
-    )
-  }
-
-  if (
-    !grepl(
-      "[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]",
-      end_date
-    )
-  ) {
-    stop(
-      "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
-      call. = FALSE
-    )
-  }
-
-  if (!is.null(start_date) & !is.null(end_date)) {
-    if (lubridate::ymd_hms(end_date) < lubridate::ymd_hms(start_date)) {
-      stop(
-        "start_date is after end_date. Try swapping values.",
-        call. = FALSE
-      )
-    }
-  }
-
-  ## Check date is in the right format
-  if (
-    is.na(as.Date(start_date, format = "%Y-%m-%d")) |
-      is.na(as.Date(end_date, format = "%Y-%m-%d"))
-  ) {
-    stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
-  }
+  validate_params(parameters, start_date, end_date)
 
   ## Build link for GET
   baseurl <- "https://wateroffice.ec.gc.ca/services/real_time_data/csv/inline?"
 
-  station_string <- paste0("stations[]=", station_number, collapse = "&")
-  parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
-  date_string <- paste0(
-    "start_date=",
-    substr(start_date, 1, 10),
-    "%20",
-    substr(start_date, 12, 19),
-    "&end_date=",
-    substr(end_date, 1, 10),
-    "%20",
-    substr(end_date, 12, 19)
-  )
-
-  ## paste them all together
-  query_url <- paste0(
+  query_url <- construct_url(
+    venue = "realtime",
     baseurl,
-    station_string,
-    "&",
-    parameters_string,
-    "&",
-    date_string
+    station_number,
+    parameters, 
+    start_date, 
+    end_date
   )
 
   ## Get data
@@ -219,36 +166,13 @@ realtime_ws <- function(
 
   ## What stations were missed?
   differ <- setdiff(unique(station_number), unique(csv_df$STATION_NUMBER))
-  if (length(differ) != 0) {
-    if (length(differ) <= 10) {
-      message(
-        "The following station(s) were not retrieved: ",
-        paste0(differ, sep = " ")
-      )
-      message(
-        "Check station number for typos or if it is a valid station in the network"
-      )
-    } else {
-      message(
-        "More than 10 stations from the initial query were not returned. Ensure realtime and active status are correctly specified."
-      )
-    }
-  } else {
-    message("All station successfully retrieved")
-  }
-
   p_differ <- setdiff(unique(parameters), unique(csv_df$Parameter))
-  if (length(p_differ) != 0) {
-    message(
-      "The following valid parameter(s) were not retrieved for at least one station you requested: ",
-      paste0(p_differ, sep = " ")
-    )
-  } else {
-    message("All parameters successfully retrieved")
-  }
+
+  ## Apply ws class and store missed stations/parameters as attributes
+  csv_df <- as.ws(csv_df)
+  attr(csv_df, "missed_stns") <- differ
+  attr(csv_df, "missed_params") <- p_differ
 
   ## Return it
   csv_df
-
-  ## Need to output a warning to see if any stations weren't retrieved
 }

@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat: An Introduction"
 author: "Sam Albers"
-date: "2025-10-22"
+date: "2025-10-29"
 output:
   html_vignette:
      keep_md: true
@@ -159,6 +159,7 @@ In addition to the approved and vetted data in the HYDAT database ECCC also offe
 
 - `realtime_stations()`
 - `realtime_dd()`
+- `realtime_ws()`
 
 Not every stations is currently part of the real-time network. Therefore `realtime_stations()` points to a (hopefully) updated ECCC data file of active real-time stations. We can use the `realtime_stations()` functionality to get a vector of stations by jurisdiction. For example, we can choose all the stations in Prince Edward Island using the following:
 
@@ -172,7 +173,7 @@ realtime_stations(prov_terr_state_loc = "PE")
 hy_stations(prov_terr_state_loc = "PE")
 ```
 
-This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.   
+This is contrast to `realtime_stations()` which downloads all real-time stations. Though this is not always the case, it is best to use `realtime_stations()` when dealing with real-time data and `hy_stations()` when interacting with HYDAT. It is also appropriate to filter the output of `hy_stations()` by the `REAL_TIME` column.
 
 ### Meterological Service of Canada datamart - `realtime_dd()`
 To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
@@ -184,6 +185,53 @@ Another option is to provide simply the province as an argument and download all
 
 ``` r
 realtime_dd(prov_terr_state_loc = "PE")
+```
+
+### Real-time web service - `realtime_ws()`
+The `realtime_ws()` function provides access to ECCC's real-time web service. This offers several advantages including access to a wider variety of parameters and the ability to filter by date range. Using `realtime_ws()` requires specifying both the station and parameter of interest:
+
+``` r
+realtime_ws(station_number = "08MF005",
+            parameters = 46, ## Water level
+            start_date = Sys.Date() - 30,
+            end_date = Sys.Date())
+```
+
+You can query multiple parameters simultaneously. See `data("param_id")` for a complete list of available parameter codes:
+
+``` r
+realtime_ws(station_number = "08MF005",
+            parameters = c(46, 47), ## Water level and discharge
+            start_date = Sys.Date() - 7,
+            end_date = Sys.Date())
+```
+
+## Historical web service functions
+For smaller queries where downloading the entire HYDAT database is unnecessary, `tidyhydat` provides web service functions that access historical daily data directly from ECCC. These functions are particularly useful when you need data for only a few stations or a limited time period:
+
+### Historical flows and levels - `ws_daily_flows()` and `ws_daily_levels()`
+These functions download historical daily data without requiring HYDAT. Both require a date range to be specified:
+
+``` r
+ws_daily_flows(station_number = "08MF005",
+               start_date = "2020-01-01",
+               end_date = "2020-12-31")
+```
+
+Similarly for water levels:
+
+``` r
+ws_daily_levels(station_number = "08NL071",
+                start_date = "2019-01-01",
+                end_date = "2019-12-31")
+```
+
+Multiple stations can be queried in a single call:
+
+``` r
+ws_daily_flows(station_number = c("08MF005", "08NL071"),
+               start_date = "2020-01-01",
+               end_date = "2020-12-31")
 ```
 
 ## Search functions
@@ -200,11 +248,11 @@ search_stn_name("liard")
 ##  1 10AA001        LIARD RIVER AT UPPER CROSSING                   YT                      60.1     -129.
 ##  2 10AA006        LIARD RIVER BELOW SCURVY CREEK                  YT                      60.8     -131.
 ##  3 10BE001        LIARD RIVER AT LOWER CROSSING                   BC                      59.4     -126.
-##  4 10BE005        LIARD RIVER ABOVE BEAVER RIVER                  BC                      59.7     -124.
-##  5 10BE006        LIARD RIVER ABOVE KECHIKA RIVER                 BC                      59.7     -127.
-##  6 10EC004        SOUTH NAHANNI RIVER NEAR LIARD RIVER CONFLUENCE NT                      61.0     -123.
-##  7 10ED001        LIARD RIVER AT FORT LIARD                       NT                      60.2     -123.
-##  8 10ED002        LIARD RIVER NEAR THE MOUTH                      NT                      61.7     -121.
+##  4 10EC004        SOUTH NAHANNI RIVER NEAR LIARD RIVER CONFLUENCE NT                      61.0     -123.
+##  5 10ED001        LIARD RIVER AT FORT LIARD                       NT                      60.2     -123.
+##  6 10ED002        LIARD RIVER NEAR THE MOUTH                      NT                      61.7     -121.
+##  7 10BE005        LIARD RIVER ABOVE BEAVER RIVER                  BC                      59.7     -124.
+##  8 10BE006        LIARD RIVER ABOVE KECHIKA RIVER                 BC                      59.7     -127.
 ##  9 10ED008        LIARD RIVER AT LINDBERG LANDING                 NT                      61.1     -123.
 ## 10 10GC004        MACKENZIE RIVER ABOVE LIARD RIVER               NT                      61.9     -121.
 ```
@@ -216,18 +264,18 @@ search_stn_number("08MF")
 
 ```
 ## # A tibble: 54 × 5
-##    STATION_NUMBER STATION_NAME                                PROV_TERR_STATE_LOC LATITUDE LONGITUDE
-##    <chr>          <chr>                                       <chr>                  <dbl>     <dbl>
-##  1 08MF001        ANDERSON RIVER NEAR BOSTON BAR              BC                      49.8     -121.
-##  2 08MF002        BOULDER CREEK NEAR LAIDLAW                  BC                      49.3     -122.
-##  3 08MF003        COQUIHALLA RIVER NEAR HOPE                  BC                      49.4     -121.
-##  4 08MF004        FRASER RIVER ABOVE THOMPSON RIVER           BC                      50.2     -122.
-##  5 08MF005        FRASER RIVER AT HOPE                        BC                      49.4     -121.
-##  6 08MF006        WAHLEACH CREEK NEAR LAIDLAW (UPPER STATION) BC                      49.3     -122.
-##  7 08MF007        NAHATLATCH RIVER AT OUTLET OF FRANCES LAKE  BC                      50.0     -122.
-##  8 08MF008        NAHATLATCH RIVER NEAR KEEFERS               BC                      50.0     -122.
-##  9 08MF009        SILVERHOPE CREEK NEAR HOPE                  BC                      49.4     -121.
-## 10 08MF011        STEIN RIVER NEAR LYTTON                     BC                      50.3     -122.
+##    STATION_NUMBER STATION_NAME                           PROV_TERR_STATE_LOC LATITUDE LONGITUDE
+##    <chr>          <chr>                                  <chr>                  <dbl>     <dbl>
+##  1 08MF005        FRASER RIVER AT HOPE                   BC                      49.4     -121.
+##  2 08MF038        FRASER RIVER AT CANNOR                 BC                      49.1     -122.
+##  3 08MF040        FRASER RIVER ABOVE TEXAS CREEK         BC                      50.6     -122.
+##  4 08MF062        COQUIHALLA RIVER BELOW NEEDLE CREEK    BC                      49.5     -121.
+##  5 08MF065        NAHATLATCH RIVER BELOW TACHEWANA CREEK BC                      50.0     -122.
+##  6 08MF068        COQUIHALLA RIVER ABOVE ALEXANDER CREEK BC                      49.4     -121.
+##  7 08MF001        ANDERSON RIVER NEAR BOSTON BAR         BC                      49.8     -121.
+##  8 08MF002        BOULDER CREEK NEAR LAIDLAW             BC                      49.3     -122.
+##  9 08MF003        COQUIHALLA RIVER NEAR HOPE             BC                      49.4     -121.
+## 10 08MF004        FRASER RIVER ABOVE THOMPSON RIVER      BC                      50.2     -122.
 ## # ℹ 44 more rows
 ```
 
@@ -253,7 +301,7 @@ ggplot(runoff_data) +
   theme(legend.position = "bottom")
 ```
 
-![plot of chunk unnamed-chunk-8](vignette-fig-unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-13](vignette-fig-unnamed-chunk-13-1.png)
 This is an effective way to make use of the variety of tables available in HYDAT.
 
 # License

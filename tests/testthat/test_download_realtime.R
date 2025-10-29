@@ -57,7 +57,10 @@ test_that("realtime_dd works when station is not realtime", {
     stns$STATION_NUMBER[!stns$REAL_TIME & stns$HYD_STATUS == "DISCONTINUED"],
     1
   )
-  expect_s3_class(realtime_dd(stn), "realtime")
+  # Suppress 404 messages for discontinued stations
+  suppressMessages(
+    expect_s3_class(realtime_dd(stn), "realtime")
+  )
 })
 
 test_that("single_realtime_station handles 404 gracefully", {
