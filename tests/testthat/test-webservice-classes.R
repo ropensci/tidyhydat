@@ -166,8 +166,8 @@ httptest2::with_mock_dir("fixtures", {
     result <- realtime_ws(
       station_number = "08MF005",
       parameters = 46,
-      start_date = Sys.Date() - 7,
-      end_date = Sys.Date() - 7
+      start_date = as.Date("2025-10-22"),
+      end_date = as.Date("2025-10-22")
     )
 
     expect_s3_class(result, "ws")
