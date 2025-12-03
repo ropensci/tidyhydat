@@ -1,4 +1,4 @@
-# tidyhydat 0.7.2.9000
+# tidyhydat 0.7.2.9000 (dev)
 - add historical webservice functions `ws_daily_flows` and `ws_daily_levels` (#212)
 - add httptest2 for mocking webservice tests (#212)
 - add classes to webservice outputs with print methods (#212)
