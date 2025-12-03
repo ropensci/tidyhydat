@@ -21,10 +21,11 @@ httptest2::with_mock_dir("fixtures", {
 
 
   test_that("ws_daily_flows is empty with a nearish date", {
+    # using a fixed date that was empty on the date of fixture creation
     expect_error(ws_daily_flows(
       station_number = "08MF005",
-      start_date = Sys.Date() - 2,
-      end_date = Sys.Date()
+      start_date = as.Date("2025-10-27"),
+      end_date = as.Date("2025-10-29")
     ), "No data exists for this station query during the period chosen")
   })
 
@@ -46,10 +47,11 @@ httptest2::with_mock_dir("fixtures", {
 
 
   test_that("ws_daily_levels is empty with a nearish date", {
+    # using a fixed date that was empty on the date of fixture creation
     expect_error(ws_daily_levels(
       station_number = "08MF005",
-      start_date = Sys.Date() - 2,
-      end_date = Sys.Date()
+      start_date = as.Date("2025-10-27"),
+      end_date = as.Date("2025-10-29")
     ), "No data exists for this station query during the period chosen")
   })
 })

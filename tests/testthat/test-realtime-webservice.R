@@ -6,8 +6,8 @@ httptest2::with_mock_dir("fixtures", {
     ws_test <- realtime_ws(
       station_number = "08MF005",
       parameters = c(46), ## Water level
-      start_date = Sys.Date() - 7,
-      end_date = Sys.Date() - 7
+      start_date = as.Date("2025-10-22"),
+      end_date = as.Date("2025-10-22")
     )
 
     expect_identical(
@@ -36,8 +36,8 @@ httptest2::with_mock_dir("fixtures", {
     output <- realtime_ws(
       station_number = "08MF005",
       parameters = 46,
-      start_date = Sys.Date() - 8,
-      end_date = Sys.Date() - 7
+      start_date = as.Date("2025-10-21"),
+      end_date = as.Date("2025-10-22")
     )
 
     expect_s3_class(output, "tbl_df")
@@ -68,8 +68,8 @@ test_that("realtime_ws handles Date objects", {
     output <- realtime_ws(
       station_number = "08MF005",
       parameters = 46,
-      start_date = Sys.Date() - 8,
-      end_date = Sys.Date() - 7
+      start_date = as.Date("2025-10-21"),
+      end_date = as.Date("2025-10-22")
     )
 
     expect_s3_class(output, "tbl_df")
