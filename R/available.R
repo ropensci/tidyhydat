@@ -46,14 +46,16 @@
 #' The `Approval` column uses ECCC's terminology
 #' (see \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}):
 #'
-#' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC. 
+#' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC.
 #'
 #' - **"provisional"**: Real-time data from the web service representing the best
 #'   available measurements, but subject to revision and not yet approved by ECCC.
 #'
 #'
-#' @return A tibble combining final and provisional data with an additional
-#'   `Approval` column indicating whether each record is "final" or "provisional".
+#' @return A tibble with class `available` combining final and provisional data
+#'   with an additional `Approval` column indicating whether each record is
+#'   "final" or "provisional". The object includes attributes for tracking data
+#'   sources and query metadata. 
 #'
 #' @format A tibble with 6 variables:
 #' \describe{
@@ -142,8 +144,10 @@ available_flows <- function(
 #' - **"provisional"**: Real-time data from the web service representing the best
 #'   available measurements, but subject to revision and not yet approved by ECCC.
 #'
-#' @return A tibble combining final and provisional data with an additional
-#'   `Approval` column indicating whether each record is "final" or "provisional".
+#' @return A tibble with class `available` combining final and provisional data
+#'   with an additional `Approval` column indicating whether each record is
+#'   "final" or "provisional". The object includes attributes for tracking data
+#'   sources and query metadata.
 #'
 #' @format A tibble with 6 variables:
 #' \describe{
@@ -375,8 +379,11 @@ get_available_data <- function(
 
   ## Store metadata as attributes
   attr(combined_data, "historical_source") <- historical_source
-  attr(combined_data, "query_time") <- Sys.time()
+  attr(combined_data, "missed_stns") <- setdiff(
+    unique(station_number),
+    unique(combined_data$STATION_NUMBER)
+  )
 
-  ## Return as tibble
-  dplyr::as_tibble(combined_data)
+  ## Return with available class
+  as.available(combined_data)
 }

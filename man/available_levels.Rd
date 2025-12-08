@@ -42,8 +42,10 @@ user-level call.}
 is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accept \code{CA} to return only Canadian stations.}
 }
 \value{
-A tibble combining final and provisional data with an additional
-\code{Approval} column indicating whether each record is "final" or "provisional".
+A tibble with class \code{available} combining final and provisional data
+with an additional \code{Approval} column indicating whether each record is
+"final" or "provisional". The object includes attributes for tracking data
+sources and query metadata.
 }
 \description{
 Convenience function that combines final historical data
