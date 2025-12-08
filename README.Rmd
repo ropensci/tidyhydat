@@ -27,9 +27,9 @@ knitr::opts_chunk$set(
 
 ## What does `tidyhydat` do?
 
-- Provides functions (`hy_*`) that access hydrometric data from the HYDAT database, a national archive of Canadian hydrometric data and return tidy data.
+- Provides functions (`hy_*`) that access hydrometric data from the HYDAT database or web service, a national archive of Canadian hydrometric data and return tidy data.
 - Provides functions (`realtime_*`) that access Environment and Climate Change Canada's real-time hydrometric data source.
-- Provides functions (`ws_*`) that access historical daily data via web service without requiring HYDAT download.
+- Provides functions (`available_*`) that seamlessly combine validated historical data with provisional real-time data.
 - Provides functions (`search_*`) that can search through the approximately 7000 stations in the database and aid in generating station vectors
 - Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](https://tibble.tidyverse.org/) of daily flows.
 
@@ -86,12 +86,13 @@ realtime_ws(
 )
 ```
 
-### Historical web service
-For smaller queries where downloading the entire HYDAT database is unnecessary, `tidyhydat` provides web service functions that access historical daily data directly:
+### Using the web service without HYDAT
+For smaller queries where downloading the entire HYDAT database is unnecessary, you can use `hy_daily_flows()` and `hy_daily_levels()` with `hydat_path = FALSE` to access historical daily data directly from the web service:
 
 ```{r}
-ws_daily_flows(
+hy_daily_flows(
   station_number = "08MF005",
+  hydat_path = FALSE,
   start_date = "2020-01-01",
   end_date = "2020-12-31"
 )
@@ -99,10 +100,22 @@ ws_daily_flows(
 
 Similarly for water levels:
 ```{r}
-ws_daily_levels(
+hy_daily_levels(
   station_number = "08MF005",
+  hydat_path = FALSE,
   start_date = "2020-01-01",
   end_date = "2020-12-31"
+)
+```
+
+### Combining validated and provisional data
+For a complete record combining validated historical data with recent provisional data:
+
+```{r}
+available_flows(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = Sys.Date()
 )
 ```
 

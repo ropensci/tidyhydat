@@ -206,14 +206,15 @@ realtime_ws(station_number = "08MF005",
             end_date = Sys.Date())
 ```
 
-## Historical web service functions
-For smaller queries where downloading the entire HYDAT database is unnecessary, `tidyhydat` provides web service functions that access historical daily data directly from ECCC. These functions are particularly useful when you need data for only a few stations or a limited time period:
+## Using the web service without HYDAT
+For smaller queries where downloading the entire HYDAT database is unnecessary, you can use `hy_daily_flows()` and `hy_daily_levels()` with `hydat_path = FALSE` to access historical daily data directly from ECCC's web service. These are particularly useful when you need data for only a few stations or a limited time period:
 
-### Historical flows and levels - `ws_daily_flows()` and `ws_daily_levels()`
+### Historical flows and levels via web service
 These functions download historical daily data without requiring HYDAT. Both require a date range to be specified:
 
 ``` r
-ws_daily_flows(station_number = "08MF005",
+hy_daily_flows(station_number = "08MF005",
+               hydat_path = FALSE,
                start_date = "2020-01-01",
                end_date = "2020-12-31")
 ```
@@ -221,7 +222,8 @@ ws_daily_flows(station_number = "08MF005",
 Similarly for water levels:
 
 ``` r
-ws_daily_levels(station_number = "08NL071",
+hy_daily_levels(station_number = "08NL071",
+                hydat_path = FALSE,
                 start_date = "2019-01-01",
                 end_date = "2019-12-31")
 ```
@@ -229,9 +231,19 @@ ws_daily_levels(station_number = "08NL071",
 Multiple stations can be queried in a single call:
 
 ``` r
-ws_daily_flows(station_number = c("08MF005", "08NL071"),
+hy_daily_flows(station_number = c("08MF005", "08NL071"),
+               hydat_path = FALSE,
                start_date = "2020-01-01",
                end_date = "2020-12-31")
+```
+
+## Combining validated and provisional data
+The `available_flows()` and `available_levels()` functions combine validated historical data with provisional real-time data to provide a complete record:
+
+``` r
+available_flows(station_number = "08MF005",
+                start_date = "2020-01-01",
+                end_date = Sys.Date())
 ```
 
 ## Search functions
