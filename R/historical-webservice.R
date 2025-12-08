@@ -1,74 +1,13 @@
-#' Download historical flow and level data from the ECCC web service
+#' Internal helper to get historical data from web service
 #'
-#' Functions to retrieve historical flow and levels data from ECCC web service. This data is
-#' the same as HYDAT data but provides the convenience of not having to download
-#' the HYDAT database. This function is useful when a smaller amount of data is needed. If
-#' you need lots of data, consider using HYDAT and the `hy_` family of functions
+#' @param station_number Water Survey of Canada station number
+#' @param parameters Either "flow" or "level"
+#' @param start_date Start date in YYYY-MM-DD format (required)
+#' @param end_date End date in YYYY-MM-DD format (required)
 #'
-#' @param station_number Water Survey of Canada station number.
-#' @param start_date Accepts YYYY-MM-DD. You need to provide a start date. 
-#' The default value is NULL
-#' @param end_date Accepts either YYYY-MM-DD. You need to provide an end date. 
-#' The default value is NULL
-#'
-#'
-#' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
-#'   \item{Parameter}{Type of parameter}
-#'   \item{Value}{Value of the measurement.}
-#'   \item{Symbol}{future use}
-#' }
-#'
-#' @seealso hy_daily_flows
-#' @examples
-#' \dontrun{
-#' try(
-#'    flow_data <- ws_daily_flows(
-#'      station_number = c("08NL071", "08NM174"),
-#'      start_date = Sys.Date() - 365,
-#'      end_date = Sys.Date()
-#'    )
-#' )
-#' try(
-#'    level_data <- ws_daily_level(
-#'      station_number = c("08NL071", "08NM174"),
-#'      start_date = Sys.Date() - 365,
-#'      end_date = Sys.Date()
-#'      )
-#' )
-#'}
-#' @export
-ws_daily_flows <- function(
-    station_number,
-    start_date = NULL,
-    end_date = NULL) {
-  
-  get_historical_data(
-    station_number = station_number,
-    parameters = "flow",
-    start_date = start_date,
-    end_date = end_date
-  )
-}
-
-#' @rdname ws_daily_flows
-#' @export
-ws_daily_levels <- function(
-    station_number,
-    start_date = NULL,
-    end_date = NULL) {
-  
-  get_historical_data(
-    station_number = station_number,
-    parameters = "level",
-    start_date = start_date,
-    end_date = end_date
-  )
-}
-
-
+#' @return A tibble with historical data from the web service
+#' @noRd
+#' @keywords internal
 get_historical_data <- function(
     station_number,
     parameters = "flow",

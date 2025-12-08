@@ -30,9 +30,9 @@
 #' **Historical (Final) Data:**
 #'
 #' The function automatically determines the best source for historical data:
-#' - **`hydat_path` provided** (path to database): Uses local HYDAT database
+#' - **`hydat_path` provided** (path to database): Uses local HYDAT database at that path
 #' - **`hydat_path = FALSE`**: Forces use of web service (useful when HYDAT unavailable)
-#' - **`hydat_path = NULL`** (default): Tries HYDAT first, automatically falls back
+#' - **`hydat_path = NULL`** (default): Uses HYDAT default location, automatically falls back
 #'   to web service if HYDAT is unavailable
 #'
 #' **Real-time (Provisional) Data:**
@@ -121,9 +121,9 @@ available_flows <- function(
 #' **Historical (Final) Data:**
 #'
 #' The function automatically determines the best source for historical data:
-#' - **`hydat_path` provided** (path to database): Uses local HYDAT database
+#' - **`hydat_path` provided** (path to database): Uses local HYDAT database at that path
 #' - **`hydat_path = FALSE`**: Forces use of web service (useful when HYDAT unavailable)
-#' - **`hydat_path = NULL`** (default): Tries HYDAT first, automatically falls back
+#' - **`hydat_path = NULL`** (default): Uses HYDAT default location, automatically falls back
 #'   to web service if HYDAT is unavailable
 #'
 #' **Real-time (Provisional) Data:**
@@ -220,67 +220,46 @@ get_available_data <- function(
     parameter_type,
     parameter_code
 ) {
-  browser()
-
   ## Initialize variables to store data
   final_data <- NULL
   provisional_data <- NULL
   historical_source <- NA_character_
 
-  ## Get final data
-  ## Determine which historical function to use
+  ## Get final data using hy_daily_* functions
+  ## These now handle data source selection internally based on hydat_path
   if (parameter_type == "Flow") {
     hydat_fn <- hy_daily_flows
-    ws_fn <- ws_daily_flows
   } else if (parameter_type == "Level") {
     hydat_fn <- hy_daily_levels
-    ws_fn <- ws_daily_levels
   } else {
     stop("parameter_type must be 'Flow' or 'Level'", call. = FALSE)
   }
 
-  ## Case 1: hydat_path explicitly provided (not NULL, not FALSE)
-  if (!is.null(hydat_path) && !isFALSE(hydat_path)) {
-    final_data <- hydat_fn(
-      station_number = station_number,
-      hydat_path = hydat_path,
-      prov_terr_state_loc = prov_terr_state_loc,
-      start_date = start_date,
-      end_date = end_date
-    )
-    historical_source <- "HYDAT"
-  }
+  ## Get final data - try HYDAT first, fallback to web service if NULL
+  final_data <- tryCatch(
+    {
+      result <- hydat_fn(
+        station_number = station_number,
+        hydat_path = hydat_path,
+        prov_terr_state_loc = prov_terr_state_loc,
+        start_date = start_date,
+        end_date = end_date
+      )
 
-  ## Case 2: hydat_path = FALSE (force web service)
-  else if (isFALSE(hydat_path)) {
-    ## Web service requires dates
-    ws_start <- if (is.null(start_date)) as.Date("1850-01-01") else start_date
-    ws_end <- if (is.null(end_date)) Sys.Date() else end_date
-
-    final_data <- ws_fn(
-      station_number = station_number,
-      start_date = ws_start,
-      end_date = ws_end
-    )
-    historical_source <- "Web Service"
-  }
-
-  ## Case 3: hydat_path = NULL (try HYDAT first, fallback to web service)
-  else {
-    final_data <- tryCatch(
-      {
-        result <- hydat_fn(
-          station_number = station_number,
-          hydat_path = hydat_path,
-          prov_terr_state_loc = prov_terr_state_loc,
-          start_date = start_date,
-          end_date = end_date
-        )
+      ## Determine source based on class
+      if (inherits(result, "hy")) {
         historical_source <- "HYDAT"
-        result
-      },
-      error = function(e) {
-        ## HYDAT failed, try web service
+      } else if (inherits(result, "ws")) {
+        historical_source <- "Web Service"
+      } else {
+        historical_source <- "Unknown"
+      }
+
+      result
+    },
+    error = function(e) {
+      ## Only fallback to web service if hydat_path was NULL
+      if (is.null(hydat_path)) {
         message("HYDAT unavailable, falling back to web service...")
 
         ## Ensure dates for web service
@@ -289,8 +268,9 @@ get_available_data <- function(
 
         tryCatch(
           {
-            result <- ws_fn(
+            result <- hydat_fn(
               station_number = station_number,
+              hydat_path = FALSE,  # Force web service
               start_date = ws_start,
               end_date = ws_end
             )
@@ -305,9 +285,16 @@ get_available_data <- function(
             NULL
           }
         )
+      } else {
+        ## If hydat_path was explicitly set (not NULL), just error
+        warning(
+          "Failed to retrieve validated data: ", e$message,
+          call. = FALSE
+        )
+        NULL
       }
-    )
-  }
+    }
+  )
 
   ## Add Approval column to final data
   if (!is.null(final_data) && nrow(final_data) > 0) {

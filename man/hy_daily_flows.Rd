@@ -2,7 +2,7 @@
 % Please edit documentation in R/hy_daily_flows.R
 \name{hy_daily_flows}
 \alias{hy_daily_flows}
-\title{Extract daily flows information from the HYDAT database}
+\title{Extract daily flows information from HYDAT database or web service}
 \format{
 A tibble with 5 variables:
 \describe{
@@ -49,9 +49,18 @@ value is \code{code}.}
 A tibble of daily flows
 }
 \description{
-Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame of daily flows.
-\code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all
-values from the \code{hy_stations} table are returned. That is a large tibble for \code{hy_daily_flows}.
+Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
+into a tidy data frame of daily flows. \code{station_number} and \code{prov_terr_state_loc} can both be
+supplied. If both are omitted all values from the \code{hy_stations} table are returned.
+That is a large tibble for \code{hy_daily_flows}.
+}
+\details{
+The \code{hydat_path} argument controls the data source:
+\itemize{
+\item \strong{NULL} (default): Uses local HYDAT database (default location)
+\item \strong{FALSE}: Forces use of historical web service (requires \code{start_date} and \code{end_date})
+\item \strong{Path string}: Uses HYDAT database at the specified path
+}
 }
 \examples{
 \dontrun{
