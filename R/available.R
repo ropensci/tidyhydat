@@ -318,7 +318,7 @@ get_available_data <- function(
     as.Date(start_date)
   } else {
     ## No final data and no start_date, query from 18 months ago
-    Sys.Date() - lubridate::months(18)
+    Sys.Date() - lubridate::month(18)
   }
 
   ## End date defaults to today unless user specified
