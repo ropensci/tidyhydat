@@ -77,3 +77,21 @@ test_that("realtime_ws handles Date objects", {
     expect_equal(unique(output$Parameter), 46)
   })
 })
+
+test_that("realtime_ws handles empty CSV response (regression test for I() wrapper)", {
+
+  # This test specifically addresses a bug where readr::read_csv() without I()
+  # would interpret the CSV header string as a file path instead of CSV text.
+
+  httptest2::with_mock_dir("fixtures", {
+    expect_error(
+      realtime_ws(
+        station_number = "08MF005",
+        parameters = 46,
+        start_date = as.Date("2025-01-01"),
+        end_date = as.Date("2025-01-02")
+      ),
+      "No data exists for this station query"
+    )
+  })
+})

@@ -121,7 +121,7 @@ realtime_ws <- function(
 
   ## Turn it into a tibble and specify correct column classes
   csv_df <- readr::read_csv(
-    httr2::resp_body_string(resp),
+    I(httr2::resp_body_string(resp)),
     col_types = "cTidccc"
   )
 

@@ -119,3 +119,28 @@ test_that("print.available handles many missed stations", {
 
   expect_true(any(grepl("More than 10 stations", output)))
 })
+
+test_that("available_flows handles 'No data exists' error from realtime_ws gracefully", {
+
+  # This tests that when realtime_ws returns no data (empty CSV),
+  # available_flows continues and returns only the final/validated data
+  httptest2::with_mock_dir("fixtures", {
+    result <- available_flows(
+      station_number = "05AA008",  # Station with flow data in test database
+      hydat_path = hy_test_db(),
+      start_date = as.Date("1910-07-01"),
+      end_date = as.Date("1910-07-05")
+    )
+
+    # Should have data from HYDAT (final)
+    expect_s3_class(result, "available")
+    expect_true(nrow(result) > 0)
+
+    # All data should be "final" (no provisional data)
+    expect_true(all(result$Approval == "final"))
+
+    # Should not have any provisional data
+    expect_false(any(result$Approval == "provisional"))
+  })
+})
+

@@ -224,6 +224,7 @@ get_available_data <- function(
     parameter_type,
     parameter_code
 ) {
+
   ## Initialize variables to store data
   final_data <- NULL
   provisional_data <- NULL
@@ -330,59 +331,82 @@ get_available_data <- function(
   ## Only query realtime if there's a valid date range
   if (realtime_start <= realtime_end) {
     ## Query realtime web service
-    rt_data <- realtime_ws(
-      station_number = station_number,
-      parameters = parameter_code,
-      start_date = realtime_start,
-      end_date = realtime_end
+    rt_data <- tryCatch(
+      {
+        realtime_ws(
+          station_number = station_number,
+          parameters = parameter_code,
+          start_date = realtime_start,
+          end_date = realtime_end
+        )
+      },
+      error = function(e) {
+        if (grepl("No data exists for this station query", e$message, fixed = TRUE)) {
+          return(NULL)
+        }
+        stop(e)
+      }
     )
 
-    ## Convert Date to Date class (it comes as POSIXct)
-    rt_data$Date <- as.Date(rt_data$Date)
+    ## Only process if we got realtime data
+    if (!is.null(rt_data)) {
+      ## Convert Date to Date class (it comes as POSIXct)
+      rt_data$Date <- as.Date(rt_data$Date)
 
-    ## Aggregate to daily means
-    sym_STATION_NUMBER <- sym("STATION_NUMBER")
-    sym_Date <- sym("Date")
-    sym_Value <- sym("Value")
+      ## Aggregate to daily means
+      sym_STATION_NUMBER <- sym("STATION_NUMBER")
+      sym_Date <- sym("Date")
+      sym_Value <- sym("Value")
 
-    provisional_data <- rt_data |>
-      dplyr::group_by(!!sym_STATION_NUMBER, !!sym_Date) |>
-      dplyr::summarise(Value = mean(!!sym_Value, na.rm = TRUE), .groups = "drop") |>
-      dplyr::mutate(
-        Parameter = parameter_type,
-        Symbol = NA_character_,
-        Approval = "provisional"
-      ) |>
-      dplyr::select(STATION_NUMBER, Date, Parameter, Value, Symbol, Approval)
+      provisional_data <- rt_data |>
+        dplyr::group_by(!!sym_STATION_NUMBER, !!sym_Date) |>
+        dplyr::summarise(Value = mean(!!sym_Value, na.rm = TRUE), .groups = "drop") |>
+        dplyr::mutate(
+          Parameter = parameter_type,
+          Symbol = NA_character_,
+          Approval = "provisional"
+        ) |>
+        dplyr::select(STATION_NUMBER, Date, Parameter, Value, Symbol, Approval)
+    }
   }
 
 
   ## Combine final and provisional data
   combined_data <- dplyr::bind_rows(final_data, provisional_data)
 
-  ## Apply date filtering if not already applied
-  if (!is.null(start_date) || !is.null(end_date)) {
+  ## Apply date filtering and sorting only if we have data
+  if (nrow(combined_data) > 0) {
+    ## Apply date filtering if not already applied
+    if (!is.null(start_date) || !is.null(end_date)) {
+      sym_Date <- sym("Date")
+
+      if (!is.null(start_date)) {
+        combined_data <- dplyr::filter(combined_data, !!sym_Date >= as.Date(start_date))
+      }
+      if (!is.null(end_date)) {
+        combined_data <- dplyr::filter(combined_data, !!sym_Date <= as.Date(end_date))
+      }
+    }
+
+    ## Sort by station and date
+    sym_STATION_NUMBER <- sym("STATION_NUMBER")
     sym_Date <- sym("Date")
-
-    if (!is.null(start_date)) {
-      combined_data <- dplyr::filter(combined_data, !!sym_Date >= as.Date(start_date))
-    }
-    if (!is.null(end_date)) {
-      combined_data <- dplyr::filter(combined_data, !!sym_Date <= as.Date(end_date))
-    }
+    combined_data <- dplyr::arrange(combined_data, !!sym_STATION_NUMBER, !!sym_Date)
   }
-
-  ## Sort by station and date
-  sym_STATION_NUMBER <- sym("STATION_NUMBER")
-  sym_Date <- sym("Date")
-  combined_data <- dplyr::arrange(combined_data, !!sym_STATION_NUMBER, !!sym_Date)
 
   ## Store metadata as attributes
   attr(combined_data, "historical_source") <- historical_source
-  attr(combined_data, "missed_stns") <- setdiff(
-    unique(station_number),
-    unique(combined_data$STATION_NUMBER)
-  )
+
+  ## Calculate missed stations only if we have data
+  if (nrow(combined_data) > 0) {
+    attr(combined_data, "missed_stns") <- setdiff(
+      unique(station_number),
+      unique(combined_data$STATION_NUMBER)
+    )
+  } else {
+    ## If no data at all, all requested stations were missed
+    attr(combined_data, "missed_stns") <- unique(station_number)
+  }
 
   ## Return with available class
   as.available(combined_data)
