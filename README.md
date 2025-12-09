@@ -21,13 +21,13 @@ checks](https://badges.cranchecks.info/worst/tidyhydat.svg)](https://cran.r-proj
 
 ## What does `tidyhydat` do?
 
+- Provides functions (`available_*`) that combine validated historical
+  data with provisional real-time data.
 - Provides functions (`hy_*`) that access hydrometric data from the
   HYDAT database or web service, a national archive of Canadian
   hydrometric data and return tidy data.
 - Provides functions (`realtime_*`) that access Environment and Climate
   Change Canada’s real-time hydrometric data source.
-- Provides functions (`available_*`) that seamlessly combine validated
-  historical data with provisional real-time data.
 - Provides functions (`search_*`) that can search through the
   approximately 7000 stations in the database and aid in generating
   station vectors
@@ -78,6 +78,43 @@ time! To see where HYDAT was saved you can run `hy_default_db()`. Now
 that you have HYDAT downloaded and ready to go, you are all set to begin
 looking at Canadian hydrometric data.
 
+### Combining validated and provisional data
+
+For a complete record combining validated historical data with recent
+provisional data use the `available_flows` and `available_levels`
+functions.
+
+    available_flows(
+      station_number = "08MF005",
+      start_date = "2020-01-01",
+      end_date = Sys.Date()
+    )
+    #>   Queried on: 2025-12-09 17:40:38.103082 (UTC)
+    #>   Historical data source: HYDAT
+    #>   Final data range: 2020-01-01 to 2024-12-31
+    #>   Provisional data range: 2025-01-01 to 2025-12-09
+    #>   Overall date range: 2020-01-01 to 2025-12-09
+    #>   Records by approval status:
+    #>     final: 1,827
+    #>     provisional: 343
+    #>   Station(s) returned: 1
+    #>   All stations successfully retrieved.
+    #>   Parameter(s): Flow
+    #> # A tibble: 2,170 × 6
+    #>    STATION_NUMBER Date       Parameter Value Symbol Approval
+    #>    <chr>          <date>     <chr>     <dbl> <chr>  <chr>   
+    #>  1 08MF005        2020-01-01 Flow       1340 <NA>   final   
+    #>  2 08MF005        2020-01-02 Flow       1330 <NA>   final   
+    #>  3 08MF005        2020-01-03 Flow       1310 <NA>   final   
+    #>  4 08MF005        2020-01-04 Flow       1420 <NA>   final   
+    #>  5 08MF005        2020-01-05 Flow       1350 <NA>   final   
+    #>  6 08MF005        2020-01-06 Flow       1310 <NA>   final   
+    #>  7 08MF005        2020-01-07 Flow       1280 <NA>   final   
+    #>  8 08MF005        2020-01-08 Flow       1320 <NA>   final   
+    #>  9 08MF005        2020-01-09 Flow       1230 <NA>   final   
+    #> 10 08MF005        2020-01-10 Flow       1210 <NA>   final   
+    #> # ℹ 2,160 more rows
+
 ### Real-time
 
 To download real-time data using the datamart we can use approximately
@@ -85,22 +122,22 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2025-12-08 22:15:27.583058 (UTC)
-    #>   Date range: 2025-11-08 to 2025-12-08 
-    #> # A tibble: 17,596 × 8
+    #>   Queried on: 2025-12-09 17:40:39.67949 (UTC)
+    #>   Date range: 2025-11-09 to 2025-12-09 
+    #> # A tibble: 17,500 × 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
-    #>  1 08MF005        BC                  2025-11-08 08:00:00 Flow       1450 <NA> 
-    #>  2 08MF005        BC                  2025-11-08 08:05:00 Flow       1450 <NA> 
-    #>  3 08MF005        BC                  2025-11-08 08:10:00 Flow       1450 <NA> 
-    #>  4 08MF005        BC                  2025-11-08 08:15:00 Flow       1450 <NA> 
-    #>  5 08MF005        BC                  2025-11-08 08:20:00 Flow       1450 <NA> 
-    #>  6 08MF005        BC                  2025-11-08 08:25:00 Flow       1450 <NA> 
-    #>  7 08MF005        BC                  2025-11-08 08:30:00 Flow       1450 <NA> 
-    #>  8 08MF005        BC                  2025-11-08 08:35:00 Flow       1450 <NA> 
-    #>  9 08MF005        BC                  2025-11-08 08:40:00 Flow       1460 <NA> 
-    #> 10 08MF005        BC                  2025-11-08 08:45:00 Flow       1450 <NA> 
-    #> # ℹ 17,586 more rows
+    #>  1 08MF005        BC                  2025-11-09 08:00:00 Flow       1330 <NA> 
+    #>  2 08MF005        BC                  2025-11-09 08:05:00 Flow       1330 <NA> 
+    #>  3 08MF005        BC                  2025-11-09 08:10:00 Flow       1330 <NA> 
+    #>  4 08MF005        BC                  2025-11-09 08:15:00 Flow       1330 <NA> 
+    #>  5 08MF005        BC                  2025-11-09 08:20:00 Flow       1320 <NA> 
+    #>  6 08MF005        BC                  2025-11-09 08:25:00 Flow       1320 <NA> 
+    #>  7 08MF005        BC                  2025-11-09 08:30:00 Flow       1330 <NA> 
+    #>  8 08MF005        BC                  2025-11-09 08:35:00 Flow       1330 <NA> 
+    #>  9 08MF005        BC                  2025-11-09 08:40:00 Flow       1330 <NA> 
+    #> 10 08MF005        BC                  2025-11-09 08:45:00 Flow       1320 <NA> 
+    #> # ℹ 17,490 more rows
     #> # ℹ 2 more variables: Symbol <chr>, Code <chr>
 
 Or we can use `realtime_ws`:
@@ -111,27 +148,60 @@ Or we can use `realtime_ws`:
       start_date = Sys.Date() - 14,
       end_date = Sys.Date()
     )
-    #>   Queried on: 2025-12-08 22:15:29.054838 (UTC)
-    #>   Date range: 2025-11-24 to 2025-12-08 
+    #>   Queried on: 2025-12-09 17:40:40.893085 (UTC)
+    #>   Date range: 2025-11-25 to 2025-12-09 
     #>   Station(s) returned: 1
     #>   All stations successfully retrieved.
     #>   All parameters successfully retrieved.
-    #> # A tibble: 4,645 × 12
+    #> # A tibble: 4,593 × 12
     #>    STATION_NUMBER Date                Name_En  Value Unit  Grade Symbol Approval
     #>    <chr>          <dttm>              <chr>    <dbl> <chr> <lgl> <chr>  <chr>   
-    #>  1 08MF005        2025-11-24 00:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  2 08MF005        2025-11-24 01:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  3 08MF005        2025-11-24 02:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  4 08MF005        2025-11-24 03:00:00 Water t…  7.33 °C    NA    <NA>   Provisi…
-    #>  5 08MF005        2025-11-24 04:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  6 08MF005        2025-11-24 05:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  7 08MF005        2025-11-24 06:00:00 Water t…  7.33 °C    NA    <NA>   Provisi…
-    #>  8 08MF005        2025-11-24 07:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #>  9 08MF005        2025-11-24 08:00:00 Water t…  7.34 °C    NA    <NA>   Provisi…
-    #> 10 08MF005        2025-11-24 09:00:00 Water t…  7.35 °C    NA    <NA>   Provisi…
-    #> # ℹ 4,635 more rows
+    #>  1 08MF005        2025-11-25 00:00:00 Water t…  7.32 °C    NA    <NA>   Provisi…
+    #>  2 08MF005        2025-11-25 01:00:00 Water t…  7.32 °C    NA    <NA>   Provisi…
+    #>  3 08MF005        2025-11-25 02:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #>  4 08MF005        2025-11-25 03:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #>  5 08MF005        2025-11-25 04:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #>  6 08MF005        2025-11-25 05:00:00 Water t…  7.3  °C    NA    <NA>   Provisi…
+    #>  7 08MF005        2025-11-25 06:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #>  8 08MF005        2025-11-25 07:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #>  9 08MF005        2025-11-25 08:00:00 Water t…  7.31 °C    NA    <NA>   Provisi…
+    #> 10 08MF005        2025-11-25 09:00:00 Water t…  7.3  °C    NA    <NA>   Provisi…
+    #> # ℹ 4,583 more rows
     #> # ℹ 4 more variables: Parameter <dbl>, Code <chr>, Qualifier <chr>,
     #> #   Qualifiers <lgl>
+
+### Using only HYDAT
+
+If you wish to use only the final approved data in HYDAT database you
+can use:
+
+    hy_daily_flows(
+      station_number = "08MF005",
+      start_date = "2020-01-01",
+      end_date = "2020-12-31"
+    )
+    #>   Queried from version of HYDAT released on 2025-10-14
+    #>    Observations:                      366
+    #>    Measurement flags:                 0
+    #>    Parameter(s):                      Flow
+    #>    Date range:                        2020-01-01 to 2020-12-31 
+    #>    Station(s) returned:               1
+    #>    Stations requested but not returned: 
+    #>     All stations returned.
+    #> # A tibble: 366 × 5
+    #>    STATION_NUMBER Date       Parameter Value Symbol
+    #>    <chr>          <date>     <chr>     <dbl> <chr> 
+    #>  1 08MF005        2020-01-01 Flow       1340 <NA>  
+    #>  2 08MF005        2020-01-02 Flow       1330 <NA>  
+    #>  3 08MF005        2020-01-03 Flow       1310 <NA>  
+    #>  4 08MF005        2020-01-04 Flow       1420 <NA>  
+    #>  5 08MF005        2020-01-05 Flow       1350 <NA>  
+    #>  6 08MF005        2020-01-06 Flow       1310 <NA>  
+    #>  7 08MF005        2020-01-07 Flow       1280 <NA>  
+    #>  8 08MF005        2020-01-08 Flow       1320 <NA>  
+    #>  9 08MF005        2020-01-09 Flow       1230 <NA>  
+    #> 10 08MF005        2020-01-10 Flow       1210 <NA>  
+    #> # ℹ 356 more rows
 
 ### Using the web service without HYDAT
 
@@ -146,7 +216,7 @@ web service:
       start_date = "2020-01-01",
       end_date = "2020-12-31"
     )
-    #>   Queried on: 2025-12-08 22:15:30.188702 (UTC)
+    #>   Queried on: 2025-12-09 17:40:42.101829 (UTC)
     #>   Date range: 2020-01-01 to 2020-12-31 
     #>   Station(s) returned: 1
     #>   All stations successfully retrieved.
@@ -164,58 +234,6 @@ web service:
     #>  9 08MF005        2020-01-09 discharge/débit  1230 <NA>  
     #> 10 08MF005        2020-01-10 discharge/débit  1210 <NA>  
     #> # ℹ 356 more rows
-
-Similarly for water levels:
-
-    hy_daily_levels(
-      station_number = "08MF005",
-      hydat_path = FALSE,
-      start_date = "2020-01-01",
-      end_date = "2020-12-31"
-    )
-    #>   Queried on: 2025-12-08 22:15:31.330077 (UTC)
-    #>   Date range: 2020-01-01 to 2020-12-31 
-    #>   Station(s) returned: 1
-    #>   All stations successfully retrieved.
-    #> # A tibble: 366 × 5
-    #>    STATION_NUMBER Date       Parameter          Value Symbol
-    #>    <chr>          <date>     <chr>              <dbl> <chr> 
-    #>  1 08MF005        2020-01-01 water level/niveau  3.72 <NA>  
-    #>  2 08MF005        2020-01-02 water level/niveau  3.72 <NA>  
-    #>  3 08MF005        2020-01-03 water level/niveau  3.69 <NA>  
-    #>  4 08MF005        2020-01-04 water level/niveau  3.81 <NA>  
-    #>  5 08MF005        2020-01-05 water level/niveau  3.74 <NA>  
-    #>  6 08MF005        2020-01-06 water level/niveau  3.69 <NA>  
-    #>  7 08MF005        2020-01-07 water level/niveau  3.66 <NA>  
-    #>  8 08MF005        2020-01-08 water level/niveau  3.70 <NA>  
-    #>  9 08MF005        2020-01-09 water level/niveau  3.60 <NA>  
-    #> 10 08MF005        2020-01-10 water level/niveau  3.58 <NA>  
-    #> # ℹ 356 more rows
-
-### Combining validated and provisional data
-
-For a complete record combining validated historical data with recent
-provisional data:
-
-    available_flows(
-      station_number = "08MF005",
-      start_date = "2020-01-01",
-      end_date = Sys.Date()
-    )
-    #> # A tibble: 2,169 × 6
-    #>    STATION_NUMBER Date       Parameter Value Symbol Approval
-    #>    <chr>          <date>     <chr>     <dbl> <chr>  <chr>   
-    #>  1 08MF005        2020-01-01 Flow       1340 <NA>   final   
-    #>  2 08MF005        2020-01-02 Flow       1330 <NA>   final   
-    #>  3 08MF005        2020-01-03 Flow       1310 <NA>   final   
-    #>  4 08MF005        2020-01-04 Flow       1420 <NA>   final   
-    #>  5 08MF005        2020-01-05 Flow       1350 <NA>   final   
-    #>  6 08MF005        2020-01-06 Flow       1310 <NA>   final   
-    #>  7 08MF005        2020-01-07 Flow       1280 <NA>   final   
-    #>  8 08MF005        2020-01-08 Flow       1320 <NA>   final   
-    #>  9 08MF005        2020-01-09 Flow       1230 <NA>   final   
-    #> 10 08MF005        2020-01-10 Flow       1210 <NA>   final   
-    #> # ℹ 2,159 more rows
 
 ## Compare realtime\_ws and realtime\_dd
 
@@ -240,21 +258,13 @@ difference to `realtime_dd()`. These include:
 
 ### Plotting
 
-Plot methods are also provided to quickly visualize realtime data:
+Plot methods are also provided to quickly visualize data:
 
-    realtime_ex <- realtime_dd(station_number = "08MF005")
+    flows_ex <- available_flows(station_number = "08MF005", start_date = "2013-01-01")
 
-    plot(realtime_ex)
+    plot(flows_ex)
 
 ![](man/figures/README-unnamed-chunk-11-1.png)
-
-and also historical data:
-
-    hy_ex <- hy_daily_flows(station_number = "08MF005", start_date = "2013-01-01")
-
-    plot(hy_ex)
-
-![](man/figures/README-unnamed-chunk-12-1.png)
 
 ## Getting Help or Reporting an Issue
 

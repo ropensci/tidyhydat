@@ -27,9 +27,9 @@ knitr::opts_chunk$set(
 
 ## What does `tidyhydat` do?
 
+- Provides functions (`available_*`) that combine validated historical data with provisional real-time data.
 - Provides functions (`hy_*`) that access hydrometric data from the HYDAT database or web service, a national archive of Canadian hydrometric data and return tidy data.
 - Provides functions (`realtime_*`) that access Environment and Climate Change Canada's real-time hydrometric data source.
-- Provides functions (`available_*`) that seamlessly combine validated historical data with provisional real-time data.
 - Provides functions (`search_*`) that can search through the approximately 7000 stations in the database and aid in generating station vectors
 - Keep functions as simple as possible. For example, for daily flows, the `hy_daily_flows()` function queries the database, *tidies* the data and returns a [tibble](https://tibble.tidyverse.org/) of daily flows.
 
@@ -61,16 +61,24 @@ To use many of the functions in the `tidyhydat` package you will need to downloa
 download_hydat()
 ```
 
-This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `
-tidyhydat
-`'s function will look for it. Do be patient though as this can take a long time! To see where HYDAT was saved you can run `
-hy_default_db()
-`. Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
+This downloads (with your permission) the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s 
+function will look for it. Do be patient though as this can take a long time! To see where HYDAT was saved you can run `hy_default_db()`. 
+Now that you have HYDAT downloaded and ready to go, you are all set to begin looking at Canadian hydrometric data.
+
+### Combining validated and provisional data
+For a complete record combining validated historical data with recent provisional data use the `available_flows` and `available_levels` functions.
+
+```{r}
+available_flows(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = Sys.Date()
+)
+```
 
 ### Real-time
-To download real-time data using the datamart we can use approximately the same conventions discussed above. Using `
-realtime_dd()
-` we can easily select specific stations by supplying a station of interest:
+To download real-time data using the datamart we can use approximately the same conventions discussed above. 
+Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
 ```{r}
 realtime_dd(station_number = "08MF005")
 ```
@@ -86,6 +94,17 @@ realtime_ws(
 )
 ```
 
+### Using only HYDAT
+If you wish to use only the final approved data in HYDAT database you can use:
+
+```{r}
+hy_daily_flows(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = "2020-12-31"
+)
+```
+
 ### Using the web service without HYDAT
 For smaller queries where downloading the entire HYDAT database is unnecessary, you can use `hy_daily_flows()` and `hy_daily_levels()` with `hydat_path = FALSE` to access historical daily data directly from the web service:
 
@@ -95,27 +114,6 @@ hy_daily_flows(
   hydat_path = FALSE,
   start_date = "2020-01-01",
   end_date = "2020-12-31"
-)
-```
-
-Similarly for water levels:
-```{r}
-hy_daily_levels(
-  station_number = "08MF005",
-  hydat_path = FALSE,
-  start_date = "2020-01-01",
-  end_date = "2020-12-31"
-)
-```
-
-### Combining validated and provisional data
-For a complete record combining validated historical data with recent provisional data:
-
-```{r}
-available_flows(
-  station_number = "08MF005",
-  start_date = "2020-01-01",
-  end_date = Sys.Date()
 )
 ```
 
@@ -132,18 +130,12 @@ available_flows(
 
 ### Plotting
 
-Plot methods are also provided to quickly visualize realtime data:
-```{r}
-realtime_ex <- realtime_dd(station_number = "08MF005")
+Plot methods are also provided to quickly visualize data:
 
-plot(realtime_ex)
-```
-
-and also historical data:
 ```{r, fig.height=7, fig.width=12}
-hy_ex <- hy_daily_flows(station_number = "08MF005", start_date = "2013-01-01")
+flows_ex <- available_flows(station_number = "08MF005", start_date = "2013-01-01")
 
-plot(hy_ex)
+plot(flows_ex)
 ```
 
 ## Getting Help or Reporting an Issue
