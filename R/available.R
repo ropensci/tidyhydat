@@ -78,7 +78,7 @@
 #' ## Get only recent data (last 2 years)
 #' recent_flows <- available_flows(
 #'   "08MF005",
-#'   start_date = Sys.Date() - 730,
+#'   start_date = Sys.Date() - lubridate::years(2),
 #'   end_date = Sys.Date()
 #' )
 #'
@@ -170,7 +170,7 @@ available_flows <- function(
 #' ## Get only recent data (last 2 years)
 #' recent_levels <- available_levels(
 #'   "08MF005",
-#'   start_date = Sys.Date() - 730,
+#'   start_date = Sys.Date() - lubridate::years(2),
 #'   end_date = Sys.Date()
 #' )
 #'
@@ -312,13 +312,13 @@ get_available_data <- function(
   # Use the latest date from final data as the starting point
   realtime_start <- if (!is.null(final_data) && nrow(final_data) > 0) {
     ## Start from the day after the last final record
-    max(final_data$Date, na.rm = TRUE) + 1
+    max(final_data$Date, na.rm = TRUE) + lubridate::days(1)
   } else if (!is.null(start_date)) {
     ## No final data, use user-provided start_date
     as.Date(start_date)
   } else {
     ## No final data and no start_date, query from 18 months ago
-    Sys.Date() - 547
+    Sys.Date() - lubridate::months(18)
   }
 
   ## End date defaults to today unless user specified

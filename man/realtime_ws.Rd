@@ -22,7 +22,7 @@ A tibble with 6 variables:
 realtime_ws(
   station_number,
   parameters = NULL,
-  start_date = Sys.Date() - 30,
+  start_date = Sys.Date() - lubridate::days(30),
   end_date = Sys.Date()
 )
 }
@@ -60,7 +60,7 @@ fivedays <- realtime_ws(
   station_number = c("08NL071", "08NM174"),
   parameters = c(47, 5),
   end_date = Sys.Date(), # today
-  start_date = Sys.Date() - 5 # five days ago
+  start_date = Sys.Date() - lubridate::days(5) # five days ago
 )
 }
 }

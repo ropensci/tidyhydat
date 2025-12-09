@@ -95,7 +95,7 @@ levels <- available_levels(c("08MF005", "08NM116"))
 ## Get only recent data (last 2 years)
 recent_levels <- available_levels(
   "08MF005",
-  start_date = Sys.Date() - 730,
+  start_date = Sys.Date() - lubridate::years(2),
   end_date = Sys.Date()
 )
 
