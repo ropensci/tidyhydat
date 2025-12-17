@@ -178,8 +178,8 @@ plot.available <- function(x = NULL, ...) {
       mgp = c(3.1, 0.4, 0),
       las = 1,
       tck = -.01,
-      xaxs = "i",
-      yaxs = "i"
+      xaxs = "r",
+      yaxs = "r"
     )
 
     station_data <- hydf[hydf$STATION == unique(hydf$STATION)[i], ]
