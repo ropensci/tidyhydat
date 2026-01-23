@@ -445,7 +445,7 @@ determine_realtime_start <- function(final_data, start_date) {
   } else if (!is.null(start_date)) {
     as.Date(start_date)
   } else {
-    Sys.Date() - lubridate::months(18)
+    Sys.Date() - lubridate::period(18, "months")
   }
 }
 
