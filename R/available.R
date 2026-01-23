@@ -224,190 +224,247 @@ get_available_data <- function(
     parameter_type,
     parameter_code
 ) {
+  ## Define rlang symbols once for the entire function
 
-  ## Initialize variables to store data
-  final_data <- NULL
-  provisional_data <- NULL
-  historical_source <- NA_character_
+  sym_STATION_NUMBER <- sym("STATION_NUMBER")
+  sym_Date <- sym("Date")
+  sym_Value <- sym("Value")
 
-  ## Get final data using hy_daily_* functions
-  ## These now handle data source selection internally based on hydat_path
-  if (parameter_type == "Flow") {
-    hydat_fn <- hy_daily_flows
-  } else if (parameter_type == "Level") {
-    hydat_fn <- hy_daily_levels
-  } else {
+  ## Select the appropriate hy_daily_* function
+  hydat_fn <- switch(
+    parameter_type,
+    Flow = hy_daily_flows,
+    Level = hy_daily_levels,
     stop("parameter_type must be 'Flow' or 'Level'", call. = FALSE)
-  }
-
-  ## Get final data - try HYDAT first, fallback to web service if NULL
-  final_data <- tryCatch(
-    {
-      result <- hydat_fn(
-        station_number = station_number,
-        hydat_path = hydat_path,
-        prov_terr_state_loc = prov_terr_state_loc,
-        start_date = start_date,
-        end_date = end_date
-      )
-
-      ## Determine source based on class
-      if (inherits(result, "hy")) {
-        historical_source <- "HYDAT"
-      } else if (inherits(result, "ws")) {
-        historical_source <- "Web Service"
-      } else {
-        historical_source <- "Unknown"
-      }
-
-      result
-    },
-    error = function(e) {
-      ## Only fallback to web service if hydat_path was NULL
-      if (is.null(hydat_path)) {
-        message("HYDAT unavailable, falling back to web service...")
-
-        ## Ensure dates for web service
-        ws_start <- if (is.null(start_date)) as.Date("1850-01-01") else start_date
-        ws_end <- if (is.null(end_date)) Sys.Date() else end_date
-
-        tryCatch(
-          {
-            result <- hydat_fn(
-              station_number = station_number,
-              hydat_path = FALSE,  # Force web service
-              start_date = ws_start,
-              end_date = ws_end
-            )
-            historical_source <<- "Web Service"
-            result
-          },
-          error = function(e2) {
-            warning(
-              "Failed to retrieve validated data from both HYDAT and web service",
-              call. = FALSE
-            )
-            NULL
-          }
-        )
-      } else {
-        ## If hydat_path was explicitly set (not NULL), just error
-        warning(
-          "Failed to retrieve validated data: ", e$message,
-          call. = FALSE
-        )
-        NULL
-      }
-    }
   )
+
+  ## Get final data and track historical source
+  final_result <- get_final_data(
+    hydat_fn = hydat_fn,
+    station_number = station_number,
+    hydat_path = hydat_path,
+    prov_terr_state_loc = prov_terr_state_loc,
+    start_date = start_date,
+    end_date = end_date
+  )
+
+  final_data <- final_result$data
+  historical_source <- final_result$source
 
   ## Add Approval column to final data
   if (!is.null(final_data) && nrow(final_data) > 0) {
     final_data$Approval <- "final"
   }
 
+  ## Get provisional/realtime data
+  provisional_data <- get_provisional_data(
+    final_data = final_data,
+    station_number = station_number,
+    start_date = start_date,
+    end_date = end_date,
+    parameter_type = parameter_type,
+    parameter_code = parameter_code,
+    sym_STATION_NUMBER = sym_STATION_NUMBER,
+    sym_Date = sym_Date,
+    sym_Value = sym_Value
+  )
 
-  # Get provisional/realtime data
-  # Determine starting date for realtime query
-  # Use the latest date from final data as the starting point
-  realtime_start <- if (!is.null(final_data) && nrow(final_data) > 0) {
-    ## Start from the day after the last final record
-    max(final_data$Date, na.rm = TRUE) + lubridate::days(1)
-  } else if (!is.null(start_date)) {
-    ## No final data, use user-provided start_date
-    as.Date(start_date)
-  } else {
-    ## No final data and no start_date, query from 18 months ago
-    Sys.Date() - lubridate::month(18)
-  }
-
-  ## End date defaults to today unless user specified
-  realtime_end <- if (!is.null(end_date)) {
-    as.Date(end_date)
-  } else {
-    Sys.Date()
-  }
-
-  ## Only query realtime if there's a valid date range
-  if (realtime_start <= realtime_end) {
-    ## Query realtime web service
-    rt_data <- tryCatch(
-      {
-        realtime_ws(
-          station_number = station_number,
-          parameters = parameter_code,
-          start_date = realtime_start,
-          end_date = realtime_end
-        )
-      },
-      error = function(e) {
-        if (grepl("No data exists for this station query", e$message, fixed = TRUE)) {
-          return(NULL)
-        }
-        stop(e)
-      }
-    )
-
-    ## Only process if we got realtime data
-    if (!is.null(rt_data)) {
-      ## Convert Date to Date class (it comes as POSIXct)
-      rt_data$Date <- as.Date(rt_data$Date)
-
-      ## Aggregate to daily means
-      sym_STATION_NUMBER <- sym("STATION_NUMBER")
-      sym_Date <- sym("Date")
-      sym_Value <- sym("Value")
-
-      provisional_data <- rt_data |>
-        dplyr::group_by(!!sym_STATION_NUMBER, !!sym_Date) |>
-        dplyr::summarise(Value = mean(!!sym_Value, na.rm = TRUE), .groups = "drop") |>
-        dplyr::mutate(
-          Parameter = parameter_type,
-          Symbol = NA_character_,
-          Approval = "provisional"
-        ) |>
-        dplyr::select(STATION_NUMBER, Date, Parameter, Value, Symbol, Approval)
-    }
-  }
-
-
-  ## Combine final and provisional data
+  ## Combine and finalize the data
   combined_data <- dplyr::bind_rows(final_data, provisional_data)
 
-  ## Apply date filtering and sorting only if we have data
   if (nrow(combined_data) > 0) {
-    ## Apply date filtering if not already applied
-    if (!is.null(start_date) || !is.null(end_date)) {
-      sym_Date <- sym("Date")
-
-      if (!is.null(start_date)) {
-        combined_data <- dplyr::filter(combined_data, !!sym_Date >= as.Date(start_date))
-      }
-      if (!is.null(end_date)) {
-        combined_data <- dplyr::filter(combined_data, !!sym_Date <= as.Date(end_date))
-      }
-    }
-
-    ## Sort by station and date
-    sym_STATION_NUMBER <- sym("STATION_NUMBER")
-    sym_Date <- sym("Date")
+    combined_data <- apply_date_filter(
+      combined_data,
+      start_date = start_date,
+      end_date = end_date,
+      sym_Date = sym_Date
+    )
     combined_data <- dplyr::arrange(combined_data, !!sym_STATION_NUMBER, !!sym_Date)
   }
 
   ## Store metadata as attributes
   attr(combined_data, "historical_source") <- historical_source
-
-  ## Calculate missed stations only if we have data
-  if (nrow(combined_data) > 0) {
-    attr(combined_data, "missed_stns") <- setdiff(
-      unique(station_number),
-      unique(combined_data$STATION_NUMBER)
-    )
+  attr(combined_data, "missed_stns") <- if (nrow(combined_data) > 0) {
+    setdiff(unique(station_number), unique(combined_data$STATION_NUMBER))
   } else {
-    ## If no data at all, all requested stations were missed
-    attr(combined_data, "missed_stns") <- unique(station_number)
+    unique(station_number)
   }
 
-  ## Return with available class
   as.available(combined_data)
+}
+
+
+#' Retrieve final (validated) historical data
+#'
+#' Attempts to fetch data from HYDAT first, falling back to web service if
+#' HYDAT is unavailable and hydat_path was NULL.
+#'
+#' @noRd
+#' @keywords internal
+get_final_data <- function(
+    hydat_fn,
+    station_number,
+    hydat_path,
+    prov_terr_state_loc,
+    start_date,
+    end_date
+) {
+  result <- tryCatch(
+    {
+      data <- hydat_fn(
+        station_number = station_number,
+        hydat_path = hydat_path,
+        prov_terr_state_loc = prov_terr_state_loc,
+        start_date = start_date,
+        end_date = end_date
+      )
+      source <- if (inherits(data, "hy")) {
+        "HYDAT"
+      } else if (inherits(data, "ws")) {
+        "Web Service"
+      } else {
+        "Unknown"
+      }
+      list(data = data, source = source)
+    },
+    error = function(e) {
+      if (is.null(hydat_path)) {
+        fallback_to_web_service(
+          hydat_fn = hydat_fn,
+          station_number = station_number,
+          start_date = start_date,
+          end_date = end_date
+        )
+      } else {
+        warning("Failed to retrieve validated data: ", e$message, call. = FALSE)
+        list(data = NULL, source = NA_character_)
+      }
+    }
+  )
+
+  result
+}
+
+
+#' Fallback to web service when HYDAT is unavailable
+#'
+#' @noRd
+#' @keywords internal
+fallback_to_web_service <- function(hydat_fn, station_number, start_date, end_date) {
+  message("HYDAT unavailable, falling back to web service...")
+
+  ws_start <- if (is.null(start_date)) as.Date("1850-01-01") else start_date
+  ws_end <- if (is.null(end_date)) Sys.Date() else end_date
+
+  tryCatch(
+    {
+      data <- hydat_fn(
+        station_number = station_number,
+        hydat_path = FALSE,
+        start_date = ws_start,
+        end_date = ws_end
+      )
+      list(data = data, source = "Web Service")
+    },
+    error = function(e) {
+      warning(
+        "Failed to retrieve validated data from both HYDAT and web service",
+        call. = FALSE
+      )
+      list(data = NULL, source = NA_character_)
+    }
+  )
+}
+
+
+#' Retrieve provisional (realtime) data
+#'
+#' Queries the realtime web service for provisional data starting from the day
+#' after the last final record.
+#'
+#' @noRd
+#' @keywords internal
+get_provisional_data <- function(
+    final_data,
+    station_number,
+    start_date,
+    end_date,
+    parameter_type,
+    parameter_code,
+    sym_STATION_NUMBER,
+    sym_Date,
+    sym_Value
+) {
+  realtime_start <- determine_realtime_start(final_data, start_date)
+  realtime_end <- if (!is.null(end_date)) as.Date(end_date) else Sys.Date()
+
+  if (realtime_start > realtime_end) {
+    return(NULL)
+  }
+
+  rt_data <- tryCatch(
+    realtime_ws(
+      station_number = station_number,
+      parameters = parameter_code,
+      start_date = realtime_start,
+      end_date = realtime_end
+    ),
+    error = function(e) {
+      if (grepl("No data exists for this station query", e$message, fixed = TRUE)) {
+        return(NULL)
+      }
+      stop(e)
+    }
+  )
+
+  if (is.null(rt_data)) {
+    return(NULL)
+  }
+
+  rt_data$Date <- as.Date(rt_data$Date)
+
+  rt_data |>
+    dplyr::group_by(!!sym_STATION_NUMBER, !!sym_Date) |>
+    dplyr::summarise(Value = mean(!!sym_Value, na.rm = TRUE), .groups = "drop") |>
+    dplyr::mutate(
+      Parameter = parameter_type,
+      Symbol = NA_character_,
+      Approval = "provisional"
+    ) |>
+    dplyr::select(STATION_NUMBER, Date, Parameter, Value, Symbol, Approval)
+}
+
+
+#' Determine the start date for realtime queries
+#'
+#' @noRd
+#' @keywords internal
+determine_realtime_start <- function(final_data, start_date) {
+  if (!is.null(final_data) && nrow(final_data) > 0) {
+    max(final_data$Date, na.rm = TRUE) + lubridate::days(1)
+  } else if (!is.null(start_date)) {
+    as.Date(start_date)
+  } else {
+    Sys.Date() - lubridate::months(18)
+  }
+}
+
+
+#' Apply date filtering to combined data
+#'
+#' @noRd
+#' @keywords internal
+apply_date_filter <- function(data, start_date, end_date, sym_Date) {
+  if (is.null(start_date) && is.null(end_date)) {
+    return(data)
+  }
+
+  if (!is.null(start_date)) {
+    data <- dplyr::filter(data, !!sym_Date >= as.Date(start_date))
+  }
+  if (!is.null(end_date)) {
+    data <- dplyr::filter(data, !!sym_Date <= as.Date(end_date))
+  }
+
+  data
 }

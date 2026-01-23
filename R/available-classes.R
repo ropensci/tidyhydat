@@ -22,88 +22,90 @@ as.available <- function(x) {
 
 #' @export
 print.available <- function(x, ...) {
-  cat(paste("  Queried on:", attributes(x)$query_time, "(UTC)\n"))
+  cat(paste("  Queried on:", attr(x, "query_time"), "(UTC)\n"))
 
-  ## Historical data source
-  hist_source <- attributes(x)$historical_source
+  hist_source <- attr(x, "historical_source")
   if (!is.null(hist_source) && !is.na(hist_source)) {
     cat(paste0("  Historical data source: ", hist_source, "\n"))
   }
 
-  ## Date range by approval status
   if ("Date" %in% names(x) && "Approval" %in% names(x)) {
-    ## Final/validated data range
-    final_data <- x[x$Approval == "final" & !is.na(x$Approval), ]
-    if (nrow(final_data) > 0) {
-      final_range <- paste0(
-        range(as.Date(final_data$Date), na.rm = TRUE),
-        collapse = " to "
-      )
-      cat(paste0("  Final data range: ", final_range, "\n"))
-    } else {
-      cat(crayon::yellow("  Final data range: No final data\n"))
-    }
-
-    ## Provisional data range
-    prov_data <- x[x$Approval == "provisional" & !is.na(x$Approval), ]
-    if (nrow(prov_data) > 0) {
-      prov_range <- paste0(
-        range(as.Date(prov_data$Date), na.rm = TRUE),
-        collapse = " to "
-      )
-      cat(paste0("  Provisional data range: ", prov_range, "\n"))
-    } else {
-      cat(crayon::yellow("  Provisional data range: No provisional data\n"))
-    }
-
-    ## Overall date range
-    overall_range <- paste0(
-      range(as.Date(x$Date), na.rm = TRUE),
-      collapse = " to "
-    )
-    cat(paste0("  Overall date range: ", overall_range, "\n"))
-  }
-
-  ## Data source breakdown
-  if ("Approval" %in% names(x)) {
-    approval_counts <- table(x$Approval)
-    cat("  Records by approval status:\n")
-    for (status in names(approval_counts)) {
-      count <- format(approval_counts[status], big.mark = ",")
-      cat(paste0("    ", status, ": ", count, "\n"))
-    }
-  }
-
-  ## Station coverage
-  if ("STATION_NUMBER" %in% names(x)) {
-    n_stns <- format(dplyr::n_distinct(x$STATION_NUMBER), big.mark = ",")
-    cat(paste0("  Station(s) returned: ", n_stns, "\n"))
-
-    differ <- attributes(x)$missed_stns
-    if (!is.null(differ) && length(differ) > 0) {
-      cat("  Stations requested but not returned: \n")
-      if (length(differ) > 10) {
-        cat(crayon::cyan(
-          "    More than 10 stations requested but not returned.\n"
-        ))
-      } else {
-        cat(crayon::cyan(paste0("    ", paste0(differ, collapse = " "), "\n")))
-      }
-    } else if (!is.null(differ)) {
-      cat(crayon::cyan("  All stations successfully retrieved.\n"))
-    }
-  }
-
-  ## Parameter info
-  if ("Parameter" %in% names(x)) {
+    print_date_range(x, "final", "Final")
+    print_date_range(x, "provisional", "Provisional")
     cat(paste0(
-      "  Parameter(s): ",
-      paste0(unique(x$Parameter), collapse = "/"),
+      "  Overall date range: ",
+      format_date_range(x$Date),
       "\n"
     ))
   }
 
+  if ("Approval" %in% names(x)) {
+    print_approval_counts(x$Approval)
+  }
+
+  if ("STATION_NUMBER" %in% names(x)) {
+    print_station_coverage(x)
+  }
+
+  if ("Parameter" %in% names(x)) {
+    cat(paste0("  Parameter(s): ", paste0(unique(x$Parameter), collapse = "/"), "\n"))
+  }
+
   print(dplyr::as_tibble(x), ...)
+}
+
+
+#' Format a date range as "start to end" string
+#' @noRd
+format_date_range <- function(dates) {
+
+  paste0(range(as.Date(dates), na.rm = TRUE), collapse = " to ")
+}
+
+
+#' Print date range for a given approval status
+#' @noRd
+print_date_range <- function(x, approval_value, label) {
+  subset_data <- x[x$Approval == approval_value & !is.na(x$Approval), ]
+  if (nrow(subset_data) > 0) {
+    cat(paste0("  ", label, " data range: ", format_date_range(subset_data$Date), "\n"))
+  } else {
+    cat(crayon::yellow(paste0("  ", label, " data range: No ", tolower(label), " data\n")))
+  }
+}
+
+
+#' Print approval status record counts
+#' @noRd
+print_approval_counts <- function(approval) {
+  counts <- table(approval)
+  cat("  Records by approval status:\n")
+  for (status in names(counts)) {
+    cat(paste0("    ", status, ": ", format(counts[status], big.mark = ","), "\n"))
+  }
+}
+
+
+#' Print station coverage information
+#' @noRd
+print_station_coverage <- function(x) {
+  n_stns <- format(dplyr::n_distinct(x$STATION_NUMBER), big.mark = ",")
+  cat(paste0("  Station(s) returned: ", n_stns, "\n"))
+
+  missed <- attr(x, "missed_stns")
+  if (is.null(missed)) {
+    return()
+  }
+
+  if (length(missed) == 0) {
+    cat(crayon::cyan("  All stations successfully retrieved.\n"))
+  } else if (length(missed) > 10) {
+    cat("  Stations requested but not returned: \n")
+    cat(crayon::cyan("    More than 10 stations requested but not returned.\n"))
+  } else {
+    cat("  Stations requested but not returned: \n")
+    cat(crayon::cyan(paste0("    ", paste0(missed, collapse = " "), "\n")))
+  }
 }
 
 #' Plot available data (final + provisional)
@@ -127,125 +129,124 @@ print.available <- function(x, ...) {
 #' @export
 #'
 plot.available <- function(x = NULL, ...) {
-  if (!all(c("STATION_NUMBER", "Date", "Parameter", "Value", "Approval") %in% names(x))) {
-    stop("plot.available requires STATION_NUMBER, Date, Parameter, Value, and Approval columns", call. = FALSE)
+  required_cols <- c("STATION_NUMBER", "Date", "Parameter", "Value", "Approval")
+  if (!all(required_cols %in% names(x))) {
+    stop(
+      "plot.available requires STATION_NUMBER, Date, Parameter, Value, and Approval columns",
+      call. = FALSE
+    )
   }
 
-  ### Join with meta data to get station name
   hydf <- dplyr::left_join(
     x,
     suppressMessages(tidyhydat::allstations),
-    by = c("STATION_NUMBER")
+    by = "STATION_NUMBER"
   )
+  hydf$STATION <- factor(paste(hydf$STATION_NAME, hydf$STATION_NUMBER, sep = " - "))
 
-  hydf$STATION <- paste(hydf$STATION_NAME, hydf$STATION_NUMBER, sep = " - ")
-  hydf$STATION <- factor(hydf$STATION)
-
-  num_stns <- length(unique(hydf$STATION))
+  stations <- unique(hydf$STATION)
+  num_stns <- length(stations)
 
   if (num_stns > 4L) {
     stop("You are trying to plot more than four stations at once.", call. = FALSE)
   }
 
-  if (num_stns > 2L) {
-    m <- matrix(c(1, 1, 2, 3, 4, 5, 6, 6), nrow = 4, ncol = 2, byrow = TRUE)
-    graphics::layout(mat = m, heights = c(0.1, 0.35, 0.35, 0.2))
+  setup_plot_layout(num_stns)
+  draw_plot_title()
+
+  for (station in stations) {
+    draw_station_plot(hydf, station, unique(hydf$Parameter), ...)
   }
 
-  if (num_stns == 2L) {
-    m <- matrix(c(1, 1, 2, 3, 4, 4), nrow = 3, ncol = 2, byrow = TRUE)
-    graphics::layout(mat = m, heights = c(0.2, 0.6, 0.2))
-  }
+  draw_plot_legend()
+  invisible(TRUE)
+}
 
-  if (num_stns == 1L) {
-    m <- matrix(c(1, 2, 3), nrow = 3, ncol = 1, byrow = TRUE)
-    graphics::layout(mat = m, heights = c(0.2, 0.6, 0.2))
-  }
 
+#' Set up the plot layout based on number of stations
+#' @noRd
+setup_plot_layout <- function(num_stns) {
+  layout_config <- switch(
+    as.character(num_stns),
+    "1" = list(
+      mat = matrix(c(1, 2, 3), nrow = 3, ncol = 1, byrow = TRUE),
+      heights = c(0.2, 0.6, 0.2)
+    ),
+    "2" = list(
+      mat = matrix(c(1, 1, 2, 3, 4, 4), nrow = 3, ncol = 2, byrow = TRUE),
+      heights = c(0.2, 0.6, 0.2)
+    ),
+    list(
+      mat = matrix(c(1, 1, 2, 3, 4, 5, 6, 6), nrow = 4, ncol = 2, byrow = TRUE),
+      heights = c(0.1, 0.35, 0.35, 0.2)
+    )
+  )
+  graphics::layout(mat = layout_config$mat, heights = layout_config$heights)
+}
+
+
+#' Draw the plot title
+#' @noRd
+draw_plot_title <- function() {
   graphics::par(mar = c(1, 1, 1, 1))
   graphics::plot.new()
   graphics::text(
-    0.5,
-    0.5,
+    0.5, 0.5,
     "Water Survey of Canada Gauges\n(Final + Provisional Data)",
     cex = 2,
     font = 2
   )
+}
 
-  for (i in seq_along(unique(hydf$STATION))) {
-    graphics::par(
-      mar = c(4, 5, 2, 1),
-      mgp = c(3.1, 0.4, 0),
-      las = 1,
-      tck = -.01,
-      xaxs = "r",
-      yaxs = "r"
-    )
 
-    station_data <- hydf[hydf$STATION == unique(hydf$STATION)[i], ]
+#' Draw a single station's plot
+#' @noRd
+draw_station_plot <- function(hydf, station, parameter, ...) {
+  graphics::par(
+    mar = c(4, 5, 2, 1),
+    mgp = c(3.1, 0.4, 0),
+    las = 1,
+    tck = -0.01,
+    xaxs = "r",
+    yaxs = "r"
+  )
 
-    ## Plot final data first
-    final_data <- station_data[station_data$Approval == "final", ]
-    provisional_data <- station_data[station_data$Approval == "provisional", ]
+  station_data <- hydf[hydf$STATION == station, ]
+  final_data <- station_data[station_data$Approval == "final", ]
+  provisional_data <- station_data[station_data$Approval == "provisional", ]
 
-    graphics::plot(
-      Value ~ Date,
-      data = station_data,
-      xlab = "Date",
-      ylab = eval(parse(text = label_helper(unique(hydf$Parameter)))),
-      axes = FALSE,
-      type = "n",
-      ylim = c(0, max(station_data$Value, na.rm = TRUE)),
-      frame.plot = TRUE,
-      ...
-    )
+  graphics::plot(
+    Value ~ Date,
+    data = station_data,
+    xlab = "Date",
+    ylab = eval(parse(text = label_helper(unique(parameter)))),
+    axes = FALSE,
+    type = "n",
+    ylim = c(0, max(station_data$Value, na.rm = TRUE)),
+    frame.plot = TRUE,
+    ...
+  )
 
-    ## Plot final data in dark color
-    if (nrow(final_data) > 0) {
-      graphics::points(
-        Value ~ Date,
-        data = final_data,
-        pch = 20,
-        cex = 0.75,
-        col = "#000000"
-      )
-    }
-
-    ## Plot provisional data in lighter color
-    if (nrow(provisional_data) > 0) {
-      graphics::points(
-        Value ~ Date,
-        data = provisional_data,
-        pch = 20,
-        cex = 0.75,
-        col = "#82D6FF"
-      )
-    }
-
-    at_y <- utils::head(pretty(station_data$Value), -1)
-    graphics::mtext(
-      side = 2,
-      text = at_y,
-      at = at_y,
-      col = "grey20",
-      line = 1,
-      cex = 0.75
-    )
-
-    at_x <- utils::tail(utils::head(pretty(station_data$Date), -1), -1)
-    graphics::mtext(
-      side = 1,
-      text = format(at_x, "%Y"),
-      at = at_x,
-      col = "grey20",
-      line = 1,
-      cex = 0.75
-    )
-
-    graphics::title(main = paste0(unique(hydf$STATION)[i]), cex.main = 1.1)
+  if (nrow(final_data) > 0) {
+    graphics::points(Value ~ Date, data = final_data, pch = 20, cex = 0.75, col = "#000000")
+  }
+  if (nrow(provisional_data) > 0) {
+    graphics::points(Value ~ Date, data = provisional_data, pch = 20, cex = 0.75, col = "#82D6FF")
   }
 
-  ## Legend
+  at_y <- utils::head(pretty(station_data$Value), -1)
+  graphics::mtext(side = 2, text = at_y, at = at_y, col = "grey20", line = 1, cex = 0.75)
+
+  at_x <- utils::tail(utils::head(pretty(station_data$Date), -1), -1)
+  graphics::mtext(side = 1, text = format(at_x, "%Y"), at = at_x, col = "grey20", line = 1, cex = 0.75)
+
+  graphics::title(main = as.character(station), cex.main = 1.1)
+}
+
+
+#' Draw the legend for available data plots
+#' @noRd
+draw_plot_legend <- function() {
   graphics::plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
   graphics::legend(
     x = "center",
@@ -256,6 +257,4 @@ plot.available <- function(x = NULL, ...) {
     cex = 1.2,
     horiz = TRUE
   )
-
-  invisible(TRUE)
 }
