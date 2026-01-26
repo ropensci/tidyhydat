@@ -29,9 +29,7 @@ print.available <- function(x, ...) {
     cat(paste0("  Historical data source: ", hist_source, "\n"))
   }
 
-  if ("Date" %in% names(x) && "Approval" %in% names(x)) {
-    print_date_range(x, "final", "Final")
-    print_date_range(x, "provisional", "Provisional")
+  if ("Date" %in% names(x)) {
     cat(paste0(
       "  Overall date range: ",
       format_date_range(x$Date),
@@ -40,16 +38,15 @@ print.available <- function(x, ...) {
   }
 
   if ("Approval" %in% names(x)) {
-    print_approval_counts(x$Approval)
+    param <- if ("Parameter" %in% names(x)) unique(x$Parameter)[1] else NULL
+    print_approval_counts(x$Approval, parameter = param)
   }
 
   if ("STATION_NUMBER" %in% names(x)) {
     print_station_coverage(x)
   }
 
-  if ("Parameter" %in% names(x)) {
-    cat(paste0("  Parameter(s): ", paste0(unique(x$Parameter), collapse = "/"), "\n"))
-  }
+  cat(crayon::cyan("  Use summary() for per-station date ranges.\n"))
 
   print(dplyr::as_tibble(x), ...)
 }
@@ -77,9 +74,9 @@ print_date_range <- function(x, approval_value, label) {
 
 #' Print approval status record counts
 #' @noRd
-print_approval_counts <- function(approval) {
+print_approval_counts <- function(approval, parameter) {
   counts <- table(approval)
-  cat("  Records by approval status:\n")
+  cat(paste0("  ", parameter, " records by approval status:\n"))
   for (status in names(counts)) {
     cat(paste0("    ", status, ": ", format(counts[status], big.mark = ","), "\n"))
   }
@@ -107,6 +104,61 @@ print_station_coverage <- function(x) {
     cat(crayon::cyan(paste0("    ", paste0(missed, collapse = " "), "\n")))
   }
 }
+
+#' Summarize available data by station
+#'
+#' Returns a tibble with date ranges and record counts for each station,
+#' broken down by approval status (final vs provisional).
+#'
+#' @param object Object created by `available_flows()` or `available_levels()`
+#' @param ... ignored
+#'
+#' @return A tibble with columns:
+#' \itemize{
+#'   \item STATION_NUMBER
+#'   \item final_start, final_end - date range for validated data
+#'   \item provisional_start, provisional_end - date range for provisional data
+#'   \item final_n, provisional_n - record counts
+#' }
+#'
+#' @method summary available
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' flows <- available_flows(c("08MF005", "08MF010"))
+#' summary(flows)
+#' }
+#'
+summary.available <- function(object, ...) {
+  x <- object
+
+  ranges <- x |>
+    dplyr::group_by(.data$STATION_NUMBER, .data$Approval) |>
+    dplyr::summarise(
+      start = min(as.Date(.data$Date), na.rm = TRUE),
+      end = max(as.Date(.data$Date), na.rm = TRUE),
+      n = dplyr::n(),
+      .groups = "drop"
+    ) |>
+    tidyr::pivot_wider(
+      names_from = "Approval",
+      values_from = c("start", "end", "n"),
+      names_glue = "{Approval}_{.value}"
+    )
+
+  # Reorder columns for nicer display
+  col_order <- c(
+    "STATION_NUMBER",
+    "final_start", "final_end", "final_n",
+    "provisional_start", "provisional_end", "provisional_n"
+  )
+  col_order <- col_order[col_order %in% names(ranges)]
+  ranges <- ranges[, col_order]
+
+  ranges
+}
+
 
 #' Plot available data (final + provisional)
 #'

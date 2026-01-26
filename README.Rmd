@@ -76,6 +76,16 @@ available_flows(
 )
 ```
 
+Use `summary()` to see date ranges and record counts by station:
+
+```{r}
+flows <- available_flows(
+  station_number = c("08MF005", "08NM116"),
+  start_date = "2020-01-01"
+)
+summary(flows)
+```
+
 ### Real-time
 To download real-time data using the datamart we can use approximately the same conventions discussed above. 
 Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:
