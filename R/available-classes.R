@@ -55,20 +55,7 @@ print.available <- function(x, ...) {
 #' Format a date range as "start to end" string
 #' @noRd
 format_date_range <- function(dates) {
-
   paste0(range(as.Date(dates), na.rm = TRUE), collapse = " to ")
-}
-
-
-#' Print date range for a given approval status
-#' @noRd
-print_date_range <- function(x, approval_value, label) {
-  subset_data <- x[x$Approval == approval_value & !is.na(x$Approval), ]
-  if (nrow(subset_data) > 0) {
-    cat(paste0("  ", label, " data range: ", format_date_range(subset_data$Date), "\n"))
-  } else {
-    cat(crayon::yellow(paste0("  ", label, " data range: No ", tolower(label), " data\n")))
-  }
 }
 
 
@@ -131,9 +118,7 @@ print_station_coverage <- function(x) {
 #' }
 #'
 summary.available <- function(object, ...) {
-  x <- object
-
-  ranges <- x |>
+  ranges <- object |>
     dplyr::group_by(.data$STATION_NUMBER, .data$Approval) |>
     dplyr::summarise(
       start = min(as.Date(.data$Date), na.rm = TRUE),
