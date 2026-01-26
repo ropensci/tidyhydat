@@ -70,7 +70,9 @@ to web service if HYDAT is unavailable
 
 Provisional data is retrieved from ECCC's real-time web service using the
 \code{realtime_ws()} function. This data covers approximately the last 18 months
-and is updated regularly.
+and is updated regularly. Since real-time data is collected at sub-daily
+intervals, values are aggregated to daily means to match the daily format
+of HYDAT data. For non-aggregated real-time data, use \code{realtime_ws()} directly.
 }
 
 \subsection{Data Approval Status}{

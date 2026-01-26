@@ -86,6 +86,8 @@ flows <- available_flows(
 summary(flows)
 ```
 
+Note that provisional data is aggregated to daily means to match the daily format of HYDAT data. For non-aggregated real-time data at sub-daily intervals, use `realtime_ws()` directly.
+
 ### Real-time
 To download real-time data using the datamart we can use approximately the same conventions discussed above. 
 Using `realtime_dd()` we can easily select specific stations by supplying a station of interest:

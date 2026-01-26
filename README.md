@@ -89,7 +89,7 @@ functions.
       start_date = "2020-01-01",
       end_date = Sys.Date()
     )
-    #>   Queried on: 2026-01-26 18:21:45.150465 (UTC)
+    #>   Queried on: 2026-01-26 23:00:31.03418 (UTC)
     #>   Historical data source: HYDAT
     #>   Overall date range: 2020-01-01 to 2026-01-26
     #>   Flow records by approval status:
@@ -127,6 +127,10 @@ Use `summary()` to see date ranges and record counts by station:
     #> 2 08NM116        2020-01-01  2023-12-31    1461 2025-01-01       
     #> # ℹ 2 more variables: provisional_end <date>, provisional_n <int>
 
+Note that provisional data is aggregated to daily means to match the
+daily format of HYDAT data. For non-aggregated real-time data at
+sub-daily intervals, use `realtime_ws()` directly.
+
 ### Real-time
 
 To download real-time data using the datamart we can use approximately
@@ -134,9 +138,9 @@ the same conventions discussed above. Using `realtime_dd()` we can
 easily select specific stations by supplying a station of interest:
 
     realtime_dd(station_number = "08MF005")
-    #>   Queried on: 2026-01-26 18:21:52.073499 (UTC)
+    #>   Queried on: 2026-01-26 23:00:37.058285 (UTC)
     #>   Date range: 2025-12-27 to 2026-01-26 
-    #> # A tibble: 17,502 × 8
+    #> # A tibble: 17,622 × 8
     #>    STATION_NUMBER PROV_TERR_STATE_LOC Date                Parameter Value Grade
     #>    <chr>          <chr>               <dttm>              <chr>     <dbl> <chr>
     #>  1 08MF005        BC                  2025-12-27 08:00:00 Flow       1030 <NA> 
@@ -149,7 +153,7 @@ easily select specific stations by supplying a station of interest:
     #>  8 08MF005        BC                  2025-12-27 08:35:00 Flow       1030 <NA> 
     #>  9 08MF005        BC                  2025-12-27 08:40:00 Flow       1030 <NA> 
     #> 10 08MF005        BC                  2025-12-27 08:45:00 Flow       1030 <NA> 
-    #> # ℹ 17,492 more rows
+    #> # ℹ 17,612 more rows
     #> # ℹ 2 more variables: Symbol <chr>, Code <chr>
 
 Or we can use `realtime_ws`:
@@ -160,12 +164,12 @@ Or we can use `realtime_ws`:
       start_date = Sys.Date() - 14,
       end_date = Sys.Date()
     )
-    #>   Queried on: 2026-01-26 18:21:53.299404 (UTC)
+    #>   Queried on: 2026-01-26 23:00:38.302716 (UTC)
     #>   Date range: 2026-01-12 to 2026-01-26 
     #>   Station(s) returned: 1
     #>   All stations successfully retrieved.
     #>   All parameters successfully retrieved.
-    #> # A tibble: 4,593 × 12
+    #> # A tibble: 4,658 × 12
     #>    STATION_NUMBER Date                Name_En  Value Unit  Grade Symbol Approval
     #>    <chr>          <dttm>              <chr>    <dbl> <chr> <lgl> <chr>  <chr>   
     #>  1 08MF005        2026-01-12 00:00:00 Water t…  5.1  °C    NA    <NA>   Provisi…
@@ -178,7 +182,7 @@ Or we can use `realtime_ws`:
     #>  8 08MF005        2026-01-12 07:00:00 Water t…  5.1  °C    NA    <NA>   Provisi…
     #>  9 08MF005        2026-01-12 08:00:00 Water t…  5.1  °C    NA    <NA>   Provisi…
     #> 10 08MF005        2026-01-12 09:00:00 Water t…  5.11 °C    NA    <NA>   Provisi…
-    #> # ℹ 4,583 more rows
+    #> # ℹ 4,648 more rows
     #> # ℹ 4 more variables: Parameter <dbl>, Code <chr>, Qualifier <chr>,
     #> #   Qualifiers <lgl>
 
@@ -228,7 +232,7 @@ web service:
       start_date = "2020-01-01",
       end_date = "2020-12-31"
     )
-    #>   Queried on: 2026-01-26 18:21:54.50118 (UTC)
+    #>   Queried on: 2026-01-26 23:00:39.500049 (UTC)
     #>   Date range: 2020-01-01 to 2020-12-31 
     #>   Station(s) returned: 1
     #>   All stations successfully retrieved.
