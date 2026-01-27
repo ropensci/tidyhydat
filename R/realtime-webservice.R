@@ -19,7 +19,7 @@
 #' parameters or dates) being requested.
 #'
 #' @param station_number Water Survey of Canada station number.
-#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id}
+#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See `param_id`
 #' for some options though undocumented parameters may be implemented. Defaults to Water level provisional, Secondary water level,
 #' Tertiary water level, Discharge Provisional, Discharge, sensor, Water temperature, Secondary water temperature, Accumulated precipitation
 #' @param start_date Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.

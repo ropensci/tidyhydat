@@ -426,9 +426,9 @@ hy_stn_op_schedule <- function(
 
 #' @title Output OS-independent path to the HYDAT sqlite database
 #'
-#' @description Provides the download location for \link{download_hydat} in an OS independent manner.
+#' @description Provides the download location for [download_hydat] in an OS independent manner.
 #'
-#' @param ... arguments potentially passed to \code{rappdirs::user_data_dir}
+#' @param ... arguments potentially passed to `rappdirs::user_data_dir`
 #'
 #' @examples \dontrun{
 #' hy_dir()
@@ -448,8 +448,8 @@ hy_dir <- function(...) {
 #' AGENCY look-up Table
 #'
 #' @param hydat_path The path to the hydat database or NULL to use the default location
-#'   used by \link{download_hydat}. It is also possible to pass in an existing
-#'   \link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+#'   used by [download_hydat]. It is also possible to pass in an existing
+#'   [src_sqlite][dplyr::src_sqlite] such that the database only needs to be opened once per
 #'   user-level call.
 #'
 #' @return A tibble of agencies

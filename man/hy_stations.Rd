@@ -10,7 +10,7 @@ A tibble with 15 variables:
 \item{STATION_NAME}{Official name for station identification}
 \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
 \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station.
-Links to \link[tidyhydat]{hy_reg_office_list}}
+Links to \link[=hy_reg_office_list]{hy_reg_office_list}}
 \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
 \item{SED_STATUS}{Current status of sediment monitoring in the hydrometric network}
 \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
@@ -46,7 +46,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

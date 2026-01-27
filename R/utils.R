@@ -245,9 +245,9 @@ tidyhydat_agent <- function(req) {
 
 #' Convenience function to pull station number from tidyhydat functions
 #'
-#' This function mimics \code{dplyr::pull} to avoid having to always type
+#' This function mimics `dplyr::pull` to avoid having to always type
 #' dplyr::pull(STATION_NUMBER). Instead we can now take advantage of autocomplete.
-#' This can be used with \code{realtime_} and \code{hy_} functions.
+#' This can be used with `realtime_` and `hy_` functions.
 #'
 #' @param .data A table of data
 #'

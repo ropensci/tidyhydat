@@ -153,8 +153,8 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
 #' Adds `local_datetime` and `tz_used` columns based on either the most common timezone in the original data or
 #' a user supplied timezone. This function is meant to used in a pipe with the `realtime_dd()` function.
 #'
-#' @param .data Tibble created by \code{realtime_dd}
-#' @param set_tz A timezone string in the format of \code{OlsonNames()}
+#' @param .data Tibble created by `realtime_dd`
+#' @param set_tz A timezone string in the format of `OlsonNames()`
 #'
 #' @details `Date` from `realtime_dd` is supplied in UTC which is the easiest format to work with across timezones. This function
 #' does not change `Date` from UTC. Rather `station_tz` specifies the local timezone name and is useful in instances where

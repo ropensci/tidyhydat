@@ -19,7 +19,7 @@
 #' @param dl_hydat_here Directory to the HYDAT database. The path is chosen by the `rappdirs` package and is OS specific and can be view by [hy_dir()].
 #' This path is also supplied automatically to any function that uses the HYDAT database. A user specified path can be set though this is not the advised approach.
 #' It also downloads the database to a directory specified by [hy_dir()].
-#' @param ask Whether to ask (as \code{TRUE}/\code{FALSE}) if HYDAT should be downloaded. If \code{FALSE} the keypress question is skipped.
+#' @param ask Whether to ask (as `TRUE`/`FALSE`) if HYDAT should be downloaded. If `FALSE` the keypress question is skipped.
 #' @export
 #'
 #' @examples \dontrun{

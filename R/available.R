@@ -46,7 +46,7 @@
 #' ## Data Approval Status
 #'
 #' The `Approval` column uses ECCC's terminology
-#' (see \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}):
+#' (see <https://wateroffice.ec.gc.ca/contactus/faq_e.html>):
 #'
 #' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC.
 #'
@@ -141,7 +141,7 @@ available_flows <- function(
 #' ## Data Approval Status
 #'
 #' The `Approval` column uses ECCC's terminology
-#' (see \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}):
+#' (see <https://wateroffice.ec.gc.ca/contactus/faq_e.html>):
 #'
 #' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC.
 #'
