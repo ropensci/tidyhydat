@@ -5,13 +5,13 @@
 \title{Get all available level data (final + provisional)}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Value is "Level"}
-\item{Value}{Level value. The units are metres.}
-\item{Symbol}{Measurement/river conditions}
-\item{Approval}{Approval status: "final" (approved) or "provisional" (subject to revision)}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Value is "Level"
+\item \strong{Value}: Level value. The units are metres.
+\item \strong{Symbol}: Measurement/river conditions
+\item \strong{Approval}: Approval status: "final" (approved) or "provisional" (subject to revision)
 }
 }
 \usage{
@@ -35,7 +35,7 @@ Defaults to current date (Sys.Date()).}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

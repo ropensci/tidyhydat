@@ -13,8 +13,8 @@
 #' Extract daily sediment load information from the HYDAT database
 #'
 #' Provides wrapper to turn the SED_DLY_LOADS table in HYDAT into a tidy data frame of daily sediment load information.
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the
-#' \code{hy_stations} table are returned. That is a large vector for \code{hy_sed_daily_loads}.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all values from the
+#' `hy_stations` table are returned. That is a large vector for `hy_sed_daily_loads`.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
@@ -23,12 +23,10 @@
 #' @return A tibble of daily suspended sediment loads
 #'
 #' @format A tibble with 4 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is Load}
-#'   \item{Value}{Discharge value. The units are tonnes.}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Only possible value is Load
+#' - **Value**: Discharge value. The units are tonnes.
 #'
 #' @examples
 #' \dontrun{

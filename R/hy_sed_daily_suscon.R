@@ -13,21 +13,19 @@
 #' Extract daily suspended sediment concentration information from the HYDAT database
 #'
 #' Provides wrapper to turn the SED_DLY_SUSCON table in HYDAT into a tidy data frame of daily suspended sediment concentration information.
-#' \code{station_number} and \code{prov_terr_state_loc} can both be supplied. If both are omitted all values from the \code{hy_stations}
-#' table are returned. That is a large vector for \code{hy_sed_daily_suscon}.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all values from the `hy_stations`
+#' table are returned. That is a large vector for `hy_sed_daily_suscon`.
 #'
 #' @inheritParams hy_daily_flows
 #'
 #' @return A tibble of daily suspended sediment concentration
 #'
 #' @format A tibble with 5 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is Suscon}
-#'   \item{Value}{Discharge value. The units are mg/l.}
-#'   \item{Symbol}{Measurement/river conditions}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Only possible value is Suscon
+#' - **Value**: Discharge value. The units are mg/l.
+#' - **Symbol**: Measurement/river conditions
 #'
 #' @examples
 #' \dontrun{

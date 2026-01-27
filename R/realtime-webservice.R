@@ -19,7 +19,7 @@
 #' parameters or dates) being requested.
 #'
 #' @param station_number Water Survey of Canada station number.
-#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See \code{param_id}
+#' @param parameters parameter ID. Can take multiple entries. Parameter is a numeric code. See `param_id`
 #' for some options though undocumented parameters may be implemented. Defaults to Water level provisional, Secondary water level,
 #' Tertiary water level, Discharge Provisional, Discharge, sensor, Water temperature, Secondary water temperature, Accumulated precipitation
 #' @param start_date Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
@@ -31,18 +31,16 @@
 #'
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
-#'   \item{Name_En}{Code name in English}
-#'   \item{Value}{Value of the measurement.}
-#'   \item{Unit}{Value units}
-#'   \item{Grade}{future use}
-#'   \item{Symbol}{future use}
-#'   \item{Approval}{future use}
-#'   \item{Parameter}{Numeric parameter code}
-#'   \item{Code}{Letter parameter code}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date and time. Formatted as a POSIXct class as UTC for consistency.
+#' - **Name_En**: Code name in English
+#' - **Value**: Value of the measurement.
+#' - **Unit**: Value units
+#' - **Grade**: future use
+#' - **Symbol**: future use
+#' - **Approval**: future use
+#' - **Parameter**: Numeric parameter code
+#' - **Code**: Letter parameter code
 #'
 #' @examples
 #' \dontrun{

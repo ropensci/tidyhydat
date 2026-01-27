@@ -76,17 +76,17 @@ hy_src_disconnect <- function(src) {
 
 #' Get the location of the HYDAT database
 #'
-#' The full HYDAT database needs to be downloaded from \link{download_hydat}, but for testing
+#' The full HYDAT database needs to be downloaded from [download_hydat], but for testing
 #' purposes, a small test database is included in this package. Use
-#' \code{hydat_path = hy_test_db()} in hy_* functions to explicitly use the test database;
-#' use \code{hydat_path = hy_downloaded_db()} to explicitly use the full, most recent
-#' downloaded database (this is also the path returned by \code{hy_default_db()}).
+#' `hydat_path = hy_test_db()` in hy_* functions to explicitly use the test database;
+#' use `hydat_path = hy_downloaded_db()` to explicitly use the full, most recent
+#' downloaded database (this is also the path returned by `hy_default_db()`).
 #'
 #' @return The file location of a HYDAT database.
 #' @export
 #'
 #' @seealso
-#' \link{hy_src}, \link{hy_set_default_db}.
+#' [hy_src], [hy_set_default_db].
 #'
 #' @examples
 #' \dontrun{
@@ -123,9 +123,9 @@ hy_default_db <- function() {
 #' reproducibility purposes, store hydat somewhere other than hy_dir().
 #'
 #' @param hydat_path The path to the a HYDAT sqlite3 database file
-#'   (e.g., \link{hy_test_db})
+#'   (e.g., [hy_test_db])
 #'
-#' @return returns the previous value of \link{hy_default_db}.
+#' @return returns the previous value of [hy_default_db].
 #' @export
 #'
 #' @examples

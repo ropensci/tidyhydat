@@ -6,10 +6,10 @@
 \title{DATA TYPES look-up table}
 \format{
 A tibble with 5 rows and 3 variables:
-\describe{
-\item{DATA_TYPE}{Data type code}
-\item{DATA_TYPE_EN}{Descriptive data type (English)}
-\item{DATA_TYPE_FR}{Descriptive data type (French)}
+\itemize{
+\item \strong{DATA_TYPE}: Data type code
+\item \strong{DATA_TYPE_EN}: Descriptive data type (English)
+\item \strong{DATA_TYPE_FR}: Descriptive data type (French)
 }
 }
 \source{

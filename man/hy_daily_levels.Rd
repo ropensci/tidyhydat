@@ -5,12 +5,12 @@
 \title{Extract daily levels information from HYDAT database or web service}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Only possible value is Level}
-\item{Value}{Level value. The units are metres.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Only possible value is Level
+\item \strong{Value}: Level value. The units are metres.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{
@@ -32,7 +32,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

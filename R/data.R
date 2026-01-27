@@ -17,18 +17,16 @@
 #'
 #'
 #' @format A tibble with 5 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{STATION_NAME}{Official name for station identification}
-#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-#'   \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
-#'   \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in
-#'   real-time or near real-time}
-#'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-#'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-#'   \item{station_tz}{Timezone of station calculated using the lutz package based on LAT/LONG of stations}
-#'   \item{standard_offset}{Offset from UTC of local standard time}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **STATION_NAME**: Official name for station identification
+#' - **PROV_TERR_STATE_LOC**: The province, territory or state in which the station is located
+#' - **HYD_STATUS**: Current status of discharge or level monitoring in the hydrometric network
+#' - **REAL_TIME**: Logical. Indicates if a station has the capacity to deliver data in
+#'   real-time or near real-time
+#' - **LATITUDE**: North-South Coordinates of the gauging station in decimal degrees
+#' - **LONGITUDE**: East-West Coordinates of the gauging station in decimal degrees
+#' - **station_tz**: Timezone of station calculated using the lutz package based on LAT/LONG of stations
+#' - **standard_offset**: Offset from UTC of local standard time
 #'
 #' @source HYDAT, Meteorological Service of Canada datamart
 "allstations"
@@ -38,11 +36,9 @@
 #' A look table for data symbols
 #'
 #' @format A tibble with 5 rows and 3 variables:
-#' \describe{
-#'   \item{SYMBOL_ID}{Symbol code}
-#'   \item{SYMBOL_EN}{Description of Symbol (English)}
-#'   \item{SYMBOL_FR}{Description of Symbol (French)}
-#' }
+#' - **SYMBOL_ID**: Symbol code
+#' - **SYMBOL_EN**: Description of Symbol (English)
+#' - **SYMBOL_FR**: Description of Symbol (French)
 #' @family HYDAT functions
 #' @source HYDAT
 "hy_data_symbols"
@@ -52,28 +48,24 @@
 #' A look table for data types
 #'
 #' @format A tibble with 5 rows and 3 variables:
-#' \describe{
-#'   \item{DATA_TYPE}{Data type code}
-#'   \item{DATA_TYPE_EN}{Descriptive data type (English)}
-#'   \item{DATA_TYPE_FR}{Descriptive data type (French)}
-#' }
+#' - **DATA_TYPE**: Data type code
+#' - **DATA_TYPE_EN**: Descriptive data type (English)
+#' - **DATA_TYPE_FR**: Descriptive data type (French)
 #' @family HYDAT functions
 #'
 #' @source HYDAT
 "hy_data_types"
 
-#' @title Parameter ID
+#' Parameter ID
 #'
-#' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
+#' A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
 #'
 #' @format A tibble with 8 rows and 7 variables:
-#' \describe{
-#'   \item{Parameter}{Numeric parameter code}
-#'   \item{Code}{Letter parameter code}
-#'   \item{Name_En}{Code name in English}
-#'   \item{Name_En}{Code name in French}
-#'   \item{Unit}{Parameter units}
-#' }
+#' - **Parameter**: Numeric parameter code
+#' - **Code**: Letter parameter code
+#' - **Name_En**: Code name in English
+#' - **Name_En**: Code name in French
+#' - **Unit**: Parameter units
 #'
 #'
 #'

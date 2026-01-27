@@ -5,15 +5,15 @@
 \title{Extract station data collection from HYDAT database}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATA_TYPE}{The type of data}
-\item{Year_from}{First year of use}
-\item{Year_to}{Last year of use}
-\item{MEASUREMENT}{The sampling method used in the collection of
-sediment data or the type of the gauge used in the collection of the hydrometric data}
-\item{OPERATION}{The schedule of station operation
-for the collection of sediment or hydrometric data}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATA_TYPE}: The type of data
+\item \strong{Year_from}: First year of use
+\item \strong{Year_to}: Last year of use
+\item \strong{MEASUREMENT}: The sampling method used in the collection of
+sediment data or the type of the gauge used in the collection of the hydrometric data
+\item \strong{OPERATION}: The schedule of station operation
+for the collection of sediment or hydrometric data
 }
 }
 \source{
@@ -32,7 +32,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

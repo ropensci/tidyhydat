@@ -46,7 +46,7 @@
 #' ## Data Approval Status
 #'
 #' The `Approval` column uses ECCC's terminology
-#' (see \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}):
+#' (see <https://wateroffice.ec.gc.ca/contactus/faq_e.html>):
 #'
 #' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC.
 #'
@@ -60,14 +60,12 @@
 #'   sources and query metadata. 
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Value is "Flow"}
-#'   \item{Value}{Discharge value. The units are m^3/s.}
-#'   \item{Symbol}{Measurement/river conditions}
-#'   \item{Approval}{Approval status: "final" (approved) or "provisional" (subject to revision)}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Value is "Flow"
+#' - **Value**: Discharge value. The units are m^3/s.
+#' - **Symbol**: Measurement/river conditions
+#' - **Approval**: Approval status: "final" (approved) or "provisional" (subject to revision)
 #'
 #' @examples
 #' \dontrun{
@@ -141,7 +139,7 @@ available_flows <- function(
 #' ## Data Approval Status
 #'
 #' The `Approval` column uses ECCC's terminology
-#' (see \url{https://wateroffice.ec.gc.ca/contactus/faq_e.html}):
+#' (see <https://wateroffice.ec.gc.ca/contactus/faq_e.html>):
 #'
 #' - **"final"**: Historical data from HYDAT or web service that has been approved by ECCC.
 #'
@@ -154,14 +152,12 @@ available_flows <- function(
 #'   sources and query metadata.
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Value is "Level"}
-#'   \item{Value}{Level value. The units are metres.}
-#'   \item{Symbol}{Measurement/river conditions}
-#'   \item{Approval}{Approval status: "final" (approved) or "provisional" (subject to revision)}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Value is "Level"
+#' - **Value**: Level value. The units are metres.
+#' - **Symbol**: Measurement/river conditions
+#' - **Approval**: Approval status: "final" (approved) or "provisional" (subject to revision)
 #'
 #' @examples
 #' \dontrun{

@@ -26,30 +26,28 @@
 #' @return A tibble of stations and associated metadata
 #'
 #' @format A tibble with 15 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{STATION_NAME}{Official name for station identification}
-#'   \item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-#'   \item{REGIONAL_OFFICE_ID}{The identifier of the regional office responsible for the station.
-#'   Links to \link[tidyhydat]{hy_reg_office_list}}
-#'   \item{HYD_STATUS}{Current status of discharge or level monitoring in the hydrometric network}
-#'   \item{SED_STATUS}{Current status of sediment monitoring in the hydrometric network}
-#'   \item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-#'   \item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-#'   \item{DRAINAGE_AREA_GROSS}{The total surface area that drains to the gauge site (km^2)}
-#'   \item{DRAINAGE_AREA_EFFECT}{The portion of the drainage basin that contributes runoff to
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **STATION_NAME**: Official name for station identification
+#' - **PROV_TERR_STATE_LOC**: The province, territory or state in which the station is located
+#' - **REGIONAL_OFFICE_ID**: The identifier of the regional office responsible for the station.
+#'   Links to [hy_reg_office_list][tidyhydat::hy_reg_office_list]
+#' - **HYD_STATUS**: Current status of discharge or level monitoring in the hydrometric network
+#' - **SED_STATUS**: Current status of sediment monitoring in the hydrometric network
+#' - **LATITUDE**: North-South Coordinates of the gauging station in decimal degrees
+#' - **LONGITUDE**: East-West Coordinates of the gauging station in decimal degrees
+#' - **DRAINAGE_AREA_GROSS**: The total surface area that drains to the gauge site (km^2)
+#' - **DRAINAGE_AREA_EFFECT**: The portion of the drainage basin that contributes runoff to
 #'   the gauge site, calculated by subtracting any noncontributing portion from the
-#'   gross drainage area (km^2)}
-#'   \item{RHBN}{Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric
+#'   gross drainage area (km^2)
+#' - **RHBN**: Logical. Reference Hydrometric Basin Network station. The Reference Hydrometric
 #'   Basin Network (RHBN) is a sub-set of the national network that has been identified
-#'   for use in the detection, monitoring, and assessment of climate change.}
-#'   \item{REAL_TIME}{Logical. Indicates if a station has the capacity to deliver data in
-#'   real-time or near real-time}
-#'   \item{CONTRIBUTOR_ID}{Unique ID of an agency that contributes data to the
-#'   HYDAT database. The agency is non-WSC and non WSC funded}
-#'   \item{OPERATOR_ID}{Unique ID of an agency that operates a hydrometric station}
-#'   \item{DATUM_ID}{Unique ID for a datum}
-#' }
+#'   for use in the detection, monitoring, and assessment of climate change.
+#' - **REAL_TIME**: Logical. Indicates if a station has the capacity to deliver data in
+#'   real-time or near real-time
+#' - **CONTRIBUTOR_ID**: Unique ID of an agency that contributes data to the
+#'   HYDAT database. The agency is non-WSC and non WSC funded
+#' - **OPERATOR_ID**: Unique ID of an agency that operates a hydrometric station
+#' - **DATUM_ID**: Unique ID for a datum
 #'
 #' @examples
 #' \dontrun{

@@ -21,13 +21,11 @@
 #' @return A tibble of daily flows and levels
 #'
 #' @format A tibble with 5 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured.}
-#'   \item{Value}{Discharge value. The units are m^3/s.}
-#'   \item{Symbol}{Measurement/river conditions}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured.
+#' - **Value**: Discharge value. The units are m^3/s.
+#' - **Symbol**: Measurement/river conditions
 #'
 #' @export
 #' @family HYDAT functions

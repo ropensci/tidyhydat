@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily flows information from HYDAT database or web service
+#' Extract daily flows information from HYDAT database or web service
 #'
-#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
+#' Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
 #' into a tidy data frame of daily flows. `station_number` and `prov_terr_state_loc` can both be
 #' supplied. If both are omitted all values from the `hy_stations` table are returned.
 #' That is a large tibble for `hy_daily_flows`.
@@ -32,13 +32,11 @@
 #' @return A tibble of daily flows
 #'
 #' @format A tibble with 5 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is Flow}
-#'   \item{Value}{Discharge value. The units are m^3/s.}
-#'   \item{Symbol}{Measurement/river conditions}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Only possible value is Flow
+#' - **Value**: Discharge value. The units are m^3/s.
+#' - **Symbol**: Measurement/river conditions
 #'
 #' @examples
 #' \dontrun{

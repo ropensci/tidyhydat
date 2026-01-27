@@ -5,12 +5,12 @@
 \title{Extract all daily water level and flow measurements}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured.}
-\item{Value}{Discharge value. The units are m^3/s.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured.
+\item \strong{Value}: Discharge value. The units are m^3/s.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{
@@ -33,7 +33,7 @@ is returned. See \code{unique(allstations$prov_terr_state_loc)}. Will also accep
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{...}{See \code{\link[=hy_daily_flows]{hy_daily_flows()}} arguments}

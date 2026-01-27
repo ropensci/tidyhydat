@@ -5,16 +5,16 @@
 \title{Extract monthly levels information from the HYDAT database}
 \format{
 A tibble with 8 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Year}{Year of record.}
-\item{Month}{Numeric month value}
-\item{Full_month}{Logical value is there is full record from Month}
-\item{No_days}{Number of days in that month}
-\item{Sum_stat}{Summary statistic being used.}
-\item{Value}{Value of the measurement in metres.}
-\item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
-and therefore has an NA value for Date.}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Year}: Year of record.
+\item \strong{Month}: Numeric month value
+\item \strong{Full_month}: Logical value is there is full record from Month
+\item \strong{No_days}: Number of days in that month
+\item \strong{Sum_stat}: Summary statistic being used.
+\item \strong{Value}: Value of the measurement in metres.
+\item \strong{Date_occurred}: Observation date. Formatted as a Date class. MEAN is a annual summary
+and therefore has an NA value for Date.
 }
 }
 \source{
@@ -35,7 +35,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

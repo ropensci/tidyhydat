@@ -5,12 +5,12 @@
 \title{Extract instantaneous sediment sample particle size distribution information from the HYDAT database}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{SED_DATA_TYPE}{Contains the type of sampling method used in collecting sediment for a station}
-\item{Date}{Contains the time to the nearest minute of when the sample was taken}
-\item{PARTICLE_SIZE}{Particle size (mm)}
-\item{PERCENT}{Contains the percentage values for indicated particle sizes for samples collected}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{SED_DATA_TYPE}: Contains the type of sampling method used in collecting sediment for a station
+\item \strong{Date}: Contains the time to the nearest minute of when the sample was taken
+\item \strong{PARTICLE_SIZE}: Particle size (mm)
+\item \strong{PERCENT}: Contains the percentage values for indicated particle sizes for samples collected
 }
 }
 \source{
@@ -31,7 +31,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

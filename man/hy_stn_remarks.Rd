@@ -5,11 +5,11 @@
 \title{Extract station remarks from HYDAT database}
 \format{
 A tibble with 4 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{REMARK_TYPE}{Type of Remark}
-\item{Year}{Year of the remark}
-\item{REMARK}{Remark}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{REMARK_TYPE}: Type of Remark
+\item \strong{Year}: Year of the remark
+\item \strong{REMARK}: Remark
 }
 }
 \usage{
@@ -25,7 +25,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}

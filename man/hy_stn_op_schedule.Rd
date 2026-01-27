@@ -5,12 +5,12 @@
 \title{Extract station operation schedule from HYDAT database}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATA_TYPE}{The type of data}
-\item{Year}{Year of operation schedule}
-\item{Month_from}{First month of use}
-\item{Month_to}{Last month of use}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATA_TYPE}: The type of data
+\item \strong{Year}: Year of operation schedule
+\item \strong{Month_from}: First month of use
+\item \strong{Month_to}: Last month of use
 }
 }
 \source{
@@ -29,7 +29,7 @@ is returned.}
 
 \item{hydat_path}{The path to the hydat database or NULL to use the default location
 used by \link{download_hydat}. It is also possible to pass in an existing
-\link[dplyr]{src_sqlite} such that the database only needs to be opened once per
+\link[dplyr:src_dbi]{src_sqlite} such that the database only needs to be opened once per
 user-level call.}
 
 \item{prov_terr_state_loc}{Province, state or territory. If this argument is omitted, the value of \code{station_number}
