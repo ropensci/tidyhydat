@@ -1,17 +1,37 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
 Version: 0.7.2.9000
-Authors@R: c(person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-9270-7884")),
-    person("David", "Hutchinson", email = "david.hutchinson@canada.ca", role = "ctb"),
-    person("Dewey", "Dunnington", email = "dewey@fishandwhistle.net", role = "ctb"),
+Authors@R: c(
+    person(
+      "Sam", "Albers",
+      role = c("aut", "cre", "cph"),
+      email = "sam.albers@gmail.com",
+      comment = c(ORCID = "0000-0002-9270-7884", "Copyright holder 2022-2025")
+    ),
+    person(
+      "Province of British Columbia",
+      role = "cph",
+      comment = "Copyright holder 2017-2022"
+    ),
+    person(
+      "Tula Foundation",
+      role = "cph",
+      comment = "Copyright holder 2025-present"
+    ),
+    person(
+      "David", "Hutchinson",
+      email = "david.hutchinson@canada.ca",
+      role = "ctb"
+    ),
+    person(
+      "Dewey", "Dunnington",
+      email = "dewey@fishandwhistle.net",
+      role = "ctb"
+    ),
     person("Ryan", "Whaley", email = "rdgwhaley@gmail.com", role = "ctb"),
-    person("Province of British Columbia", role = "cph"),
     person("Government of Canada", role = "dtc"),
-    person("Luke", "Winslow", role = "rev", 
-            comment = "Reviewed for rOpenSci"),
-    person("Laura", "DeCicco", role = "rev", 
-            comment = "Reviewed for rOpenSci")
+    person("Luke", "Winslow", role = "rev", comment = "Reviewed for rOpenSci"),
+    person("Laura", "DeCicco", role = "rev", comment = "Reviewed for rOpenSci")
     )
 Description: Provides functions to access historical and real-time national 'hydrometric'
     data from Water Survey of Canada data sources and then applies tidy data principles.
