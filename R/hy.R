@@ -412,9 +412,9 @@ hy_stn_op_schedule <- function(
   as.hy(stn_operation_schedule)
 }
 
-#' @title Output OS-independent path to the HYDAT sqlite database
+#' Output OS-independent path to the HYDAT sqlite database
 #'
-#' @description Provides the download location for [download_hydat] in an OS independent manner.
+#' Provides the download location for [download_hydat] in an OS independent manner.
 #'
 #' @param ... arguments potentially passed to `rappdirs::user_data_dir`
 #'

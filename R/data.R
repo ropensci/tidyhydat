@@ -56,9 +56,9 @@
 #' @source HYDAT
 "hy_data_types"
 
-#' @title Parameter ID
+#' Parameter ID
 #'
-#' @description A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
+#' A tibble of parameter id codes and their corresponding explanation/description specific to the ECCC webservice
 #'
 #' @format A tibble with 8 rows and 7 variables:
 #' - **Parameter**: Numeric parameter code

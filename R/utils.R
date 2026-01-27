@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Function to chose a station based on consistent arguments for hydat functions.
+#' Function to chose a station based on consistent arguments for hydat functions.
 #'
-#' @description A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
+#' A function to avoid duplication in HYDAT functions.  This function is not intended for external use.
 #'
 #' @inheritParams hy_stations
 #' @param hydat_con A database connection

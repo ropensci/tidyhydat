@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily levels information from HYDAT database or web service
+#' Extract daily levels information from HYDAT database or web service
 #'
-#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT (or historical web service)
+#' Provides wrapper to turn the DLY_LEVELS table in HYDAT (or historical web service)
 #' into a tidy data frame. The primary value returned by this function is water level.
 #' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all
 #' values from the `hy_stations` table are returned. That is a large vector for `hy_daily_levels`.

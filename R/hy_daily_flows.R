@@ -10,9 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily flows information from HYDAT database or web service
+#' Extract daily flows information from HYDAT database or web service
 #'
-#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
+#' Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
 #' into a tidy data frame of daily flows. `station_number` and `prov_terr_state_loc` can both be
 #' supplied. If both are omitted all values from the `hy_stations` table are returned.
 #' That is a large tibble for `hy_daily_flows`.
