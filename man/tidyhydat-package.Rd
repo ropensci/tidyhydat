@@ -41,14 +41,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sam Albers \email{sam.albers@gmail.com} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID})
+\strong{Maintainer}: Sam Albers \email{sam.albers@gmail.com} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID}) (Copyright holder 2022-2025) [copyright holder]
 
 Other contributors:
 \itemize{
+  \item Province of British Columbia (Copyright holder 2017-2022) [copyright holder]
+  \item Tula Foundation (Copyright holder 2025-present) [copyright holder]
   \item David Hutchinson \email{david.hutchinson@canada.ca} [contributor]
   \item Dewey Dunnington \email{dewey@fishandwhistle.net} [contributor]
   \item Ryan Whaley \email{rdgwhaley@gmail.com} [contributor]
-  \item Province of British Columbia [copyright holder]
   \item Government of Canada [data contributor]
   \item Luke Winslow (Reviewed for rOpenSci) [reviewer]
   \item Laura DeCicco (Reviewed for rOpenSci) [reviewer]
