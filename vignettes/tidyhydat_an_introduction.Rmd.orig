@@ -12,9 +12,9 @@ vignette: >
 ---
 
 ```{r options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
-                      warning = FALSE, 
-                      message = FALSE, 
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
                       fig.path = "vignette-fig-",
                       fig.width=13, fig.height=7)
 ```
@@ -27,7 +27,7 @@ library(ggplot2)
 ```
 
 # `tidyhydat` package
-This vignette will outline a few key options that will hopefully make `tidyhydat` useful.  
+This vignette will outline a few key options that will hopefully make `tidyhydat` useful.
 
 ## HYDAT download
 To use many of the functions in the `tidyhydat` package you will need to download a version of the HYDAT database, Environment and Climate Change Canada's database of historical hydrometric data then tell R where to find the database. Conveniently `tidyhydat` does all this for you via:
@@ -35,9 +35,35 @@ To use many of the functions in the `tidyhydat` package you will need to downloa
 download_hydat()
 ```
 This downloads the most recent version of HYDAT and then saves it in a location on your computer where `tidyhydat`'s function will look for it. Do be patient though as this takes a long time! To see where HYDAT was saved you can run `hy_dir()`. Now that you have HYDAT downloaded and ready to go, you are all set to begin some hydrologic analysis.
-  
-## Usage
-Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this. 
+
+## Combining validated and provisional data
+For most analysis needs, the `available_flows()` and `available_levels()` functions provide the most complete picture by combining validated historical data with recent provisional real-time data:
+
+```{r, eval=FALSE}
+available_flows(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = Sys.Date()
+)
+```
+
+These functions:
+- Automatically combine validated data from HYDAT (or web service if HYDAT unavailable) with provisional real-time data
+- Include an `Approval` column indicating whether each record is "final" (validated) or "provisional" (subject to revision)
+- Aggregate real-time data to daily means for consistency
+- Handle missing data gracefully
+
+For water levels, use `available_levels()`:
+```{r, eval=FALSE}
+available_levels(
+  station_number = "08MF005",
+  start_date = "2020-01-01",
+  end_date = Sys.Date()
+)
+```
+
+## Usage of HYDAT functions
+Most functions in `tidyhydat` follow a common argument structure. We will use the `hy_daily_flows()` function for the following examples though the same approach applies to most functions in the package (See `ls("package:tidyhydat")` for a list of exported objects). Much of the functionality of `tidyhydat` originates with the choice of hydrometric stations that you are interested in. A user will often find themselves creating vectors of station numbers. There are several ways to do this.
 
 The simplest case is if you would like to extract only station. You can supply this directly to the `station_number` argument:
 ```{r example1, warning=FALSE}
@@ -66,12 +92,12 @@ search_stn_name("canada") |>
 
 We saw above that if we were only interested in a subset of dates we could use the `start_date` and `end_date` arguments. A date must be supplied to both these arguments in the form of YYYY-MM-DD. If you were interested in all daily flow data from station number "08LA001" for 1981, you would specify all days in 1981 :
 ```{r warning=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-hy_daily_flows(station_number = "08LA001", 
-               start_date = "1981-01-01", 
+hy_daily_flows(station_number = "08LA001",
+               start_date = "1981-01-01",
                end_date = "1981-12-31")
 ```
 
-This generally outlines the usage of the HYDAT functions within `tidyhydat`. 
+This generally outlines the usage of the HYDAT functions within `tidyhydat`.
 
 ## Real-time functions
 In addition to the approved and vetted data in the HYDAT database ECCC also offers unapproved data that is subject to revision. `tidyhydat` provides three functions to access these data sources. Remember these are **unapproved** data and should treated as such:
@@ -107,7 +133,7 @@ The `realtime_ws()` function provides access to ECCC's real-time web service. Th
 ```{r, eval=FALSE}
 realtime_ws(station_number = "08MF005",
             parameters = 46, ## Water level
-            start_date = Sys.Date() - 30,
+            start_date = Sys.Date() - lubridate::days(30),
             end_date = Sys.Date())
 ```
 
@@ -115,31 +141,33 @@ You can query multiple parameters simultaneously. See `data("param_id")` for a c
 ```{r, eval=FALSE}
 realtime_ws(station_number = "08MF005",
             parameters = c(46, 47), ## Water level and discharge
-            start_date = Sys.Date() - 7,
+            start_date = Sys.Date() - lubridate::days(7),
             end_date = Sys.Date())
 ```
 
-## Historical web service functions
-For smaller queries where downloading the entire HYDAT database is unnecessary, `tidyhydat` provides web service functions that access historical daily data directly from ECCC. These functions are particularly useful when you need data for only a few stations or a limited time period:
+## Using the web service without HYDAT
+For smaller queries where downloading the entire HYDAT database is unnecessary, you can use `hy_daily_flows()` and `hy_daily_levels()` with `hydat_path = FALSE` to access historical daily data directly from ECCC's web service. These are particularly useful when you need data for only a few stations or a limited time period:
 
-### Historical flows and levels - `ws_daily_flows()` and `ws_daily_levels()`
-These functions download historical daily data without requiring HYDAT. Both require a date range to be specified:
+### Historical flows and levels via web service
 ```{r, eval=FALSE}
-ws_daily_flows(station_number = "08MF005",
+hy_daily_flows(station_number = "08MF005",
+               hydat_path = FALSE,
                start_date = "2020-01-01",
                end_date = "2020-12-31")
 ```
 
 Similarly for water levels:
 ```{r, eval=FALSE}
-ws_daily_levels(station_number = "08NL071",
+hy_daily_levels(station_number = "08NL071",
+                hydat_path = FALSE,
                 start_date = "2019-01-01",
                 end_date = "2019-12-31")
 ```
 
 Multiple stations can be queried in a single call:
 ```{r, eval=FALSE}
-ws_daily_flows(station_number = c("08MF005", "08NL071"),
+hy_daily_flows(station_number = c("08MF005", "08NL071"),
+               hydat_path = FALSE,
                start_date = "2020-01-01",
                end_date = "2020-12-31")
 ```
@@ -154,7 +182,7 @@ Similarly, `search_stn_number()` can be useful if you are interested in all stat
 search_stn_number("08MF")
 ```
 
-## Using joins 
+## Using joins
 Sometimes it is required to make use of information from two tables from HYDAT. In some cases, we need to combine the information into one table using a common column. Here we will illustrate calculating runoff by combining the `hy_stations` tables with the `hy_daily_flows` table by the `STATION_NUMBER` column:
 ```{r}
 stns <- c("08NH130", "08NH005")
@@ -164,10 +192,10 @@ runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") 
       select(STATION_NUMBER, STATION_NAME, DRAINAGE_AREA_GROSS),
     by = "STATION_NUMBER") |>
   ## conversion to mm/d
-  mutate(runoff = Value / DRAINAGE_AREA_GROSS * 86400 / 1e6 * 1e3) 
+  mutate(runoff = Value / DRAINAGE_AREA_GROSS * 86400 / 1e6 * 1e3)
 
 
-ggplot(runoff_data) + 
+ggplot(runoff_data) +
   geom_line(aes(x = Date, y = runoff, colour = STATION_NAME)) +
   labs(y = "Mean daily runoff [mm/d]") +
   scale_colour_viridis_d(option = "C") +
@@ -182,7 +210,7 @@ This is an effective way to make use of the variety of tables available in HYDAT
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at 
+    You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 

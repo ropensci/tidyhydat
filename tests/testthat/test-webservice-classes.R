@@ -138,9 +138,10 @@ test_that("print.ws handles data with no Date column", {
 })
 
 httptest2::with_mock_dir("fixtures", {
-  test_that("ws_daily_flows returns ws class", {
-    result <- ws_daily_flows(
+  test_that("hy_daily_flows with hydat_path = FALSE returns ws class", {
+    result <- hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2023-01-01"),
       end_date = as.Date("2023-12-31")
     )
@@ -150,9 +151,10 @@ httptest2::with_mock_dir("fixtures", {
     expect_true(!is.null(attr(result, "missed_stns")))
   })
 
-  test_that("ws_daily_levels returns ws class", {
-    result <- ws_daily_levels(
+  test_that("hy_daily_levels with hydat_path = FALSE returns ws class", {
+    result <- hy_daily_levels(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2023-01-01"),
       end_date = as.Date("2023-12-31")
     )

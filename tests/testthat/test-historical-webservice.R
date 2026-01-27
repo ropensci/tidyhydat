@@ -3,9 +3,10 @@
 # To re-record fixtures, see tests/testthat/record_fixtures.R
 
 httptest2::with_mock_dir("fixtures", {
-  test_that("ws_daily_flows returns the correct data header", {
-    ws_test <- ws_daily_flows(
+  test_that("hy_daily_flows with hydat_path = FALSE returns the correct data header", {
+    ws_test <- hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2023-01-01"),
       end_date = as.Date("2023-12-31")
     )
@@ -20,18 +21,20 @@ httptest2::with_mock_dir("fixtures", {
   })
 
 
-  test_that("ws_daily_flows is empty with a nearish date", {
+  test_that("hy_daily_flows with hydat_path = FALSE is empty with a nearish date", {
     # using a fixed date that was empty on the date of fixture creation
-    expect_error(ws_daily_flows(
+    expect_error(hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2025-10-27"),
       end_date = as.Date("2025-10-29")
     ), "No data exists for this station query during the period chosen")
   })
 
-  test_that("ws_daily_levels returns the correct data header", {
-    ws_test <- ws_daily_levels(
+  test_that("hy_daily_levels with hydat_path = FALSE returns the correct data header", {
+    ws_test <- hy_daily_levels(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2023-01-01"),
       end_date = as.Date("2023-12-31")
     )
@@ -46,37 +49,41 @@ httptest2::with_mock_dir("fixtures", {
   })
 
 
-  test_that("ws_daily_levels is empty with a nearish date", {
+  test_that("hy_daily_levels with hydat_path = FALSE is empty with a nearish date", {
     # using a fixed date that was empty on the date of fixture creation
-    expect_error(ws_daily_levels(
+    expect_error(hy_daily_levels(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2025-10-27"),
       end_date = as.Date("2025-10-29")
     ), "No data exists for this station query during the period chosen")
   })
 })
 
-test_that("get_historical_data error informatively with no dates given", {
+test_that("hy_daily_flows with hydat_path = FALSE errors informatively with no dates given", {
   expect_error(
-    get_historical_data(
-      station_number = "08MF005"
+    hy_daily_flows(
+      station_number = "08MF005",
+      hydat_path = FALSE
     ),
-    "please provide a valid date for the start_date argument"
+    "start_date is required when using web service"
   )
 
   expect_error(
-    get_historical_data(
+    hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = Sys.Date()
     ),
-    "please provide a valid date for the end_date argument"
+    "end_date is required when using web service"
   )
 })
 
-test_that("get_historical_data errors when end_date is before start_date", {
+test_that("hy_daily_flows with hydat_path = FALSE errors when end_date is before start_date", {
   expect_error(
-    get_historical_data(
+    hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = Sys.Date(),
       end_date = Sys.Date() - 10
     ),
@@ -84,12 +91,13 @@ test_that("get_historical_data errors when end_date is before start_date", {
   )
 })
 
-test_that("ws_daily_flows accepts Date objects", {
+test_that("hy_daily_flows with hydat_path = FALSE accepts Date objects", {
   skip_if_not_installed("httptest2")
 
   httptest2::with_mock_dir("fixtures", {
-    result <- ws_daily_flows(
+    result <- hy_daily_flows(
       station_number = "08MF005",
+      hydat_path = FALSE,
       start_date = as.Date("2023-01-01"),
       end_date = as.Date("2023-12-31")
     )

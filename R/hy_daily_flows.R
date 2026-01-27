@@ -10,17 +10,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily flows information from the HYDAT database
+#' @title Extract daily flows information from HYDAT database or web service
 #'
-#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT into a tidy data frame of daily flows.
-#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all
-#' values from the `hy_stations` table are returned. That is a large tibble for `hy_daily_flows`.
+#' @description Provides wrapper to turn the DLY_FLOWS table in HYDAT (or historical web service)
+#' into a tidy data frame of daily flows. `station_number` and `prov_terr_state_loc` can both be
+#' supplied. If both are omitted all values from the `hy_stations` table are returned.
+#' That is a large tibble for `hy_daily_flows`.
 #'
 #' @inheritParams hy_stations
 #' @param start_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param end_date Leave blank if all dates are required. Date format needs to be in YYYY-MM-DD. Date is inclusive.
 #' @param symbol_output Set whether the raw code, or the `english` or the `french` translations are outputted. Default
 #'   value is `code`.
+#'
+#' @details
+#' The `hydat_path` argument controls the data source:
+#' - **NULL** (default): Uses local HYDAT database (default location)
+#' - **FALSE**: Forces use of historical web service (requires `start_date` and `end_date`)
+#' - **Path string**: Uses HYDAT database at the specified path
 #'
 #' @return A tibble of daily flows
 #'
@@ -56,6 +63,25 @@ hy_daily_flows <- function(
   end_date = NULL,
   symbol_output = "code"
 ) {
+  ## Case 1: hydat_path = FALSE (force web service)
+  if (isFALSE(hydat_path)) {
+    ## Web service requires dates
+    if (is.null(start_date)) {
+      stop("start_date is required when using web service (hydat_path = FALSE)", call. = FALSE)
+    }
+    if (is.null(end_date)) {
+      stop("end_date is required when using web service (hydat_path = FALSE)", call. = FALSE)
+    }
+
+    return(get_historical_data(
+      station_number = station_number,
+      parameters = "flow",
+      start_date = start_date,
+      end_date = end_date
+    ))
+  }
+
+  ## Case 2: Use HYDAT (either explicit path or NULL for default)
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 

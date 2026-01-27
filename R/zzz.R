@@ -17,7 +17,7 @@
     ## Only check when there is likely a new version i.e. about 3 months after last version
     if (
       file.exists(file.path(hy_dir(), "Hydat.sqlite3")) &&
-        Sys.Date() > (as.Date(hy_version()$Date) + 115)
+        Sys.Date() > (as.Date(hy_version()$Date) + lubridate::days(115))
     ) {
       packageStartupMessage(info("Checking for a new version of HYDAT..."))
 

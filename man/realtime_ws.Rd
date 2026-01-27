@@ -22,7 +22,7 @@ A tibble with 6 variables:
 realtime_ws(
   station_number,
   parameters = NULL,
-  start_date = Sys.Date() - 30,
+  start_date = Sys.Date() - lubridate::days(30),
   end_date = Sys.Date()
 )
 }
@@ -34,11 +34,11 @@ for some options though undocumented parameters may be implemented. Defaults to 
 Tertiary water level, Discharge Provisional, Discharge, sensor, Water temperature, Secondary water temperature, Accumulated precipitation}
 
 \item{start_date}{Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
-If only start date is supplied (i.e. YYYY-MM-DD) values are returned from the start of that day.
+If only `start date`` is supplied (i.e. YYYY-MM-DD) values are returned from the start of that day.
 Defaults to 30 days before current date. Time is supplied in UTC.}
 
 \item{end_date}{Accepts either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
-If only a date is supplied (i.e. YYYY-MM-DD) values are returned from the end of that day.
+If only `end_date`` is supplied (i.e. YYYY-MM-DD) values are returned from the end of that day.
 Defaults to current date. Time is supplied in UTC.}
 }
 \description{
@@ -60,7 +60,7 @@ fivedays <- realtime_ws(
   station_number = c("08NL071", "08NM174"),
   parameters = c(47, 5),
   end_date = Sys.Date(), # today
-  start_date = Sys.Date() - 5 # five days ago
+  start_date = Sys.Date() - lubridate::days(5) # five days ago
 )
 }
 }

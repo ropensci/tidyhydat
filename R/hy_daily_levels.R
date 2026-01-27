@@ -10,13 +10,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' @title Extract daily levels information from the HYDAT database
+#' @title Extract daily levels information from HYDAT database or web service
 #'
-#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT into a tidy data frame.  The primary value returned by this
-#' function is discharge. `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all
+#' @description Provides wrapper to turn the DLY_LEVELS table in HYDAT (or historical web service)
+#' into a tidy data frame. The primary value returned by this function is water level.
+#' `station_number` and `prov_terr_state_loc` can both be supplied. If both are omitted all
 #' values from the `hy_stations` table are returned. That is a large vector for `hy_daily_levels`.
 #'
 #' @inheritParams hy_daily_flows
+#'
+#' @details
+#' The `hydat_path` argument controls the data source:
+#' - **NULL** (default): Uses local HYDAT database (default location)
+#' - **FALSE**: Forces use of historical web service (requires `start_date` and `end_date`)
+#' - **Path string**: Uses HYDAT database at the specified path
 #'
 #' @return A tibble of daily levels
 #'
@@ -51,6 +58,25 @@ hy_daily_levels <- function(
   end_date = NULL,
   symbol_output = "code"
 ) {
+  ## Case 1: hydat_path = FALSE (force web service)
+  if (isFALSE(hydat_path)) {
+    ## Web service requires dates
+    if (is.null(start_date)) {
+      stop("start_date is required when using web service (hydat_path = FALSE)", call. = FALSE)
+    }
+    if (is.null(end_date)) {
+      stop("end_date is required when using web service (hydat_path = FALSE)", call. = FALSE)
+    }
+
+    return(get_historical_data(
+      station_number = station_number,
+      parameters = "level",
+      start_date = start_date,
+      end_date = end_date
+    ))
+  }
+
+  ## Case 2: Use HYDAT (either explicit path or NULL for default)
   ## Determine which dates should be queried
   dates_null <- date_check(start_date, end_date)
 
