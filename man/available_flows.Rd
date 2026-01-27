@@ -5,13 +5,13 @@
 \title{Get all available flow data (final + provisional)}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Value is "Flow"}
-\item{Value}{Discharge value. The units are m^3/s.}
-\item{Symbol}{Measurement/river conditions}
-\item{Approval}{Approval status: "final" (approved) or "provisional" (subject to revision)}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Value is "Flow"
+\item \strong{Value}: Discharge value. The units are m^3/s.
+\item \strong{Symbol}: Measurement/river conditions
+\item \strong{Approval}: Approval status: "final" (approved) or "provisional" (subject to revision)
 }
 }
 \usage{

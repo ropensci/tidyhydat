@@ -23,17 +23,15 @@
 #' @return A tibble of monthly flows.
 #'
 #' @format A tibble with 8 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Year}{Year of record.}
-#'   \item{Month}{Numeric month value}
-#'   \item{Full_Month}{Logical value is there is full record from Month}
-#'   \item{No_days}{Number of days in that month}
-#'   \item{Sum_stat}{Summary statistic being used.}
-#'   \item{Value}{Value of the measurement in m^3/s.}
-#'   \item{Date_occurred}{Observation date. Formatted as a Date class. MEAN is a annual summary
-#'   and therefore has an NA value for Date.}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Year**: Year of record.
+#' - **Month**: Numeric month value
+#' - **Full_Month**: Logical value is there is full record from Month
+#' - **No_days**: Number of days in that month
+#' - **Sum_stat**: Summary statistic being used.
+#' - **Value**: Value of the measurement in m^3/s.
+#' - **Date_occurred**: Observation date. Formatted as a Date class. MEAN is a annual summary
+#'   and therefore has an NA value for Date.
 #'
 #' @examples
 #' \dontrun{

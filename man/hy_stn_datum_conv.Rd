@@ -5,12 +5,12 @@
 \title{Extract station datum conversions from HYDAT database}
 \format{
 A tibble with 4 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATUM_FROM}{Identifying a datum from which water level is being converted}
-\item{DATUM_TO}{Identifying a datum to which water level is being converted}
-\item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to
-one datum to obtain water levels referred to another datum}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATUM_FROM}: Identifying a datum from which water level is being converted
+\item \strong{DATUM_TO}: Identifying a datum to which water level is being converted
+\item \strong{CONVERSTION_FACTOR}: The conversion factor applied to water levels referred to
+one datum to obtain water levels referred to another datum
 }
 }
 \usage{

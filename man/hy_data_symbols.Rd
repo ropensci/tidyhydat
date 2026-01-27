@@ -6,10 +6,10 @@
 \title{DATA SYMBOLS look-up table}
 \format{
 A tibble with 5 rows and 3 variables:
-\describe{
-\item{SYMBOL_ID}{Symbol code}
-\item{SYMBOL_EN}{Description of Symbol (English)}
-\item{SYMBOL_FR}{Description of Symbol (French)}
+\itemize{
+\item \strong{SYMBOL_ID}: Symbol code
+\item \strong{SYMBOL_EN}: Description of Symbol (English)
+\item \strong{SYMBOL_FR}: Description of Symbol (French)
 }
 }
 \source{

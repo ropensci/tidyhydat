@@ -31,18 +31,16 @@
 #'
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date and time. Formatted as a POSIXct class as UTC for consistency.}
-#'   \item{Name_En}{Code name in English}
-#'   \item{Value}{Value of the measurement.}
-#'   \item{Unit}{Value units}
-#'   \item{Grade}{future use}
-#'   \item{Symbol}{future use}
-#'   \item{Approval}{future use}
-#'   \item{Parameter}{Numeric parameter code}
-#'   \item{Code}{Letter parameter code}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date and time. Formatted as a POSIXct class as UTC for consistency.
+#' - **Name_En**: Code name in English
+#' - **Value**: Value of the measurement.
+#' - **Unit**: Value units
+#' - **Grade**: future use
+#' - **Symbol**: future use
+#' - **Approval**: future use
+#' - **Parameter**: Numeric parameter code
+#' - **Code**: Letter parameter code
 #'
 #' @examples
 #' \dontrun{

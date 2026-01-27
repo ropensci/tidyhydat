@@ -5,13 +5,13 @@
 \title{Download a tibble of active realtime stations}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{STATION_NAME}{Official name for station identification}
-\item{LATITUDE}{North-South Coordinates of the gauging station in decimal degrees}
-\item{LONGITUDE}{East-West Coordinates of the gauging station in decimal degrees}
-\item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-\item{TIMEZONE}{Timezone of the station}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{STATION_NAME}: Official name for station identification
+\item \strong{LATITUDE}: North-South Coordinates of the gauging station in decimal degrees
+\item \strong{LONGITUDE}: East-West Coordinates of the gauging station in decimal degrees
+\item \strong{PROV_TERR_STATE_LOC}: The province, territory or state in which the station is located
+\item \strong{TIMEZONE}: Timezone of the station
 }
 }
 \usage{

@@ -5,17 +5,17 @@
 \title{Download a tibble of realtime river data from the last 30 days from the Meteorological Service of Canada datamart}
 \format{
 A tibble with 8 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{PROV_TERR_STATE_LOC}{The province, territory or state in which the station is located}
-\item{Date}{Observation date and time for last thirty days. Formatted as a POSIXct class in UTC for consistency.}
-\item{Parameter}{Parameter being measured. Only possible values are Flow and Level}
-\item{Value}{Value of the measurement. If Parameter equals Flow the units are m^3/s.
-If Parameter equals Level the units are metres.}
-\item{Grade}{reserved for future use}
-\item{Symbol}{reserved for future use}
-\item{Code}{quality assurance/quality control flag for the discharge}
-\item{station_tz}{Station timezone based on tidyhydat::allstations$station_tz}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{PROV_TERR_STATE_LOC}: The province, territory or state in which the station is located
+\item \strong{Date}: Observation date and time for last thirty days. Formatted as a POSIXct class in UTC for consistency.
+\item \strong{Parameter}: Parameter being measured. Only possible values are Flow and Level
+\item \strong{Value}: Value of the measurement. If Parameter equals Flow the units are m^3/s.
+If Parameter equals Level the units are metres.
+\item \strong{Grade}: reserved for future use
+\item \strong{Symbol}: reserved for future use
+\item \strong{Code}: quality assurance/quality control flag for the discharge
+\item \strong{station_tz}: Station timezone based on tidyhydat::allstations$station_tz
 }
 }
 \usage{

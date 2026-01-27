@@ -5,12 +5,12 @@
 \title{Extract daily levels information from HYDAT database or web service}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Only possible value is Level}
-\item{Value}{Level value. The units are metres.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Only possible value is Level
+\item \strong{Value}: Level value. The units are metres.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{

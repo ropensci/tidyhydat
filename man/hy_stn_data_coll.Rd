@@ -5,15 +5,15 @@
 \title{Extract station data collection from HYDAT database}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATA_TYPE}{The type of data}
-\item{Year_from}{First year of use}
-\item{Year_to}{Last year of use}
-\item{MEASUREMENT}{The sampling method used in the collection of
-sediment data or the type of the gauge used in the collection of the hydrometric data}
-\item{OPERATION}{The schedule of station operation
-for the collection of sediment or hydrometric data}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATA_TYPE}: The type of data
+\item \strong{Year_from}: First year of use
+\item \strong{Year_to}: Last year of use
+\item \strong{MEASUREMENT}: The sampling method used in the collection of
+sediment data or the type of the gauge used in the collection of the hydrometric data
+\item \strong{OPERATION}: The schedule of station operation
+for the collection of sediment or hydrometric data
 }
 }
 \source{

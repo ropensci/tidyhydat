@@ -5,12 +5,12 @@
 \title{Extract station operation schedule from HYDAT database}
 \format{
 A tibble with 6 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATA_TYPE}{The type of data}
-\item{Year}{Year of operation schedule}
-\item{Month_from}{First month of use}
-\item{Month_to}{Last month of use}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATA_TYPE}: The type of data
+\item \strong{Year}: Year of operation schedule
+\item \strong{Month_from}: First month of use
+\item \strong{Month_to}: Last month of use
 }
 }
 \source{

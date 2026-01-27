@@ -6,12 +6,10 @@
 #' @return A tibble of hy_stn_remarks
 #'
 #' @format A tibble with 4 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{REMARK_TYPE}{Type of Remark}
-#'   \item{Year}{Year of the remark}
-#'   \item{REMARK}{Remark}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **REMARK_TYPE**: Type of Remark
+#' - **Year**: Year of the remark
+#' - **REMARK**: Remark
 #'
 #' @export
 #'
@@ -69,13 +67,11 @@ hy_stn_remarks <- function(
 #' @return A tibble of hy_stn_datum_conv
 #'
 #' @format A tibble with 4 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATUM_FROM}{Identifying a datum from which water level is being converted}
-#'   \item{DATUM_TO}{Identifying a datum to which water level is being converted}
-#'   \item{CONVERSTION_FACTOR}{The conversion factor applied to water levels referred to
-#'   one datum to obtain water levels referred to another datum}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **DATUM_FROM**: Identifying a datum from which water level is being converted
+#' - **DATUM_TO**: Identifying a datum to which water level is being converted
+#' - **CONVERSTION_FACTOR**: The conversion factor applied to water levels referred to
+#'   one datum to obtain water levels referred to another datum
 #'
 #'
 #' @export
@@ -149,12 +145,10 @@ hy_stn_datum_conv <- function(
 #' @return A tibble of hy_stn_datum_unrelated
 #'
 #' @format A tibble with 4 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATUM_ID}{Unique code identifying a datum}
-#'   \item{Year_from}{First year of use}
-#'   \item{Year_to}{Last year of use}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **DATUM_ID**: Unique code identifying a datum
+#' - **Year_from**: First year of use
+#' - **Year_to**: Last year of use
 #'
 #' @export
 #' @examples
@@ -214,14 +208,12 @@ hy_stn_datum_unrelated <- function(
 #' @return A tibble of hy_stn_data_range
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATA_TYPE}{Code for the type of data}
-#'   \item{SED_DATA_TYPE}{Code for the type of instantaneous sediment data}
-#'   \item{Year_from}{First year of use}
-#'   \item{Year_to}{Last year of use}
-#'   \item{RECORD_LENGTH}{Number of years of data available in the HYDAT database}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **DATA_TYPE**: Code for the type of data
+#' - **SED_DATA_TYPE**: Code for the type of instantaneous sediment data
+#' - **Year_from**: First year of use
+#' - **Year_to**: Last year of use
+#' - **RECORD_LENGTH**: Number of years of data available in the HYDAT database
 #'
 #' @family HYDAT functions
 #' @source HYDAT
@@ -281,16 +273,14 @@ hy_stn_data_range <- function(
 #' @return A tibble of hy_stn_data_coll
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATA_TYPE}{The type of data}
-#'   \item{Year_from}{First year of use}
-#'   \item{Year_to}{Last year of use}
-#'   \item{MEASUREMENT}{The sampling method used in the collection of
-#'   sediment data or the type of the gauge used in the collection of the hydrometric data}
-#'   \item{OPERATION}{The schedule of station operation
-#'   for the collection of sediment or hydrometric data}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **DATA_TYPE**: The type of data
+#' - **Year_from**: First year of use
+#' - **Year_to**: Last year of use
+#' - **MEASUREMENT**: The sampling method used in the collection of
+#'   sediment data or the type of the gauge used in the collection of the hydrometric data
+#' - **OPERATION**: The schedule of station operation
+#'   for the collection of sediment or hydrometric data
 #'
 #' @family HYDAT functions
 #' @source HYDAT
@@ -363,13 +353,11 @@ hy_stn_data_coll <- function(
 #' @return A tibble of hy_stn_op_schedule
 #'
 #' @format A tibble with 6 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{DATA_TYPE}{The type of data}
-#'   \item{Year}{Year of operation schedule}
-#'   \item{Month_from}{First month of use}
-#'   \item{Month_to}{Last month of use}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **DATA_TYPE**: The type of data
+#' - **Year**: Year of operation schedule
+#' - **Month_from**: First month of use
+#' - **Month_to**: Last month of use
 #'
 #' @family HYDAT functions
 #' @source HYDAT

@@ -5,12 +5,12 @@
 \title{Extract all daily water level and flow measurements}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured.}
-\item{Value}{Discharge value. The units are m^3/s.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured.
+\item \strong{Value}: Discharge value. The units are m^3/s.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{

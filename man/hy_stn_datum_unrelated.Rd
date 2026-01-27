@@ -5,11 +5,11 @@
 \title{Extract station datum unrelated from HYDAT database}
 \format{
 A tibble with 4 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{DATUM_ID}{Unique code identifying a datum}
-\item{Year_from}{First year of use}
-\item{Year_to}{Last year of use}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{DATUM_ID}: Unique code identifying a datum
+\item \strong{Year_from}: First year of use
+\item \strong{Year_to}: Last year of use
 }
 }
 \usage{

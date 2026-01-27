@@ -5,16 +5,16 @@
 \title{Extract annual statistics information from the HYDAT database}
 \format{
 A tibble with 8 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Parameter}{Parameter being measured. Only possible values are FLOW and LEVEL}
-\item{Year}{Year of record.}
-\item{Sum_stat}{Summary statistic being used.}
-\item{Value}{Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the
-units are metres.}
-\item{Date}{Observation date. Formatted as a Date class. MEAN is a annual summary
-and therefore has an NA value for Date.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Parameter}: Parameter being measured. Only possible values are FLOW and LEVEL
+\item \strong{Year}: Year of record.
+\item \strong{Sum_stat}: Summary statistic being used.
+\item \strong{Value}: Value of the measurement. If Parameter equals FLOW the units are m^3/s. If Parameter equals LEVEL the
+units are metres.
+\item \strong{Date}: Observation date. Formatted as a Date class. MEAN is a annual summary
+and therefore has an NA value for Date.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{

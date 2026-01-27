@@ -5,12 +5,12 @@
 \title{Extract daily suspended sediment concentration information from the HYDAT database}
 \format{
 A tibble with 5 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Only possible value is Suscon}
-\item{Value}{Discharge value. The units are mg/l.}
-\item{Symbol}{Measurement/river conditions}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Only possible value is Suscon
+\item \strong{Value}: Discharge value. The units are mg/l.
+\item \strong{Symbol}: Measurement/river conditions
 }
 }
 \source{

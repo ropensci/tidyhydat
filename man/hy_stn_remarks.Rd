@@ -5,11 +5,11 @@
 \title{Extract station remarks from HYDAT database}
 \format{
 A tibble with 4 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{REMARK_TYPE}{Type of Remark}
-\item{Year}{Year of the remark}
-\item{REMARK}{Remark}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{REMARK_TYPE}: Type of Remark
+\item \strong{Year}: Year of the remark
+\item \strong{REMARK}: Remark
 }
 }
 \usage{

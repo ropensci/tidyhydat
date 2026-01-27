@@ -5,11 +5,11 @@
 \title{Extract daily sediment load information from the HYDAT database}
 \format{
 A tibble with 4 variables:
-\describe{
-\item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-\item{Date}{Observation date. Formatted as a Date class.}
-\item{Parameter}{Parameter being measured. Only possible value is Load}
-\item{Value}{Discharge value. The units are tonnes.}
+\itemize{
+\item \strong{STATION_NUMBER}: Unique 7 digit Water Survey of Canada station number
+\item \strong{Date}: Observation date. Formatted as a Date class.
+\item \strong{Parameter}: Parameter being measured. Only possible value is Load
+\item \strong{Value}: Discharge value. The units are tonnes.
 }
 }
 \source{

@@ -21,13 +21,11 @@
 #' @return A tibble of daily suspended sediment concentration
 #'
 #' @format A tibble with 5 variables:
-#' \describe{
-#'   \item{STATION_NUMBER}{Unique 7 digit Water Survey of Canada station number}
-#'   \item{Date}{Observation date. Formatted as a Date class.}
-#'   \item{Parameter}{Parameter being measured. Only possible value is Suscon}
-#'   \item{Value}{Discharge value. The units are mg/l.}
-#'   \item{Symbol}{Measurement/river conditions}
-#' }
+#' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
+#' - **Date**: Observation date. Formatted as a Date class.
+#' - **Parameter**: Parameter being measured. Only possible value is Suscon
+#' - **Value**: Discharge value. The units are mg/l.
+#' - **Symbol**: Measurement/river conditions
 #'
 #' @examples
 #' \dontrun{

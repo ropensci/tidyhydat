@@ -101,12 +101,10 @@ print_station_coverage <- function(x) {
 #' @param ... ignored
 #'
 #' @return A tibble with columns:
-#' \itemize{
-#'   \item STATION_NUMBER
-#'   \item final_start, final_end - date range for validated data
-#'   \item provisional_start, provisional_end - date range for provisional data
-#'   \item final_n, provisional_n - record counts
-#' }
+#' - STATION_NUMBER
+#' - final_start, final_end - date range for validated data
+#' - provisional_start, provisional_end - date range for provisional data
+#' - final_n, provisional_n - record counts
 #'
 #' @method summary available
 #' @export
