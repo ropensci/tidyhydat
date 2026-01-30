@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 0.7.2.9000
+Version: 1.0.0
 Authors@R: c(
     person(
       "Sam", "Albers",
