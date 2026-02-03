@@ -1,9 +1,10 @@
-# tidyhydat 0.7.2.9000
-- add `hy_daily_flows()` and `hy_daily_levels()` now support `hydat_path = FALSE` to access historical web service data without downloading HYDAT
-- add `available_flows()` and `available_levels()` functions that combine validated historical data with provisional real-time data
-- add httptest2 for mocking webservice tests (#212)
-- add classes to webservice outputs with print methods (#212)
-- improve plot methods to add padding around the start and end of records for better visualization
+# tidyhydat 1.0.0
+- `hy_daily_flows()` and `hy_daily_levels()` now support `hydat_path = FALSE` to access historical web service data without downloading HYDAT
+- new `available_flows()` and `available_levels()` functions combine validated historical data with provisional real-time data
+- web service outputs now have custom classes with print methods (#212)
+- plot methods add padding around the start and end of records for better visualization
+- httptest2 used for mocking web service tests (#212)
+- update copyright and license information (#236)
 
 # tidyhydat 0.7.2
 - fixed a bug where `param_id` internal data wasnt' being accessed correctly (#224)

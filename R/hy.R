@@ -437,7 +437,7 @@ hy_dir <- function(...) {
 #'
 #' @param hydat_path The path to the hydat database or NULL to use the default location
 #'   used by [download_hydat]. It is also possible to pass in an existing
-#'   [src_sqlite][dplyr::src_sqlite] such that the database only needs to be opened once per
+#'   database connection from [hy_src()] such that the database only needs to be opened once per
 #'   user-level call.
 #'
 #' @return A tibble of agencies

@@ -1,3 +1,29 @@
+tidyhydat 1.0.0
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- `hy_daily_flows()` and `hy_daily_levels()` now support `hydat_path = FALSE` to access historical web service data without downloading HYDAT
+- new `available_flows()` and `available_levels()` functions combine validated historical data with provisional real-time data
+- web service outputs now have custom classes with print methods (#212)
+- plot methods add padding around the start and end of records for better visualization
+- httptest2 used for mocking web service tests (#212)
+- update copyright and license information (#236)
+
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.5.2 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* ubuntu-devel, r: 'release' (rhub)
+* linux, r: 'devel' (rhub)
+* macos-arm64, r: 'devel' (rhub)
+* windows, r: 'devel' (rhub)
+
 tidyhydat 0.7.2
 =========================
 

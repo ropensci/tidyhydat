@@ -1,7 +1,7 @@
 ---
 title: "Two examples of using tidyhydat"
 author: "Sam Albers"
-date: "2025-10-29"
+date: "2026-01-29"
 output:
   html_vignette:
      keep_md: true
@@ -279,6 +279,11 @@ nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) |>
      summarise(Value = mean(Value, na.rm = TRUE), .groups = "drop") 
 ```
 
+```
+## Error in `dplyr::bind_rows()` at ]8;line = 98:col = 3;file:///Users/sam.albers/_dev/gh_repos/tidyhydat/R/utils-realtime.Rtidyhydat/R/utils-realtime.R:98:3]8;;:
+## ! Can't combine `..1$Date` <logical> and `..2$Date` <datetime<UTC>>.
+```
+
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
 
@@ -298,5 +303,8 @@ ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
        x = "Date", y = "Discharge (m^3/s)")
 ```
 
-![plot of chunk pcrtile_plt](vignette-fig-pcrtile_plt-1.png)
+```
+## Error:
+## ! object 'nunavut_realtime' not found
+```
 **CAUTION**: All real time data are presented AS IS and represents unapproved data.
