@@ -1,7 +1,7 @@
 ---
 title: "Two examples of using tidyhydat"
 author: "Sam Albers"
-date: "2026-01-29"
+date: "2026-06-11"
 output:
   html_vignette:
      keep_md: true
@@ -60,25 +60,25 @@ hy_stn_data_range()
 ```
 
 ```
-##   Queried from version of HYDAT released on 2025-10-14
-##    Observations:                      12,216
-##    Station(s) returned:               8,028
+##   Queried from version of HYDAT released on 2026-04-17
+##    Observations:                      12,253
+##    Station(s) returned:               8,055
 ##    Stations requested but not returned: 
 ##     All stations returned.
-## # A tibble: 12,216 × 6
+## # A tibble: 12,253 × 6
 ##    STATION_NUMBER DATA_TYPE SED_DATA_TYPE Year_from Year_to RECORD_LENGTH
 ##    <chr>          <chr>     <chr>             <int>   <int>         <int>
 ##  1 01AA002        Q         <NA>               1967    1977            11
 ##  2 01AD001        Q         <NA>               1918    1997            80
 ##  3 01AD002        Q         <NA>               1926    2023            98
-##  4 01AD003        H         <NA>               2011    2024            14
-##  5 01AD003        Q         <NA>               1951    2024            74
+##  4 01AD003        H         <NA>               2011    2025            15
+##  5 01AD003        Q         <NA>               1951    2025            75
 ##  6 01AD004        H         <NA>               1980    2024            40
 ##  7 01AD004        Q         <NA>               1968    1979            12
 ##  8 01AD005        H         <NA>               1966    1974             9
 ##  9 01AD008        H         <NA>               1972    1974             3
 ## 10 01AD009        H         <NA>               1973    1982            10
-## # ℹ 12,206 more rows
+## # ℹ 12,243 more rows
 ```
 Our objective here is to filter from this data for the station that has the longest record of flow (`DATA_TYPE == "Q"`). You'll also notice this symbol `|>` which in R is called a [pipe](https://magrittr.tidyverse.org/reference/pipe.html). In code, read it as the word *then*. So for the data_range data we want to grab the data *then* filter it by flow ("Q") in `DATA_TYPE` and then by the maximum value of `RECORD_LENGTH`:
 
@@ -88,7 +88,7 @@ hy_stn_data_range() |>
 ```
 
 ```
-##   Queried from version of HYDAT released on 2025-10-14
+##   Queried from version of HYDAT released on 2026-04-17
 ##    Observations:                      1
 ##    Station(s) returned:               1
 ##    Stations requested but not returned: 
@@ -96,7 +96,7 @@ hy_stn_data_range() |>
 ## # A tibble: 1 × 6
 ##   STATION_NUMBER DATA_TYPE SED_DATA_TYPE Year_from Year_to RECORD_LENGTH
 ##   <chr>          <chr>     <chr>             <int>   <int>         <int>
-## 1 02HA003        Q         <NA>               1860    2021           162
+## 1 02HA003        Q         <NA>               1860    2024           165
 ```
 *then* pull the `STATION_NUMBER` that has the longest record:
 
@@ -151,7 +151,7 @@ hy_stations(station_number = unique(longest_record_data$STATION_NUMBER)) |>
 ## [1] -79.04722
 ## 
 ## $DRAINAGE_AREA_GROSS
-## [1] 686000
+## [1] 701800
 ## 
 ## $DRAINAGE_AREA_EFFECT
 ## [1] NA
@@ -279,11 +279,6 @@ nunavut_realtime <- realtime_dd(unique(nunavut_stn_flows$STATION_NUMBER)) |>
      summarise(Value = mean(Value, na.rm = TRUE), .groups = "drop") 
 ```
 
-```
-## Error in `dplyr::bind_rows()` at ]8;line = 98:col = 3;file:///Users/sam.albers/_dev/gh_repos/tidyhydat/R/utils-realtime.Rtidyhydat/R/utils-realtime.R:98:3]8;;:
-## ! Can't combine `..1$Date` <logical> and `..2$Date` <datetime<UTC>>.
-```
-
 Finally we can plot all of this on to one figure. This type of plot is useful to combine historical data sources with real time data and provide a visual assessment of how typical flows in a given system are. 
 
 
@@ -303,8 +298,5 @@ ggplot(pct_flow, aes(x = Date_no_year, y = Value)) +
        x = "Date", y = "Discharge (m^3/s)")
 ```
 
-```
-## Error:
-## ! object 'nunavut_realtime' not found
-```
+![plot of chunk pcrtile_plt](vignette-fig-pcrtile_plt-1.png)
 **CAUTION**: All real time data are presented AS IS and represents unapproved data.

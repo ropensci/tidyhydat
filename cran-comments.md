@@ -1,3 +1,32 @@
+tidyhydat 1.0.1
+=========================
+
+There were zero WARNINGS and zero ERRORS.
+
+## NEWS
+- fixed a bug in `available_flows()` and `available_levels()` where a station with complete final coverage suppressed provisional data for every other station in the request; provisional coverage is now determined per station
+- wrapped literal CSV strings passed to `readr::read_csv()` in `I()` in the datamart realtime functions, silencing the readr 2.2.0 deprecation warning
+- `realtime_ws()` now accepts bare `YYYY-MM-DD` character strings for `start_date` and `end_date`, consistent with the `hy_*` functions, rather than requiring a `Date` object or a full datetime string (#242)
+
+## Test environments
+* win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
+* local macOS, R 4.5.2 (via R CMD check --as-cran)
+* ubuntu-20.04, r: 'release' (github actions)
+* ubuntu-20.04, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
+* ubuntu-devel, r: 'release' (rhub)
+* linux, r: 'devel' (rhub)
+* macos-arm64, r: 'devel' (rhub)
+* windows, r: 'devel' (rhub)
+
+## revdepcheck results
+
+We checked 3 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
+
 tidyhydat 1.0.0
 =========================
 
