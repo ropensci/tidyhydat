@@ -72,7 +72,7 @@ single_realtime_station <- function(station_number) {
     h <- create_empty_realtime_df(station_number)
   } else {
     h <- readr::read_csv(
-      h_resp_str,
+      I(h_resp_str),
       skip = 1,
       col_names = colHeaders,
       col_types = realtime_cols_types()
@@ -86,7 +86,7 @@ single_realtime_station <- function(station_number) {
     d <- create_empty_realtime_df(station_number)
   } else {
     d <- readr::read_csv(
-      p_resp_str,
+      I(p_resp_str),
       skip = 1,
       col_names = colHeaders,
       col_types = realtime_cols_types()
@@ -121,7 +121,7 @@ all_realtime_station <- function(PROV) {
     output <- create_empty_realtime_df(NA_character_)
   } else {
     output <- readr::read_csv(
-      res,
+      I(res),
       skip = 1,
       col_names = colHeaders,
       col_types = realtime_cols_types()

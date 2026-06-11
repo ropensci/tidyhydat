@@ -116,7 +116,7 @@ realtime_stations <- function(prov_terr_state_loc = NULL) {
     )
   } else {
     net_tibble <- readr::read_csv(
-      resp_str,
+      I(resp_str),
       skip = 1,
       col_names = c(
         "STATION_NUMBER",
