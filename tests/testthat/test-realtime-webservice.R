@@ -44,6 +44,21 @@ httptest2::with_mock_dir("fixtures", {
     expect_true(nrow(output) > 0)
     expect_equal(unique(output$STATION_NUMBER), "08MF005")
   })
+
+  test_that("realtime_ws accepts bare YYYY-MM-DD character dates (#242)", {
+    # Character dates should be handled the same way as Date objects and the
+    # hy_* functions, rather than failing date validation.
+    output <- realtime_ws(
+      station_number = "08MF005",
+      parameters = 46,
+      start_date = "2025-10-21",
+      end_date = "2025-10-22"
+    )
+
+    expect_s3_class(output, "tbl_df")
+    expect_true(nrow(output) > 0)
+    expect_equal(unique(output$STATION_NUMBER), "08MF005")
+  })
 })
 
 # Date validation tests don't make HTTP calls, so they're outside the mock context
@@ -79,7 +94,6 @@ test_that("realtime_ws handles Date objects", {
 })
 
 test_that("realtime_ws handles empty CSV response (regression test for I() wrapper)", {
-
   # This test specifically addresses a bug where readr::read_csv() without I()
   # would interpret the CSV header string as a file path instead of CSV text.
 

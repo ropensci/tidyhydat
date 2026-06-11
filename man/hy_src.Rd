@@ -24,7 +24,7 @@ A SQLite DBIConnection
 This function gives low-level access to the underlying HYDAT database used by
 other functions. Many of these tables are too large to load into memory,
 so it is best to use dplyr to \code{\link[dplyr:filter]{dplyr::filter()}} them before using
-\code{\link[dplyr:compute]{dplyr::collect()}} to read them into memory.
+\code{\link[dplyr:collect]{dplyr::collect()}} to read them into memory.
 }
 \examples{
 \dontrun{

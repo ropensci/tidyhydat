@@ -1,3 +1,8 @@
+# tidyhydat 1.0.1
+- fixed a bug in `available_flows()` and `available_levels()` where a station with complete final coverage suppressed provisional data for every other station in the request; provisional coverage is now determined per station
+- wrapped literal CSV strings passed to `readr::read_csv()` in `I()` in the datamart realtime functions, silencing the readr 2.2.0 deprecation warning
+- `realtime_ws()` now accepts bare `YYYY-MM-DD` character strings for `start_date` and `end_date`, consistent with the `hy_*` functions, rather than requiring a `Date` object or a full datetime string (#242)
+
 # tidyhydat 1.0.0
 - `hy_daily_flows()` and `hy_daily_levels()` now support `hydat_path = FALSE` to access historical web service data without downloading HYDAT
 - new `available_flows()` and `available_levels()` functions combine validated historical data with provisional real-time data

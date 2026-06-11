@@ -65,8 +65,8 @@ fivedays <- realtime_ws(
 }
 }
 \seealso{
-Other realtime functions: 
-\code{\link{realtime_dd}()},
-\code{\link{realtime_stations}()}
+Other realtime functions:
+\code{\link[=realtime_dd]{realtime_dd()}},
+\code{\link[=realtime_stations]{realtime_stations()}}
 }
 \concept{realtime functions}

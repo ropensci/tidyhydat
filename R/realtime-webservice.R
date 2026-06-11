@@ -66,7 +66,9 @@ realtime_ws <- function(
   start_date = Sys.Date() - lubridate::days(30),
   end_date = Sys.Date()
 ) {
-  if (is.null(parameters)) parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
+  if (is.null(parameters)) {
+    parameters <- c(46, 16, 52, 47, 8, 5, 41, 18)
+  }
 
   if (any(!parameters %in% tidyhydat::param_id$Parameter)) {
     stop(
@@ -81,12 +83,12 @@ realtime_ws <- function(
     )
   }
 
-  if (!is.numeric(parameters))
+  if (!is.numeric(parameters)) {
     stop("parameters should be a number", call. = FALSE)
+  }
 
-  if (inherits(start_date, "Date"))
-    start_date <- paste0(start_date, " 00:00:00")
-  if (inherits(end_date, "Date")) end_date <- paste0(end_date, " 23:59:59")
+  start_date <- ws_datetime(start_date, " 00:00:00")
+  end_date <- ws_datetime(end_date, " 23:59:59")
 
   validate_params(parameters, start_date, end_date)
 
@@ -97,8 +99,8 @@ realtime_ws <- function(
     venue = "realtime",
     baseurl,
     station_number,
-    parameters, 
-    start_date, 
+    parameters,
+    start_date,
     end_date
   )
 

@@ -10,7 +10,7 @@ A tibble with 15 variables:
 \item \strong{STATION_NAME}: Official name for station identification
 \item \strong{PROV_TERR_STATE_LOC}: The province, territory or state in which the station is located
 \item \strong{REGIONAL_OFFICE_ID}: The identifier of the regional office responsible for the station.
-Links to \link[=hy_reg_office_list]{hy_reg_office_list}
+Links to \link{hy_reg_office_list}
 \item \strong{HYD_STATUS}: Current status of discharge or level monitoring in the hydrometric network
 \item \strong{SED_STATUS}: Current status of sediment monitoring in the hydrometric network
 \item \strong{LATITUDE}: North-South Coordinates of the gauging station in decimal degrees
@@ -72,29 +72,29 @@ hy_stations(prov_terr_state_loc = c("AB", "YT"))
 
 }
 \seealso{
-Other HYDAT functions: 
-\code{\link{hy_agency_list}()},
-\code{\link{hy_annual_instant_peaks}()},
-\code{\link{hy_annual_stats}()},
-\code{\link{hy_daily}()},
-\code{\link{hy_daily_flows}()},
-\code{\link{hy_daily_levels}()},
+Other HYDAT functions:
+\code{\link[=hy_agency_list]{hy_agency_list()}},
+\code{\link[=hy_annual_instant_peaks]{hy_annual_instant_peaks()}},
+\code{\link[=hy_annual_stats]{hy_annual_stats()}},
+\code{\link[=hy_daily]{hy_daily()}},
+\code{\link[=hy_daily_flows]{hy_daily_flows()}},
+\code{\link[=hy_daily_levels]{hy_daily_levels()}},
 \code{\link{hy_data_symbols}},
 \code{\link{hy_data_types}},
-\code{\link{hy_datum_list}()},
-\code{\link{hy_monthly_flows}()},
-\code{\link{hy_monthly_levels}()},
-\code{\link{hy_reg_office_list}()},
-\code{\link{hy_sed_daily_loads}()},
-\code{\link{hy_sed_daily_suscon}()},
-\code{\link{hy_sed_monthly_loads}()},
-\code{\link{hy_sed_monthly_suscon}()},
-\code{\link{hy_sed_samples}()},
-\code{\link{hy_sed_samples_psd}()},
-\code{\link{hy_stn_data_coll}()},
-\code{\link{hy_stn_data_range}()},
-\code{\link{hy_stn_op_schedule}()},
-\code{\link{hy_stn_regulation}()},
-\code{\link{hy_version}()}
+\code{\link[=hy_datum_list]{hy_datum_list()}},
+\code{\link[=hy_monthly_flows]{hy_monthly_flows()}},
+\code{\link[=hy_monthly_levels]{hy_monthly_levels()}},
+\code{\link[=hy_reg_office_list]{hy_reg_office_list()}},
+\code{\link[=hy_sed_daily_loads]{hy_sed_daily_loads()}},
+\code{\link[=hy_sed_daily_suscon]{hy_sed_daily_suscon()}},
+\code{\link[=hy_sed_monthly_loads]{hy_sed_monthly_loads()}},
+\code{\link[=hy_sed_monthly_suscon]{hy_sed_monthly_suscon()}},
+\code{\link[=hy_sed_samples]{hy_sed_samples()}},
+\code{\link[=hy_sed_samples_psd]{hy_sed_samples_psd()}},
+\code{\link[=hy_stn_data_coll]{hy_stn_data_coll()}},
+\code{\link[=hy_stn_data_range]{hy_stn_data_range()}},
+\code{\link[=hy_stn_op_schedule]{hy_stn_op_schedule()}},
+\code{\link[=hy_stn_regulation]{hy_stn_regulation()}},
+\code{\link[=hy_version]{hy_version()}}
 }
 \concept{HYDAT functions}

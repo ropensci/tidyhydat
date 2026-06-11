@@ -1,6 +1,6 @@
 Package: tidyhydat
 Title: Extract and Tidy Canadian 'Hydrometric' Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person(
       "Sam", "Albers",
@@ -65,4 +65,4 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 LazyData: true
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0
