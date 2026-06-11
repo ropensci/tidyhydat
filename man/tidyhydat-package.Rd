@@ -43,6 +43,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Sam Albers \email{sam.albers@gmail.com} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID}) (Copyright holder 2022-2025) [copyright holder]
 
+Authors:
+\itemize{
+  \item Sam Albers \email{sam.albers@gmail.com} (\href{https://orcid.org/0000-0002-9270-7884}{ORCID}) (Copyright holder 2022-2025) [copyright holder]
+}
+
 Other contributors:
 \itemize{
   \item Province of British Columbia (Copyright holder 2017-2022) [copyright holder]

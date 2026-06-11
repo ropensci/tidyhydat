@@ -107,7 +107,7 @@ flows_ws <- available_flows("08MF005", hydat_path = FALSE)
 
 }
 \seealso{
-Other available functions: 
-\code{\link{available_levels}()}
+Other available functions:
+\code{\link[=available_levels]{available_levels()}}
 }
 \concept{available functions}

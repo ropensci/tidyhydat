@@ -73,6 +73,81 @@ test_that("print.available displays expected content", {
   })
 })
 
+test_that("trim_provisional_overlap keeps provisional data for stations lacking final coverage", {
+  ## Regression: a station with complete final coverage previously pushed the
+  ## global realtime start past end_date, starving provisional data for every
+  ## station, including those with no final record at all.
+
+  sym_STATION_NUMBER <- rlang::sym("STATION_NUMBER")
+  sym_Date <- rlang::sym("Date")
+
+  ## Station A is fully covered by final data through 2025-12-31.
+  final_data <- tibble::tibble(
+    STATION_NUMBER = "A",
+    Date = as.Date(c("2025-12-30", "2025-12-31")),
+    Parameter = "Flow",
+    Value = c(1, 2),
+    Symbol = NA_character_,
+    Approval = "final"
+  )
+
+  ## Provisional data exists for both A (overlapping final) and B (no final).
+  provisional <- tibble::tibble(
+    STATION_NUMBER = c("A", "A", "B", "B"),
+    Date = as.Date(c("2025-12-31", "2026-01-01", "2025-06-01", "2025-06-02")),
+    Parameter = "Flow",
+    Value = c(2.1, 3, 10, 11),
+    Symbol = NA_character_,
+    Approval = "provisional"
+  )
+
+  result <- trim_provisional_overlap(
+    provisional,
+    final_data,
+    sym_STATION_NUMBER,
+    sym_Date
+  )
+
+  ## Station B's provisional data must survive despite A's complete coverage.
+  expect_true(all(
+    c("2025-06-01", "2025-06-02") %in%
+      as.character(result$Date[result$STATION_NUMBER == "B"])
+  ))
+  expect_equal(sum(result$STATION_NUMBER == "B"), 2L)
+
+  ## Station A keeps only provisional records beyond its last final date.
+  a_dates <- as.character(result$Date[result$STATION_NUMBER == "A"])
+  expect_equal(a_dates, "2026-01-01")
+})
+
+test_that("trim_provisional_overlap is a no-op when no final data exists", {
+  sym_STATION_NUMBER <- rlang::sym("STATION_NUMBER")
+  sym_Date <- rlang::sym("Date")
+
+  provisional <- tibble::tibble(
+    STATION_NUMBER = c("B", "B"),
+    Date = as.Date(c("2025-06-01", "2025-06-02")),
+    Parameter = "Flow",
+    Value = c(10, 11),
+    Symbol = NA_character_,
+    Approval = "provisional"
+  )
+
+  expect_identical(
+    trim_provisional_overlap(provisional, NULL, sym_STATION_NUMBER, sym_Date),
+    provisional
+  )
+  expect_identical(
+    trim_provisional_overlap(
+      provisional,
+      provisional[0, ],
+      sym_STATION_NUMBER,
+      sym_Date
+    ),
+    provisional
+  )
+})
+
 test_that("summary.available returns correct structure", {
   httptest2::with_mock_dir("fixtures", {
     result <- available_flows(
@@ -85,7 +160,8 @@ test_that("summary.available returns correct structure", {
     summ <- summary(result)
     expect_s3_class(summ, "tbl_df")
     expect_true("STATION_NUMBER" %in% names(summ))
-    expect_true("final_start" %in% names(summ) || "provisional_start" %in% names(summ))
+    expect_true(
+      "final_start" %in% names(summ) || "provisional_start" %in% names(summ)
+    )
   })
 })
-

@@ -57,7 +57,7 @@
 #' @return A tibble with class `available` combining final and provisional data
 #'   with an additional `Approval` column indicating whether each record is
 #'   "final" or "provisional". The object includes attributes for tracking data
-#'   sources and query metadata. 
+#'   sources and query metadata.
 #'
 #' @format A tibble with 6 variables:
 #' - **STATION_NUMBER**: Unique 7 digit Water Survey of Canada station number
@@ -89,11 +89,11 @@
 #' @family available functions
 #' @export
 available_flows <- function(
-    station_number,
-    start_date = NULL,
-    end_date = Sys.Date(),
-    hydat_path = NULL,
-    prov_terr_state_loc = NULL
+  station_number,
+  start_date = NULL,
+  end_date = Sys.Date(),
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
 ) {
   get_available_data(
     station_number = station_number,
@@ -181,11 +181,11 @@ available_flows <- function(
 #' @family available functions
 #' @export
 available_levels <- function(
-    station_number,
-    start_date = NULL,
-    end_date = Sys.Date(),
-    hydat_path = NULL,
-    prov_terr_state_loc = NULL
+  station_number,
+  start_date = NULL,
+  end_date = Sys.Date(),
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL
 ) {
   get_available_data(
     station_number = station_number,
@@ -216,13 +216,13 @@ available_levels <- function(
 #' @noRd
 #' @keywords internal
 get_available_data <- function(
-    station_number,
-    start_date = NULL,
-    end_date = Sys.Date(),
-    hydat_path = NULL,
-    prov_terr_state_loc = NULL,
-    parameter_type,
-    parameter_code
+  station_number,
+  start_date = NULL,
+  end_date = Sys.Date(),
+  hydat_path = NULL,
+  prov_terr_state_loc = NULL,
+  parameter_type,
+  parameter_code
 ) {
   ## Define rlang symbols once for the entire function
 
@@ -279,7 +279,11 @@ get_available_data <- function(
       end_date = end_date,
       sym_Date = sym_Date
     )
-    combined_data <- dplyr::arrange(combined_data, !!sym_STATION_NUMBER, !!sym_Date)
+    combined_data <- dplyr::arrange(
+      combined_data,
+      !!sym_STATION_NUMBER,
+      !!sym_Date
+    )
   }
 
   ## Store metadata as attributes
@@ -302,12 +306,12 @@ get_available_data <- function(
 #' @noRd
 #' @keywords internal
 get_final_data <- function(
-    hydat_fn,
-    station_number,
-    hydat_path,
-    prov_terr_state_loc,
-    start_date,
-    end_date
+  hydat_fn,
+  station_number,
+  hydat_path,
+  prov_terr_state_loc,
+  start_date,
+  end_date
 ) {
   result <- tryCatch(
     {
@@ -350,7 +354,12 @@ get_final_data <- function(
 #'
 #' @noRd
 #' @keywords internal
-fallback_to_web_service <- function(hydat_fn, station_number, start_date, end_date) {
+fallback_to_web_service <- function(
+  hydat_fn,
+  station_number,
+  start_date,
+  end_date
+) {
   message("HYDAT unavailable, falling back to web service...")
 
   ws_start <- if (is.null(start_date)) as.Date("1850-01-01") else start_date
@@ -379,23 +388,30 @@ fallback_to_web_service <- function(hydat_fn, station_number, start_date, end_da
 
 #' Retrieve provisional (realtime) data
 #'
-#' Queries the realtime web service for provisional data starting from the day
-#' after the last final record.
+#' Queries the realtime web service once over the full requested range, then
+#' trims the result per station so that provisional records only fill the gap
+#' beyond each station's final coverage. Querying the whole range in a single
+#' call avoids the pitfall of a global start date: a station with complete final
+#' coverage must not suppress provisional data for stations that have none.
 #'
 #' @noRd
 #' @keywords internal
 get_provisional_data <- function(
-    final_data,
-    station_number,
-    start_date,
-    end_date,
-    parameter_type,
-    parameter_code,
-    sym_STATION_NUMBER,
-    sym_Date,
-    sym_Value
+  final_data,
+  station_number,
+  start_date,
+  end_date,
+  parameter_type,
+  parameter_code,
+  sym_STATION_NUMBER,
+  sym_Date,
+  sym_Value
 ) {
-  realtime_start <- determine_realtime_start(final_data, start_date)
+  realtime_start <- if (!is.null(start_date)) {
+    as.Date(start_date)
+  } else {
+    Sys.Date() - lubridate::period(18, "months")
+  }
   realtime_end <- if (!is.null(end_date)) as.Date(end_date) else Sys.Date()
 
   if (realtime_start > realtime_end) {
@@ -410,7 +426,9 @@ get_provisional_data <- function(
       end_date = realtime_end
     ),
     error = function(e) {
-      if (grepl("No data exists for this station query", e$message, fixed = TRUE)) {
+      if (
+        grepl("No data exists for this station query", e$message, fixed = TRUE)
+      ) {
         return(NULL)
       }
       stop(e)
@@ -423,30 +441,60 @@ get_provisional_data <- function(
 
   rt_data$Date <- as.Date(rt_data$Date)
 
-  rt_data |>
+  provisional <- rt_data |>
     dplyr::group_by(!!sym_STATION_NUMBER, !!sym_Date) |>
-    dplyr::summarise(Value = mean(!!sym_Value, na.rm = TRUE), .groups = "drop") |>
+    dplyr::summarise(
+      Value = mean(!!sym_Value, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
     dplyr::mutate(
       Parameter = parameter_type,
       Symbol = NA_character_,
       Approval = "provisional"
     ) |>
     dplyr::select(STATION_NUMBER, Date, Parameter, Value, Symbol, Approval)
+
+  trim_provisional_overlap(
+    provisional,
+    final_data,
+    sym_STATION_NUMBER,
+    sym_Date
+  )
 }
 
 
-#' Determine the start date for realtime queries
+#' Drop provisional records already covered by final data, per station
+#'
+#' For each station present in the final data, provisional records on or before
+#' that station's last final observation are removed so the final record always
+#' takes precedence. Stations absent from the final data retain all of their
+#' provisional records.
 #'
 #' @noRd
 #' @keywords internal
-determine_realtime_start <- function(final_data, start_date) {
-  if (!is.null(final_data) && nrow(final_data) > 0) {
-    max(final_data$Date, na.rm = TRUE) + lubridate::days(1)
-  } else if (!is.null(start_date)) {
-    as.Date(start_date)
-  } else {
-    Sys.Date() - lubridate::period(18, "months")
+trim_provisional_overlap <- function(
+  provisional,
+  final_data,
+  sym_STATION_NUMBER,
+  sym_Date
+) {
+  if (is.null(final_data) || nrow(final_data) == 0) {
+    return(provisional)
   }
+
+  last_final <- final_data |>
+    dplyr::group_by(!!sym_STATION_NUMBER) |>
+    dplyr::summarise(
+      .last_final_date = max(!!sym_Date, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  provisional |>
+    dplyr::left_join(last_final, by = "STATION_NUMBER") |>
+    dplyr::filter(
+      is.na(.data$.last_final_date) | !!sym_Date > .data$.last_final_date
+    ) |>
+    dplyr::select(-".last_final_date")
 }
 
 
