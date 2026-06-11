@@ -70,8 +70,9 @@ station_choice <- function(hydat_con, station_number, prov_terr_state_loc) {
     ## Only possible values for prov_terr_state_loc
     stn_option <- unique(tidyhydat::allstations$PROV_TERR_STATE_LOC)
 
-    if (any(!prov_terr_state_loc %in% stn_option) == TRUE)
+    if (any(!prov_terr_state_loc %in% stn_option) == TRUE) {
       stop("Invalid prov_terr_state_loc value")
+    }
 
     dplyr::tbl(hydat_con, "STATIONS") |>
       dplyr::filter(!!sym_PROV_TERR_STATE_LOC %in% prov_terr_state_loc) |>
@@ -90,24 +91,27 @@ date_check <- function(start_date = NULL, end_date = NULL) {
 
   ## Check date is in the right format TODO
   if (!is.null(start_date)) {
-    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", start_date))
+    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", start_date)) {
       stop(
         "Invalid date format. start_date need to be in YYYY-MM-DD format",
         call. = FALSE
       )
+    }
   }
 
   if (!is.null(end_date)) {
-    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", end_date))
+    if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9]", end_date)) {
       stop(
         "Invalid date format. end_date need to be in YYYY-MM-DD format",
         call. = FALSE
       )
+    }
   }
 
   if (!is.null(start_date) & !is.null(end_date)) {
-    if (lubridate::ymd(end_date) < lubridate::ymd(start_date))
+    if (lubridate::ymd(end_date) < lubridate::ymd(start_date)) {
       stop("start_date is after end_date. Try swapping values.", call. = FALSE)
+    }
   }
 
   invisible(list(start_is_null = start_is_null, end_is_null = end_is_null))
@@ -264,8 +268,9 @@ tidyhydat_agent <- function(req) {
 #' }
 #'
 pull_station_number <- function(.data) {
-  if (!("STATION_NUMBER" %in% colnames(.data)))
+  if (!("STATION_NUMBER" %in% colnames(.data))) {
     stop("No STATION_NUMBER column present", call. = FALSE)
+  }
 
   unique(.data$STATION_NUMBER)
 }
@@ -322,26 +327,53 @@ tidyhydat_perform <- function(req, ...) {
   httr2::req_perform(req, ...)
 }
 
+#' Normalise a web service date argument to a full datetime string
+#'
+#' The realtime web service expects dates as `YYYY-MM-DD HH:MM:SS`. Both `Date`
+#' objects and bare `YYYY-MM-DD` character strings are accepted from callers and
+#' given the supplied time component, matching the date handling in the `hy_*`
+#' functions. Values that already carry a time component pass through unchanged.
+#'
+#' @noRd
+#' @keywords internal
+ws_datetime <- function(x, time_suffix) {
+  if (inherits(x, "Date")) {
+    return(paste0(x, time_suffix))
+  }
+  if (is.character(x) && grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", x)) {
+    return(paste0(x, time_suffix))
+  }
+  x
+}
+
 validate_params <- function(parameters, start_date, end_date) {
+  if (!is.numeric(parameters)) {
+    stop("parameters should be a number", call. = FALSE)
+  }
 
-
-  if (!is.numeric(parameters)) stop("parameters should be a number", call. = FALSE)
-
-
-  if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", start_date)) {
+  if (
+    !grepl(
+      "[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]",
+      start_date
+    )
+  ) {
     stop(
       "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
       call. = FALSE
     )
   }
 
-  if (!grepl("[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]", end_date)) {
+  if (
+    !grepl(
+      "[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]",
+      end_date
+    )
+  ) {
     stop(
       "Invalid date format. start_date need to be in either YYYY-MM-DD or YYYY-MM-DD HH:MM:SS formats",
       call. = FALSE
     )
   }
-
 
   if (!is.null(start_date) & !is.null(end_date)) {
     if (lubridate::ymd_hms(end_date) < lubridate::ymd_hms(start_date)) {
@@ -353,7 +385,10 @@ validate_params <- function(parameters, start_date, end_date) {
   }
 
   ## Check date is in the right format
-  if (is.na(as.Date(start_date, format = "%Y-%m-%d")) | is.na(as.Date(end_date, format = "%Y-%m-%d"))) {
+  if (
+    is.na(as.Date(start_date, format = "%Y-%m-%d")) |
+      is.na(as.Date(end_date, format = "%Y-%m-%d"))
+  ) {
     stop("Invalid date format. Dates need to be in YYYY-MM-DD format")
   }
 
@@ -361,35 +396,44 @@ validate_params <- function(parameters, start_date, end_date) {
 }
 
 construct_url <- function(
-  venue = "realtime", 
-  baseurl, 
-  station_number, 
-  parameters, 
-  start_date, 
+  venue = "realtime",
+  baseurl,
+  station_number,
+  parameters,
+  start_date,
   end_date
-  ) {
+) {
   station_string <- paste0("stations[]=", station_number, collapse = "&")
   parameters_string <- paste0("parameters[]=", parameters, collapse = "&")
   if (venue == "realtime") {
     date_string <- paste0(
-      "start_date=", substr(start_date, 1, 10), "%20", substr(start_date, 12, 19),
-      "&end_date=", substr(end_date, 1, 10), "%20", substr(end_date, 12, 19)
-    )
-  } 
-  
-  if (venue == "historical"){
-    date_string <- paste0(
-      "start_date=", start_date,
-      "&end_date=", end_date
+      "start_date=",
+      substr(start_date, 1, 10),
+      "%20",
+      substr(start_date, 12, 19),
+      "&end_date=",
+      substr(end_date, 1, 10),
+      "%20",
+      substr(end_date, 12, 19)
     )
   }
-  
+
+  if (venue == "historical") {
+    date_string <- paste0(
+      "start_date=",
+      start_date,
+      "&end_date=",
+      end_date
+    )
+  }
 
   ## paste them all together
   paste0(
     baseurl,
-    station_string, "&",
-    parameters_string, "&",
+    station_string,
+    "&",
+    parameters_string,
+    "&",
     date_string
   )
 }
