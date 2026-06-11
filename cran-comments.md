@@ -11,14 +11,10 @@ There were zero WARNINGS and zero ERRORS.
 ## Test environments
 * win-builder (via `devtools::check_win_devel()` and `devtools::check_win_release()`)
 * local macOS, R 4.5.2 (via R CMD check --as-cran)
-* ubuntu-20.04, r: 'release' (github actions)
-* ubuntu-20.04, r: 'devel' (github actions)
-* macOS,        r: 'release' (github actions)
-* windows,      r: 'release' (github actions)
-* ubuntu-devel, r: 'release' (rhub)
-* linux, r: 'devel' (rhub)
-* macos-arm64, r: 'devel' (rhub)
-* windows, r: 'devel' (rhub)
+* linux (ubuntu-latest on GitHub), R-* (any version) (rhub)
+* m1-san (macos-15 on GitHub, ASAN + UBSAN), R-* (any version) (rhub)
+* macos-arm64 (macos-latest on GitHub), R-* (any version) (rhub)
+* windows (windows-latest on GitHub), R-* (any version) (rhub)
 
 ## revdepcheck results
 
