@@ -82,7 +82,7 @@ test_that("trim_provisional_overlap keeps provisional data for stations lacking 
   sym_Date <- rlang::sym("Date")
 
   ## Station A is fully covered by final data through 2025-12-31.
-  final_data <- tibble::tibble(
+  final_data <- dplyr::tibble(
     STATION_NUMBER = "A",
     Date = as.Date(c("2025-12-30", "2025-12-31")),
     Parameter = "Flow",
@@ -92,7 +92,7 @@ test_that("trim_provisional_overlap keeps provisional data for stations lacking 
   )
 
   ## Provisional data exists for both A (overlapping final) and B (no final).
-  provisional <- tibble::tibble(
+  provisional <- dplyr::tibble(
     STATION_NUMBER = c("A", "A", "B", "B"),
     Date = as.Date(c("2025-12-31", "2026-01-01", "2025-06-01", "2025-06-02")),
     Parameter = "Flow",
@@ -124,7 +124,7 @@ test_that("trim_provisional_overlap is a no-op when no final data exists", {
   sym_STATION_NUMBER <- rlang::sym("STATION_NUMBER")
   sym_Date <- rlang::sym("Date")
 
-  provisional <- tibble::tibble(
+  provisional <- dplyr::tibble(
     STATION_NUMBER = c("B", "B"),
     Date = as.Date(c("2025-06-01", "2025-06-02")),
     Parameter = "Flow",
