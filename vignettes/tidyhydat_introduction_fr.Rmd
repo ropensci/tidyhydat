@@ -1,7 +1,7 @@
 ---
 title: "tidyhydat : une introduction"
 author: "Sam Albers"
-date: "2026-11-04"
+date: "2026-11-06"
 lang: fr
 output:
   html_vignette:
@@ -100,64 +100,6 @@ hy_daily_flows(station_number = "08LA001")
 ```
 
 ```
-## Called from: hy_daily_flows(station_number = "08LA001")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#95: stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#98: sym_YEAR <- sym("YEAR")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#99: sym_STATION_NUMBER <- sym("STATION_NUMBER")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#100: sym_variable <- sym("variable")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#101: sym_temp <- sym("temp")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#102: sym_Date <- sym("Date")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#105: dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#106: dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% 
-##     stns)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#111: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR >= lubridate::year(start_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#116: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR <= lubridate::year(end_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#122: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, 
-##     NO_DAYS, dplyr::contains("FLOW"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#130: dly_flows <- dplyr::collect(dly_flows)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#132: if (is.data.frame(dly_flows) && nrow(dly_flows) == 0) stop("No flow data for this station in HYDAT")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#135: dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, 
-##     -(STATION_NUMBER:NO_DAYS))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#141: dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", 
-##     "", variable)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#145: dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", 
-##     "", variable))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#146: dly_flows <- tidyr::spread(dly_flows, variable, temp)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#147: dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#149: dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#152: dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, 
-##     "-", MONTH, "-", DAY)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#158: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date >= start_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#160: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date <= end_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#163: dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, 
-##     by = c(FLOW_SYMBOL = "SYMBOL_ID"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#168: dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#171: if (symbol_output == "code") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, FLOW_SYMBOL)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#172: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, 
-##     FLOW, FLOW_SYMBOL)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#182: if (symbol_output == "english") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_EN)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#193: if (symbol_output == "french") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_FR)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#204: dly_flows <- dplyr::arrange(dly_flows, Date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#206: colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", 
-##     "Value", "Symbol")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#214: attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#218: as.hy(dly_flows)
-```
-
-```
 ##   Queried from version of HYDAT released on 2026-07-17
 ##    Observations:                      32,902
 ##    Measurement flags:                 6,334
@@ -204,64 +146,6 @@ hy_daily_flows(station_number = PEI_stns)
 ```
 
 ```
-## Called from: hy_daily_flows(station_number = PEI_stns)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#95: stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#98: sym_YEAR <- sym("YEAR")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#99: sym_STATION_NUMBER <- sym("STATION_NUMBER")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#100: sym_variable <- sym("variable")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#101: sym_temp <- sym("temp")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#102: sym_Date <- sym("Date")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#105: dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#106: dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% 
-##     stns)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#111: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR >= lubridate::year(start_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#116: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR <= lubridate::year(end_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#122: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, 
-##     NO_DAYS, dplyr::contains("FLOW"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#130: dly_flows <- dplyr::collect(dly_flows)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#132: if (is.data.frame(dly_flows) && nrow(dly_flows) == 0) stop("No flow data for this station in HYDAT")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#135: dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, 
-##     -(STATION_NUMBER:NO_DAYS))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#141: dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", 
-##     "", variable)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#145: dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", 
-##     "", variable))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#146: dly_flows <- tidyr::spread(dly_flows, variable, temp)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#147: dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#149: dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#152: dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, 
-##     "-", MONTH, "-", DAY)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#158: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date >= start_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#160: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date <= end_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#163: dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, 
-##     by = c(FLOW_SYMBOL = "SYMBOL_ID"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#168: dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#171: if (symbol_output == "code") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, FLOW_SYMBOL)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#172: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, 
-##     FLOW, FLOW_SYMBOL)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#182: if (symbol_output == "english") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_EN)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#193: if (symbol_output == "french") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_FR)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#204: dly_flows <- dplyr::arrange(dly_flows, Date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#206: colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", 
-##     "Value", "Symbol")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#214: attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#218: as.hy(dly_flows)
-```
-
-```
 ##   Queried from version of HYDAT released on 2026-07-17
 ##    Observations:                      129,466
 ##    Measurement flags:                 22,733
@@ -292,64 +176,6 @@ Nous pouvons aussi réunir le choix des stations et l'extraction des données da
 search_stn_name("canada") |>
   pull_station_number() |>
   hy_daily_flows()
-```
-
-```
-## Called from: hy_daily_flows(pull_station_number(search_stn_name("canada")))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#95: stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#98: sym_YEAR <- sym("YEAR")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#99: sym_STATION_NUMBER <- sym("STATION_NUMBER")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#100: sym_variable <- sym("variable")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#101: sym_temp <- sym("temp")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#102: sym_Date <- sym("Date")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#105: dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#106: dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% 
-##     stns)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#111: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR >= lubridate::year(start_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#116: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR <= lubridate::year(end_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#122: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, 
-##     NO_DAYS, dplyr::contains("FLOW"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#130: dly_flows <- dplyr::collect(dly_flows)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#132: if (is.data.frame(dly_flows) && nrow(dly_flows) == 0) stop("No flow data for this station in HYDAT")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#135: dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, 
-##     -(STATION_NUMBER:NO_DAYS))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#141: dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", 
-##     "", variable)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#145: dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", 
-##     "", variable))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#146: dly_flows <- tidyr::spread(dly_flows, variable, temp)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#147: dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#149: dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#152: dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, 
-##     "-", MONTH, "-", DAY)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#158: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date >= start_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#160: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date <= end_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#163: dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, 
-##     by = c(FLOW_SYMBOL = "SYMBOL_ID"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#168: dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#171: if (symbol_output == "code") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, FLOW_SYMBOL)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#172: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, 
-##     FLOW, FLOW_SYMBOL)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#182: if (symbol_output == "english") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_EN)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#193: if (symbol_output == "french") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_FR)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#204: dly_flows <- dplyr::arrange(dly_flows, Date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#206: colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", 
-##     "Value", "Symbol")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#214: attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#218: as.hy(dly_flows)
 ```
 
 ```
@@ -526,69 +352,8 @@ runoff_data <- hy_daily_flows(station_number = stns, start_date = "2000-01-01") 
     by = "STATION_NUMBER") |>
   ## conversion en mm/j
   mutate(runoff = Value / DRAINAGE_AREA_GROSS * 86400 / 1e6 * 1e3)
-```
 
-```
-## Called from: hy_daily_flows(station_number = stns, start_date = "2000-01-01")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#95: stns <- station_choice(hydat_con, station_number, prov_terr_state_loc)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#98: sym_YEAR <- sym("YEAR")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#99: sym_STATION_NUMBER <- sym("STATION_NUMBER")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#100: sym_variable <- sym("variable")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#101: sym_temp <- sym("temp")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#102: sym_Date <- sym("Date")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#105: dly_flows <- dplyr::tbl(hydat_con, "DLY_FLOWS")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#106: dly_flows <- dplyr::filter(dly_flows, !!sym_STATION_NUMBER %in% 
-##     stns)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#111: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR >= lubridate::year(start_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#111: dly_flows <- dplyr::filter(dly_flows, !!sym_YEAR >= lubridate::year(start_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#116: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_YEAR <= lubridate::year(end_date))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#122: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, YEAR, MONTH, 
-##     NO_DAYS, dplyr::contains("FLOW"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#130: dly_flows <- dplyr::collect(dly_flows)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#132: if (is.data.frame(dly_flows) && nrow(dly_flows) == 0) stop("No flow data for this station in HYDAT")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#135: dly_flows <- tidyr::gather(dly_flows, !!sym_variable, !!sym_temp, 
-##     -(STATION_NUMBER:NO_DAYS))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#141: dly_flows <- dplyr::mutate(dly_flows, DAY = as.numeric(gsub("FLOW|FLOW_SYMBOL", 
-##     "", variable)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#145: dly_flows <- dplyr::mutate(dly_flows, variable = gsub("[0-9]+", 
-##     "", variable))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#146: dly_flows <- tidyr::spread(dly_flows, variable, temp)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#147: dly_flows <- dplyr::mutate(dly_flows, FLOW = as.numeric(FLOW))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#149: dly_flows <- dplyr::filter(dly_flows, DAY <= NO_DAYS)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#152: dly_flows <- dplyr::mutate(dly_flows, Date = lubridate::ymd(paste0(YEAR, 
-##     "-", MONTH, "-", DAY)))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#158: if (!dates_null[["start_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date >= start_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#158: dly_flows <- dplyr::filter(dly_flows, !!sym_Date >= start_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#160: if (!dates_null[["end_is_null"]]) dly_flows <- dplyr::filter(dly_flows, 
-##     !!sym_Date <= end_date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#163: dly_flows <- dplyr::left_join(dly_flows, tidyhydat::hy_data_symbols, 
-##     by = c(FLOW_SYMBOL = "SYMBOL_ID"))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#168: dly_flows <- dplyr::mutate(dly_flows, Parameter = "Flow")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#171: if (symbol_output == "code") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, FLOW_SYMBOL)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#172: dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, Parameter, 
-##     FLOW, FLOW_SYMBOL)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#182: if (symbol_output == "english") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_EN)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#193: if (symbol_output == "french") {
-##     dly_flows <- dplyr::select(dly_flows, STATION_NUMBER, Date, 
-##         Parameter, FLOW, SYMBOL_FR)
-## }
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#204: dly_flows <- dplyr::arrange(dly_flows, Date)
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#206: colnames(dly_flows) <- c("STATION_NUMBER", "Date", "Parameter", 
-##     "Value", "Symbol")
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#214: attr(dly_flows, "missed_stns") <- setdiff(unique(stns), unique(dly_flows$STATION_NUMBER))
-## debug at /Users/sam.albers/_dev/gh_repos/tidyhydat/R/hy_daily_flows.R#218: as.hy(dly_flows)
-```
 
-``` r
 ggplot(runoff_data) +
   geom_line(aes(x = Date, y = runoff, colour = STATION_NAME)) +
   labs(y = "Ruissellement journalier moyen [mm/j]") +
